@@ -380,6 +380,23 @@ h1 {
     font-size: 1.8rem;
     font-weight: 700;
     margin-top: 0.2rem;
+    margin-bottom: 0.1rem;
+}
+
+.kpi-trend {
+    font-size: 0.78rem;
+    font-weight: 600;
+    min-height: 1.1rem;
+    display: block;
+    transition: opacity 0.3s;
+}
+
+/* Edit btn warm hover */
+.btn-icon.btn-edit-sale:hover,
+.btn-icon.btn-edit-history:hover {
+    color: var(--warning) !important;
+    opacity: 1 !important;
+    transform: scale(1.15);
 }
 
 /* Charts & Goal Row */

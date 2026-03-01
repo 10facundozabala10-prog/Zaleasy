@@ -9,6 +9,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const productInput = document.getElementById('product');
     const methodSelect = document.getElementById('method');
     const notesInput = document.getElementById('notes');
+    const categoryInput = document.getElementById('category');
+
+    // Edit Modal Elements
+    const editModal = document.getElementById('edit-modal');
+    const editIdInput = document.getElementById('edit-id');
+    const editProductInput = document.getElementById('edit-product');
+    const editAmountInput = document.getElementById('edit-amount');
+    const editMethodSelect = document.getElementById('edit-method');
+    const editCategorySelect = document.getElementById('edit-category');
+    const editNotesInput = document.getElementById('edit-notes');
+    const btnSaveEdit = document.getElementById('btn-save-edit');
+    const closeEditModalBtn = document.getElementById('close-edit-modal');
+    const editTypeIncome = document.getElementById('edit-type-income');
+    const editTypeExpense = document.getElementById('edit-type-expense');
+    let editTransactionType = 'income';
 
     // KPI Elements
     const kpiRevenue = document.getElementById('kpi-revenue');
@@ -371,10 +386,12 @@ document.addEventListener('DOMContentLoaded', () => {
         initChart();
         renderSales();
         updateKPIs();
+        updateKPITrends();
         setupAutocomplete();
         setupAuth();
         setupStreakWidget();
         setupImportBackup();
+        setupEditModal();
     };
 
     // --- Date & Greeting ---
@@ -684,6 +701,49 @@ document.addEventListener('DOMContentLoaded', () => {
         draw();
     };
 
+    // --- KPI Trend Indicators (vs last closed session) ---
+    const updateKPITrends = () => {
+        if (historyData.length === 0) return;
+
+        // Find dates of the last closed session (max date in historyData)
+        const allDates = historyData.map(s => new Date(s.timestamp).toISOString().split('T')[0]);
+        allDates.sort((a, b) => b.localeCompare(a));
+        const lastDate = allDates[0];
+
+        const lastSessionItems = historyData.filter(s =>
+            new Date(s.timestamp).toISOString().split('T')[0] === lastDate
+        );
+
+        const lastRevenue = lastSessionItems.filter(s => s.type !== 'expense').reduce((sum, s) => sum + s.amount, 0);
+        const lastCount = lastSessionItems.filter(s => s.type !== 'expense').length;
+        const lastExpenses = lastSessionItems.filter(s => s.type === 'expense').reduce((sum, s) => sum + s.amount, 0);
+        const lastBalance = lastRevenue - lastExpenses;
+
+        // Current values
+        const todaySales = sales.filter(s => s.type !== 'expense');
+        const todayExpenses = sales.filter(s => s.type === 'expense');
+        const todayRevenue = todaySales.reduce((sum, s) => sum + s.amount, 0);
+        const todayCount = todaySales.length;
+        const todayExpTotal = todayExpenses.reduce((sum, s) => sum + s.amount, 0);
+        const todayBalance = todayRevenue - todayExpTotal;
+
+        const renderTrend = (elId, today, yesterday) => {
+            const el = document.getElementById(elId);
+            if (!el) return;
+            if (yesterday === 0) { el.innerHTML = ''; return; }
+            const pct = ((today - yesterday) / Math.abs(yesterday)) * 100;
+            const up = pct >= 0;
+            const color = up ? 'var(--success)' : 'var(--danger)';
+            const arrow = up ? '↑' : '↓';
+            el.innerHTML = `<span style="color:${color};font-size:.78rem;font-weight:600;">${arrow} ${Math.abs(pct).toFixed(1)}% vs ayer</span>`;
+        };
+
+        renderTrend('kpi-trend-revenue', todayRevenue, lastRevenue);
+        renderTrend('kpi-trend-count', todayCount, lastCount);
+        renderTrend('kpi-trend-expenses', todayExpTotal, lastExpenses);
+        renderTrend('kpi-trend-balance', todayBalance, lastBalance);
+    };
+
     // --- KPIs ---
     const updateKPIs = () => {
         let totalRevenue = 0;
@@ -735,6 +795,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         updateChart();
+        updateKPITrends();
 
         // Animation for numbers
         const elements = [kpiRevenue, kpiSalesCount, kpiExpenses, kpiBalance];
@@ -773,14 +834,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 const sign = isExpense ? '-' : '+';
                 const amountColor = isExpense ? 'var(--danger)' : 'var(--text-main)';
                 const notesHtml = sale.notes ? `<br><small style="color:var(--text-muted);font-weight:400;">📝 ${sale.notes}</small>` : '';
+                const catHtml = sale.category ? `<span style="font-size:.72rem;color:var(--text-muted);margin-left:4px;">${sale.category}</span>` : '';
 
                 tr.innerHTML = `
                     <td>${timeStr}</td>
-                    <td><strong>${sale.product}</strong>${notesHtml}</td>
+                    <td><strong>${sale.product}</strong>${catHtml}${notesHtml}</td>
                     <td>${typeText}</td>
                     <td><span class="badge" style="background:var(--primary-light); color:var(--primary);">${sale.method}</span></td>
                     <td style="color: ${amountColor}; font-weight: bold;">${sign}${formatCurrency(sale.amount)}</td>
                     <td style="text-align: right;">
+                        <button class="btn-icon btn-edit-sale" data-id="${sale.id}" title="Editar" style="color: var(--warning); opacity:0.85; margin-right:3px;">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
                         <button class="btn-icon btn-receipt-sale" data-id="${sale.id}" title="Ver Recibo" style="color: var(--primary); opacity: 0.8; margin-right:4px;">
                             <i class="fa-solid fa-receipt"></i>
                         </button>
@@ -790,6 +855,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     </td>
                 `;
                 salesBody.appendChild(tr);
+            });
+
+            // Edit sale listeners
+            document.querySelectorAll('.btn-edit-sale').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const saleId = parseInt(e.currentTarget.getAttribute('data-id'));
+                    const sale = sales.find(s => s.id === saleId);
+                    if (sale) openEditModal(sale, 'sales');
+                });
             });
 
             // Delete specific sale listeners
@@ -968,6 +1042,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const amount = parseFloat(amountInput.value);
         const method = methodSelect.value;
         const notes = notesInput ? notesInput.value.trim() : '';
+        const category = categoryInput ? categoryInput.value : '';
 
         if (!product || isNaN(amount) || amount <= 0) {
             alert('Por favor, ingresa datos válidos para la venta.');
@@ -981,7 +1056,8 @@ document.addEventListener('DOMContentLoaded', () => {
             amount,
             method,
             type: currentTransactionType,
-            notes
+            notes,
+            category
         };
 
         sales.push(newSale);
@@ -990,7 +1066,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Save for autocomplete
         if (!recentProducts.includes(product)) {
             recentProducts.unshift(product);
-            if (recentProducts.length > 20) recentProducts.pop(); // Keep top 20
+            if (recentProducts.length > 20) recentProducts.pop();
             localStorage.setItem('recentProducts', JSON.stringify(recentProducts));
             setupAutocomplete();
         }
@@ -999,6 +1075,7 @@ document.addEventListener('DOMContentLoaded', () => {
         productInput.value = '';
         amountInput.value = '5.00';
         if (notesInput) notesInput.value = '';
+        if (categoryInput) categoryInput.value = '';
         productInput.focus();
 
         // Update UI
@@ -1031,8 +1108,93 @@ document.addEventListener('DOMContentLoaded', () => {
             closeRegisterModal.classList.remove('active');
             calculatorModal.classList.remove('active');
             if (receiptModal) receiptModal.classList.remove('active');
+            if (editModal) editModal.classList.remove('active');
         });
     });
+
+    if (closeEditModalBtn) closeEditModalBtn.addEventListener('click', () => editModal.classList.remove('active'));
+
+    // --- Edit Modal Setup ---
+    const openEditModal = (sale, source) => {
+        editIdInput.value = sale.id;
+        editIdInput.setAttribute('data-source', source);
+        editProductInput.value = sale.product;
+        editAmountInput.value = sale.amount;
+        editMethodSelect.value = sale.method;
+        editCategorySelect.value = sale.category || '';
+        editNotesInput.value = sale.notes || '';
+        editTransactionType = sale.type || 'income';
+
+        // Set type toggle UI
+        if (editTransactionType === 'expense') {
+            editTypeExpense.className = 'btn';
+            editTypeExpense.style.cssText = 'flex:1;background:var(--danger);color:white;border:none;';
+            editTypeIncome.className = 'btn btn-outline';
+            editTypeIncome.style.cssText = 'flex:1;';
+        } else {
+            editTypeIncome.className = 'btn btn-primary';
+            editTypeIncome.style.cssText = 'flex:1;';
+            editTypeExpense.className = 'btn btn-outline';
+            editTypeExpense.style.cssText = 'flex:1;';
+        }
+        editModal.classList.add('active');
+    };
+
+    const setupEditModal = () => {
+        if (!editTypeIncome || !editTypeExpense) return;
+
+        editTypeIncome.addEventListener('click', () => {
+            editTransactionType = 'income';
+            editTypeIncome.className = 'btn btn-primary';
+            editTypeIncome.style.cssText = 'flex:1;';
+            editTypeExpense.className = 'btn btn-outline';
+            editTypeExpense.style.cssText = 'flex:1;';
+        });
+
+        editTypeExpense.addEventListener('click', () => {
+            editTransactionType = 'expense';
+            editTypeExpense.className = 'btn';
+            editTypeExpense.style.cssText = 'flex:1;background:var(--danger);color:white;border:none;';
+            editTypeIncome.className = 'btn btn-outline';
+            editTypeIncome.style.cssText = 'flex:1;';
+        });
+
+        btnSaveEdit.addEventListener('click', () => {
+            const id = parseInt(editIdInput.value);
+            const source = editIdInput.getAttribute('data-source');
+            const product = editProductInput.value.trim();
+            const amount = parseFloat(editAmountInput.value);
+
+            if (!product || isNaN(amount) || amount <= 0) {
+                alert('Por favor, ingresa datos válidos.');
+                return;
+            }
+
+            const updateFn = (arr) => arr.map(s => s.id === id ? {
+                ...s,
+                product,
+                amount,
+                method: editMethodSelect.value,
+                category: editCategorySelect.value,
+                notes: editNotesInput.value.trim(),
+                type: editTransactionType
+            } : s);
+
+            if (source === 'sales') {
+                sales = updateFn(sales);
+                localStorage.setItem('dailySales', JSON.stringify(sales));
+                renderSales();
+                updateKPIs();
+            } else {
+                historyData = updateFn(historyData);
+                localStorage.setItem('allHistoryData', JSON.stringify(historyData));
+                renderHistory();
+            }
+
+            editModal.classList.remove('active');
+            showToast('✅ Transacción actualizada correctamente.');
+        });
+    };
 
     // Also close receipt modal with close-modal-close buttons inside it
     document.querySelectorAll('#receipt-modal .close-modal-close').forEach(btn => {
