@@ -1041,16 +1041,6 @@ select:focus {
     box-shadow: 0 10px 32px rgba(108, 92, 231, 0.7);
 }
 
-.fab-btn-secondary {
-    bottom: 5.5rem;
-    background: linear-gradient(135deg, var(--success), #55efc4);
-    box-shadow: 0 6px 24px rgba(0, 184, 148, 0.4);
-}
-
-.fab-btn-secondary:hover {
-    box-shadow: 0 10px 32px rgba(0, 184, 148, 0.6);
-}
-
 
 /* --- Top Product Widget --- */
 .top-product-card {

@@ -111,7 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let goalReachedNotified = false;
     let activeCategoryFilter = ''; // for sales table category pill filter
     let alertThreshold = parseFloat(localStorage.getItem('alertThreshold')) || 0;
-    let exchangeRate = parseFloat(localStorage.getItem('exchangeRate')) || 1200;
 
     // Type Toggle Elements
     const btnTypeIncome = document.getElementById('btn-type-income');
@@ -411,7 +410,6 @@ document.addEventListener('DOMContentLoaded', () => {
         setupDayNotepad();
         setupCategoryFilters();
         setupFABs();
-        setupConverterModal();
         updateTopProduct();
     };
 
@@ -521,7 +519,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Floating Action Buttons ---
     const setupFABs = () => {
         const fabQuickAdd = document.getElementById('fab-quick-add');
-        const fabConverter = document.getElementById('fab-converter');
 
         if (fabQuickAdd) {
             fabQuickAdd.addEventListener('click', () => {
@@ -534,53 +531,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         productInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }
                 }, 100);
-            });
-        }
-
-        if (fabConverter) {
-            fabConverter.addEventListener('click', () => {
-                openConverterModal();
-            });
-        }
-    };
-
-    // --- Currency Converter Modal ---
-    const openConverterModal = () => {
-        const modal = document.getElementById('converter-modal');
-        if (!modal) return;
-        const rateDisplay = document.getElementById('conv-rate-display');
-        if (rateDisplay) rateDisplay.textContent = `1 USD = $${exchangeRate.toLocaleString('es-AR')} ARS`;
-        const convArs = document.getElementById('conv-ars');
-        const convUsd = document.getElementById('conv-usd');
-        if (convArs) convArs.value = '';
-        if (convUsd) convUsd.value = '';
-        const result = document.getElementById('conv-result');
-        if (result) result.textContent = '$0.00';
-        modal.classList.add('active');
-    };
-
-    const setupConverterModal = () => {
-        const convArs = document.getElementById('conv-ars');
-        const convUsd = document.getElementById('conv-usd');
-        const convResult = document.getElementById('conv-result');
-        const convResultLabel = document.getElementById('conv-result-label');
-
-        if (convArs) {
-            convArs.addEventListener('input', () => {
-                const ars = parseFloat(convArs.value) || 0;
-                const usd = ars / exchangeRate;
-                if (convUsd) convUsd.value = '';
-                if (convResult) convResult.textContent = `USD ${usd.toFixed(2)}`;
-                if (convResultLabel) convResultLabel.textContent = 'Equivalente en USD';
-            });
-        }
-        if (convUsd) {
-            convUsd.addEventListener('input', () => {
-                const usd = parseFloat(convUsd.value) || 0;
-                const ars = usd * exchangeRate;
-                if (convArs) convArs.value = '';
-                if (convResult) convResult.textContent = `$${ars.toLocaleString('es-AR', { minimumFractionDigits: 2 })} ARS`;
-                if (convResultLabel) convResultLabel.textContent = 'Equivalente en ARS';
             });
         }
     };
