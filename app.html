@@ -96,19 +96,19 @@
             </div>
 
             <nav class="nav-menu">
-                <a href="#" class="nav-item active">
+                <a href="#" class="nav-item active" id="nav-dashboard">
                     <i class="fa-solid fa-house"></i>
                     <span>Dashboard</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="#" class="nav-item" id="nav-historial">
                     <i class="fa-solid fa-clock-rotate-left"></i>
                     <span>Historial</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="#" class="nav-item" id="nav-reportes">
                     <i class="fa-solid fa-chart-pie"></i>
                     <span>Reportes</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="#" class="nav-item" id="nav-config">
                     <i class="fa-solid fa-gear"></i>
                     <span>Configuración</span>
                 </a>
@@ -146,176 +146,190 @@
                 </div>
             </header>
 
-            <div class="dashboard-grid">
-                <!-- KPI Cards -->
-                <div class="kpi-cards">
-                    <div class="card kpi-card">
-                        <div class="kpi-icon revenue">
-                            <i class="fa-solid fa-arrow-trend-up"></i>
+            <div id="view-dashboard" class="dashboard-wrapper">
+                <div class="dashboard-grid">
+                    <!-- KPI Cards -->
+                    <div class="kpi-cards">
+                        <div class="card kpi-card">
+                            <div class="kpi-icon revenue">
+                                <i class="fa-solid fa-arrow-trend-up"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <h3>Ingresos</h3>
+                                <p class="kpi-value" id="kpi-revenue">$0.00</p>
+                            </div>
                         </div>
-                        <div class="kpi-details">
-                            <h3>Ingresos</h3>
-                            <p class="kpi-value" id="kpi-revenue">$0.00</p>
+                        <div class="card kpi-card">
+                            <div class="kpi-icon sales">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <h3>Ventas Hoy</h3>
+                                <p class="kpi-value" id="kpi-sales-count">0</p>
+                            </div>
+                        </div>
+                        <div class="card kpi-card">
+                            <div class="kpi-icon">
+                                <i class="fa-solid fa-arrow-trend-down" style="color: var(--danger);"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <h3>Gastos</h3>
+                                <p class="kpi-value" id="kpi-expenses" style="color: var(--danger);">$0.00</p>
+                            </div>
+                        </div>
+                        <div class="card kpi-card">
+                            <div class="kpi-icon avg">
+                                <i class="fa-solid fa-scale-balanced"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <h3>Balance Neto</h3>
+                                <p class="kpi-value" id="kpi-balance">$0.00</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="card kpi-card">
-                        <div class="kpi-icon sales">
-                            <i class="fa-solid fa-cart-shopping"></i>
-                        </div>
-                        <div class="kpi-details">
-                            <h3>Ventas Hoy</h3>
-                            <p class="kpi-value" id="kpi-sales-count">0</p>
-                        </div>
-                    </div>
-                    <div class="card kpi-card">
-                        <div class="kpi-icon">
-                            <i class="fa-solid fa-arrow-trend-down" style="color: var(--danger);"></i>
-                        </div>
-                        <div class="kpi-details">
-                            <h3>Gastos</h3>
-                            <p class="kpi-value" id="kpi-expenses" style="color: var(--danger);">$0.00</p>
-                        </div>
-                    </div>
-                    <div class="card kpi-card">
-                        <div class="kpi-icon avg">
-                            <i class="fa-solid fa-scale-balanced"></i>
-                        </div>
-                        <div class="kpi-details">
-                            <h3>Balance Neto</h3>
-                            <p class="kpi-value" id="kpi-balance">$0.00</p>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Goal & Chart (new row) -->
-                <div class="charts-row">
-                    <div class="card goal-card">
+                    <!-- Goal & Chart (new row) -->
+                    <div class="charts-row">
+                        <div class="card goal-card">
+                            <div class="card-header">
+                                <h2>Meta Diaria</h2>
+                                <button class="btn-icon" id="edit-goal" title="Editar Meta"><i
+                                        class="fa-solid fa-pen"></i></button>
+                            </div>
+                            <div class="goal-info">
+                                <span id="goal-progress-text">$0.00 / $100.00</span>
+                                <span class="badge" id="goal-percentage">0%</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" id="goal-progress-bar"></div>
+                            </div>
+                            <p class="goal-subtitle">Progreso hacia el objetivo de hoy</p>
+                        </div>
+                        <div class="card chart-card">
+                            <div class="card-header">
+                                <h2>Ingresos por Método</h2>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="methodsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add Sale Form -->
+                    <div class="card form-section">
                         <div class="card-header">
-                            <h2>Meta Diaria</h2>
-                            <button class="btn-icon" id="edit-goal" title="Editar Meta"><i
-                                    class="fa-solid fa-pen"></i></button>
+                            <h2>Nueva Transacción</h2>
+                            <span class="badge">Nuevo</span>
                         </div>
-                        <div class="goal-info">
-                            <span id="goal-progress-text">$0.00 / $100.00</span>
-                            <span class="badge" id="goal-percentage">0%</span>
-                        </div>
-                        <div class="progress-bar-container">
-                            <div class="progress-bar" id="goal-progress-bar"></div>
-                        </div>
-                        <p class="goal-subtitle">Progreso hacia el objetivo de hoy</p>
+                        <form id="sale-form" class="sale-form">
+                            <div class="transaction-type-toggle"
+                                style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
+                                <button type="button" class="btn btn-primary type-btn" data-type="income"
+                                    style="flex: 1;" id="btn-type-income">Ingreso / Venta</button>
+                                <button type="button" class="btn btn-outline type-btn" data-type="expense"
+                                    style="flex: 1;" id="btn-type-expense">Añadir Gasto</button>
+                            </div>
+                            <div class="form-group">
+                                <label for="product">Producto / Descripción</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-tag"></i>
+                                    <input type="text" id="product" placeholder="Ej: Suscripción mensual" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="amount">Monto (ARS)</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-dollar-sign"></i>
+                                    <input type="number" id="amount" step="0.01" min="0" placeholder="5000" value="5000"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="method">Método de Pago</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-credit-card"></i>
+                                    <select id="method">
+                                        <option value="Efectivo">Efectivo</option>
+                                        <option value="Tarjeta">Tarjeta de Crédito/Débito</option>
+                                        <option value="Transferencia">Transferencia</option>
+                                        <option value="MercadoPago">MercadoPago</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="quick-actions">
+                                <button type="button" class="btn btn-outline quick-amount" data-amount="1000">+
+                                    $1.000</button>
+                                <button type="button" class="btn btn-outline quick-amount" data-amount="5000">+
+                                    $5.000</button>
+                                <button type="button" class="btn btn-outline quick-amount" data-amount="10000">+
+                                    $10.000</button>
+                            </div>
+                            <div class="form-actions-row" style="display:flex; gap: 0.8rem;">
+                                <button type="submit" class="btn btn-primary btn-block" style="flex: 2;"
+                                    id="btn-submit-transaction">
+                                    <i class="fa-solid fa-plus"></i> Registrar Venta
+                                </button>
+                                <button type="button" class="btn btn-outline" id="btn-calculator" style="flex: 1;"
+                                    title="Calculadora de vuelto">
+                                    <i class="fa-solid fa-calculator"></i> Vuelto
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="card chart-card">
+
+                    <!-- Recent Sales List -->
+                    <div class="card list-section">
                         <div class="card-header">
-                            <h2>Ingresos por Método</h2>
+                            <h2>Ventas Recientes</h2>
+                            <div class="header-actions">
+                                <button class="btn-icon" id="export-csv" title="Exportar CSV">
+                                    <i class="fa-solid fa-download"></i>
+                                </button>
+                                <button class="btn-icon" id="clear-sales" title="Limpiar historial">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
                         </div>
-                        <div class="chart-container">
-                            <canvas id="methodsChart"></canvas>
+                        <div class="search-container">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="search-sales" placeholder="Buscar por descripción...">
+                        </div>
+                        <div class="table-container">
+                            <table class="sales-table">
+                                <thead>
+                                    <tr>
+                                        <th>Hora</th>
+                                        <th>Descripción</th>
+                                        <th>Tipo</th>
+                                        <th>Método</th>
+                                        <th>Monto</th>
+                                        <th style="text-align: right;">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="sales-body">
+                                    <!-- Sales rows will be dynamically inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="empty-state" id="empty-state">
+                            <div class="empty-icon">
+                                <i class="fa-solid fa-receipt"></i>
+                            </div>
+                            <p>No hay ventas registradas hoy.</p>
+                            <span>Crea una venta para verla aquí.</span>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Add Sale Form -->
-                <div class="card form-section">
-                    <div class="card-header">
-                        <h2>Nueva Transacción</h2>
-                        <span class="badge">Nuevo</span>
-                    </div>
-                    <form id="sale-form" class="sale-form">
-                        <div class="transaction-type-toggle" style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
-                            <button type="button" class="btn btn-primary type-btn" data-type="income" style="flex: 1;"
-                                id="btn-type-income">Ingreso / Venta</button>
-                            <button type="button" class="btn btn-outline type-btn" data-type="expense" style="flex: 1;"
-                                id="btn-type-expense">Añadir Gasto</button>
-                        </div>
-                        <div class="form-group">
-                            <label for="product">Producto / Descripción</label>
-                            <div class="input-wrapper">
-                                <i class="fa-solid fa-tag"></i>
-                                <input type="text" id="product" placeholder="Ej: Suscripción mensual" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="amount">Monto (USD)</label>
-                            <div class="input-wrapper">
-                                <i class="fa-solid fa-dollar-sign"></i>
-                                <input type="number" id="amount" step="0.01" min="0" placeholder="5.00" value="5.00"
-                                    required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="method">Método de Pago</label>
-                            <div class="input-wrapper">
-                                <i class="fa-solid fa-credit-card"></i>
-                                <select id="method">
-                                    <option value="Efectivo">Efectivo</option>
-                                    <option value="Tarjeta">Tarjeta de Crédito/Débito</option>
-                                    <option value="Transferencia">Transferencia</option>
-                                    <option value="Cripto">Criptomonedas</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="quick-actions">
-                            <button type="button" class="btn btn-outline quick-amount" data-amount="5.00">+
-                                $5.00</button>
-                            <button type="button" class="btn btn-outline quick-amount" data-amount="10.00">+
-                                $10.00</button>
-                            <button type="button" class="btn btn-outline quick-amount" data-amount="20.00">+
-                                $20.00</button>
-                        </div>
-                        <div class="form-actions-row" style="display:flex; gap: 0.8rem;">
-                            <button type="submit" class="btn btn-primary btn-block" style="flex: 2;"
-                                id="btn-submit-transaction">
-                                <i class="fa-solid fa-plus"></i> Registrar Venta
-                            </button>
-                            <button type="button" class="btn btn-outline" id="btn-calculator" style="flex: 1;"
-                                title="Calculadora de vuelto">
-                                <i class="fa-solid fa-calculator"></i> Vuelto
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Recent Sales List -->
-                <div class="card list-section">
-                    <div class="card-header">
-                        <h2>Ventas Recientes</h2>
-                        <div class="header-actions">
-                            <button class="btn-icon" id="export-csv" title="Exportar CSV">
-                                <i class="fa-solid fa-download"></i>
-                            </button>
-                            <button class="btn-icon" id="clear-sales" title="Limpiar historial">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="search-container">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" id="search-sales" placeholder="Buscar por descripción...">
-                    </div>
-                    <div class="table-container">
-                        <table class="sales-table">
-                            <thead>
-                                <tr>
-                                    <th>Hora</th>
-                                    <th>Descripción</th>
-                                    <th>Tipo</th>
-                                    <th>Método</th>
-                                    <th>Monto</th>
-                                    <th style="text-align: right;">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="sales-body">
-                                <!-- Sales rows will be dynamically inserted here -->
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="empty-state" id="empty-state">
-                        <div class="empty-icon">
-                            <i class="fa-solid fa-receipt"></i>
-                        </div>
-                        <p>No hay ventas registradas hoy.</p>
-                        <span>Crea una venta para verla aquí.</span>
-                    </div>
+            <!-- Coming Soon Placeholder -->
+            <div id="view-coming-soon" class="dashboard-wrapper" style="display: none;">
+                <div class="card" style="text-align: center; padding: 5rem 2rem;">
+                    <i class="fa-solid fa-person-digging"
+                        style="font-size: 4rem; color: var(--primary); margin-bottom: 2rem;"></i>
+                    <h2 id="coming-soon-title" style="margin-bottom: 1rem; font-size: 2rem;">Sección en Desarrollo</h2>
+                    <p style="color: var(--text-muted); font-size: 1.1rem;">Nuestros ingenieros están trabajando para
+                        traer este módulo muy pronto.</p>
                 </div>
             </div>
         </main>

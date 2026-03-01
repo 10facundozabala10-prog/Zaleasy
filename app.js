@@ -55,6 +55,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const userProfileBtn = document.getElementById('user-profile-btn');
     const userAvatar = document.getElementById('user-avatar');
 
+    // View Elements
+    const viewDashboard = document.getElementById('view-dashboard');
+    const viewComingSoon = document.getElementById('view-coming-soon');
+    const comingSoonTitle = document.getElementById('coming-soon-title');
+
+    // Navigation Links
+    const navDashboard = document.getElementById('nav-dashboard');
+    const navHistorial = document.getElementById('nav-historial');
+    const navReportes = document.getElementById('nav-reportes');
+    const navConfig = document.getElementById('nav-config');
+    const allNavItems = document.querySelectorAll('.nav-item');
+
     // --- State ---
     let sales = JSON.parse(localStorage.getItem('dailySales')) || [];
     let isDarkMode = localStorage.getItem('theme') !== 'light';
@@ -103,7 +115,29 @@ document.addEventListener('DOMContentLoaded', () => {
         btnSubmitTransaction.style.flex = "2";
     });
 
-    // --- Initialize ---
+    // --- Navigation Logic ---
+    const switchView = (targetId, title) => {
+        // Update active class on nav
+        allNavItems.forEach(item => item.classList.remove('active'));
+        document.getElementById(targetId).classList.add('active');
+
+        // Toggle Views
+        if (targetId === 'nav-dashboard') {
+            viewDashboard.style.display = 'block';
+            viewComingSoon.style.display = 'none';
+        } else {
+            viewDashboard.style.display = 'none';
+            viewComingSoon.style.display = 'block';
+            comingSoonTitle.innerText = title;
+        }
+    };
+
+    navDashboard.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-dashboard'); });
+    navHistorial.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-historial', 'Historial Completo'); });
+    navReportes.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-reportes', 'Reportes Avanzados'); });
+    navConfig.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-config', 'Configuración de Empresa'); });
+
+    // --- Application Initialization ---
     const init = () => {
         setupDate();
         setupTheme();
