@@ -369,7 +369,91 @@
                 </div>
             </div>
 
-            <!-- Coming Soon Placeholder (For other views) -->
+            <!-- Reports View -->
+            <div id="view-reportes" class="dashboard-wrapper" style="display: none;">
+
+                <!-- Summary KPIs -->
+                <div class="kpi-cards" style="margin-bottom: 1.5rem;">
+                    <div class="card kpi-card">
+                        <div class="kpi-icon revenue"><i class="fa-solid fa-coins"></i></div>
+                        <div class="kpi-details">
+                            <h3>Total Histórico</h3>
+                            <p class="kpi-value" id="rep-total-revenue">$0.00</p>
+                        </div>
+                    </div>
+                    <div class="card kpi-card">
+                        <div class="kpi-icon sales"><i class="fa-solid fa-receipt"></i></div>
+                        <div class="kpi-details">
+                            <h3>Total Transacciones</h3>
+                            <p class="kpi-value" id="rep-total-tx">0</p>
+                        </div>
+                    </div>
+                    <div class="card kpi-card">
+                        <div class="kpi-icon avg"><i class="fa-solid fa-chart-line"></i></div>
+                        <div class="kpi-details">
+                            <h3>Promedio por Venta</h3>
+                            <p class="kpi-value" id="rep-avg-sale">$0.00</p>
+                        </div>
+                    </div>
+                    <div class="card kpi-card">
+                        <div class="kpi-icon" style="background: rgba(231,76,60,0.15);">
+                            <i class="fa-solid fa-arrow-trend-down" style="color:var(--danger);"></i>
+                        </div>
+                        <div class="kpi-details">
+                            <h3>Total Gastos</h3>
+                            <p class="kpi-value" id="rep-total-expenses" style="color:var(--danger);">$0.00</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="charts-row" style="margin-bottom: 1.5rem;">
+                    <div class="card chart-card" style="flex: 2;">
+                        <div class="card-header">
+                            <h2>Ingresos de los Últimos 7 Días</h2>
+                        </div>
+                        <div class="chart-container" style="height: 260px;">
+                            <canvas id="rep-weekly-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card chart-card" style="flex: 1;">
+                        <div class="card-header">
+                            <h2>Métodos de Pago</h2>
+                        </div>
+                        <div class="chart-container" style="height: 260px;">
+                            <canvas id="rep-methods-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Products Table -->
+                <div class="card list-section">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-trophy" style="color: gold; margin-right: .5rem;"></i>Top Productos /
+                            Servicios Más Vendidos</h2>
+                    </div>
+                    <div class="table-container">
+                        <table class="sales-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Producto / Servicio</th>
+                                    <th>Veces Vendido</th>
+                                    <th>Total Generado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rep-top-products-body"></tbody>
+                        </table>
+                    </div>
+                    <div class="empty-state" id="rep-empty-state">
+                        <div class="empty-icon"><i class="fa-solid fa-chart-bar"></i></div>
+                        <p>No hay datos históricos.</p>
+                        <span>Realiza ventas y cierra la caja para generar reportes.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coming Soon Placeholder (Config only) -->
             <div id="view-coming-soon" class="dashboard-wrapper" style="display: none;">
                 <div class="card" style="text-align: center; padding: 5rem 2rem;">
                     <i class="fa-solid fa-person-digging"

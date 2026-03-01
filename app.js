@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // View Elements
     const viewDashboard = document.getElementById('view-dashboard');
     const viewHistorial = document.getElementById('view-historial');
+    const viewReportes = document.getElementById('view-reportes');
     const viewComingSoon = document.getElementById('view-coming-soon');
     const comingSoonTitle = document.getElementById('coming-soon-title');
 
@@ -135,24 +136,156 @@ document.addEventListener('DOMContentLoaded', () => {
         if (targetId === 'nav-dashboard') {
             viewDashboard.style.display = 'block';
             viewHistorial.style.display = 'none';
+            viewReportes.style.display = 'none';
             viewComingSoon.style.display = 'none';
         } else if (targetId === 'nav-historial') {
             viewDashboard.style.display = 'none';
             viewHistorial.style.display = 'block';
+            viewReportes.style.display = 'none';
             viewComingSoon.style.display = 'none';
-            renderHistory(); // Render immediately when opened
+            renderHistory();
+        } else if (targetId === 'nav-reportes') {
+            viewDashboard.style.display = 'none';
+            viewHistorial.style.display = 'none';
+            viewReportes.style.display = 'block';
+            viewComingSoon.style.display = 'none';
+            renderReports();
         } else {
             viewDashboard.style.display = 'none';
             viewHistorial.style.display = 'none';
+            viewReportes.style.display = 'none';
             viewComingSoon.style.display = 'block';
             comingSoonTitle.innerText = title;
         }
     };
 
     navDashboard.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-dashboard'); });
-    navHistorial.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-historial', 'Historial Completo'); });
-    navReportes.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-reportes', 'Reportes Avanzados'); });
+    navHistorial.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-historial'); });
+    navReportes.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-reportes'); });
     navConfig.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-config', 'Configuración de Empresa'); });
+
+    // --- Reports Chart Instances ---
+    let repWeeklyChartInstance = null;
+    let repMethodsChartInstance = null;
+
+    const renderReports = () => {
+        const allData = [...historyData, ...sales]; // Include today's sales too
+        const incomes = allData.filter(s => s.type !== 'expense');
+        const expenses = allData.filter(s => s.type === 'expense');
+
+        // --- Summary KPIs ---
+        const totalRevenue = incomes.reduce((sum, s) => sum + s.amount, 0);
+        const totalExpenses = expenses.reduce((sum, s) => sum + s.amount, 0);
+        const totalTx = incomes.length;
+        const avgSale = totalTx > 0 ? totalRevenue / totalTx : 0;
+
+        document.getElementById('rep-total-revenue').textContent = formatCurrency(totalRevenue);
+        document.getElementById('rep-total-tx').textContent = totalTx;
+        document.getElementById('rep-avg-sale').textContent = formatCurrency(avgSale);
+        document.getElementById('rep-total-expenses').textContent = formatCurrency(totalExpenses);
+
+        // --- Weekly Bar Chart (last 7 days) ---
+        const labels = [];
+        const weeklyTotals = [];
+        const isDark = localStorage.getItem('theme') !== 'light';
+        const textColor = isDark ? '#8d93aa' : '#636e72';
+
+        for (let i = 6; i >= 0; i--) {
+            const d = new Date();
+            d.setDate(d.getDate() - i);
+            const dayStr = d.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' });
+            labels.push(dayStr);
+            const dayKey = d.toISOString().split('T')[0];
+            const dayTotal = incomes
+                .filter(s => new Date(s.timestamp).toISOString().split('T')[0] === dayKey)
+                .reduce((sum, s) => sum + s.amount, 0);
+            weeklyTotals.push(dayTotal);
+        }
+
+        if (repWeeklyChartInstance) repWeeklyChartInstance.destroy();
+        const ctxWeekly = document.getElementById('rep-weekly-chart').getContext('2d');
+        repWeeklyChartInstance = new Chart(ctxWeekly, {
+            type: 'bar',
+            data: {
+                labels,
+                datasets: [{
+                    label: 'Ingresos',
+                    data: weeklyTotals,
+                    backgroundColor: 'rgba(99,102,241,0.7)',
+                    borderColor: 'rgba(99,102,241,1)',
+                    borderWidth: 2,
+                    borderRadius: 8,
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { ticks: { color: textColor }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                    y: { ticks: { color: textColor, callback: v => '$' + v.toLocaleString('es-AR') }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                }
+            }
+        });
+
+        // --- Methods Doughnut Chart ---
+        const methodMap = {};
+        incomes.forEach(s => { methodMap[s.method] = (methodMap[s.method] || 0) + s.amount; });
+        const methodLabels = Object.keys(methodMap);
+        const methodValues = Object.values(methodMap);
+
+        if (repMethodsChartInstance) repMethodsChartInstance.destroy();
+        const ctxMethods = document.getElementById('rep-methods-chart').getContext('2d');
+        repMethodsChartInstance = new Chart(ctxMethods, {
+            type: 'doughnut',
+            data: {
+                labels: methodLabels.length ? methodLabels : ['Sin datos'],
+                datasets: [{
+                    data: methodValues.length ? methodValues : [1],
+                    backgroundColor: ['rgba(99,102,241,0.8)', 'rgba(46,213,115,0.8)', 'rgba(0,158,227,0.8)', 'rgba(255,165,2,0.8)'],
+                    borderWidth: 2,
+                    borderColor: isDark ? '#1a1d2e' : '#f5f5f5'
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom', labels: { color: textColor, padding: 16 } } }
+            }
+        });
+
+        // --- Top Products ---
+        const repTopBody = document.getElementById('rep-top-products-body');
+        const repEmptyState = document.getElementById('rep-empty-state');
+        repTopBody.innerHTML = '';
+
+        const productMap = {};
+        incomes.forEach(s => {
+            if (!productMap[s.product]) productMap[s.product] = { count: 0, total: 0 };
+            productMap[s.product].count++;
+            productMap[s.product].total += s.amount;
+        });
+
+        const sorted = Object.entries(productMap).sort((a, b) => b[1].total - a[1].total);
+
+        if (sorted.length === 0) {
+            repEmptyState.classList.add('active');
+            document.querySelector('#view-reportes .table-container').style.display = 'none';
+        } else {
+            repEmptyState.classList.remove('active');
+            document.querySelector('#view-reportes .table-container').style.display = 'block';
+            sorted.forEach(([name, data], idx) => {
+                const medals = ['🥇', '🥈', '🥉'];
+                const rank = medals[idx] || `#${idx + 1}`;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-size:1.3rem;">${rank}</td>
+                    <td><strong>${name}</strong></td>
+                    <td><span class="badge">${data.count} veces</span></td>
+                    <td style="color: var(--success); font-weight: bold;">${formatCurrency(data.total)}</td>
+                `;
+                repTopBody.appendChild(tr);
+            });
+        }
+    };
 
     // --- Application Initialization ---
     const init = () => {
