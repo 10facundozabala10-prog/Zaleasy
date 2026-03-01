@@ -59,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const viewDashboard = document.getElementById('view-dashboard');
     const viewHistorial = document.getElementById('view-historial');
     const viewReportes = document.getElementById('view-reportes');
+    const viewConfig = document.getElementById('view-config');
     const viewComingSoon = document.getElementById('view-coming-soon');
     const comingSoonTitle = document.getElementById('coming-soon-title');
 
@@ -82,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let historyData = JSON.parse(localStorage.getItem('allHistoryData')) || []; // Full history
     let isDarkMode = localStorage.getItem('theme') !== 'light';
     let dailyGoal = parseFloat(localStorage.getItem('dailyGoal')) || 100.00;
+    let storeName = localStorage.getItem('storeName') || 'Zaleasy';
     let recentProducts = JSON.parse(localStorage.getItem('recentProducts')) || [];
     let methodsChartInstance = null;
     let currentTransactionType = 'income';
@@ -132,28 +134,38 @@ document.addEventListener('DOMContentLoaded', () => {
         allNavItems.forEach(item => item.classList.remove('active'));
         document.getElementById(targetId).classList.add('active');
 
-        // Toggle Views
         if (targetId === 'nav-dashboard') {
             viewDashboard.style.display = 'block';
             viewHistorial.style.display = 'none';
             viewReportes.style.display = 'none';
+            viewConfig.style.display = 'none';
             viewComingSoon.style.display = 'none';
         } else if (targetId === 'nav-historial') {
             viewDashboard.style.display = 'none';
             viewHistorial.style.display = 'block';
             viewReportes.style.display = 'none';
+            viewConfig.style.display = 'none';
             viewComingSoon.style.display = 'none';
             renderHistory();
         } else if (targetId === 'nav-reportes') {
             viewDashboard.style.display = 'none';
             viewHistorial.style.display = 'none';
             viewReportes.style.display = 'block';
+            viewConfig.style.display = 'none';
             viewComingSoon.style.display = 'none';
             renderReports();
+        } else if (targetId === 'nav-config') {
+            viewDashboard.style.display = 'none';
+            viewHistorial.style.display = 'none';
+            viewReportes.style.display = 'none';
+            viewConfig.style.display = 'block';
+            viewComingSoon.style.display = 'none';
+            loadConfigData();
         } else {
             viewDashboard.style.display = 'none';
             viewHistorial.style.display = 'none';
             viewReportes.style.display = 'none';
+            viewConfig.style.display = 'none';
             viewComingSoon.style.display = 'block';
             comingSoonTitle.innerText = title;
         }
@@ -287,8 +299,66 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // --- Config Logic ---
+    const configStoreNameInput = document.getElementById('config-store-name');
+    const configDailyGoalInput = document.getElementById('config-daily-goal');
+
+    const loadConfigData = () => {
+        configStoreNameInput.value = storeName;
+        configDailyGoalInput.value = dailyGoal;
+    };
+
+    document.getElementById('btn-save-store-name').addEventListener('click', () => {
+        const val = configStoreNameInput.value.trim();
+        if (val) {
+            storeName = val;
+            localStorage.setItem('storeName', storeName);
+            document.getElementById('sidebar-brand-name').innerText = storeName;
+            showToast('Nombre del negocio actualizado');
+        }
+    });
+
+    document.getElementById('btn-save-config-goal').addEventListener('click', () => {
+        const val = parseFloat(configDailyGoalInput.value);
+        if (!isNaN(val) && val > 0) {
+            dailyGoal = val;
+            localStorage.setItem('dailyGoal', dailyGoal);
+            updateKPIs();
+            showToast('Meta por defecto actualizada');
+        }
+    });
+
+    document.getElementById('btn-factory-reset').addEventListener('click', () => {
+        if (confirm('¿ESTÁS COMPLETAMENTE SEGURO? Esto borrará tu cuenta, tu historial, tus configuraciones y todos tus datos registrados. La aplicación volverá a quedar como recién instalada.')) {
+            if (confirm('ÚLTIMA ADVERTENCIA: Esta acción es final e irreversible. ¿Ejecutar borrado y reiniciar sistema?')) {
+                localStorage.clear();
+                window.location.reload();
+            }
+        }
+    });
+
+    document.getElementById('btn-backup-data').addEventListener('click', () => {
+        const backupData = {
+            sales,
+            historyData,
+            storeName,
+            dailyGoal,
+            recentProducts,
+            exportDate: new Date().toISOString()
+        };
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
+        const link = document.createElement("a");
+        link.setAttribute("href", dataStr);
+        link.setAttribute("download", `zaleasy_backup_${new Date().toISOString().split('T')[0]}.json`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showToast('Copia de seguridad descargada (JSON)');
+    });
+
     // --- Application Initialization ---
     const init = () => {
+        document.getElementById('sidebar-brand-name').innerText = storeName;
         setupDate();
         setupTheme();
         initChart();

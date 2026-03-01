@@ -92,7 +92,7 @@
                 <div class="logo-icon">
                     <i class="fa-solid fa-chart-line"></i>
                 </div>
-                <h2>Zaleasy</h2>
+                <h2 id="sidebar-brand-name">Zaleasy</h2>
             </div>
 
             <nav class="nav-menu">
@@ -453,7 +453,71 @@
                 </div>
             </div>
 
-            <!-- Coming Soon Placeholder (Config only) -->
+            <!-- Config View -->
+            <div id="view-config" class="dashboard-wrapper" style="display: none;">
+                <div class="card list-section" style="max-width: 800px; margin: 0 auto;">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-gear"
+                                style="color: var(--text-muted); margin-right: .5rem;"></i>Configuración de Empresa</h2>
+                    </div>
+
+                    <div style="padding: 1rem 0;">
+                        <!-- Store / User Settings -->
+                        <div
+                            style="margin-bottom: 2rem; padding: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+                            <h3 style="margin-bottom: 1rem; color: var(--text-main);"><i class="fa-solid fa-store"
+                                    style="margin-right: 0.5rem; color: var(--primary);"></i>Perfil del Negocio</h3>
+                            <div class="form-group" style="margin-bottom: 1rem;">
+                                <label for="config-store-name">Nombre de tu Negocio / Proyecto</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-signature"></i>
+                                    <input type="text" id="config-store-name" placeholder="Ej: Mi Tienda Online">
+                                </div>
+                            </div>
+                            <button class="btn btn-outline" id="btn-save-store-name">Guardar Nombre</button>
+                        </div>
+
+                        <!-- Daily Goal Default -->
+                        <div
+                            style="margin-bottom: 2rem; padding: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+                            <h3 style="margin-bottom: 1rem; color: var(--text-main);"><i class="fa-solid fa-bullseye"
+                                    style="margin-right: 0.5rem; color: var(--primary);"></i>Meta Diaria</h3>
+                            <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">Esto ajusta la
+                                meta por defecto en tu Dashboard principal.</p>
+                            <div class="form-group" style="margin-bottom: 1rem;">
+                                <label for="config-daily-goal">Meta Diaria (ARS)</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-dollar-sign"></i>
+                                    <input type="number" id="config-daily-goal" step="0.01" min="0">
+                                </div>
+                            </div>
+                            <button class="btn btn-outline" id="btn-save-config-goal">Actualizar Meta</button>
+                        </div>
+
+                        <!-- Security and Data -->
+                        <div
+                            style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: rgba(231,76,60,0.02);">
+                            <h3 style="margin-bottom: 1rem; color: var(--danger);"><i
+                                    class="fa-solid fa-triangle-exclamation" style="margin-right: 0.5rem;"></i>Zona de
+                                Peligro</h3>
+                            <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">Estas acciones
+                                no se pueden deshacer y borrarán tus datos guardados.</p>
+
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                <button class="btn btn-outline" id="btn-factory-reset"
+                                    style="color: var(--danger); border-color: var(--danger);">
+                                    <i class="fa-solid fa-skull"></i> Borrar ABSOLUTAMENTE TODO (Factory Reset)
+                                </button>
+                                <button class="btn btn-outline" id="btn-backup-data">
+                                    <i class="fa-solid fa-cloud-arrow-down"></i> Descargar Copia de Seguridad (JSON)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coming Soon Placeholder (Kept just in case we add more tabs later) -->
             <div id="view-coming-soon" class="dashboard-wrapper" style="display: none;">
                 <div class="card" style="text-align: center; padding: 5rem 2rem;">
                     <i class="fa-solid fa-person-digging"
