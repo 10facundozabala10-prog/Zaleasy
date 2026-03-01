@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const amountInput = document.getElementById('amount');
     const productInput = document.getElementById('product');
     const methodSelect = document.getElementById('method');
+    const notesInput = document.getElementById('notes');
 
     // KPI Elements
     const kpiRevenue = document.getElementById('kpi-revenue');
@@ -46,6 +47,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveGoalBtn = document.getElementById('save-goal');
     const newGoalInput = document.getElementById('new-goal');
     const chartCanvas = document.getElementById('methodsChart');
+
+    // Receipt Modal Elements
+    const receiptModal = document.getElementById('receipt-modal');
+    const receiptBody = document.getElementById('receipt-body');
+    const btnPrintReceipt = document.getElementById('btn-print-receipt');
 
     // Auth Elements
     const authScreen = document.getElementById('auth-screen');
@@ -87,6 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let recentProducts = JSON.parse(localStorage.getItem('recentProducts')) || [];
     let methodsChartInstance = null;
     let currentTransactionType = 'income';
+    let goalReachedNotified = false; // Track if confetti already fired this session
 
     // Type Toggle Elements
     const btnTypeIncome = document.getElementById('btn-type-income');
@@ -366,6 +373,8 @@ document.addEventListener('DOMContentLoaded', () => {
         updateKPIs();
         setupAutocomplete();
         setupAuth();
+        setupStreakWidget();
+        setupImportBackup();
     };
 
     // --- Date & Greeting ---
@@ -583,6 +592,98 @@ document.addEventListener('DOMContentLoaded', () => {
         methodsChartInstance.update();
     };
 
+    // --- Streak Widget ---
+    const setupStreakWidget = () => {
+        const streakCount = document.getElementById('streak-count');
+        const streakSubtitle = document.getElementById('streak-subtitle');
+        const streakBadge = document.getElementById('streak-badge');
+
+        // Build a set of unique dates from historyData (past closes) + today if has sales
+        const daySet = new Set();
+        historyData.forEach(s => {
+            const day = new Date(s.timestamp).toISOString().split('T')[0];
+            daySet.add(day);
+        });
+        // If today has sales, add today
+        const todayKey = new Date().toISOString().split('T')[0];
+        const todayHasSales = sales.some(s => s.type !== 'expense');
+        if (todayHasSales) daySet.add(todayKey);
+
+        // Count consecutive days ending today or yesterday
+        let streak = 0;
+        let checkDate = new Date();
+        // Start from today if has sales, else from yesterday
+        if (!todayHasSales) checkDate.setDate(checkDate.getDate() - 1);
+
+        while (true) {
+            const key = checkDate.toISOString().split('T')[0];
+            if (daySet.has(key)) {
+                streak++;
+                checkDate.setDate(checkDate.getDate() - 1);
+            } else {
+                break;
+            }
+        }
+
+        streakCount.textContent = streak;
+        if (streak === 0) {
+            streakSubtitle.textContent = '¡Registra una venta hoy para comenzar!';
+            streakBadge.textContent = '💤';
+        } else if (streak < 3) {
+            streakSubtitle.textContent = '¡Buen comienzo! Sigue así.';
+            streakBadge.textContent = '🔥';
+        } else if (streak < 7) {
+            streakSubtitle.textContent = `¡${streak} días seguidos! Imparable.`;
+            streakBadge.textContent = '🔥🔥';
+        } else {
+            streakSubtitle.textContent = `¡Racha legen-daria de ${streak} días!`;
+            streakBadge.textContent = '🏆';
+        }
+    };
+
+    // --- Confetti Animation ---
+    const fireConfetti = () => {
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const pieces = [];
+        const colors = ['#6c5ce7', '#00b894', '#fdcb6e', '#fd79a8', '#a29bfe', '#55efc4'];
+        for (let i = 0; i < 120; i++) {
+            pieces.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                size: Math.random() * 12 + 4,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                speed: Math.random() * 3 + 2,
+                angle: Math.random() * Math.PI * 2,
+                rotation: Math.random() * 0.3 - 0.15
+            });
+        }
+
+        let animFrame;
+        const draw = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            let active = false;
+            pieces.forEach(p => {
+                p.y += p.speed;
+                p.angle += p.rotation;
+                if (p.y < canvas.height + 20) active = true;
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.angle);
+                ctx.fillStyle = p.color;
+                ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.5);
+                ctx.restore();
+            });
+            if (active) animFrame = requestAnimationFrame(draw);
+            else ctx.clearRect(0, 0, canvas.width, canvas.height);
+        };
+        cancelAnimationFrame(animFrame);
+        draw();
+    };
+
     // --- KPIs ---
     const updateKPIs = () => {
         let totalRevenue = 0;
@@ -621,10 +722,16 @@ document.addEventListener('DOMContentLoaded', () => {
             goalProgressBar.style.background = 'var(--success)';
             goalPercentage.style.background = 'var(--success)';
             goalPercentage.style.color = 'white';
+            if (!goalReachedNotified) {
+                goalReachedNotified = true;
+                fireConfetti();
+                showToast('🎉 ¡Meta del día alcanzada! Excelente trabajo.');
+            }
         } else {
             goalProgressBar.style.background = 'linear-gradient(90deg, var(--primary), var(--success))';
             goalPercentage.style.background = 'var(--primary-light)';
             goalPercentage.style.color = 'var(--primary)';
+            goalReachedNotified = false;
         }
 
         updateChart();
@@ -665,14 +772,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 const typeText = isExpense ? '<span style="color:var(--danger); font-size:0.8rem;"><i class="fa-solid fa-arrow-down"></i> Gasto</span>' : '<span style="color:var(--success); font-size:0.8rem;"><i class="fa-solid fa-arrow-up"></i> Ingreso</span>';
                 const sign = isExpense ? '-' : '+';
                 const amountColor = isExpense ? 'var(--danger)' : 'var(--text-main)';
+                const notesHtml = sale.notes ? `<br><small style="color:var(--text-muted);font-weight:400;">📝 ${sale.notes}</small>` : '';
 
                 tr.innerHTML = `
                     <td>${timeStr}</td>
-                    <td><strong>${sale.product}</strong></td>
+                    <td><strong>${sale.product}</strong>${notesHtml}</td>
                     <td>${typeText}</td>
                     <td><span class="badge" style="background:var(--primary-light); color:var(--primary);">${sale.method}</span></td>
                     <td style="color: ${amountColor}; font-weight: bold;">${sign}${formatCurrency(sale.amount)}</td>
                     <td style="text-align: right;">
+                        <button class="btn-icon btn-receipt-sale" data-id="${sale.id}" title="Ver Recibo" style="color: var(--primary); opacity: 0.8; margin-right:4px;">
+                            <i class="fa-solid fa-receipt"></i>
+                        </button>
                         <button class="btn-icon btn-delete-sale" data-id="${sale.id}" title="Eliminar Transacción" style="color: var(--danger); opacity: 0.7;">
                             <i class="fa-solid fa-trash"></i>
                         </button>
@@ -692,6 +803,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         updateKPIs();
                         showToast('Transacción eliminada correctamente.');
                     }
+                });
+            });
+
+            // Receipt listeners (today's sales)
+            document.querySelectorAll('.btn-receipt-sale').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const saleId = parseInt(e.currentTarget.getAttribute('data-id'));
+                    const sale = sales.find(s => s.id === saleId);
+                    if (sale) openReceiptModal(sale);
                 });
             });
         }
@@ -742,14 +862,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 const typeText = isExpense ? '<span style="color:var(--danger); font-size:0.8rem;"><i class="fa-solid fa-arrow-down"></i> Gasto</span>' : '<span style="color:var(--success); font-size:0.8rem;"><i class="fa-solid fa-arrow-up"></i> Ingreso</span>';
                 const sign = isExpense ? '-' : '+';
                 const amountColor = isExpense ? 'var(--danger)' : 'var(--text-main)';
+                const notesHtml = sale.notes ? `<br><small style="color:var(--text-muted);font-weight:400;">📝 ${sale.notes}</small>` : '';
 
                 tr.innerHTML = `
                     <td>${dateStr}</td>
-                    <td><strong>${sale.product}</strong></td>
+                    <td><strong>${sale.product}</strong>${notesHtml}</td>
                     <td>${typeText}</td>
                     <td><span class="badge" style="background:var(--primary-light); color:var(--primary);">${sale.method}</span></td>
                     <td style="color: ${amountColor}; font-weight: bold;">${sign}${formatCurrency(sale.amount)}</td>
                     <td style="text-align: right;">
+                        <button class="btn-icon btn-receipt-history" data-id="${sale.id}" title="Ver Recibo" style="color: var(--primary); opacity: 0.8; margin-right:4px;">
+                            <i class="fa-solid fa-receipt"></i>
+                        </button>
                         <button class="btn-icon btn-delete-history" data-id="${sale.id}" title="Eliminar Permanente" style="color: var(--danger); opacity: 0.7;">
                             <i class="fa-solid fa-trash"></i>
                         </button>
@@ -768,6 +892,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         renderHistory();
                         showToast('Registro eliminado del historial.');
                     }
+                });
+            });
+
+            // Receipt listeners (history)
+            document.querySelectorAll('.btn-receipt-history').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const saleId = parseInt(e.currentTarget.getAttribute('data-id'));
+                    const sale = historyData.find(s => s.id === saleId);
+                    if (sale) openReceiptModal(sale);
                 });
             });
         }
@@ -834,6 +967,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const product = productInput.value.trim();
         const amount = parseFloat(amountInput.value);
         const method = methodSelect.value;
+        const notes = notesInput ? notesInput.value.trim() : '';
 
         if (!product || isNaN(amount) || amount <= 0) {
             alert('Por favor, ingresa datos válidos para la venta.');
@@ -846,7 +980,8 @@ document.addEventListener('DOMContentLoaded', () => {
             product,
             amount,
             method,
-            type: currentTransactionType
+            type: currentTransactionType,
+            notes
         };
 
         sales.push(newSale);
@@ -863,11 +998,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Reset Form
         productInput.value = '';
         amountInput.value = '5.00';
+        if (notesInput) notesInput.value = '';
         productInput.focus();
 
         // Update UI
         renderSales();
         updateKPIs();
+        setupStreakWidget();
         showToast('Venta de ' + formatCurrency(amount) + ' registrada!');
     });
 
@@ -893,8 +1030,67 @@ document.addEventListener('DOMContentLoaded', () => {
             goalModal.classList.remove('active');
             closeRegisterModal.classList.remove('active');
             calculatorModal.classList.remove('active');
+            if (receiptModal) receiptModal.classList.remove('active');
         });
     });
+
+    // Also close receipt modal with close-modal-close buttons inside it
+    document.querySelectorAll('#receipt-modal .close-modal-close').forEach(btn => {
+        btn.addEventListener('click', () => receiptModal.classList.remove('active'));
+    });
+
+    // --- Receipt Modal Logic ---
+    const openReceiptModal = (sale) => {
+        const d = new Date(sale.timestamp);
+        const dateStr = d.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        const timeStr = d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+        const isExpense = sale.type === 'expense';
+        const sign = isExpense ? '-' : '+';
+        const amountColor = isExpense ? 'var(--danger)' : 'var(--success)';
+        const typeLabel = isExpense ? 'Gasto' : 'Ingreso / Venta';
+
+        receiptBody.innerHTML = `
+            <div style="text-align:center; margin-bottom:1.5rem; padding-bottom:1rem; border-bottom:2px dashed var(--border-color);">
+                <p style="font-size:1.5rem; margin-bottom:.3rem;">${isExpense ? '💸' : '💰'}</p>
+                <h3 style="font-size:1.5rem; color:${amountColor};">${sign}${formatCurrency(sale.amount)}</h3>
+                <p style="color:var(--text-muted); font-size:.9rem; margin-top:.3rem;">${typeLabel}</p>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:.8rem;">
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Descripción</span>
+                    <strong>${sale.product}</strong>
+                </div>
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Método de Pago</span>
+                    <span class="badge">${sale.method}</span>
+                </div>
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Fecha</span>
+                    <span>${dateStr}</span>
+                </div>
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Hora</span>
+                    <span>${timeStr}</span>
+                </div>
+                ${sale.notes ? `<div style="display:flex; justify-content:space-between; gap:1rem;">
+                    <span style="color:var(--text-muted);">Notas</span>
+                    <span style="text-align:right; color:var(--text-main);">${sale.notes}</span>
+                </div>` : ''}
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Negocio</span>
+                    <strong>${storeName}</strong>
+                </div>
+            </div>
+            <div style="text-align:center; margin-top:1.5rem; padding-top:1rem; border-top:2px dashed var(--border-color); color:var(--text-muted); font-size:.8rem;">
+                Generado por Zaleasy • ID: #${sale.id.toString().slice(-6)}
+            </div>
+        `;
+        receiptModal.classList.add('active');
+    };
+
+    if (btnPrintReceipt) {
+        btnPrintReceipt.addEventListener('click', () => window.print());
+    }
 
     saveGoalBtn.addEventListener('click', () => {
         const val = parseFloat(newGoalInput.value);
@@ -995,6 +1191,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('dailySales', JSON.stringify(sales));
         renderSales();
         updateKPIs();
+        setupStreakWidget();
         closeRegisterModal.classList.remove('active');
         showToast('Cierre de caja completado con éxito!');
     });
@@ -1046,6 +1243,67 @@ document.addEventListener('DOMContentLoaded', () => {
             const option = document.createElement('option');
             option.value = prod;
             datalist.appendChild(option);
+        });
+    };
+
+    // --- Import Backup Logic ---
+    const setupImportBackup = () => {
+        const importInput = document.getElementById('btn-import-data');
+        if (!importInput) return;
+        importInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                try {
+                    const data = JSON.parse(ev.target.result);
+                    if (!data || typeof data !== 'object') throw new Error('Formato inválido');
+
+                    const confirmed = confirm(
+                        `Se encontraron ${(data.sales || []).length} ventas de hoy y ${(data.historyData || []).length} registros históricos.\n\n` +
+                        `¿Deseas FUSIONAR estos datos con los actuales o REEMPLAZAR TODO?\n\n` +
+                        `Presiona ACEPTAR para FUSIONAR o CANCELAR para cancelar la importación.`
+                    );
+
+                    if (confirmed) {
+                        // Merge: combine IDs to avoid duplicates
+                        const currentSaleIds = new Set(sales.map(s => s.id));
+                        const newSales = (data.sales || []).filter(s => !currentSaleIds.has(s.id));
+                        sales = [...sales, ...newSales];
+
+                        const currentHistoryIds = new Set(historyData.map(s => s.id));
+                        const newHistory = (data.historyData || []).filter(s => !currentHistoryIds.has(s.id));
+                        historyData = [...historyData, ...newHistory];
+
+                        localStorage.setItem('dailySales', JSON.stringify(sales));
+                        localStorage.setItem('allHistoryData', JSON.stringify(historyData));
+
+                        if (data.storeName) {
+                            storeName = data.storeName;
+                            localStorage.setItem('storeName', storeName);
+                            document.getElementById('sidebar-brand-name').innerText = storeName;
+                        }
+                        if (data.dailyGoal) {
+                            dailyGoal = data.dailyGoal;
+                            localStorage.setItem('dailyGoal', dailyGoal);
+                        }
+                        if (data.recentProducts) {
+                            recentProducts = data.recentProducts;
+                            localStorage.setItem('recentProducts', JSON.stringify(recentProducts));
+                            setupAutocomplete();
+                        }
+
+                        renderSales();
+                        updateKPIs();
+                        setupStreakWidget();
+                        showToast(`✅ Importación exitosa: +${newSales.length} ventas, +${newHistory.length} históricos.`);
+                    }
+                } catch (err) {
+                    alert('Error al leer el archivo: ' + err.message);
+                }
+                importInput.value = ''; // Reset so same file can re-trigger
+            };
+            reader.readAsText(file);
         });
     };
 
