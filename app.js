@@ -110,6 +110,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentTransactionType = 'income';
     let goalReachedNotified = false;
     let activeCategoryFilter = ''; // for sales table category pill filter
+    let alertThreshold = parseFloat(localStorage.getItem('alertThreshold')) || 0;
+    let exchangeRate = parseFloat(localStorage.getItem('exchangeRate')) || 1200;
 
     // Type Toggle Elements
     const btnTypeIncome = document.getElementById('btn-type-income');
@@ -329,6 +331,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadConfigData = () => {
         configStoreNameInput.value = storeName;
         configDailyGoalInput.value = dailyGoal;
+        const alertInput = document.getElementById('config-alert-threshold');
+        if (alertInput) alertInput.value = alertThreshold || '';
     };
 
     document.getElementById('btn-save-store-name').addEventListener('click', () => {
@@ -357,6 +361,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.clear();
                 window.location.reload();
             }
+        }
+    });
+
+    // --- Alert Threshold Config ---
+    document.addEventListener('click', (e) => {
+        if (e.target && e.target.id === 'btn-save-alert-threshold') {
+            const val = parseFloat(document.getElementById('config-alert-threshold').value);
+            alertThreshold = isNaN(val) ? 0 : val;
+            localStorage.setItem('alertThreshold', alertThreshold);
+            showToast(alertThreshold > 0 ? `Alerta activada para ventas > ${formatCurrency(alertThreshold)}` : 'Alerta de ventas desactivada');
         }
     });
 
@@ -396,6 +410,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setupEditModal();
         setupDayNotepad();
         setupCategoryFilters();
+        setupFABs();
+        setupConverterModal();
+        updateTopProduct();
     };
 
     // --- Date & Greeting ---
@@ -471,6 +488,101 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderSales();
             });
         });
+    };
+
+    // --- Top Product Widget ---
+    const updateTopProduct = () => {
+        const nameEl = document.getElementById('top-product-name');
+        const amountEl = document.getElementById('top-product-amount');
+        const countEl = document.getElementById('top-product-count');
+        if (!nameEl) return;
+
+        const incomes = sales.filter(s => s.type !== 'expense');
+        if (incomes.length === 0) {
+            nameEl.textContent = 'Sin ventas aún';
+            amountEl.textContent = '$0.00';
+            countEl.textContent = '—';
+            return;
+        }
+
+        const productMap = {};
+        incomes.forEach(s => {
+            if (!productMap[s.product]) productMap[s.product] = { total: 0, count: 0 };
+            productMap[s.product].total += s.amount;
+            productMap[s.product].count++;
+        });
+
+        const top = Object.entries(productMap).sort((a, b) => b[1].total - a[1].total)[0];
+        nameEl.textContent = top[0];
+        amountEl.textContent = formatCurrency(top[1].total);
+        countEl.textContent = `${top[1].count} ${top[1].count === 1 ? 'venta' : 'ventas'}`;
+    };
+
+    // --- Floating Action Buttons ---
+    const setupFABs = () => {
+        const fabQuickAdd = document.getElementById('fab-quick-add');
+        const fabConverter = document.getElementById('fab-converter');
+
+        if (fabQuickAdd) {
+            fabQuickAdd.addEventListener('click', () => {
+                // Navigate to dashboard and focus the form
+                switchView('nav-dashboard');
+                setTimeout(() => {
+                    const productInput = document.getElementById('product');
+                    if (productInput) {
+                        productInput.focus();
+                        productInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }, 100);
+            });
+        }
+
+        if (fabConverter) {
+            fabConverter.addEventListener('click', () => {
+                openConverterModal();
+            });
+        }
+    };
+
+    // --- Currency Converter Modal ---
+    const openConverterModal = () => {
+        const modal = document.getElementById('converter-modal');
+        if (!modal) return;
+        const rateDisplay = document.getElementById('conv-rate-display');
+        if (rateDisplay) rateDisplay.textContent = `1 USD = $${exchangeRate.toLocaleString('es-AR')} ARS`;
+        const convArs = document.getElementById('conv-ars');
+        const convUsd = document.getElementById('conv-usd');
+        if (convArs) convArs.value = '';
+        if (convUsd) convUsd.value = '';
+        const result = document.getElementById('conv-result');
+        if (result) result.textContent = '$0.00';
+        modal.classList.add('active');
+    };
+
+    const setupConverterModal = () => {
+        const convArs = document.getElementById('conv-ars');
+        const convUsd = document.getElementById('conv-usd');
+        const convResult = document.getElementById('conv-result');
+        const convResultLabel = document.getElementById('conv-result-label');
+
+        if (convArs) {
+            convArs.addEventListener('input', () => {
+                const ars = parseFloat(convArs.value) || 0;
+                const usd = ars / exchangeRate;
+                if (convUsd) convUsd.value = '';
+                if (convResult) convResult.textContent = `USD ${usd.toFixed(2)}`;
+                if (convResultLabel) convResultLabel.textContent = 'Equivalente en USD';
+            });
+        }
+        if (convUsd) {
+            convUsd.addEventListener('input', () => {
+                const usd = parseFloat(convUsd.value) || 0;
+                const ars = usd * exchangeRate;
+                if (convArs) convArs.value = '';
+                if (convResult) convResult.textContent = `$${ars.toLocaleString('es-AR', { minimumFractionDigits: 2 })} ARS`;
+                if (convResultLabel) convResultLabel.textContent = 'Equivalente en ARS';
+            });
+        }
     };
 
     // --- Theme ---
@@ -1151,7 +1263,15 @@ document.addEventListener('DOMContentLoaded', () => {
         renderSales();
         updateKPIs();
         setupStreakWidget();
+        updateTopProduct();
         showToast('Venta de ' + formatCurrency(amount) + ' registrada!');
+
+        // Alert Threshold Check
+        if (alertThreshold > 0 && amount >= alertThreshold && currentTransactionType !== 'expense') {
+            setTimeout(() => {
+                showBigSaleAlert(amount, product);
+            }, 500);
+        }
     });
 
     clearSalesBtn.addEventListener('click', () => {
@@ -1178,6 +1298,8 @@ document.addEventListener('DOMContentLoaded', () => {
             calculatorModal.classList.remove('active');
             if (receiptModal) receiptModal.classList.remove('active');
             if (editModal) editModal.classList.remove('active');
+            const converterModal = document.getElementById('converter-modal');
+            if (converterModal) converterModal.classList.remove('active');
         });
     });
 
@@ -1587,9 +1709,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Limpiar "Dashboard Diario"
         sales = [];
         localStorage.setItem('dailySales', JSON.stringify(sales));
+        // Reset session timer
+        sessionStartTime = Date.now();
+        localStorage.setItem('sessionStartTime', sessionStartTime);
         renderSales();
         updateKPIs();
         setupStreakWidget();
+        updateTopProduct();
         closeRegisterModal.classList.remove('active');
         showToast('Cierre de caja completado con éxito!');
     });
@@ -1703,6 +1829,27 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             reader.readAsText(file);
         });
+    };
+
+    // --- Big Sale Alert ---
+    const showBigSaleAlert = (amount, product) => {
+        fireConfetti();
+        // Show a special styled toast
+        const toast = document.getElementById('toast');
+        if (!toast) return;
+        const icon = toast.querySelector('.toast-icon');
+        const title = toast.querySelector('.toast-title');
+        const msg = toast.querySelector('.toast-message');
+        if (icon) { icon.innerHTML = '🚀'; icon.style.fontSize = '1.8rem'; }
+        if (title) title.textContent = '¡Venta Grande! 💰';
+        if (msg) msg.textContent = `${product}: ${formatCurrency(amount)} — ¡Excelente!`;
+        toast.style.borderLeftColor = 'var(--warning)';
+        toast.classList.add('show');
+        setTimeout(() => {
+            toast.classList.remove('show');
+            toast.style.borderLeftColor = 'var(--success)';
+            if (icon) { icon.innerHTML = '<i class="fa-solid fa-check"></i>'; icon.style.fontSize = ''; }
+        }, 4000);
     };
 
     // Run app
