@@ -1,0 +1,641 @@
+document.addEventListener('DOMContentLoaded', () => {
+    // --- Elements ---
+    const dateEl = document.getElementById('current-date');
+    const greetingEl = document.getElementById('dynamic-greeting');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const saleForm = document.getElementById('sale-form');
+    const quickAmountBtns = document.querySelectorAll('.quick-amount');
+    const amountInput = document.getElementById('amount');
+    const productInput = document.getElementById('product');
+    const methodSelect = document.getElementById('method');
+
+    // KPI Elements
+    const kpiRevenue = document.getElementById('kpi-revenue');
+    const kpiSalesCount = document.getElementById('kpi-sales-count');
+    const kpiExpenses = document.getElementById('kpi-expenses');
+    const kpiBalance = document.getElementById('kpi-balance');
+
+    // List Elements
+    const salesBody = document.getElementById('sales-body');
+    const emptyState = document.getElementById('empty-state');
+    const toast = document.getElementById('toast');
+    const searchSalesInput = document.getElementById('search-sales');
+    const clearSalesBtn = document.getElementById('clear-sales');
+
+    // Close Register Elements
+    const btnCloseRegister = document.getElementById('btn-close-register');
+    const closeRegisterModal = document.getElementById('close-modal');
+    const closeSummaryGrid = document.getElementById('close-summary-grid');
+    const closeTotalDay = document.getElementById('close-total-day');
+    const btnConfirmClose = document.getElementById('confirm-close');
+
+    // Calculator Elements
+    const btnCalculator = document.getElementById('btn-calculator');
+    const calculatorModal = document.getElementById('calculator-modal');
+    const calcTotalInput = document.getElementById('calc-total');
+    const calcReceivedInput = document.getElementById('calc-received');
+    const calcChangeDisplay = document.getElementById('calc-change');
+
+    // --- Goal & Chart Elements ---
+    const goalText = document.getElementById('goal-progress-text');
+    const goalPercentage = document.getElementById('goal-percentage');
+    const goalProgressBar = document.getElementById('goal-progress-bar');
+    const editGoalBtn = document.getElementById('edit-goal');
+    const goalModal = document.getElementById('goal-modal');
+    const closeModalBtns = document.querySelectorAll('.close-modal, .close-modal-close');
+    const saveGoalBtn = document.getElementById('save-goal');
+    const newGoalInput = document.getElementById('new-goal');
+    const chartCanvas = document.getElementById('methodsChart');
+
+    // Auth Elements
+    const authScreen = document.getElementById('auth-screen');
+    const mainApp = document.getElementById('main-app');
+    const btnGoogleLogin = document.getElementById('btn-google-login');
+    const userProfileBtn = document.getElementById('user-profile-btn');
+    const userAvatar = document.getElementById('user-avatar');
+
+    // --- State ---
+    let sales = JSON.parse(localStorage.getItem('dailySales')) || [];
+    let isDarkMode = localStorage.getItem('theme') !== 'light';
+    let dailyGoal = parseFloat(localStorage.getItem('dailyGoal')) || 100.00;
+    let recentProducts = JSON.parse(localStorage.getItem('recentProducts')) || [];
+    let methodsChartInstance = null;
+    let currentTransactionType = 'income';
+
+    // Type Toggle Elements
+    const btnTypeIncome = document.getElementById('btn-type-income');
+    const btnTypeExpense = document.getElementById('btn-type-expense');
+    const btnSubmitTransaction = document.getElementById('btn-submit-transaction');
+
+    btnTypeIncome.addEventListener('click', () => {
+        currentTransactionType = 'income';
+        btnTypeIncome.className = 'btn btn-primary type-btn';
+        btnTypeIncome.removeAttribute('style');
+
+        btnTypeExpense.className = 'btn btn-outline type-btn';
+        btnTypeExpense.removeAttribute('style');
+        btnTypeExpense.style.flex = "1";
+        btnTypeIncome.style.flex = "1";
+
+        btnSubmitTransaction.innerHTML = '<i class="fa-solid fa-plus"></i> Registrar Venta';
+        btnSubmitTransaction.className = 'btn btn-primary btn-block';
+        btnSubmitTransaction.removeAttribute('style');
+        btnSubmitTransaction.style.flex = "2";
+    });
+
+    btnTypeExpense.addEventListener('click', () => {
+        currentTransactionType = 'expense';
+        btnTypeExpense.className = 'btn type-btn';
+        btnTypeExpense.style.background = 'var(--danger)';
+        btnTypeExpense.style.color = 'white';
+        btnTypeExpense.style.border = 'none';
+        btnTypeExpense.style.flex = "1";
+
+        btnTypeIncome.className = 'btn btn-outline type-btn';
+        btnTypeIncome.removeAttribute('style');
+        btnTypeIncome.style.flex = "1";
+
+        btnSubmitTransaction.innerHTML = '<i class="fa-solid fa-minus"></i> Registrar Gasto';
+        btnSubmitTransaction.className = 'btn btn-block';
+        btnSubmitTransaction.style.background = 'var(--danger)';
+        btnSubmitTransaction.style.color = 'white';
+        btnSubmitTransaction.style.flex = "2";
+    });
+
+    // --- Initialize ---
+    const init = () => {
+        setupDate();
+        setupTheme();
+        initChart();
+        renderSales();
+        updateKPIs();
+        setupAutocomplete();
+        setupAuth();
+    };
+
+    // --- Date & Greeting ---
+    const setupDate = () => {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        dateEl.textContent = new Date().toLocaleDateString('es-ES', options);
+
+        const currentHour = new Date().getHours();
+        if (currentHour < 12) {
+            greetingEl.innerHTML = '¡Buenos días! ☀️';
+        } else if (currentHour < 19) {
+            greetingEl.innerHTML = '¡Buenas tardes! 🌤️';
+        } else {
+            greetingEl.innerHTML = '¡Buenas noches! 🌙';
+        }
+    };
+
+    // --- Theme ---
+    const setupTheme = () => {
+        if (!isDarkMode) {
+            document.documentElement.setAttribute('data-theme', 'light');
+            themeToggleBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            isDarkMode = !isDarkMode;
+            if (isDarkMode) {
+                document.documentElement.removeAttribute('data-theme');
+                themeToggleBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                themeToggleBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+                localStorage.setItem('theme', 'light');
+            }
+            if (methodsChartInstance) {
+                methodsChartInstance.options.plugins.legend.labels.color = isDarkMode ? '#8d93aa' : '#636e72';
+                methodsChartInstance.update();
+            }
+        });
+    };
+
+    // --- Firebase Auth ---
+    const setupAuth = () => {
+        // Fallback for visual testing if Firebase script is commented out or missing
+        if (!window.firebaseAuth) {
+            console.log("Firebase no configurado aún. Mostrando UI Demo.");
+
+            btnGoogleLogin.addEventListener('click', () => {
+                // Simulate login
+                authScreen.style.display = 'none';
+                mainApp.style.display = 'flex';
+                showToast('Modo de Prueba (Sin Nube)');
+            });
+
+            userProfileBtn.addEventListener('click', () => {
+                if (confirm('¿Cerrar sesión de prueba?')) {
+                    mainApp.style.display = 'none';
+                    authScreen.style.display = 'flex';
+                }
+            });
+            return;
+        }
+
+        // Real Firebase Auth Flow
+        window.firebaseOnAuth(window.firebaseAuth, (user) => {
+            if (user) {
+                // Logged in
+                authScreen.style.display = 'none';
+                mainApp.style.display = 'flex';
+                userAvatar.src = user.photoURL || "https://ui-avatars.com/api/?name=Admin&background=0D8ABC&color=fff";
+                showToast(`Bienvenid@, ${user.displayName.split(' ')[0]}`);
+                // Future step: Load 'sales' from Firestore here based on user.uid
+            } else {
+                // Logged out
+                mainApp.style.display = 'none';
+                authScreen.style.display = 'flex';
+            }
+        });
+
+        btnGoogleLogin.addEventListener('click', () => {
+            btnGoogleLogin.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Conectando...';
+            window.firebaseSignIn(window.firebaseAuth, window.firebaseProvider)
+                .catch((error) => {
+                    console.error("Error logging in:", error);
+
+                    let errorMsg = "Error en el inicio de sesión.\n\n";
+                    if (window.location.protocol === 'file:') {
+                        errorMsg += "⚠️ IMPORTANTE: Estás abriendo el archivo localmente (file:///). Firebase requiere que uses un servidor local (como Live Server en VSCode) o que la página esté subida a internet para que el login de Google funcione por motivos de seguridad.\n\n";
+                    } else {
+                        errorMsg += "Asegúrate de haber 'Habilitado' Google en la pestaña Authentication de tu consola de Firebase.\n\n";
+                    }
+                    errorMsg += "Detalle técnico: " + error.message;
+
+                    alert(errorMsg);
+                    btnGoogleLogin.innerHTML = '<i class="fa-brands fa-google"></i> Continuar con Google';
+                });
+        });
+
+        userProfileBtn.addEventListener('click', () => {
+            if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                window.firebaseSignOut(window.firebaseAuth);
+            }
+        });
+    };
+
+    // --- Utilities ---
+    const formatCurrency = (amount) => {
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD'
+        }).format(amount);
+    };
+
+    const showToast = (message) => {
+        toast.querySelector('.toast-message').textContent = message;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+    };
+
+    // --- Chart ---
+    const initChart = () => {
+        const ctx = chartCanvas.getContext('2d');
+        Chart.defaults.color = 'var(--text-muted)';
+        Chart.defaults.font.family = 'Inter';
+
+        methodsChartInstance = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Efectivo', 'Tarjeta', 'Transferencia', 'Cripto'],
+                datasets: [{
+                    data: [0, 0, 0, 0],
+                    backgroundColor: [
+                        '#00b894', // Success (Cash)
+                        '#6c5ce7', // Primary (Card)
+                        '#fdcb6e', // Warning (Transfer)
+                        '#d63031'  // Danger (Crypto)
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            color: isDarkMode ? '#8d93aa' : '#636e72',
+                            padding: 15,
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    }
+                },
+                cutout: '70%'
+            }
+        });
+    };
+
+    const updateChart = () => {
+        const dataMap = { 'Efectivo': 0, 'Tarjeta': 0, 'Transferencia': 0, 'Cripto': 0 };
+        sales.forEach(sale => {
+            if (sale.type !== 'expense') {
+                if (dataMap[sale.method] !== undefined) {
+                    dataMap[sale.method] += sale.amount;
+                }
+            }
+        });
+
+        methodsChartInstance.data.datasets[0].data = [
+            dataMap['Efectivo'],
+            dataMap['Tarjeta'],
+            dataMap['Transferencia'],
+            dataMap['Cripto']
+        ];
+
+        methodsChartInstance.update();
+    };
+
+    // --- KPIs ---
+    const updateKPIs = () => {
+        let totalRevenue = 0;
+        let totalExpenses = 0;
+        let totalSalesCount = 0;
+
+        sales.forEach(sale => {
+            if (sale.type === 'expense') {
+                totalExpenses += sale.amount;
+            } else {
+                totalRevenue += sale.amount;
+                totalSalesCount++;
+            }
+        });
+
+        const netBalance = totalRevenue - totalExpenses;
+
+        kpiRevenue.textContent = formatCurrency(totalRevenue);
+        kpiSalesCount.textContent = totalSalesCount;
+        kpiExpenses.textContent = formatCurrency(totalExpenses);
+        kpiBalance.textContent = formatCurrency(netBalance);
+
+        if (netBalance < 0) {
+            kpiBalance.style.color = 'var(--danger)';
+        } else {
+            kpiBalance.style.color = '';
+        }
+
+        // Update Goal UI using only revenue
+        const progressNum = Math.min((totalRevenue / dailyGoal) * 100, 100);
+        goalText.textContent = `${formatCurrency(totalRevenue)} / ${formatCurrency(dailyGoal)}`;
+        goalPercentage.textContent = `${progressNum.toFixed(1)}%`;
+        goalProgressBar.style.width = `${progressNum}%`;
+
+        if (progressNum >= 100) {
+            goalProgressBar.style.background = 'var(--success)';
+            goalPercentage.style.background = 'var(--success)';
+            goalPercentage.style.color = 'white';
+        } else {
+            goalProgressBar.style.background = 'linear-gradient(90deg, var(--primary), var(--success))';
+            goalPercentage.style.background = 'var(--primary-light)';
+            goalPercentage.style.color = 'var(--primary)';
+        }
+
+        updateChart();
+
+        // Animation for numbers
+        const elements = [kpiRevenue, kpiSalesCount, kpiExpenses, kpiBalance];
+        elements.forEach(el => {
+            el.style.transform = 'scale(1.1)';
+            setTimeout(() => el.style.transform = 'scale(1)', 300);
+        });
+    };
+
+    // --- Sales Rendering ---
+    const renderSales = () => {
+        salesBody.innerHTML = '';
+
+        if (sales.length === 0) {
+            emptyState.classList.add('active');
+            document.querySelector('.table-container').style.display = 'none';
+        } else {
+            emptyState.classList.remove('active');
+            document.querySelector('.table-container').style.display = 'block';
+
+            const query = searchSalesInput.value.toLowerCase().trim();
+            const filteredSales = sales.filter(s => s.product.toLowerCase().includes(query));
+
+            // Order newest first
+            const sortedSales = [...filteredSales].sort((a, b) => b.timestamp - a.timestamp);
+
+            sortedSales.forEach(sale => {
+                const tr = document.createElement('tr');
+
+                const timeStr = new Date(sale.timestamp).toLocaleTimeString('es-ES', {
+                    hour: '2-digit', minute: '2-digit'
+                });
+
+                const isExpense = sale.type === 'expense';
+                const typeText = isExpense ? '<span style="color:var(--danger); font-size:0.8rem;"><i class="fa-solid fa-arrow-down"></i> Gasto</span>' : '<span style="color:var(--success); font-size:0.8rem;"><i class="fa-solid fa-arrow-up"></i> Ingreso</span>';
+                const sign = isExpense ? '-' : '+';
+                const amountColor = isExpense ? 'var(--danger)' : 'var(--text-main)';
+
+                tr.innerHTML = `
+                    <td>${timeStr}</td>
+                    <td><strong>${sale.product}</strong></td>
+                    <td>${typeText}</td>
+                    <td><span class="badge" style="background:var(--primary-light); color:var(--primary);">${sale.method}</span></td>
+                    <td style="color: ${amountColor}; font-weight: bold;">${sign}${formatCurrency(sale.amount)}</td>
+                    <td style="text-align: right;">
+                        <button class="btn-icon btn-delete-sale" data-id="${sale.id}" title="Eliminar Transacción" style="color: var(--danger); opacity: 0.7;">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                salesBody.appendChild(tr);
+            });
+
+            // Delete specific sale listeners
+            document.querySelectorAll('.btn-delete-sale').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const idToRemove = parseInt(e.currentTarget.getAttribute('data-id'));
+                    if (confirm('¿Estás seguro de que deseas eliminar este movimiento individual?')) {
+                        sales = sales.filter(s => s.id !== idToRemove);
+                        localStorage.setItem('dailySales', JSON.stringify(sales));
+                        renderSales();
+                        updateKPIs();
+                        showToast('Transacción eliminada correctamente.');
+                    }
+                });
+            });
+        }
+    };
+
+    // --- Search Logic ---
+    searchSalesInput.addEventListener('input', renderSales);
+
+    // --- Event Listeners ---
+    quickAmountBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const val = parseFloat(btn.getAttribute('data-amount'));
+            const currentVal = parseFloat(amountInput.value) || 0;
+            // Depending on logic, this could replace or add. We will replace to make it fast.
+            amountInput.value = val.toFixed(2);
+            amountInput.parentElement.style.transform = 'scale(1.05)';
+            setTimeout(() => amountInput.parentElement.style.transform = 'scale(1)', 200);
+        });
+    });
+
+    saleForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const product = productInput.value.trim();
+        const amount = parseFloat(amountInput.value);
+        const method = methodSelect.value;
+
+        if (!product || isNaN(amount) || amount <= 0) {
+            alert('Por favor, ingresa datos válidos para la venta.');
+            return;
+        }
+
+        const newSale = {
+            id: Date.now(),
+            timestamp: Date.now(),
+            product,
+            amount,
+            method,
+            type: currentTransactionType
+        };
+
+        sales.push(newSale);
+        localStorage.setItem('dailySales', JSON.stringify(sales));
+
+        // Save for autocomplete
+        if (!recentProducts.includes(product)) {
+            recentProducts.unshift(product);
+            if (recentProducts.length > 20) recentProducts.pop(); // Keep top 20
+            localStorage.setItem('recentProducts', JSON.stringify(recentProducts));
+            setupAutocomplete();
+        }
+
+        // Reset Form
+        productInput.value = '';
+        amountInput.value = '5.00';
+        productInput.focus();
+
+        // Update UI
+        renderSales();
+        updateKPIs();
+        showToast('Venta de ' + formatCurrency(amount) + ' registrada!');
+    });
+
+    clearSalesBtn.addEventListener('click', () => {
+        if (sales.length === 0) return;
+        if (confirm('¿Estás seguro de que deseas limpiar todo el historial de ventas del día? Esta acción no se puede deshacer.')) {
+            sales = [];
+            localStorage.setItem('dailySales', JSON.stringify(sales));
+            renderSales();
+            updateKPIs();
+            showToast('Historial limpiado correctamente.');
+        }
+    });
+
+    // --- Goal Modal Config ---
+    editGoalBtn.addEventListener('click', () => {
+        newGoalInput.value = dailyGoal;
+        goalModal.classList.add('active');
+    });
+
+    closeModalBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            goalModal.classList.remove('active');
+            closeRegisterModal.classList.remove('active');
+            calculatorModal.classList.remove('active');
+        });
+    });
+
+    saveGoalBtn.addEventListener('click', () => {
+        const val = parseFloat(newGoalInput.value);
+        if (!isNaN(val) && val > 0) {
+            dailyGoal = val;
+            localStorage.setItem('dailyGoal', dailyGoal);
+            updateKPIs();
+            goalModal.classList.remove('active');
+            showToast('Meta diaria actualizada');
+        } else {
+            alert('Ingresa una meta válida');
+        }
+    });
+
+    // --- Calculator Logic ---
+    btnCalculator.addEventListener('click', () => {
+        const amount = parseFloat(amountInput.value) || 0;
+        calcTotalInput.value = amount.toFixed(2);
+        calcReceivedInput.value = '';
+        calcChangeDisplay.textContent = '$0.00';
+        calcChangeDisplay.style.color = 'var(--primary)';
+        calculatorModal.classList.add('active');
+
+        setTimeout(() => calcReceivedInput.focus(), 100);
+    });
+
+    calcReceivedInput.addEventListener('input', () => {
+        const total = parseFloat(calcTotalInput.value) || 0;
+        const received = parseFloat(calcReceivedInput.value) || 0;
+        const change = received - total;
+
+        if (received === 0 || isNaN(received)) {
+            calcChangeDisplay.textContent = '$0.00';
+            calcChangeDisplay.style.color = 'var(--text-muted)';
+        } else if (change >= 0) {
+            calcChangeDisplay.textContent = formatCurrency(change);
+            calcChangeDisplay.style.color = 'var(--success)';
+        } else {
+            calcChangeDisplay.textContent = 'Monto insuficiente';
+            calcChangeDisplay.style.color = 'var(--danger)';
+        }
+    });
+
+    // --- Close Register Logic ---
+    btnCloseRegister.addEventListener('click', () => {
+        if (sales.length === 0) {
+            alert('No hay movimientos registrados para hacer un cierre de caja.');
+            return;
+        }
+
+        const incomeMap = { 'Efectivo': 0, 'Tarjeta': 0, 'Transferencia': 0, 'Cripto': 0 };
+        let totalIncome = 0;
+        let totalExpense = 0;
+
+        sales.forEach(s => {
+            if (s.type === 'expense') {
+                totalExpense += s.amount;
+            } else {
+                incomeMap[s.method] += s.amount;
+                totalIncome += s.amount;
+            }
+        });
+
+        let summaryHtml = Object.entries(incomeMap)
+            .map(([method, amount]) => `
+                <div class="summary-item">
+                    <span>${method} (Ingreso)</span>
+                    <strong style="color: var(--success);">${formatCurrency(amount)}</strong>
+                </div>
+            `).join('');
+
+        summaryHtml += `
+            <div class="summary-item" style="border-color: var(--danger);">
+                <span>Total Gastos</span>
+                <strong style="color: var(--danger);">-${formatCurrency(totalExpense)}</strong>
+            </div>
+            <div class="summary-item" style="background: var(--primary-light);">
+                <span>Neto</span>
+                <strong style="color: var(--primary);">${formatCurrency(totalIncome - totalExpense)}</strong>
+            </div>
+        `;
+
+        closeSummaryGrid.innerHTML = summaryHtml;
+        closeTotalDay.textContent = formatCurrency(totalIncome - totalExpense);
+
+        closeRegisterModal.classList.add('active');
+    });
+
+    btnConfirmClose.addEventListener('click', () => {
+        // Here you could save to a backend, push to a history array, etc.
+        sales = [];
+        localStorage.setItem('dailySales', JSON.stringify(sales));
+        renderSales();
+        updateKPIs();
+        closeRegisterModal.classList.remove('active');
+        showToast('Cierre de caja completado con éxito!');
+    });
+
+    // --- Export CSV ---
+    document.getElementById('export-csv').addEventListener('click', () => {
+        if (sales.length === 0) {
+            showToast('No hay datos para exportar');
+            return;
+        }
+
+        let csvContent = "Fecha,Hora,Descripción,Tipo,Método,Monto\n";
+
+        sales.forEach(sale => {
+            const d = new Date(sale.timestamp);
+            const dateStr = d.toLocaleDateString('es-ES');
+            const timeStr = d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+            const desc = `"${sale.product.replace(/"/g, '""')}"`;
+            const typeText = sale.type === 'expense' ? 'Gasto' : 'Ingreso';
+            const amountWithSign = sale.type === 'expense' ? -sale.amount : sale.amount;
+
+            csvContent += `${dateStr},${timeStr},${desc},${typeText},${sale.method},${amountWithSign.toFixed(2)}\n`;
+        });
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", `ventas_${new Date().toLocaleDateString('es-ES').replace(/\//g, '-')}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showToast('Archivo CSV descargado');
+    });
+
+    // --- Autocomplete Logic ---
+    const setupAutocomplete = () => {
+        let datalist = document.getElementById('products-datalist');
+        if (!datalist) {
+            datalist = document.createElement('datalist');
+            datalist.id = 'products-datalist';
+            document.body.appendChild(datalist);
+            productInput.setAttribute('list', 'products-datalist');
+        }
+
+        datalist.innerHTML = '';
+        recentProducts.forEach(prod => {
+            const option = document.createElement('option');
+            option.value = prod;
+            datalist.appendChild(option);
+        });
+    };
+
+    // Run app
+    init();
+});
