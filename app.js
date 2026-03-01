@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Auth Elements
     const authScreen = document.getElementById('auth-screen');
+    const trialScreen = document.getElementById('trial-screen');
     const mainApp = document.getElementById('main-app');
     const btnGoogleLogin = document.getElementById('btn-google-login');
     const userProfileBtn = document.getElementById('user-profile-btn');
@@ -180,13 +181,49 @@ document.addEventListener('DOMContentLoaded', () => {
             if (user) {
                 // Logged in
                 authScreen.style.display = 'none';
-                mainApp.style.display = 'flex';
-                userAvatar.src = user.photoURL || "https://ui-avatars.com/api/?name=Admin&background=0D8ABC&color=fff";
-                showToast(`Bienvenid@, ${user.displayName.split(' ')[0]}`);
-                // Future step: Load 'sales' from Firestore here based on user.uid
+
+                // Trial Logic
+                const creationTime = new Date(user.metadata.creationTime).getTime();
+                const currentTime = new Date().getTime();
+                const daysElapsed = Math.floor((currentTime - creationTime) / (1000 * 60 * 60 * 24));
+                const daysLeft = 30 - daysElapsed;
+
+                const trialTitle = document.getElementById('trial-title');
+                const trialText = document.getElementById('trial-text');
+                const btnContinueTrial = document.getElementById('btn-continue-trial');
+
+                trialScreen.style.display = 'flex'; // Interceptor on!
+
+                if (daysLeft > 0) {
+                    trialTitle.innerText = "¡Suscripción / Prueba!";
+                    trialTitle.style.color = "white";
+                    trialText.innerHTML = `Tienes <strong>${daysLeft} días</strong> restantes de prueba gratuita en tu cuenta de Google. Adquiere tu licencia Mensual para uso continuo.`;
+                    btnContinueTrial.style.display = 'inline-flex';
+                } else {
+                    trialTitle.innerText = "Prueba Expirada";
+                    trialTitle.style.color = "var(--danger)";
+                    trialText.innerHTML = `Tu prueba gratuita ha terminado. Para seguir usando tu Panel de Ventas, debes adquirir la licencia mensual por $3.500 ARS.`;
+                    btnContinueTrial.style.display = 'none'; // Lock the app!
+                }
+
+                // Proceed to App only if allowed
+                btnContinueTrial.onclick = () => {
+                    trialScreen.style.display = 'none';
+                    mainApp.style.display = 'flex';
+                    userAvatar.src = user.photoURL || "https://ui-avatars.com/api/?name=Admin&background=0D8ABC&color=fff";
+                    showToast(`Bienvenid@, ${user.displayName.split(' ')[0]}`);
+                };
+
+                // Logout from interceptor
+                document.getElementById('logout-trial').onclick = (e) => {
+                    e.preventDefault();
+                    window.firebaseSignOut(window.firebaseAuth);
+                };
+
             } else {
                 // Logged out
                 mainApp.style.display = 'none';
+                if (trialScreen) trialScreen.style.display = 'none';
                 authScreen.style.display = 'flex';
             }
         });

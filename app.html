@@ -60,6 +60,31 @@
             <p class="auth-note"><i class="fa-solid fa-shield-halved"></i> Acceso seguro y cifrado</p>
         </div>
     </div>
+
+    <!-- Trial & Payment Interceptor -->
+    <div id="trial-screen" class="auth-container" style="display: none;">
+        <div class="auth-card card" style="max-width: 480px;">
+            <div class="brand auth-brand">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-crown"></i>
+                </div>
+                <h2 id="trial-title">Suscripción</h2>
+            </div>
+            <p class="auth-subtitle" id="trial-text" style="margin-bottom: 2rem;">Cargando estado de tu licencia...</p>
+
+            <a href="https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=364f23117bc8491684999f541af2eb09"
+                target="_blank" id="btn-pay-stripe" class="btn btn-primary btn-block auth-btn"
+                style="margin-bottom: 1rem; background-color: #009EE3; color: white;">
+                <i class="fa-solid fa-handshake"></i> Pagar Suscripción - $3.500 ARS al Mes
+            </a>
+
+            <button id="btn-continue-trial" class="btn btn-outline btn-block">
+                Entrar a la Aplicación <i class="fa-solid fa-arrow-right"></i>
+            </button>
+            <p class="auth-note"><a href="#" id="logout-trial" style="color:var(--text-muted);"><i
+                        class="fa-solid fa-right-from-bracket"></i> Cambiar de cuenta</a></p>
+        </div>
+    </div>
     <div class="app-container" id="main-app" style="display: none;">
         <!-- Sidebar -->
         <aside class="sidebar">
@@ -93,8 +118,8 @@
                 <div class="license-info">
                     <i class="fa-solid fa-crown"></i>
                     <div class="license-text">
-                        <p class="plan">Licencia Anual</p>
-                        <p class="price">Valor: $10.00 USD</p>
+                        <p class="plan">Licencia Mensual</p>
+                        <p class="price">Valor: $3.500 ARS/mes</p>
                     </div>
                 </div>
             </div>
