@@ -113,6 +113,15 @@
                 </a>
             </nav>
 
+            <!-- Caja Status -->
+            <div class="sidebar-caja-status" id="sidebar-caja-status">
+                <div class="caja-status-dot" id="caja-status-dot"></div>
+                <div class="caja-status-text">
+                    <span id="caja-status-label">Caja Abierta</span>
+                    <span id="session-timer" class="session-timer-sm">00:00:00</span>
+                </div>
+            </div>
+
             <div class="sidebar-footer">
                 <div class="license-info">
                     <i class="fa-solid fa-crown"></i>
@@ -195,7 +204,7 @@
                     </div>
 
                     <!-- Goal & Chart (new row) -->
-                    <div class="charts-row" style="grid-template-columns: 1fr 1fr 1fr;">
+                    <div class="charts-row" style="grid-template-columns: 1fr 1fr 1fr 1fr;">
                         <div class="card goal-card">
                             <div class="card-header">
                                 <h2>Meta Diaria</h2>
@@ -221,6 +230,17 @@
                                 <span class="streak-label">días seguidos<br>con ventas</span>
                             </div>
                             <p class="goal-subtitle" id="streak-subtitle">¡Registra una venta hoy para comenzar!</p>
+                        </div>
+                        <!-- Top Product Widget -->
+                        <div class="card top-product-card">
+                            <div class="card-header">
+                                <h2>🏆 Top Hoy</h2>
+                            </div>
+                            <div id="top-product-content" class="top-product-content">
+                                <p class="top-product-name" id="top-product-name">Sin datos</p>
+                                <p class="top-product-amount" id="top-product-amount">$0.00</p>
+                                <span class="top-product-count" id="top-product-count">0 ventas</span>
+                            </div>
                         </div>
                         <div class="card chart-card">
                             <div class="card-header">
@@ -564,6 +584,42 @@
                             <button class="btn btn-outline" id="btn-save-config-goal">Actualizar Meta</button>
                         </div>
 
+                        <!-- Alert Threshold -->
+                        <div
+                            style="margin-bottom: 2rem; padding: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+                            <h3 style="margin-bottom: 1rem; color: var(--text-main);"><i class="fa-solid fa-bell"
+                                    style="margin-right: 0.5rem; color: var(--warning);"></i>Alerta de Venta Grande</h3>
+                            <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">Recibe una
+                                notificación especial cuando una venta supere este monto. (0 = desactivado)</p>
+                            <div class="form-group" style="margin-bottom: 1rem;">
+                                <label for="config-alert-threshold">Monto de Alerta (ARS)</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-dollar-sign"></i>
+                                    <input type="number" id="config-alert-threshold" step="0.01" min="0"
+                                        placeholder="Ej: 50000">
+                                </div>
+                            </div>
+                            <button class="btn btn-outline" id="btn-save-alert-threshold">Guardar Alerta</button>
+                        </div>
+
+                        <!-- Currency Converter Config -->
+                        <div
+                            style="margin-bottom: 2rem; padding: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+                            <h3 style="margin-bottom: 1rem; color: var(--text-main);"><i class="fa-solid fa-coins"
+                                    style="margin-right: 0.5rem; color: var(--success);"></i>Tipo de Cambio USD</h3>
+                            <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">Ingresa el tipo
+                                de cambio USD → ARS para usar la calculadora de conversión.</p>
+                            <div class="form-group" style="margin-bottom: 1rem;">
+                                <label for="config-exchange-rate">1 USD = X ARS</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                                    <input type="number" id="config-exchange-rate" step="0.01" min="1"
+                                        placeholder="Ej: 1200">
+                                </div>
+                            </div>
+                            <button class="btn btn-outline" id="btn-save-exchange-rate">Guardar Tipo de Cambio</button>
+                        </div>
+
                         <!-- Security and Data -->
                         <div
                             style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: rgba(231,76,60,0.02);">
@@ -784,9 +840,54 @@
         </div>
     </div>
 
+    <!-- Currency Converter Modal -->
+    <div id="converter-modal" class="modal-overlay">
+        <div class="modal" style="max-width:380px;">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-coins" style="color:var(--success);margin-right:.5rem;"></i>Conversor ARS /
+                    USD</h2>
+                <button class="btn-icon close-modal-close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:1rem;">Tipo de cambio: <strong
+                        id="conv-rate-display">1 USD = $1200 ARS</strong></p>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                    <div class="form-group" style="margin:0;">
+                        <label for="conv-ars">Monto en ARS</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-dollar-sign"></i>
+                            <input type="number" id="conv-ars" step="0.01" min="0" placeholder="Ej: 50000">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin:0;">
+                        <label for="conv-usd">Monto en USD</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-dollar-sign"></i>
+                            <input type="number" id="conv-usd" step="0.01" min="0" placeholder="Ej: 41.67">
+                        </div>
+                    </div>
+                </div>
+                <div class="total-highlight" style="margin-top:1.2rem; margin-bottom:0;">
+                    <span id="conv-result-label">USD equivalente</span>
+                    <strong id="conv-result" style="color:var(--success);">$0.00</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Confetti Canvas -->
     <canvas id="confetti-canvas"
         style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;"></canvas>
+
+    <!-- Floating Quick-Add Button -->
+    <button id="fab-quick-add" class="fab-btn" title="Agregar venta rápida">
+        <i class="fa-solid fa-plus"></i>
+    </button>
+
+    <!-- Floating Currency Button -->
+    <button id="fab-converter" class="fab-btn fab-btn-secondary" title="Conversor de moneda">
+        <i class="fa-solid fa-coins"></i>
+    </button>
 
     <!-- Script for Logic -->
     <script src="app.js"></script>
