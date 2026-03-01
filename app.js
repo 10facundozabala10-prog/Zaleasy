@@ -57,8 +57,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // View Elements
     const viewDashboard = document.getElementById('view-dashboard');
+    const viewHistorial = document.getElementById('view-historial');
     const viewComingSoon = document.getElementById('view-coming-soon');
     const comingSoonTitle = document.getElementById('coming-soon-title');
+
+    // History Elements
+    const historyBody = document.getElementById('history-body');
+    const historySearch = document.getElementById('history-search');
+    const historyDateFilter = document.getElementById('history-date-filter');
+    const historyEmptyState = document.getElementById('history-empty-state');
+    const historyExportCsv = document.getElementById('history-export-csv');
+    const historyClearAll = document.getElementById('history-clear-all');
 
     // Navigation Links
     const navDashboard = document.getElementById('nav-dashboard');
@@ -69,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- State ---
     let sales = JSON.parse(localStorage.getItem('dailySales')) || [];
+    let historyData = JSON.parse(localStorage.getItem('allHistoryData')) || []; // Full history
     let isDarkMode = localStorage.getItem('theme') !== 'light';
     let dailyGoal = parseFloat(localStorage.getItem('dailyGoal')) || 100.00;
     let recentProducts = JSON.parse(localStorage.getItem('recentProducts')) || [];
@@ -124,9 +134,16 @@ document.addEventListener('DOMContentLoaded', () => {
         // Toggle Views
         if (targetId === 'nav-dashboard') {
             viewDashboard.style.display = 'block';
+            viewHistorial.style.display = 'none';
             viewComingSoon.style.display = 'none';
+        } else if (targetId === 'nav-historial') {
+            viewDashboard.style.display = 'none';
+            viewHistorial.style.display = 'block';
+            viewComingSoon.style.display = 'none';
+            renderHistory(); // Render immediately when opened
         } else {
             viewDashboard.style.display = 'none';
+            viewHistorial.style.display = 'none';
             viewComingSoon.style.display = 'block';
             comingSoonTitle.innerText = title;
         }
@@ -480,6 +497,122 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Search Logic ---
     searchSalesInput.addEventListener('input', renderSales);
 
+    // --- History Logic & Rendering ---
+    const renderHistory = () => {
+        historyBody.innerHTML = '';
+
+        let filteredHistory = [...historyData];
+
+        const dateQuery = historyDateFilter.value; // YYYY-MM-DD
+        if (dateQuery) {
+            filteredHistory = filteredHistory.filter(s => {
+                const saleDate = new Date(s.timestamp).toISOString().split('T')[0];
+                return saleDate === dateQuery;
+            });
+        }
+
+        const textQuery = historySearch.value.toLowerCase().trim();
+        if (textQuery) {
+            filteredHistory = filteredHistory.filter(s =>
+                s.product.toLowerCase().includes(textQuery) ||
+                s.method.toLowerCase().includes(textQuery) ||
+                (s.type === 'expense' ? 'gasto' : 'ingreso').includes(textQuery)
+            );
+        }
+
+        if (filteredHistory.length === 0) {
+            historyEmptyState.classList.add('active');
+            document.querySelector('#view-historial .table-container').style.display = 'none';
+        } else {
+            historyEmptyState.classList.remove('active');
+            document.querySelector('#view-historial .table-container').style.display = 'block';
+
+            // Order newest first
+            const sortedHistory = filteredHistory.sort((a, b) => b.timestamp - a.timestamp);
+
+            sortedHistory.forEach(sale => {
+                const tr = document.createElement('tr');
+                const d = new Date(sale.timestamp);
+                const dateStr = d.toLocaleDateString('es-ES') + ' ' + d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+
+                const isExpense = sale.type === 'expense';
+                const typeText = isExpense ? '<span style="color:var(--danger); font-size:0.8rem;"><i class="fa-solid fa-arrow-down"></i> Gasto</span>' : '<span style="color:var(--success); font-size:0.8rem;"><i class="fa-solid fa-arrow-up"></i> Ingreso</span>';
+                const sign = isExpense ? '-' : '+';
+                const amountColor = isExpense ? 'var(--danger)' : 'var(--text-main)';
+
+                tr.innerHTML = `
+                    <td>${dateStr}</td>
+                    <td><strong>${sale.product}</strong></td>
+                    <td>${typeText}</td>
+                    <td><span class="badge" style="background:var(--primary-light); color:var(--primary);">${sale.method}</span></td>
+                    <td style="color: ${amountColor}; font-weight: bold;">${sign}${formatCurrency(sale.amount)}</td>
+                    <td style="text-align: right;">
+                        <button class="btn-icon btn-delete-history" data-id="${sale.id}" title="Eliminar Permanente" style="color: var(--danger); opacity: 0.7;">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                historyBody.appendChild(tr);
+            });
+
+            // Delete History listeners
+            document.querySelectorAll('.btn-delete-history').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const idToRemove = parseInt(e.currentTarget.getAttribute('data-id'));
+                    if (confirm('¿Estás SEGURO de eliminar este registro del historial general?')) {
+                        historyData = historyData.filter(h => h.id !== idToRemove);
+                        localStorage.setItem('allHistoryData', JSON.stringify(historyData));
+                        renderHistory();
+                        showToast('Registro eliminado del historial.');
+                    }
+                });
+            });
+        }
+    };
+
+    historySearch.addEventListener('input', renderHistory);
+    historyDateFilter.addEventListener('change', renderHistory);
+
+    historyClearAll.addEventListener('click', () => {
+        if (historyData.length === 0) return;
+        if (confirm('ALERTA: Vas a limpiar absolutamente TODO EL HISTORIAL MUNDIAL. Esta acción no se puede recuperar nunca. ¿Continuar?')) {
+            historyData = [];
+            localStorage.setItem('allHistoryData', JSON.stringify(historyData));
+            renderHistory();
+            showToast('Historial general purgado.');
+        }
+    });
+
+    historyExportCsv.addEventListener('click', () => {
+        if (historyData.length === 0) {
+            showToast('No hay historial para exportar');
+            return;
+        }
+
+        let csvContent = "Fecha,Hora,Descripción,Tipo,Método,Monto\n";
+        historyData.forEach(sale => {
+            const d = new Date(sale.timestamp);
+            const dateStr = d.toLocaleDateString('es-ES');
+            const timeStr = d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+            const desc = `"${sale.product.replace(/"/g, '""')}"`;
+            const typeText = sale.type === 'expense' ? 'Gasto' : 'Ingreso';
+            const amountWithSign = sale.type === 'expense' ? -sale.amount : sale.amount;
+
+            csvContent += `${dateStr},${timeStr},${desc},${typeText},${sale.method},${amountWithSign.toFixed(2)}\n`;
+        });
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", `historial_global_zaleasy_${new Date().toLocaleDateString('es-ES').replace(/\//g, '-')}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showToast('Exportación Global Descargada');
+    });
+
     // --- Event Listeners ---
     quickAmountBtns.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -648,7 +781,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     btnConfirmClose.addEventListener('click', () => {
-        // Here you could save to a backend, push to a history array, etc.
+        // Guardar las ventas de "hoy" dentro del historial completo histórico antes de borrarlas
+        sales.forEach(s => {
+            historyData.push(s);
+        });
+        localStorage.setItem('allHistoryData', JSON.stringify(historyData));
+
+        // Limpiar "Dashboard Diario"
         sales = [];
         localStorage.setItem('dailySales', JSON.stringify(sales));
         renderSales();

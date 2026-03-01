@@ -322,7 +322,54 @@
                 </div>
             </div>
 
-            <!-- Coming Soon Placeholder -->
+            <!-- History View -->
+            <div id="view-historial" class="dashboard-wrapper" style="display: none;">
+                <div class="card list-section" style="min-height: 70vh;">
+                    <div class="card-header">
+                        <h2>Historial Completo</h2>
+                        <div class="header-actions">
+                            <input type="date" id="history-date-filter" class="form-control"
+                                style="background: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius-sm); padding: 0.5rem; display: inline-block; width: auto; margin-right: 1rem;">
+                            <button class="btn-icon" id="history-export-csv" title="Exportar CSV">
+                                <i class="fa-solid fa-download"></i>
+                            </button>
+                            <button class="btn-icon" id="history-clear-all" title="Limpiar Todo el Historial">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="search-container">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="history-search" placeholder="Buscar por producto, método o tipo...">
+                    </div>
+                    <div class="table-container">
+                        <table class="sales-table">
+                            <thead>
+                                <tr>
+                                    <th>Fecha y Hora</th>
+                                    <th>Descripción</th>
+                                    <th>Tipo</th>
+                                    <th>Método</th>
+                                    <th>Monto</th>
+                                    <th style="text-align: right;">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-body">
+                                <!-- History rows will be dynamically inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="empty-state" id="history-empty-state">
+                        <div class="empty-icon">
+                            <i class="fa-solid fa-box-open"></i>
+                        </div>
+                        <p>No hay registros históricos.</p>
+                        <span>Tus ventas y gastos pasados aparecerán aquí después de los cierres de caja.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coming Soon Placeholder (For other views) -->
             <div id="view-coming-soon" class="dashboard-wrapper" style="display: none;">
                 <div class="card" style="text-align: center; padding: 5rem 2rem;">
                     <i class="fa-solid fa-person-digging"
