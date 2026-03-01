@@ -129,7 +129,10 @@
             <header class="top-header">
                 <div class="header-left">
                     <h1 id="dynamic-greeting">Dashboard de Ventas</h1>
-                    <p id="current-date">Cargando fecha...</p>
+                    <div style="display:flex; align-items:center; gap:1rem;">
+                        <p id="current-date">Cargando fecha...</p>
+                        <span id="live-clock" class="live-clock"></span>
+                    </div>
                 </div>
                 <div class="header-right">
                     <button class="btn btn-outline btn-close-register" id="btn-close-register">
@@ -227,6 +230,20 @@
                                 <canvas id="methodsChart"></canvas>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Notepad Widget (full-width row) -->
+                    <div class="card notepad-card" style="grid-column: 1 / -1;">
+                        <div class="card-header" style="margin-bottom:.8rem;">
+                            <h2><i class="fa-solid fa-pen-clip"
+                                    style="color:var(--warning);margin-right:.4rem;"></i>Notas del Día</h2>
+                            <span id="notepad-saved-indicator"
+                                style="font-size:.75rem; color:var(--success); opacity:0; transition:opacity .5s;"><i
+                                    class="fa-solid fa-check"></i> Guardado</span>
+                        </div>
+                        <textarea id="day-notepad"
+                            placeholder="Anota recordatorios, pendientes o cualquier cosa del día..." rows="3"
+                            style="width:100%; resize:vertical; background:var(--bg-hover); border:1px solid var(--border-color); border-radius:var(--radius-sm); color:var(--text-main); font-family:inherit; font-size:.92rem; padding:.8rem 1rem; outline:none; line-height:1.6; transition:border-color .2s;"></textarea>
                     </div>
 
                     <!-- Add Sale Form -->
@@ -334,6 +351,18 @@
                         <div class="search-container">
                             <i class="fa-solid fa-magnifying-glass"></i>
                             <input type="text" id="search-sales" placeholder="Buscar por descripción...">
+                        </div>
+                        <!-- Category Filter Pills -->
+                        <div id="category-filters" class="category-filter-row">
+                            <button class="cat-pill active" data-cat="">Todas</button>
+                            <button class="cat-pill" data-cat="Producto">📦 Producto</button>
+                            <button class="cat-pill" data-cat="Servicio">⚙️ Servicio</button>
+                            <button class="cat-pill" data-cat="Suscripción">🔄 Suscripción</button>
+                            <button class="cat-pill" data-cat="Consultoría">💼 Consultoría</button>
+                            <button class="cat-pill" data-cat="Alquiler">🏠 Alquiler</button>
+                            <button class="cat-pill" data-cat="Marketing">📣 Marketing</button>
+                            <button class="cat-pill" data-cat="Insumos">🛒 Insumos</button>
+                            <button class="cat-pill" data-cat="Otros">🔖 Otros</button>
                         </div>
                         <div class="table-container">
                             <table class="sales-table">

@@ -898,7 +898,65 @@ select:focus {
     flex: 1;
 }
 
+/* --- Live Clock --- */
+.live-clock {
+    font-size: 1rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--primary);
+    background: var(--primary-light);
+    padding: .2rem .75rem;
+    border-radius: 20px;
+    letter-spacing: .05em;
+    white-space: nowrap;
+}
+
+/* --- Day Notepad --- */
+.notepad-card textarea:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px var(--primary-light) !important;
+}
+
+/* --- Category Filter Pills --- */
+.category-filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .45rem;
+    padding: .6rem 0 .8rem;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: .5rem;
+}
+
+.cat-pill {
+    padding: .3rem .8rem;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-muted);
+    font-size: .78rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .18s ease;
+    font-family: inherit;
+    white-space: nowrap;
+}
+
+.cat-pill:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--primary-light);
+}
+
+.cat-pill.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    font-weight: 600;
+    box-shadow: 0 2px 8px var(--primary-light);
+}
+
 .streak-number {
+
     font-size: 3.5rem;
     font-weight: 800;
     background: linear-gradient(135deg, var(--warning), #e17055);

@@ -108,7 +108,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let recentProducts = JSON.parse(localStorage.getItem('recentProducts')) || [];
     let methodsChartInstance = null;
     let currentTransactionType = 'income';
-    let goalReachedNotified = false; // Track if confetti already fired this session
+    let goalReachedNotified = false;
+    let activeCategoryFilter = ''; // for sales table category pill filter
 
     // Type Toggle Elements
     const btnTypeIncome = document.getElementById('btn-type-income');
@@ -382,6 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const init = () => {
         document.getElementById('sidebar-brand-name').innerText = storeName;
         setupDate();
+        setupLiveClock();
         setupTheme();
         initChart();
         renderSales();
@@ -392,6 +394,8 @@ document.addEventListener('DOMContentLoaded', () => {
         setupStreakWidget();
         setupImportBackup();
         setupEditModal();
+        setupDayNotepad();
+        setupCategoryFilters();
     };
 
     // --- Date & Greeting ---
@@ -407,6 +411,66 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             greetingEl.innerHTML = '¡Buenas noches! 🌙';
         }
+    };
+
+    // --- Live Clock ---
+    const setupLiveClock = () => {
+        const clockEl = document.getElementById('live-clock');
+        if (!clockEl) return;
+        const tick = () => {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            clockEl.textContent = `${h}:${m}:${s}`;
+        };
+        tick();
+        setInterval(tick, 1000);
+    };
+
+    // --- Day Notepad ---
+    const setupDayNotepad = () => {
+        const notepad = document.getElementById('day-notepad');
+        const savedIndicator = document.getElementById('notepad-saved-indicator');
+        if (!notepad) return;
+
+        const todayKey = `dayNotes_${new Date().toISOString().split('T')[0]}`;
+        notepad.value = localStorage.getItem(todayKey) || '';
+
+        let saveTimer;
+        notepad.addEventListener('input', () => {
+            clearTimeout(saveTimer);
+            saveTimer = setTimeout(() => {
+                localStorage.setItem(todayKey, notepad.value);
+                if (savedIndicator) {
+                    savedIndicator.style.opacity = '1';
+                    setTimeout(() => { savedIndicator.style.opacity = '0'; }, 1800);
+                }
+            }, 700);
+        });
+
+        notepad.addEventListener('focus', () => {
+            notepad.style.borderColor = 'var(--primary)';
+            notepad.style.boxShadow = '0 0 0 3px var(--primary-light)';
+        });
+        notepad.addEventListener('blur', () => {
+            notepad.style.borderColor = 'var(--border-color)';
+            notepad.style.boxShadow = 'none';
+        });
+    };
+
+    // --- Category Filter Pills ---
+    const setupCategoryFilters = () => {
+        const container = document.getElementById('category-filters');
+        if (!container) return;
+        container.querySelectorAll('.cat-pill').forEach(pill => {
+            pill.addEventListener('click', () => {
+                container.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+                pill.classList.add('active');
+                activeCategoryFilter = pill.getAttribute('data-cat');
+                renderSales();
+            });
+        });
     };
 
     // --- Theme ---
@@ -817,7 +881,12 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('.table-container').style.display = 'block';
 
             const query = searchSalesInput.value.toLowerCase().trim();
-            const filteredSales = sales.filter(s => s.product.toLowerCase().includes(query));
+            let filteredSales = sales.filter(s => s.product.toLowerCase().includes(query));
+
+            // Apply category filter
+            if (activeCategoryFilter) {
+                filteredSales = filteredSales.filter(s => (s.category || '') === activeCategoryFilter);
+            }
 
             // Order newest first
             const sortedSales = [...filteredSales].sort((a, b) => b.timestamp - a.timestamp);
