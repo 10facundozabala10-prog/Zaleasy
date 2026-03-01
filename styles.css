@@ -902,40 +902,7 @@ select:focus {
     line-height: 1.4;
 }
 
-/* --- Print Styles (Receipt) --- */
-@media print {
-    body>*:not(#receipt-modal) {
-        display: none !important;
-    }
-
-    #receipt-modal {
-        position: static !important;
-        display: block !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-        background: white !important;
-        backdrop-filter: none !important;
-    }
-
-    #receipt-modal .modal {
-        box-shadow: none !important;
-        border: none !important;
-        max-width: 100% !important;
-        transform: none !important;
-        background: white !important;
-        color: black !important;
-    }
-
-    #receipt-modal .modal-header button,
-    #receipt-modal>div:last-child {
-        display: none !important;
-    }
-
-    #receipt-modal .badge {
-        background: #eee !important;
-        color: #333 !important;
-    }
-}
+/* Print styles handled via JS popup window */
 
 /* Responsive */
 @media (max-width: 1200px) {

@@ -1040,13 +1040,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Receipt Modal Logic ---
+    let currentReceiptSale = null; // Store for printing
+
     const openReceiptModal = (sale) => {
+        currentReceiptSale = sale;
         const d = new Date(sale.timestamp);
         const dateStr = d.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
         const timeStr = d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
         const isExpense = sale.type === 'expense';
         const sign = isExpense ? '-' : '+';
-        const amountColor = isExpense ? 'var(--danger)' : 'var(--success)';
+        const amountColor = isExpense ? '#d63031' : '#00b894';
         const typeLabel = isExpense ? 'Gasto' : 'Ingreso / Venta';
 
         receiptBody.innerHTML = `
@@ -1062,7 +1065,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div style="display:flex; justify-content:space-between;">
                     <span style="color:var(--text-muted);">Método de Pago</span>
-                    <span class="badge">${sale.method}</span>
+                    <span style="background:rgba(108,92,231,0.15);color:#6c5ce7;padding:.2rem .6rem;border-radius:20px;font-size:.75rem;font-weight:600;">${sale.method}</span>
                 </div>
                 <div style="display:flex; justify-content:space-between;">
                     <span style="color:var(--text-muted);">Fecha</span>
@@ -1074,7 +1077,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 ${sale.notes ? `<div style="display:flex; justify-content:space-between; gap:1rem;">
                     <span style="color:var(--text-muted);">Notas</span>
-                    <span style="text-align:right; color:var(--text-main);">${sale.notes}</span>
+                    <span style="text-align:right;">${sale.notes}</span>
                 </div>` : ''}
                 <div style="display:flex; justify-content:space-between;">
                     <span style="color:var(--text-muted);">Negocio</span>
@@ -1088,9 +1091,173 @@ document.addEventListener('DOMContentLoaded', () => {
         receiptModal.classList.add('active');
     };
 
+    // --- Print Receipt via dedicated popup window ---
+    const printReceipt = () => {
+        if (!currentReceiptSale) return;
+        const sale = currentReceiptSale;
+        const d = new Date(sale.timestamp);
+        const dateStr = d.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        const timeStr = d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+        const isExpense = sale.type === 'expense';
+        const sign = isExpense ? '-' : '+';
+        const amountColor = isExpense ? '#d63031' : '#00b894';
+        const typeLabel = isExpense ? 'Gasto' : 'Ingreso / Venta';
+        const amountFormatted = formatCurrency(sale.amount);
+        const notesRow = sale.notes
+            ? `<tr><td style="color:#636e72;padding:.6rem 0;">Notas</td><td style="text-align:right;padding:.6rem 0;">${sale.notes}</td></tr>`
+            : '';
+
+        const printHtml = `<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Recibo - ${storeName}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #fff;
+            color: #2d3436;
+            display: flex;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .receipt {
+            width: 100%;
+            max-width: 380px;
+            border: 1px solid #dfe6e9;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .receipt-header {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+        }
+        .receipt-header .business-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: .2rem;
+        }
+        .receipt-header .receipt-type {
+            font-size: .85rem;
+            opacity: .85;
+        }
+        .receipt-amount {
+            text-align: center;
+            padding: 1.5rem;
+            border-bottom: 2px dashed #dfe6e9;
+        }
+        .receipt-amount .emoji { font-size: 2rem; margin-bottom: .5rem; }
+        .receipt-amount .amount {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: ${amountColor};
+            line-height: 1;
+        }
+        .receipt-amount .type-label {
+            font-size: .85rem;
+            color: #636e72;
+            margin-top: .3rem;
+        }
+        .receipt-body {
+            padding: 1.2rem 1.5rem;
+        }
+        .receipt-body table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .receipt-body td {
+            padding: .7rem 0;
+            font-size: .9rem;
+            border-bottom: 1px solid #f0f0f0;
+            vertical-align: top;
+        }
+        .receipt-body td:first-child {
+            color: #636e72;
+            width: 40%;
+        }
+        .receipt-body td:last-child {
+            text-align: right;
+            font-weight: 600;
+        }
+        .badge {
+            background: rgba(108,92,231,0.12);
+            color: #6c5ce7;
+            padding: .2rem .6rem;
+            border-radius: 20px;
+            font-size: .8rem;
+            font-weight: 600;
+        }
+        .receipt-footer {
+            text-align: center;
+            padding: 1rem 1.5rem;
+            border-top: 2px dashed #dfe6e9;
+            color: #b2bec3;
+            font-size: .75rem;
+        }
+        @media print {
+            body { padding: 0; }
+            .receipt { border: none; max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt">
+        <div class="receipt-header">
+            <div class="business-name">${storeName}</div>
+            <div class="receipt-type">Comprobante de Transacción</div>
+        </div>
+        <div class="receipt-amount">
+            <div class="emoji">${isExpense ? '💸' : '💰'}</div>
+            <div class="amount">${sign}${amountFormatted}</div>
+            <div class="type-label">${typeLabel}</div>
+        </div>
+        <div class="receipt-body">
+            <table>
+                <tr>
+                    <td>Descripción</td>
+                    <td>${sale.product}</td>
+                </tr>
+                <tr>
+                    <td>Método</td>
+                    <td><span class="badge">${sale.method}</span></td>
+                </tr>
+                <tr>
+                    <td>Fecha</td>
+                    <td>${dateStr}</td>
+                </tr>
+                <tr>
+                    <td>Hora</td>
+                    <td>${timeStr}</td>
+                </tr>
+                ${notesRow}
+            </table>
+        </div>
+        <div class="receipt-footer">
+            Generado por Zaleasy &bull; ID #${sale.id.toString().slice(-6)}
+        </div>
+    </div>
+    <script>
+        window.onload = () => { window.print(); window.close(); }
+    </script>
+</body>
+</html>`;
+
+        const printWin = window.open('', '_blank', 'width=460,height=650');
+        if (printWin) {
+            printWin.document.write(printHtml);
+            printWin.document.close();
+        } else {
+            alert('El navegador bloqueó la ventana emergente. Por favor, permite las ventanas emergentes para esta página e intenta de nuevo.');
+        }
+    };
+
     if (btnPrintReceipt) {
-        btnPrintReceipt.addEventListener('click', () => window.print());
+        btnPrintReceipt.addEventListener('click', printReceipt);
     }
+
 
     saveGoalBtn.addEventListener('click', () => {
         const val = parseFloat(newGoalInput.value);
