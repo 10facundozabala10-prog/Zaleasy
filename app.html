@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zaleasy | Gestión de Ventas</title>
+    <meta name="description" content="Sistema premium para la gestión y seguimiento de ventas diarias.">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Firebase SDK (Version 10) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC3jQvGOiL5JjTJHkAAE7UdyvcjodxrulU",
+            authDomain: "zaleasy.firebaseapp.com",
+            projectId: "zaleasy",
+            storageBucket: "zaleasy.firebasestorage.app",
+            messagingSenderId: "399486935842",
+            appId: "1:399486935842:web:3b925f75b6c6d184807b7b",
+            measurementId: "G-J40EPBT3FJ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+        window.firebaseAuth = auth;
+        window.firebaseProvider = provider;
+        window.firebaseSignIn = signInWithPopup;
+        window.firebaseSignOut = signOut;
+        window.firebaseOnAuth = onAuthStateChanged;
+    </script>
+</head>
+
+<body>
+    <div class="bg-animated"></div>
+
+    <!-- Auth Screen Layout -->
+    <div id="auth-screen" class="auth-container">
+        <div class="auth-card card">
+            <div class="brand auth-brand">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <h2>Zaleasy</h2>
+            </div>
+            <p class="auth-subtitle">Inicia sesión para gestionar tus ventas en la nube.</p>
+
+            <button id="btn-google-login" class="btn btn-primary btn-block auth-btn">
+                <i class="fa-brands fa-google"></i> Continuar con Google
+            </button>
+            <p class="auth-note"><i class="fa-solid fa-shield-halved"></i> Acceso seguro y cifrado</p>
+        </div>
+    </div>
+    <div class="app-container" id="main-app" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <h2>Zaleasy</h2>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>Historial</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>Reportes</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Configuración</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="license-info">
+                    <i class="fa-solid fa-crown"></i>
+                    <div class="license-text">
+                        <p class="plan">Licencia Anual</p>
+                        <p class="price">Valor: $10.00 USD</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <h1 id="dynamic-greeting">Dashboard de Ventas</h1>
+                    <p id="current-date">Cargando fecha...</p>
+                </div>
+                <div class="header-right">
+                    <button class="btn btn-outline btn-close-register" id="btn-close-register">
+                        <i class="fa-solid fa-cash-register"></i> <span class="hide-mobile">Cierre de Caja</span>
+                    </button>
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Cambiar tema">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                    <div class="user-profile" id="user-profile-btn" style="cursor:pointer;" title="Cerrar Sesión">
+                        <img id="user-avatar" src="https://ui-avatars.com/api/?name=Admin&background=0D8ABC&color=fff"
+                            alt="User Profile">
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-grid">
+                <!-- KPI Cards -->
+                <div class="kpi-cards">
+                    <div class="card kpi-card">
+                        <div class="kpi-icon revenue">
+                            <i class="fa-solid fa-arrow-trend-up"></i>
+                        </div>
+                        <div class="kpi-details">
+                            <h3>Ingresos</h3>
+                            <p class="kpi-value" id="kpi-revenue">$0.00</p>
+                        </div>
+                    </div>
+                    <div class="card kpi-card">
+                        <div class="kpi-icon sales">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </div>
+                        <div class="kpi-details">
+                            <h3>Ventas Hoy</h3>
+                            <p class="kpi-value" id="kpi-sales-count">0</p>
+                        </div>
+                    </div>
+                    <div class="card kpi-card">
+                        <div class="kpi-icon">
+                            <i class="fa-solid fa-arrow-trend-down" style="color: var(--danger);"></i>
+                        </div>
+                        <div class="kpi-details">
+                            <h3>Gastos</h3>
+                            <p class="kpi-value" id="kpi-expenses" style="color: var(--danger);">$0.00</p>
+                        </div>
+                    </div>
+                    <div class="card kpi-card">
+                        <div class="kpi-icon avg">
+                            <i class="fa-solid fa-scale-balanced"></i>
+                        </div>
+                        <div class="kpi-details">
+                            <h3>Balance Neto</h3>
+                            <p class="kpi-value" id="kpi-balance">$0.00</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Goal & Chart (new row) -->
+                <div class="charts-row">
+                    <div class="card goal-card">
+                        <div class="card-header">
+                            <h2>Meta Diaria</h2>
+                            <button class="btn-icon" id="edit-goal" title="Editar Meta"><i
+                                    class="fa-solid fa-pen"></i></button>
+                        </div>
+                        <div class="goal-info">
+                            <span id="goal-progress-text">$0.00 / $100.00</span>
+                            <span class="badge" id="goal-percentage">0%</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="goal-progress-bar"></div>
+                        </div>
+                        <p class="goal-subtitle">Progreso hacia el objetivo de hoy</p>
+                    </div>
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h2>Ingresos por Método</h2>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="methodsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Sale Form -->
+                <div class="card form-section">
+                    <div class="card-header">
+                        <h2>Nueva Transacción</h2>
+                        <span class="badge">Nuevo</span>
+                    </div>
+                    <form id="sale-form" class="sale-form">
+                        <div class="transaction-type-toggle" style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
+                            <button type="button" class="btn btn-primary type-btn" data-type="income" style="flex: 1;"
+                                id="btn-type-income">Ingreso / Venta</button>
+                            <button type="button" class="btn btn-outline type-btn" data-type="expense" style="flex: 1;"
+                                id="btn-type-expense">Añadir Gasto</button>
+                        </div>
+                        <div class="form-group">
+                            <label for="product">Producto / Descripción</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-tag"></i>
+                                <input type="text" id="product" placeholder="Ej: Suscripción mensual" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="amount">Monto (USD)</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-dollar-sign"></i>
+                                <input type="number" id="amount" step="0.01" min="0" placeholder="5.00" value="5.00"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="method">Método de Pago</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-credit-card"></i>
+                                <select id="method">
+                                    <option value="Efectivo">Efectivo</option>
+                                    <option value="Tarjeta">Tarjeta de Crédito/Débito</option>
+                                    <option value="Transferencia">Transferencia</option>
+                                    <option value="Cripto">Criptomonedas</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="quick-actions">
+                            <button type="button" class="btn btn-outline quick-amount" data-amount="5.00">+
+                                $5.00</button>
+                            <button type="button" class="btn btn-outline quick-amount" data-amount="10.00">+
+                                $10.00</button>
+                            <button type="button" class="btn btn-outline quick-amount" data-amount="20.00">+
+                                $20.00</button>
+                        </div>
+                        <div class="form-actions-row" style="display:flex; gap: 0.8rem;">
+                            <button type="submit" class="btn btn-primary btn-block" style="flex: 2;"
+                                id="btn-submit-transaction">
+                                <i class="fa-solid fa-plus"></i> Registrar Venta
+                            </button>
+                            <button type="button" class="btn btn-outline" id="btn-calculator" style="flex: 1;"
+                                title="Calculadora de vuelto">
+                                <i class="fa-solid fa-calculator"></i> Vuelto
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Recent Sales List -->
+                <div class="card list-section">
+                    <div class="card-header">
+                        <h2>Ventas Recientes</h2>
+                        <div class="header-actions">
+                            <button class="btn-icon" id="export-csv" title="Exportar CSV">
+                                <i class="fa-solid fa-download"></i>
+                            </button>
+                            <button class="btn-icon" id="clear-sales" title="Limpiar historial">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="search-container">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="search-sales" placeholder="Buscar por descripción...">
+                    </div>
+                    <div class="table-container">
+                        <table class="sales-table">
+                            <thead>
+                                <tr>
+                                    <th>Hora</th>
+                                    <th>Descripción</th>
+                                    <th>Tipo</th>
+                                    <th>Método</th>
+                                    <th>Monto</th>
+                                    <th style="text-align: right;">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sales-body">
+                                <!-- Sales rows will be dynamically inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="empty-state" id="empty-state">
+                        <div class="empty-icon">
+                            <i class="fa-solid fa-receipt"></i>
+                        </div>
+                        <p>No hay ventas registradas hoy.</p>
+                        <span>Crea una venta para verla aquí.</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast">
+        <div class="toast-icon">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <div class="toast-content">
+            <p class="toast-title">Éxito</p>
+            <p class="toast-message">Venta registrada correctamente.</p>
+        </div>
+    </div>
+
+    <!-- Goal Modal -->
+    <div id="goal-modal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Configurar Meta Diaria</h2>
+                <button class="btn-icon close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="new-goal">Nueva Meta (USD)</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-bullseye"></i>
+                        <input type="number" id="new-goal" step="0.01" min="1" placeholder="Ej: 100" value="100.00">
+                    </div>
+                </div>
+                <button id="save-goal" class="btn btn-primary btn-block">
+                    <i class="fa-solid fa-check"></i> Guardar Meta
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Close Register Modal -->
+    <div id="close-modal" class="modal-overlay">
+        <div class="modal modal-lg">
+            <div class="modal-header">
+                <h2>Resumen de Cierre de Caja</h2>
+                <button class="btn-icon close-modal-close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="summary-grid" id="close-summary-grid">
+                    <!-- Populated via JS -->
+                </div>
+                <div class="total-highlight">
+                    <span>Total del Día:</span>
+                    <strong id="close-total-day">$0.00</strong>
+                </div>
+                <p class="warning-text"><i class="fa-solid fa-triangle-exclamation"></i> Al confirmar, se iniciará un
+                    nuevo ciclo de ventas y el historial actual se archivará.</p>
+                <button id="confirm-close" class="btn btn-primary btn-block">
+                    <i class="fa-solid fa-check-double"></i> Confirmar Cierre
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calculator Modal -->
+    <div id="calculator-modal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Calculadora de Vuelto</h2>
+                <button class="btn-icon close-modal-close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="calc-total">Total de la Compra (USD)</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <input type="number" id="calc-total" step="0.01" min="0" placeholder="0.00" readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="calc-received">Monto Recibido (USD)</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-hand-holding-dollar"></i>
+                        <input type="number" id="calc-received" step="0.01" min="0" placeholder="Ej: 50.00">
+                    </div>
+                </div>
+
+                <div class="total-highlight" style="margin-top: 1.5rem;">
+                    <span>Vuelto a entregar:</span>
+                    <strong id="calc-change" style="color: var(--primary);">$0.00</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script for Logic -->
+    <script src="app.js"></script>
+</body>
+
+</html>
