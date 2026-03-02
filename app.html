@@ -289,7 +289,8 @@
                             </div>
                             <!-- Multi-Item List -->
                             <div class="form-group">
-                                <label style="display:flex; justify-content:space-between; align-items:center; margin-bottom:.6rem;">
+                                <label
+                                    style="display:flex; justify-content:space-between; align-items:center; margin-bottom:.6rem;">
                                     <span>Productos / Ítems</span>
                                     <button type="button" id="btn-add-item" class="btn-add-item">
                                         <i class="fa-solid fa-circle-plus"></i> Agregar ítem
@@ -301,6 +302,18 @@
                                 <div id="multi-item-total" class="multi-item-total" style="display:none;">
                                     <span>📋 Total de la transacción</span>
                                     <strong id="multi-item-total-value">$0.00</strong>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="method">Método de Pago</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-credit-card"></i>
+                                    <select id="method">
+                                        <option value="Efectivo">💵 Efectivo</option>
+                                        <option value="Tarjeta">💳 Tarjeta de Crédito/Débito</option>
+                                        <option value="Transferencia">🏦 Transferencia</option>
+                                        <option value="MercadoPago">📱 MercadoPago</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">

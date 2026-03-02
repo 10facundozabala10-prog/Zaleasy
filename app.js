@@ -112,6 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let goalReachedNotified = false;
     let activeCategoryFilter = ''; // for sales table category pill filter
     let alertThreshold = parseFloat(localStorage.getItem('alertThreshold')) || 0;
+    let sessionStartTime = localStorage.getItem('sessionStartTime') || Date.now();
 
     // Type Toggle Elements
     const btnTypeIncome = document.getElementById('btn-type-income');
@@ -728,6 +729,9 @@ document.addEventListener('DOMContentLoaded', () => {
             row.style.animation = 'itemSlideOut 0.2s ease forwards';
             setTimeout(() => { row.remove(); updateMultiTotal(); syncFirstRowRemoveBtn(); }, 200);
         });
+
+        // Connect autocomplete
+        setTimeout(setupAutocomplete, 0);
 
         return row;
     };
@@ -1467,7 +1471,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Apply to the last focused amount input in the multi-item list
             const focused = document.querySelector('.item-amount-input:focus');
             const target = focused || document.querySelector('.item-amount-input:last-of-type') ||
-                           document.querySelector('.item-row:last-child .item-amount-input');
+                document.querySelector('.item-row:last-child .item-amount-input');
             if (target) {
                 target.value = val.toFixed(2);
                 target.dispatchEvent(new Event('input', { bubbles: true }));
