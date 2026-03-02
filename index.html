@@ -87,6 +87,30 @@
         </div>
     </header>
 
+    <!-- Animated Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item" data-target="1000" data-suffix="+">
+                    <div class="stat-number" id="stat-users">0+</div>
+                    <div class="stat-label">Negocios Activos</div>
+                </div>
+                <div class="stat-item" data-target="500000" data-suffix="+">
+                    <div class="stat-number" id="stat-tx">0+</div>
+                    <div class="stat-label">Ventas Registradas</div>
+                </div>
+                <div class="stat-item" data-target="30" data-suffix=" días">
+                    <div class="stat-number" id="stat-trial">0 días</div>
+                    <div class="stat-label">Prueba Gratuita</div>
+                </div>
+                <div class="stat-item" data-target="100" data-suffix="%">
+                    <div class="stat-number" id="stat-cloud">0%</div>
+                    <div class="stat-label">En la Nube</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Features Section -->
     <section id="features" class="features">
         <div class="container">
@@ -334,52 +358,77 @@
 
             <div class="faq-list" style="display: flex; flex-direction: column; gap: 1rem;">
                 <!-- QA 1 -->
-                <div class="faq-item"
-                    style="background: var(--bg-main); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.8rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                    <h4
-                        style="color: #ffffff; font-size: 1.25rem; font-weight: 600; margin-bottom: 0.8rem; display: flex; align-items: center;">
-                        <i class="fa-solid fa-circle-question"
-                            style="color: var(--primary); font-size: 1.4rem; margin-right: 0.75rem;"></i> ¿Qué pasa
-                        cuando terminan mis 30 días gratis?
-                    </h4>
-                    <p style="color: #e2e8f0; font-size: 1.05rem; line-height: 1.6; padding-left: 2.15rem;">La
-                        aplicación pausará tu panel temporalmente mostrando una pantalla de cobro. Toda tu información
-                        comercial (historial, reportes, gastos) estará 100% segura y esperándote hasta que completes el
-                        pago de tu suscripción de $3.500 ARS vía MercadoPago para desbloquear el acceso continuo.</p>
+                <div class="faq-accordion" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <h4>¿Qué pasa cuando terminan mis 30 días gratis?</h4>
+                        <i class="fa-solid fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>La aplicación pausará tu panel temporalmente mostrando una pantalla de cobro. Toda tu
+                            información
+                            comercial (historial, reportes, gastos) estará 100% segura y esperándote hasta que completes
+                            el
+                            pago de tu suscripción de $3.500 ARS vía MercadoPago para desbloquear el acceso continuo.
+                        </p>
+                    </div>
                 </div>
                 <!-- QA 2 -->
-                <div class="faq-item"
-                    style="background: var(--bg-main); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.8rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                    <h4
-                        style="color: #ffffff; font-size: 1.25rem; font-weight: 600; margin-bottom: 0.8rem; display: flex; align-items: center;">
-                        <i class="fa-solid fa-circle-question"
-                            style="color: var(--primary); font-size: 1.4rem; margin-right: 0.75rem;"></i> ¿Mis datos son
-                        privados? ¿Ustedes los ven?
-                    </h4>
-                    <p style="color: #e2e8f0; font-size: 1.05rem; line-height: 1.6; padding-left: 2.15rem;">Tu
-                        privacidad es absoluta. Zaleasy utiliza el sistema de autenticación de Google y los protocolos
-                        seguros de infraestructura en la Nube. Además de funcionar de manera descentralizada con la
-                        memoria de tus dispositivos. Nadie puede ver ni usar tus números.</p>
+                <div class="faq-accordion" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <h4>¿Mis datos son privados? ¿Ustedes los ven?</h4>
+                        <i class="fa-solid fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Tu privacidad es absoluta. Zaleasy utiliza el sistema de autenticación de Google y los
+                            protocolos
+                            seguros de infraestructura en la Nube. Además de funcionar de manera descentralizada con la
+                            memoria de tus dispositivos. Nadie puede ver ni usar tus números.</p>
+                    </div>
                 </div>
                 <!-- QA 3 -->
-                <div class="faq-item"
-                    style="background: var(--bg-main); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.8rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                    <h4
-                        style="color: #ffffff; font-size: 1.25rem; font-weight: 600; margin-bottom: 0.8rem; display: flex; align-items: center;">
-                        <i class="fa-solid fa-circle-question"
-                            style="color: var(--primary); font-size: 1.4rem; margin-right: 0.75rem;"></i> ¿Puedo usarlo
-                        desde mi celular y mi computadora al mismo tiempo?
-                    </h4>
-                    <p style="color: #e2e8f0; font-size: 1.05rem; line-height: 1.6; padding-left: 2.15rem;">¡Claro que
-                        sí! Zaleasy es responsivo y se adapta. Puedes registrar ventas con el celular cuando estás
-                        atendiendo en el mostrador, y al final del día ingresar desde tu computadora portátil para
-                        analizar los reportes grandes o exportar los archivos a Excel para tu contador.</p>
+                <div class="faq-accordion" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <h4>¿Puedo usarlo desde mi celular y mi computadora al mismo tiempo?</h4>
+                        <i class="fa-solid fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>¡Claro que sí! Zaleasy es responsivo y se adapta. Puedes registrar ventas con el celular
+                            cuando estás
+                            atendiendo en el mostrador, y al final del día ingresar desde tu computadora portátil para
+                            analizar los reportes grandes o exportar los archivos a Excel para tu contador.</p>
+                    </div>
+                </div>
+                <!-- QA 4 (NEW) -->
+                <div class="faq-accordion" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <h4>¿Puedo exportar mis ventas a Excel o CSV?</h4>
+                        <i class="fa-solid fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Sí, con un solo clic. Tanto el historial de ventas del día como el historial completo se
+                            pueden exportar en formato CSV, que es directamente compatible con Excel, Google Sheets y
+                            cualquier software contable. Tus datos siempre estarán disponibles para compartirlos con tu
+                            contador.</p>
+                    </div>
+                </div>
+                <!-- QA 5 (NEW) -->
+                <div class="faq-accordion" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <h4>¿Puedo cancelar cuando quiera?</h4>
+                        <i class="fa-solid fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Totalmente. No hay contratos, ni permanencias, ni letra chica. Cancela tu suscripción en
+                            cualquier momento desde MercadoPago con un clic. Tu historial de datos permanecerá seguro en
+                            la nube mientras dure tu acceso activo.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Pricing Section -->
+
     <section id="pricing" class="pricing">
         <div class="container">
             <div class="pricing-card">
@@ -430,6 +479,52 @@
             <p>&copy; 2026 Zaleasy. Todos los derechos reservados.</p>
         </div>
     </footer>
+
+    <script>
+        // --- FAQ Accordion ---
+        function toggleFaq(el) {
+            const isOpen = el.classList.contains('open');
+            document.querySelectorAll('.faq-accordion.open').forEach(a => a.classList.remove('open'));
+            if (!isOpen) el.classList.add('open');
+        }
+
+        // --- Animated Stats Counter ---
+        const animateStat = (el, target, suffix, duration) => {
+            const start = performance.now();
+            const tick = (now) => {
+                const elapsed = now - start;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const current = Math.round(target * eased);
+                const formatted = current >= 1000000
+                    ? (current / 1000000).toFixed(1) + 'M'
+                    : current >= 1000
+                        ? current.toLocaleString('es-AR')
+                        : current;
+                el.textContent = formatted + suffix;
+                if (progress < 1) requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+        };
+
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const items = document.querySelectorAll('.stat-item');
+                    items.forEach((item, i) => {
+                        const target = parseInt(item.getAttribute('data-target'));
+                        const suffix = item.getAttribute('data-suffix');
+                        const el = item.querySelector('.stat-number');
+                        setTimeout(() => animateStat(el, target, suffix, 1200), i * 150);
+                    });
+                    statsObserver.disconnect();
+                }
+            });
+        }, { threshold: 0.3 });
+
+        const statsSection = document.querySelector('.stats-section');
+        if (statsSection) statsObserver.observe(statsSection);
+    </script>
 </body>
 
 </html>

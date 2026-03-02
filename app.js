@@ -293,6 +293,73 @@ document.addEventListener('DOMContentLoaded', () => {
         const repEmptyState = document.getElementById('rep-empty-state');
         repTopBody.innerHTML = '';
 
+        // --- Category Chart ---
+        const catMap = {};
+        incomes.forEach(s => {
+            const cat = s.category || 'Sin categoría';
+            catMap[cat] = (catMap[cat] || 0) + s.amount;
+        });
+        const catLabels = Object.keys(catMap);
+        const catValues = Object.values(catMap);
+        const catColors = [
+            'rgba(108,92,231,0.85)', 'rgba(0,184,148,0.85)', 'rgba(253,203,110,0.85)',
+            'rgba(0,158,227,0.85)', 'rgba(253,121,168,0.85)', 'rgba(162,155,254,0.85)',
+            'rgba(85,239,196,0.85)', 'rgba(255,165,2,0.85)'
+        ];
+        const ctxCat = document.getElementById('rep-category-chart');
+        if (ctxCat) {
+            if (window._repCategoryChartInstance) window._repCategoryChartInstance.destroy();
+            window._repCategoryChartInstance = new Chart(ctxCat.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: catLabels.length ? catLabels : ['Sin datos'],
+                    datasets: [{
+                        data: catValues.length ? catValues : [1],
+                        backgroundColor: catColors,
+                        borderWidth: 2,
+                        borderColor: isDark ? '#1a1d2e' : '#f5f5f5'
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'right', labels: { color: textColor, padding: 14, boxWidth: 14, font: { size: 11 } } }
+                    }
+                }
+            });
+        }
+
+        // --- 30-Day Activity Heatmap ---
+        const heatmapEl = document.getElementById('rep-heatmap');
+        if (heatmapEl) {
+            heatmapEl.innerHTML = '';
+            const allTx = [...historyData, ...sales];
+            for (let i = 29; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                const dayKey = d.toISOString().split('T')[0];
+                const dayTotal = allTx
+                    .filter(s => s.type !== 'expense' && new Date(s.timestamp).toISOString().split('T')[0] === dayKey)
+                    .reduce((sum, s) => sum + s.amount, 0);
+
+                const dot = document.createElement('div');
+                dot.className = 'heatmap-dot';
+                if (dayTotal > 0) {
+                    const maxPossible = Math.max(...Array.from({ length: 30 }, (_, idx) => {
+                        const dd = new Date(); dd.setDate(dd.getDate() - idx);
+                        const k = dd.toISOString().split('T')[0];
+                        return allTx.filter(s => s.type !== 'expense' && new Date(s.timestamp).toISOString().split('T')[0] === k).reduce((a, s) => a + s.amount, 0);
+                    }), 1);
+                    const intensity = Math.min(dayTotal / maxPossible, 1);
+                    if (intensity > 0.7) dot.classList.add('hm-high');
+                    else if (intensity > 0.3) dot.classList.add('hm-mid');
+                    else dot.classList.add('hm-low');
+                }
+                dot.title = `${d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}: ${dayTotal > 0 ? formatCurrency(dayTotal) : 'Sin ventas'}`;
+                heatmapEl.appendChild(dot);
+            }
+        }
+
         const productMap = {};
         incomes.forEach(s => {
             if (!productMap[s.product]) productMap[s.product] = { count: 0, total: 0 };
@@ -411,6 +478,8 @@ document.addEventListener('DOMContentLoaded', () => {
         setupCategoryFilters();
         setupFABs();
         updateTopProduct();
+        setupPeakHours();
+        setupShareSummary();
     };
 
     // --- Date & Greeting ---
@@ -514,6 +583,94 @@ document.addEventListener('DOMContentLoaded', () => {
         nameEl.textContent = top[0];
         amountEl.textContent = formatCurrency(top[1].total);
         countEl.textContent = `${top[1].count} ${top[1].count === 1 ? 'venta' : 'ventas'}`;
+    };
+
+    // --- Peak Hour Widget ---
+    const setupPeakHours = () => updatePeakHours();
+
+    const updatePeakHours = () => {
+        const container = document.getElementById('peak-hour-bars');
+        const badge = document.getElementById('peak-hour-badge');
+        const subtitle = document.getElementById('peak-hour-subtitle');
+        if (!container) return;
+
+        // Build hourly income map from today's sales
+        const hourMap = {};
+        for (let h = 0; h < 24; h++) hourMap[h] = 0;
+        sales.filter(s => s.type !== 'expense').forEach(s => {
+            const h = new Date(s.timestamp).getHours();
+            hourMap[h] += s.amount;
+        });
+
+        const maxVal = Math.max(...Object.values(hourMap));
+        const peakHour = maxVal > 0 ? parseInt(Object.entries(hourMap).sort((a, b) => b[1] - a[1])[0][0]) : null;
+
+        container.innerHTML = '';
+        const activeHours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]; // Show business hours
+        activeHours.forEach(h => {
+            const val = hourMap[h] || 0;
+            const heightPct = maxVal > 0 ? Math.max((val / maxVal) * 100, val > 0 ? 8 : 2) : 2;
+            const isPeak = h === peakHour && maxVal > 0;
+            const bar = document.createElement('div');
+            bar.className = 'peak-bar' + (isPeak ? ' peak-bar-active' : '');
+            bar.style.height = `${heightPct}%`;
+            bar.title = `${h}:00 — ${val > 0 ? formatCurrency(val) : 'Sin ventas'}`;
+            container.appendChild(bar);
+        });
+
+        if (peakHour !== null && maxVal > 0) {
+            const amPm = peakHour >= 12 ? 'PM' : 'AM';
+            const hour12 = peakHour % 12 || 12;
+            badge.textContent = `${hour12}${amPm}`;
+            subtitle.textContent = `Tu hora pico es a las ${peakHour}:00 hs`;
+        } else {
+            badge.textContent = '—';
+            subtitle.textContent = 'Registra ventas para ver tu hora más activa.';
+        }
+    };
+
+    // --- Share / Copy Day Summary ---
+    const setupShareSummary = () => {
+        const btn = document.getElementById('btn-share-summary');
+        if (!btn) return;
+        btn.addEventListener('click', () => {
+            const incomes = sales.filter(s => s.type !== 'expense');
+            const expenses = sales.filter(s => s.type === 'expense');
+            const totalIncome = incomes.reduce((sum, s) => sum + s.amount, 0);
+            const totalExpenses = expenses.reduce((sum, s) => sum + s.amount, 0);
+            const net = totalIncome - totalExpenses;
+            const today = new Date().toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            const topIncome = incomes.length > 0 ? incomes.sort((a, b) => b.amount - a.amount)[0] : null;
+            const netEmoji = net >= 0 ? '📈' : '📉';
+
+            const text = `📊 *Resumen Diario — ${storeName}*\n` +
+                `📅 ${today}\n\n` +
+                `💰 Ingresos: ${formatCurrency(totalIncome)} (${incomes.length} ventas)\n` +
+                `💸 Gastos: ${formatCurrency(totalExpenses)}\n` +
+                `${netEmoji} Balance Neto: ${formatCurrency(net)}\n` +
+                (topIncome ? `🏆 Mejor venta: ${topIncome.product} — ${formatCurrency(topIncome.amount)}\n` : '') +
+                `\n_Generado con Zaleasy_`;
+
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast('✅ Resumen copiado al portapapeles');
+                }).catch(() => fallbackCopyText(text));
+            } else {
+                fallbackCopyText(text);
+            }
+        });
+    };
+
+    const fallbackCopyText = (text) => {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        try { document.execCommand('copy'); showToast('✅ Resumen copiado'); } catch (e) { showToast('No se pudo copiar'); }
+        document.body.removeChild(ta);
     };
 
     // --- Floating Action Buttons ---
@@ -922,13 +1079,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
         updateChart();
         updateKPITrends();
+        updatePeakHours();
+        updateTopProduct();
 
-        // Animation for numbers
-        const elements = [kpiRevenue, kpiSalesCount, kpiExpenses, kpiBalance];
-        elements.forEach(el => {
-            el.style.transform = 'scale(1.1)';
-            setTimeout(() => el.style.transform = 'scale(1)', 300);
-        });
+        // Animated counter for KPI numbers
+        animateKPICounter(kpiRevenue, totalRevenue, true);
+        animateKPICounter(kpiSalesCount, totalSalesCount, false);
+        animateKPICounter(kpiExpenses, totalExpenses, true);
+        animateKPICounter(kpiBalance, netBalance, true);
+    };
+
+    // --- Animated KPI Counter ---
+    const animateKPICounter = (el, targetVal, isCurrency) => {
+        const duration = 600;
+        const startTime = performance.now();
+        const startVal = parseFloat(el.getAttribute('data-current') || '0');
+        el.setAttribute('data-current', targetVal);
+
+        const tick = (now) => {
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            // Ease out cubic
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = startVal + (targetVal - startVal) * eased;
+            el.textContent = isCurrency ? formatCurrency(current) : Math.round(current);
+            if (progress < 1) requestAnimationFrame(tick);
+            else el.textContent = isCurrency ? formatCurrency(targetVal) : targetVal;
+        };
+        requestAnimationFrame(tick);
     };
 
     // --- Sales Rendering ---
@@ -1214,6 +1392,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateKPIs();
         setupStreakWidget();
         updateTopProduct();
+        updatePeakHours();
         showToast('Venta de ' + formatCurrency(amount) + ' registrada!');
 
         // Alert Threshold Check
@@ -1666,6 +1845,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateKPIs();
         setupStreakWidget();
         updateTopProduct();
+        updatePeakHours();
         closeRegisterModal.classList.remove('active');
         showToast('Cierre de caja completado con éxito!');
     });

@@ -135,6 +135,10 @@
                     </div>
                 </div>
                 <div class="header-right">
+                    <button class="btn btn-outline" id="btn-share-summary" title="Compartir Resumen del Día"
+                        style="gap:.4rem;">
+                        <i class="fa-solid fa-share-nodes"></i> <span class="hide-mobile">Compartir</span>
+                    </button>
                     <button class="btn btn-outline btn-close-register" id="btn-close-register">
                         <i class="fa-solid fa-cash-register"></i> <span class="hide-mobile">Cierre de Caja</span>
                     </button>
@@ -195,7 +199,7 @@
                     </div>
 
                     <!-- Goal & Chart (new row) -->
-                    <div class="charts-row" style="grid-template-columns: 1fr 1fr 1fr 1fr;">
+                    <div class="charts-row" style="grid-template-columns: 1fr 1fr 1fr 1fr 1fr;">
                         <div class="card goal-card">
                             <div class="card-header">
                                 <h2>Meta Diaria</h2>
@@ -240,6 +244,18 @@
                             <div class="chart-container">
                                 <canvas id="methodsChart"></canvas>
                             </div>
+                        </div>
+                        <!-- Peak Hour Widget -->
+                        <div class="card peak-hour-card">
+                            <div class="card-header">
+                                <h2>⏰ Hora Pico</h2>
+                                <span class="badge" id="peak-hour-badge">—</span>
+                            </div>
+                            <div id="peak-hour-bars" class="peak-hour-bars">
+                                <!-- 24 mini bars rendered by JS -->
+                            </div>
+                            <p class="goal-subtitle" id="peak-hour-subtitle">Registra ventas para ver tu hora más
+                                activa.</p>
                         </div>
                     </div>
 
@@ -504,6 +520,26 @@
                         <div class="chart-container" style="height: 260px;">
                             <canvas id="rep-methods-chart"></canvas>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Category Chart Row -->
+                <div class="charts-row" style="margin-bottom: 1.5rem;">
+                    <div class="card chart-card" style="flex: 1;">
+                        <div class="card-header">
+                            <h2>Ventas por Categoría</h2>
+                        </div>
+                        <div class="chart-container" style="height: 260px;">
+                            <canvas id="rep-category-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card" style="flex: 1; display:flex; flex-direction:column;">
+                        <div class="card-header">
+                            <h2>📅 Actividad por Día</h2>
+                        </div>
+                        <div id="rep-heatmap" class="rep-heatmap"></div>
+                        <p style="font-size:.8rem;color:var(--text-muted);margin-top:.5rem;">Últimos 30 días de
+                            transacciones</p>
                     </div>
                 </div>
 
