@@ -287,49 +287,20 @@
                                 <button type="button" class="btn btn-outline type-btn" data-type="expense"
                                     style="flex: 1;" id="btn-type-expense">Añadir Gasto</button>
                             </div>
+                            <!-- Multi-Item List -->
                             <div class="form-group">
-                                <label for="product">Producto / Descripción</label>
-                                <div class="input-wrapper">
-                                    <i class="fa-solid fa-tag"></i>
-                                    <input type="text" id="product" placeholder="Ej: Suscripción mensual" required>
+                                <label style="display:flex; justify-content:space-between; align-items:center; margin-bottom:.6rem;">
+                                    <span>Productos / Ítems</span>
+                                    <button type="button" id="btn-add-item" class="btn-add-item">
+                                        <i class="fa-solid fa-circle-plus"></i> Agregar ítem
+                                    </button>
+                                </label>
+                                <div id="items-container" class="items-container">
+                                    <!-- Item rows injected by JS -->
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="amount">Monto (ARS)</label>
-                                <div class="input-wrapper">
-                                    <i class="fa-solid fa-dollar-sign"></i>
-                                    <input type="number" id="amount" step="0.01" min="0" placeholder="5000" value="5000"
-                                        required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="method">Método de Pago</label>
-                                <div class="input-wrapper">
-                                    <i class="fa-solid fa-credit-card"></i>
-                                    <select id="method">
-                                        <option value="Efectivo">Efectivo</option>
-                                        <option value="Tarjeta">Tarjeta de Crédito/Débito</option>
-                                        <option value="Transferencia">Transferencia</option>
-                                        <option value="MercadoPago">MercadoPago</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="category">Categoría <span
-                                        style="color:var(--text-muted);font-weight:400;">(opcional)</span></label>
-                                <div class="input-wrapper">
-                                    <i class="fa-solid fa-folder-open"></i>
-                                    <select id="category">
-                                        <option value="">Sin categoría</option>
-                                        <option value="Producto">📦 Producto</option>
-                                        <option value="Servicio">⚙️ Servicio</option>
-                                        <option value="Suscripción">🔄 Suscripción</option>
-                                        <option value="Consultoría">💼 Consultoría</option>
-                                        <option value="Alquiler">🏠 Alquiler</option>
-                                        <option value="Marketing">📣 Marketing</option>
-                                        <option value="Insumos">🛒 Insumos</option>
-                                        <option value="Otros">🔖 Otros</option>
-                                    </select>
+                                <div id="multi-item-total" class="multi-item-total" style="display:none;">
+                                    <span>📋 Total de la transacción</span>
+                                    <strong id="multi-item-total-value">$0.00</strong>
                                 </div>
                             </div>
                             <div class="form-group">

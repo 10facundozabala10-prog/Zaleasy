@@ -5,11 +5,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeToggleBtn = document.getElementById('theme-toggle');
     const saleForm = document.getElementById('sale-form');
     const quickAmountBtns = document.querySelectorAll('.quick-amount');
-    const amountInput = document.getElementById('amount');
-    const productInput = document.getElementById('product');
+    // amountInput/productInput/categoryInput now managed by multi-item system
+    let amountInput = null; // legacy ref kept for calculator compat
+    let productInput = null; // legacy ref kept for autocomplete compat
     const methodSelect = document.getElementById('method');
     const notesInput = document.getElementById('notes');
-    const categoryInput = document.getElementById('category');
+    const categoryInput = null; // now per-item
 
     // Edit Modal Elements
     const editModal = document.getElementById('edit-modal');
@@ -480,6 +481,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateTopProduct();
         setupPeakHours();
         setupShareSummary();
+        setupMultiItems();
     };
 
     // --- Date & Greeting ---
@@ -658,6 +660,132 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 fallbackCopyText(text);
             }
+        });
+    };
+
+    // =============================================
+    // --- Multi-Item Form System ---
+    // =============================================
+
+    const CATEGORY_OPTIONS = [
+        { value: '', label: 'Sin categor\u00eda' },
+        { value: 'Producto', label: '\ud83d\udce6 Producto' },
+        { value: 'Servicio', label: '\u2699\ufe0f Servicio' },
+        { value: 'Suscripci\u00f3n', label: '\ud83d\udd04 Suscripci\u00f3n' },
+        { value: 'Consultor\u00eda', label: '\ud83d\udcbc Consultor\u00eda' },
+        { value: 'Alquiler', label: '\ud83c\udfe0 Alquiler' },
+        { value: 'Marketing', label: '\ud83d\udce3 Marketing' },
+        { value: 'Insumos', label: '\ud83d\uded2 Insumos' },
+        { value: 'Otros', label: '\ud83d\udd16 Otros' },
+    ];
+
+    let lastFocusedAmountInput = null;
+
+    const buildCategoryOptions = () => CATEGORY_OPTIONS
+        .map(o => `<option value="${o.value}">${o.label}</option>`).join('');
+
+    const createItemRow = (isFirst = false) => {
+        const row = document.createElement('div');
+        row.className = 'item-row';
+        row.style.animation = 'itemSlideIn 0.25s ease';
+        row.innerHTML = `
+            <div class="item-row-fields">
+                <div class="item-field-desc">
+                    <div class="input-wrapper" style="margin-bottom:0;">
+                        <i class="fa-solid fa-tag"></i>
+                        <input type="text" class="item-product-input" placeholder="Producto o descripci\u00f3n" list="products-datalist" required>
+                    </div>
+                </div>
+                <div class="item-field-amount">
+                    <div class="input-wrapper" style="margin-bottom:0;">
+                        <i class="fa-solid fa-dollar-sign"></i>
+                        <input type="number" class="item-amount-input" step="0.01" min="0" placeholder="0.00" value="5000" required>
+                    </div>
+                </div>
+                <div class="item-field-cat">
+                    <div class="input-wrapper" style="margin-bottom:0; padding-left:0;">
+                        <select class="item-category-select" style="padding-left:.8rem;">
+                            ${buildCategoryOptions()}
+                        </select>
+                    </div>
+                </div>
+                <button type="button" class="item-remove-btn" title="Eliminar ítem" ${isFirst ? 'style="visibility:hidden;"' : ''}>
+                    <i class="fa-solid fa-circle-xmark"></i>
+                </button>
+            </div>
+        `;
+
+        // Track last focused amount input (for quick-amount buttons)
+        const amtInput = row.querySelector('.item-amount-input');
+        amtInput.addEventListener('focus', () => { lastFocusedAmountInput = amtInput; });
+        amtInput.addEventListener('input', updateMultiTotal);
+
+        // Remove button
+        const removeBtn = row.querySelector('.item-remove-btn');
+        removeBtn.addEventListener('click', () => {
+            const container = document.getElementById('items-container');
+            if (container.querySelectorAll('.item-row').length <= 1) return; // keep at least 1
+            row.style.animation = 'itemSlideOut 0.2s ease forwards';
+            setTimeout(() => { row.remove(); updateMultiTotal(); syncFirstRowRemoveBtn(); }, 200);
+        });
+
+        return row;
+    };
+
+    const syncFirstRowRemoveBtn = () => {
+        const container = document.getElementById('items-container');
+        const rows = container.querySelectorAll('.item-row');
+        rows.forEach((r, i) => {
+            const btn = r.querySelector('.item-remove-btn');
+            if (btn) btn.style.visibility = (rows.length === 1 && i === 0) ? 'hidden' : 'visible';
+        });
+    };
+
+    const updateMultiTotal = () => {
+        const container = document.getElementById('items-container');
+        const totalEl = document.getElementById('multi-item-total');
+        const totalValEl = document.getElementById('multi-item-total-value');
+        const rows = container.querySelectorAll('.item-row');
+        let total = 0;
+        rows.forEach(r => {
+            const v = parseFloat(r.querySelector('.item-amount-input').value) || 0;
+            total += v;
+        });
+        if (rows.length > 1) {
+            totalEl.style.display = 'flex';
+            totalValEl.textContent = formatCurrency(total);
+        } else {
+            totalEl.style.display = 'none';
+        }
+    };
+
+    const resetMultiItems = () => {
+        const container = document.getElementById('items-container');
+        container.innerHTML = '';
+        const firstRow = createItemRow(true);
+        container.appendChild(firstRow);
+        firstRow.querySelector('.item-product-input').focus();
+        updateMultiTotal();
+    };
+
+    const setupMultiItems = () => {
+        const container = document.getElementById('items-container');
+        const addBtn = document.getElementById('btn-add-item');
+        if (!container || !addBtn) return;
+
+        // Create first row
+        resetMultiItems();
+
+        addBtn.addEventListener('click', () => {
+            const newRow = createItemRow(false);
+            container.appendChild(newRow);
+            syncFirstRowRemoveBtn();
+            updateMultiTotal();
+            // Focus the product input of the new row with a slight delay
+            setTimeout(() => newRow.querySelector('.item-product-input').focus(), 50);
+            // Bounce animation on the button
+            addBtn.style.transform = 'scale(0.9)';
+            setTimeout(() => addBtn.style.transform = 'scale(1)', 150);
         });
     };
 
@@ -1336,56 +1464,84 @@ document.addEventListener('DOMContentLoaded', () => {
     quickAmountBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const val = parseFloat(btn.getAttribute('data-amount'));
-            const currentVal = parseFloat(amountInput.value) || 0;
-            // Depending on logic, this could replace or add. We will replace to make it fast.
-            amountInput.value = val.toFixed(2);
-            amountInput.parentElement.style.transform = 'scale(1.05)';
-            setTimeout(() => amountInput.parentElement.style.transform = 'scale(1)', 200);
+            // Apply to the last focused amount input in the multi-item list
+            const focused = document.querySelector('.item-amount-input:focus');
+            const target = focused || document.querySelector('.item-amount-input:last-of-type') ||
+                           document.querySelector('.item-row:last-child .item-amount-input');
+            if (target) {
+                target.value = val.toFixed(2);
+                target.dispatchEvent(new Event('input', { bubbles: true }));
+                target.parentElement.style.transform = 'scale(1.05)';
+                setTimeout(() => target.parentElement.style.transform = 'scale(1)', 200);
+            }
         });
     });
 
     saleForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        const product = productInput.value.trim();
-        const amount = parseFloat(amountInput.value);
+        // Collect all items from the multi-item container
+        const itemRows = document.querySelectorAll('.item-row');
         const method = methodSelect.value;
         const notes = notesInput ? notesInput.value.trim() : '';
-        const category = categoryInput ? categoryInput.value : '';
+        const baseTimestamp = Date.now();
 
-        if (!product || isNaN(amount) || amount <= 0) {
-            alert('Por favor, ingresa datos válidos para la venta.');
+        const itemsToAdd = [];
+        let hasError = false;
+
+        itemRows.forEach((row, idx) => {
+            const prodEl = row.querySelector('.item-product-input');
+            const amtEl = row.querySelector('.item-amount-input');
+            const catEl = row.querySelector('.item-category-select');
+            const product = prodEl ? prodEl.value.trim() : '';
+            const amount = amtEl ? parseFloat(amtEl.value) : NaN;
+            const category = catEl ? catEl.value : '';
+
+            if (!product || isNaN(amount) || amount <= 0) {
+                prodEl && (prodEl.style.borderColor = 'var(--danger)');
+                amtEl && (amtEl.style.borderColor = 'var(--danger)');
+                hasError = true;
+                return;
+            }
+            prodEl && (prodEl.style.borderColor = '');
+            amtEl && (amtEl.style.borderColor = '');
+            itemsToAdd.push({ product, amount, category });
+        });
+
+        if (hasError || itemsToAdd.length === 0) {
+            showToast('\u26a0\ufe0f Revisá los ítems: descripción y monto son obligatorios.');
             return;
         }
 
-        const newSale = {
-            id: Date.now(),
-            timestamp: Date.now(),
-            product,
-            amount,
-            method,
-            type: currentTransactionType,
-            notes,
-            category
-        };
+        let totalAdded = 0;
+        itemsToAdd.forEach((item, idx) => {
+            const newSale = {
+                id: baseTimestamp + idx,
+                timestamp: baseTimestamp + idx,
+                product: item.product,
+                amount: item.amount,
+                method,
+                type: currentTransactionType,
+                notes,
+                category: item.category
+            };
+            sales.push(newSale);
+            totalAdded += item.amount;
 
-        sales.push(newSale);
+            // Autocomplete
+            if (!recentProducts.includes(item.product)) {
+                recentProducts.unshift(item.product);
+                if (recentProducts.length > 20) recentProducts.pop();
+            }
+        });
+
         localStorage.setItem('dailySales', JSON.stringify(sales));
+        localStorage.setItem('recentProducts', JSON.stringify(recentProducts));
+        setupAutocomplete();
 
-        // Save for autocomplete
-        if (!recentProducts.includes(product)) {
-            recentProducts.unshift(product);
-            if (recentProducts.length > 20) recentProducts.pop();
-            localStorage.setItem('recentProducts', JSON.stringify(recentProducts));
-            setupAutocomplete();
-        }
-
-        // Reset Form
-        productInput.value = '';
-        amountInput.value = '5.00';
+        // Reset multi-item form to a single empty row
         if (notesInput) notesInput.value = '';
-        if (categoryInput) categoryInput.value = '';
-        productInput.focus();
+        resetMultiItems();
 
         // Update UI
         renderSales();
@@ -1393,14 +1549,18 @@ document.addEventListener('DOMContentLoaded', () => {
         setupStreakWidget();
         updateTopProduct();
         updatePeakHours();
-        showToast('Venta de ' + formatCurrency(amount) + ' registrada!');
 
-        // Alert Threshold Check
-        if (alertThreshold > 0 && amount >= alertThreshold && currentTransactionType !== 'expense') {
-            setTimeout(() => {
-                showBigSaleAlert(amount, product);
-            }, 500);
-        }
+        const label = itemsToAdd.length > 1
+            ? `\u2705 ${itemsToAdd.length} ítems registrados por ${formatCurrency(totalAdded)}`
+            : `Venta de ${formatCurrency(totalAdded)} registrada!`;
+        showToast(label);
+
+        // Alert Threshold Check (use first large item)
+        itemsToAdd.forEach(item => {
+            if (alertThreshold > 0 && item.amount >= alertThreshold && currentTransactionType !== 'expense') {
+                setTimeout(() => showBigSaleAlert(item.amount, item.product), 500);
+            }
+        });
     });
 
     clearSalesBtn.addEventListener('click', () => {
@@ -1756,7 +1916,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Calculator Logic ---
     btnCalculator.addEventListener('click', () => {
-        const amount = parseFloat(amountInput.value) || 0;
+        // Get amount from the last focused item, or first item in multi-item list
+        const focusedAmt = lastFocusedAmountInput;
+        const firstAmt = document.querySelector('.item-amount-input');
+        const amount = parseFloat((focusedAmt || firstAmt)?.value) || 0;
         calcTotalInput.value = amount.toFixed(2);
         calcReceivedInput.value = '';
         calcChangeDisplay.textContent = '$0.00';
@@ -1889,7 +2052,7 @@ document.addEventListener('DOMContentLoaded', () => {
             datalist = document.createElement('datalist');
             datalist.id = 'products-datalist';
             document.body.appendChild(datalist);
-            productInput.setAttribute('list', 'products-datalist');
+            // All .item-product-input elements already have list="products-datalist" in their template
         }
 
         datalist.innerHTML = '';
@@ -1897,6 +2060,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const option = document.createElement('option');
             option.value = prod;
             datalist.appendChild(option);
+        });
+        // Connect all current item product inputs to datalist
+        document.querySelectorAll('.item-product-input').forEach(inp => {
+            inp.setAttribute('list', 'products-datalist');
         });
     };
 
