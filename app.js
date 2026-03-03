@@ -653,7 +653,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 `💸 Gastos: ${formatCurrency(totalExpenses)}\n` +
                 `${netEmoji} Balance Neto: ${formatCurrency(net)}\n` +
                 (topIncome ? `🏆 Mejor venta: ${topIncome.product} — ${formatCurrency(topIncome.amount)}\n` : '') +
-                `\n_Generado con Zaleasy_`;
+                `\n_Generado con ${storeName}_`;
 
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(text).then(() => {
@@ -1736,7 +1736,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
             <div style="text-align:center; margin-top:1.5rem; padding-top:1rem; border-top:2px dashed var(--border-color); color:var(--text-muted); font-size:.8rem;">
-                Generado por Zaleasy • ID: #${sale.id.toString().slice(-6)}
+                Generado por ${storeName} • ID: #${sale.id.toString().slice(-6)}
             </div>
         `;
         receiptModal.classList.add('active');
@@ -1887,7 +1887,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </table>
         </div>
         <div class="receipt-footer">
-            Generado por Zaleasy &bull; ID #${sale.id.toString().slice(-6)}
+            Generado por ${storeName} &bull; ID #${sale.id.toString().slice(-6)}
         </div>
     </div>
     <script>
