@@ -562,6 +562,32 @@
                         <span>Realiza ventas y cierra la caja para generar reportes.</span>
                     </div>
                 </div>
+
+                <!-- Top Clientes Table -->
+                <div class="card list-section" style="margin-top: 1.5rem;">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-users" style="color: var(--primary); margin-right: .5rem;"></i>Top
+                            Clientes</h2>
+                    </div>
+                    <div class="table-container" id="rep-top-clients-container">
+                        <table class="sales-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Cliente</th>
+                                    <th>Compras</th>
+                                    <th>Total Gastado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rep-top-clients-body"></tbody>
+                        </table>
+                    </div>
+                    <div class="empty-state" id="rep-clients-empty-state">
+                        <div class="empty-icon"><i class="fa-solid fa-user-slash"></i></div>
+                        <p>No hay clientes registrados.</p>
+                        <span>Asocia un nombre de cliente al registrar ventas para verlos aquí.</span>
+                    </div>
+                </div>
             </div>
 
             <!-- Config View -->

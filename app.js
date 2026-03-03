@@ -1521,6 +1521,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         let totalAdded = 0;
+        const groupId = baseTimestamp; // shared group ID for all items in this submit
         itemsToAdd.forEach((item, idx) => {
             const newSale = {
                 id: baseTimestamp + idx,
@@ -1531,7 +1532,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 type: currentTransactionType,
                 notes,
                 category: item.category,
-                customerName
+                customerName,
+                groupId
             };
             sales.push(newSale);
             totalAdded += item.amount;
@@ -1692,31 +1694,62 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Receipt Modal Logic ---
     let currentReceiptSale = null; // Store for printing
+    let currentReceiptGroup = []; // All items in the same group
 
     const openReceiptModal = (sale) => {
         currentReceiptSale = sale;
-        const d = new Date(sale.timestamp);
+
+        // Find all items belonging to the same group (same groupId, or just this sale)
+        const allData = [...sales, ...historyData];
+        const groupItems = sale.groupId
+            ? allData.filter(s => s.groupId === sale.groupId)
+            : [sale];
+        // Sort by id ascending
+        groupItems.sort((a, b) => a.id - b.id);
+        currentReceiptGroup = groupItems;
+
+        const repr = groupItems[0]; // use first item for date/method reference
+        const d = new Date(repr.timestamp);
         const dateStr = d.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
         const timeStr = d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
-        const isExpense = sale.type === 'expense';
-        const sign = isExpense ? '-' : '+';
+        const isExpense = repr.type === 'expense';
         const amountColor = isExpense ? '#d63031' : '#00b894';
         const typeLabel = isExpense ? 'Gasto' : 'Ingreso / Venta';
+        const totalAmount = groupItems.reduce((sum, s) => sum + s.amount, 0);
+        const sign = isExpense ? '-' : '+';
+        const isMulti = groupItems.length > 1;
+
+        // Build items rows
+        const itemsHtml = isMulti ? `
+            <div style="margin-bottom:.5rem;">
+                <span style="color:var(--text-muted); font-size:.85rem;">Ítems</span>
+            </div>
+            <div style="background:var(--bg-hover); border-radius:8px; padding:.6rem .8rem; margin-bottom:.5rem;">
+                ${groupItems.map(it => `
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:.35rem 0; border-bottom:1px solid var(--border-color);">
+                        <span style="font-size:.88rem;">• ${it.product}</span>
+                        <strong style="color:${amountColor}; font-size:.88rem;">${sign}${formatCurrency(it.amount)}</strong>
+                    </div>
+                `).join('')}
+            </div>
+        ` : `
+            <div style="display:flex; justify-content:space-between;">
+                <span style="color:var(--text-muted);">Descripción</span>
+                <strong>${repr.product}</strong>
+            </div>
+        `;
 
         receiptBody.innerHTML = `
             <div style="text-align:center; margin-bottom:1.5rem; padding-bottom:1rem; border-bottom:2px dashed var(--border-color);">
                 <p style="font-size:1.5rem; margin-bottom:.3rem;">${isExpense ? '💸' : '💰'}</p>
-                <h3 style="font-size:1.5rem; color:${amountColor};">${sign}${formatCurrency(sale.amount)}</h3>
-                <p style="color:var(--text-muted); font-size:.9rem; margin-top:.3rem;">${typeLabel}</p>
+                <h3 style="font-size:1.5rem; color:${amountColor};">${sign}${formatCurrency(totalAmount)}</h3>
+                <p style="color:var(--text-muted); font-size:.9rem; margin-top:.3rem;">${typeLabel}${isMulti ? ` · ${groupItems.length} ítems` : ''}</p>
             </div>
             <div style="display:flex; flex-direction:column; gap:.8rem;">
-                <div style="display:flex; justify-content:space-between;">
-                    <span style="color:var(--text-muted);">Descripción</span>
-                    <strong>${sale.product}</strong>
-                </div>
+                ${itemsHtml}
                 <div style="display:flex; justify-content:space-between;">
                     <span style="color:var(--text-muted);">Método de Pago</span>
-                    <span style="background:rgba(108,92,231,0.15);color:#6c5ce7;padding:.2rem .6rem;border-radius:20px;font-size:.75rem;font-weight:600;">${sale.method}</span>
+                    <span style="background:rgba(108,92,231,0.15);color:#6c5ce7;padding:.2rem .6rem;border-radius:20px;font-size:.75rem;font-weight:600;">${repr.method}</span>
                 </div>
                 <div style="display:flex; justify-content:space-between;">
                     <span style="color:var(--text-muted);">Fecha</span>
@@ -1726,9 +1759,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span style="color:var(--text-muted);">Hora</span>
                     <span>${timeStr}</span>
                 </div>
-                ${sale.notes ? `<div style="display:flex; justify-content:space-between; gap:1rem;">
+                ${repr.customerName ? `<div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Cliente</span>
+                    <strong>${repr.customerName}</strong>
+                </div>` : ''}
+                ${repr.notes ? `<div style="display:flex; justify-content:space-between; gap:1rem;">
                     <span style="color:var(--text-muted);">Notas</span>
-                    <span style="text-align:right;">${sale.notes}</span>
+                    <span style="text-align:right;">${repr.notes}</span>
                 </div>` : ''}
                 <div style="display:flex; justify-content:space-between;">
                     <span style="color:var(--text-muted);">Negocio</span>
@@ -1736,7 +1773,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
             <div style="text-align:center; margin-top:1.5rem; padding-top:1rem; border-top:2px dashed var(--border-color); color:var(--text-muted); font-size:.8rem;">
-                Generado por ${storeName} • ID: #${sale.id.toString().slice(-6)}
+                Generado por ${storeName} • Comprobante #${repr.id.toString().slice(-6)}
             </div>
         `;
         receiptModal.classList.add('active');
@@ -1745,18 +1782,37 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Print Receipt via dedicated popup window ---
     const printReceipt = () => {
         if (!currentReceiptSale) return;
-        const sale = currentReceiptSale;
-        const d = new Date(sale.timestamp);
+        const groupItems = currentReceiptGroup.length > 0 ? currentReceiptGroup : [currentReceiptSale];
+        const repr = groupItems[0];
+        const d = new Date(repr.timestamp);
         const dateStr = d.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
         const timeStr = d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
-        const isExpense = sale.type === 'expense';
+        const isExpense = repr.type === 'expense';
         const sign = isExpense ? '-' : '+';
         const amountColor = isExpense ? '#d63031' : '#00b894';
         const typeLabel = isExpense ? 'Gasto' : 'Ingreso / Venta';
-        const amountFormatted = formatCurrency(sale.amount);
-        const notesRow = sale.notes
-            ? `<tr><td style="color:#636e72;padding:.6rem 0;">Notas</td><td style="text-align:right;padding:.6rem 0;">${sale.notes}</td></tr>`
+        const totalAmount = groupItems.reduce((sum, s) => sum + s.amount, 0);
+        const amountFormatted = formatCurrency(totalAmount);
+        const isMulti = groupItems.length > 1;
+        const notesRow = repr.notes
+            ? `<tr><td style="color:#636e72;padding:.6rem 0;">Notas</td><td style="text-align:right;padding:.6rem 0;">${repr.notes}</td></tr>`
             : '';
+        const customerRow = repr.customerName
+            ? `<tr><td style="color:#636e72;padding:.6rem 0;">Cliente</td><td style="text-align:right;padding:.6rem 0;font-weight:600;">${repr.customerName}</td></tr>`
+            : '';
+        // Build items section for print
+        const itemsSection = isMulti ? `
+            <tr><td colspan="2" style="padding:.8rem 0 .3rem;"><strong style="font-size:.85rem;color:#636e72;text-transform:uppercase;letter-spacing:.05em;">Detalle de ítems</strong></td></tr>
+            ${groupItems.map(it => `
+                <tr>
+                    <td style="padding:.45rem 0; font-size:.9rem;">• ${it.product}</td>
+                    <td style="text-align:right;padding:.45rem 0;font-weight:600;font-size:.9rem;color:${amountColor};">${sign}${formatCurrency(it.amount)}</td>
+                </tr>
+            `).join('')}
+            <tr><td colspan="2"><hr style="border:none;border-top:1px dashed #dfe6e9;margin:.2rem 0;"></td></tr>
+        ` : `
+            <tr><td style="color:#636e72;padding:.6rem 0;">Descripción</td><td style="text-align:right;padding:.6rem 0;">${repr.product}</td></tr>
+        `;
 
         const printHtml = `<!DOCTYPE html>
 <html lang="es">
@@ -1820,14 +1876,14 @@ document.addEventListener('DOMContentLoaded', () => {
             border-collapse: collapse;
         }
         .receipt-body td {
-            padding: .7rem 0;
+            padding: .55rem 0;
             font-size: .9rem;
             border-bottom: 1px solid #f0f0f0;
             vertical-align: top;
         }
         .receipt-body td:first-child {
             color: #636e72;
-            width: 40%;
+            width: 45%;
         }
         .receipt-body td:last-child {
             text-align: right;
@@ -1840,6 +1896,14 @@ document.addEventListener('DOMContentLoaded', () => {
             border-radius: 20px;
             font-size: .8rem;
             font-weight: 600;
+        }
+        .total-row td {
+            font-size: 1rem;
+            font-weight: 700;
+            color: ${amountColor};
+            border-top: 2px solid #dfe6e9;
+            border-bottom: none;
+            padding-top: .8rem;
         }
         .receipt-footer {
             text-align: center;
@@ -1858,7 +1922,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="receipt">
         <div class="receipt-header">
             <div class="business-name">${storeName}</div>
-            <div class="receipt-type">Comprobante de Transacción</div>
+            <div class="receipt-type">Comprobante de Transacción${isMulti ? ` · ${groupItems.length} ítems` : ''}</div>
         </div>
         <div class="receipt-amount">
             <div class="emoji">${isExpense ? '💸' : '💰'}</div>
@@ -1867,13 +1931,11 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="receipt-body">
             <table>
-                <tr>
-                    <td>Descripción</td>
-                    <td>${sale.product}</td>
-                </tr>
+                ${itemsSection}
+                ${isMulti ? `<tr class="total-row"><td>Total</td><td>${sign}${amountFormatted}</td></tr>` : ''}
                 <tr>
                     <td>Método</td>
-                    <td><span class="badge">${sale.method}</span></td>
+                    <td><span class="badge">${repr.method}</span></td>
                 </tr>
                 <tr>
                     <td>Fecha</td>
@@ -1883,11 +1945,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>Hora</td>
                     <td>${timeStr}</td>
                 </tr>
+                ${customerRow}
                 ${notesRow}
             </table>
         </div>
         <div class="receipt-footer">
-            Generado por ${storeName} &bull; ID #${sale.id.toString().slice(-6)}
+            Generado por ${storeName} &bull; Comprobante #${repr.id.toString().slice(-6)}
         </div>
     </div>
     <script>
