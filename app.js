@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let productInput = null; // legacy ref kept for autocomplete compat
     const methodSelect = document.getElementById('method');
     const notesInput = document.getElementById('notes');
+    const customerNameInput = document.getElementById('customer-name');
     const categoryInput = null; // now per-item
 
     // Edit Modal Elements
@@ -1276,10 +1277,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const amountColor = isExpense ? 'var(--danger)' : 'var(--text-main)';
                 const notesHtml = sale.notes ? `<br><small style="color:var(--text-muted);font-weight:400;">📝 ${sale.notes}</small>` : '';
                 const catHtml = sale.category ? `<span style="font-size:.72rem;color:var(--text-muted);margin-left:4px;">${sale.category}</span>` : '';
+                const clientHtml = sale.customerName ? `<br><small style="color:var(--primary);font-weight:500;"><i class="fa-solid fa-user" style="font-size:.7rem;"></i> ${sale.customerName}</small>` : '';
 
                 tr.innerHTML = `
                     <td>${timeStr}</td>
-                    <td><strong>${sale.product}</strong>${catHtml}${notesHtml}</td>
+                    <td><strong>${sale.product}</strong>${catHtml}${clientHtml}${notesHtml}</td>
                     <td>${typeText}</td>
                     <td><span class="badge" style="background:var(--primary-light); color:var(--primary);">${sale.method}</span></td>
                     <td style="color: ${amountColor}; font-weight: bold;">${sign}${formatCurrency(sale.amount)}</td>
@@ -1488,6 +1490,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const itemRows = document.querySelectorAll('.item-row');
         const method = methodSelect.value;
         const notes = notesInput ? notesInput.value.trim() : '';
+        const customerName = customerNameInput ? customerNameInput.value.trim() : '';
         const baseTimestamp = Date.now();
 
         const itemsToAdd = [];
@@ -1527,7 +1530,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 method,
                 type: currentTransactionType,
                 notes,
-                category: item.category
+                category: item.category,
+                customerName
             };
             sales.push(newSale);
             totalAdded += item.amount;
@@ -1545,6 +1549,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Reset multi-item form to a single empty row
         if (notesInput) notesInput.value = '';
+        if (customerNameInput) customerNameInput.value = '';
         resetMultiItems();
 
         // Update UI
