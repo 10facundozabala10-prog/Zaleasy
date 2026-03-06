@@ -214,6 +214,11 @@
                                 <div class="progress-bar" id="goal-progress-bar"></div>
                             </div>
                             <p class="goal-subtitle">Progreso hacia el objetivo de hoy</p>
+                            <!-- Monthly Projection -->
+                            <div class="monthly-projection" id="monthly-projection" style="display:none;">
+                                <i class="fa-solid fa-chart-line"></i>
+                                <span id="monthly-projection-text">Proyectando...</span>
+                            </div>
                         </div>
                         <div class="card streak-card" id="streak-card">
                             <div class="card-header">
@@ -259,6 +264,42 @@
                         </div>
                     </div>
 
+                    <!-- Weekly Summary + Quick Products Row -->
+                    <div class="charts-row" style="grid-template-columns: 2fr 1fr; grid-column: 1 / -1;">
+                        <!-- Weekly Bar Chart Widget -->
+                        <div class="card weekly-summary-card">
+                            <div class="card-header">
+                                <h2><i class="fa-solid fa-calendar-week"
+                                        style="color:var(--primary);margin-right:.4rem;"></i>Resumen de la Semana</h2>
+                                <span class="badge" id="weekly-best-day-badge">—</span>
+                            </div>
+                            <div id="weekly-bars-container" class="weekly-bars-container">
+                                <!-- 7 day bars rendered by JS -->
+                            </div>
+                            <div class="weekly-legend">
+                                <span class="weekly-legend-dot income-dot"></span><span>Ingresos</span>
+                                <span class="weekly-legend-dot expense-dot"></span><span>Gastos</span>
+                            </div>
+                        </div>
+                        <!-- Quick Products Widget -->
+                        <div class="card quick-products-card">
+                            <div class="card-header">
+                                <h2><i class="fa-solid fa-bolt"
+                                        style="color:var(--warning);margin-right:.4rem;"></i>Productos Rápidos</h2>
+                                <span class="badge">Click para agregar</span>
+                            </div>
+                            <p style="font-size:.8rem;color:var(--text-muted);margin-bottom:.8rem;">Tus productos más
+                                usados. Click para agregar al formulario.</p>
+                            <div id="quick-products-chips" class="quick-products-chips">
+                                <!-- Rendered by JS -->
+                            </div>
+                            <div id="quick-products-empty" class="quick-products-empty" style="display:none;">
+                                <i class="fa-solid fa-box-open"></i>
+                                <p>Aún no hay productos registrados.</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Notepad Widget (full-width row) -->
                     <div class="card notepad-card" style="grid-column: 1 / -1;">
                         <div class="card-header" style="margin-bottom:.8rem;">
@@ -269,7 +310,7 @@
                                     class="fa-solid fa-check"></i> Guardado</span>
                         </div>
                         <textarea id="day-notepad"
-                            placeholder="Anota recordatorios, pendientes o cualquier cosa del día..." rows="3"
+                            placeholder="Anota recordatorios, pendientes o cualquier cosa del día..." rows="2"
                             style="width:100%; resize:vertical; background:var(--bg-hover); border:1px solid var(--border-color); border-radius:var(--radius-sm); color:var(--text-main); font-family:inherit; font-size:.92rem; padding:.8rem 1rem; outline:none; line-height:1.6; transition:border-color .2s;"></textarea>
                     </div>
 

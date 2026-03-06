@@ -484,6 +484,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setupPeakHours();
         setupShareSummary();
         setupMultiItems();
+        setupWeeklySummary();
+        setupQuickProducts();
+        updateMonthlyProjection();
     };
 
     // --- Date & Greeting ---
@@ -1560,6 +1563,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setupStreakWidget();
         updateTopProduct();
         updatePeakHours();
+        setupWeeklySummary();
+        setupQuickProducts();
+        updateMonthlyProjection();
 
         const label = itemsToAdd.length > 1
             ? `\u2705 ${itemsToAdd.length} ítems registrados por ${formatCurrency(totalAdded)}`
@@ -2219,6 +2225,218 @@ document.addEventListener('DOMContentLoaded', () => {
             toast.style.borderLeftColor = 'var(--success)';
             if (icon) { icon.innerHTML = '<i class="fa-solid fa-check"></i>'; icon.style.fontSize = ''; }
         }, 4000);
+    };
+
+    // =============================================
+    // --- Weekly Summary Widget ---
+    // =============================================
+    const setupWeeklySummary = () => {
+        const container = document.getElementById('weekly-bars-container');
+        const bestBadge = document.getElementById('weekly-best-day-badge');
+        if (!container) return;
+
+        // Build a map of last 7 days (from oldest to today)
+        const days = [];
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        for (let i = 6; i >= 0; i--) {
+            const d = new Date(today);
+            d.setDate(today.getDate() - i);
+            days.push({
+                date: d,
+                key: d.toISOString().split('T')[0],
+                label: d.toLocaleDateString('es-ES', { weekday: 'short' }),
+                income: 0,
+                expense: 0
+            });
+        }
+
+        const allData = [...historyData, ...sales];
+        allData.forEach(s => {
+            const d = new Date(s.timestamp);
+            const key = d.toISOString().split('T')[0];
+            const entry = days.find(day => day.key === key);
+            if (!entry) return;
+            if (s.type === 'expense') {
+                entry.expense += s.amount;
+            } else {
+                entry.income += s.amount;
+            }
+        });
+
+        // Find max income for scaling
+        const maxIncome = Math.max(...days.map(d => d.income), 1);
+        const maxExpense = Math.max(...days.map(d => d.expense), 1);
+        const maxVal = Math.max(maxIncome, maxExpense, 1);
+
+        // Find best income day
+        const bestDay = days.reduce((best, d) => d.income > best.income ? d : best, days[0]);
+        const todayKey = today.toISOString().split('T')[0];
+
+        container.innerHTML = '';
+        days.forEach(day => {
+            const col = document.createElement('div');
+            const isToday = day.key === todayKey;
+            const isBest = day.key === bestDay.key && bestDay.income > 0;
+            col.className = `weekly-day-col${isToday ? ' today' : ''}${isBest ? ' best-day' : ''}`;
+
+            const incomeH = Math.max(Math.round((day.income / maxVal) * 80), day.income > 0 ? 4 : 3);
+            const expenseH = Math.max(Math.round((day.expense / maxVal) * 80), day.expense > 0 ? 4 : 3);
+
+            col.innerHTML = `
+                <div class="weekly-bars-group">
+                    <div class="weekly-bar income-bar"
+                         style="height:${incomeH}px;"
+                         data-tooltip="Ing: ${formatCurrency(day.income)}"
+                         title="${day.label}: Ingresos ${formatCurrency(day.income)}"></div>
+                    <div class="weekly-bar expense-bar"
+                         style="height:${expenseH}px;"
+                         data-tooltip="Gst: ${formatCurrency(day.expense)}"
+                         title="${day.label}: Gastos ${formatCurrency(day.expense)}"></div>
+                </div>
+                <span class="weekly-day-label">${day.label.replace('.', '')}</span>
+            `;
+            container.appendChild(col);
+        });
+
+        // Best day badge
+        if (bestBadge) {
+            if (bestDay.income > 0) {
+                const bestLabel = bestDay.date.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' });
+                bestBadge.textContent = `🏆 ${bestLabel} · ${formatCurrency(bestDay.income)}`;
+            } else {
+                bestBadge.textContent = '—';
+            }
+        }
+    };
+
+    // =============================================
+    // --- Quick Products Widget ---
+    // =============================================
+    const setupQuickProducts = () => {
+        const chipsContainer = document.getElementById('quick-products-chips');
+        const emptyEl = document.getElementById('quick-products-empty');
+        if (!chipsContainer) return;
+
+        // Build frequency map from all sales + history
+        const allData = [...historyData, ...sales].filter(s => s.type !== 'expense');
+        const freq = {};
+        const lastPrice = {};
+        allData.forEach(s => {
+            const name = s.product.trim();
+            if (!name) return;
+            freq[name] = (freq[name] || 0) + 1;
+            lastPrice[name] = s.amount; // track last used price
+        });
+
+        // Also include recentProducts even if no history (but without price)
+        recentProducts.forEach(p => {
+            if (!freq[p]) freq[p] = 0;
+        });
+
+        const sorted = Object.entries(freq)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 10);
+
+        chipsContainer.innerHTML = '';
+
+        if (sorted.length === 0) {
+            chipsContainer.style.display = 'none';
+            if (emptyEl) emptyEl.style.display = 'flex';
+            return;
+        }
+
+        chipsContainer.style.display = 'flex';
+        if (emptyEl) emptyEl.style.display = 'none';
+
+        sorted.forEach(([name, count]) => {
+            const price = lastPrice[name];
+            const chip = document.createElement('button');
+            chip.className = 'quick-product-chip';
+            chip.type = 'button';
+            chip.title = `${count} venta${count !== 1 ? 's' : ''} registrada${count !== 1 ? 's' : ''}`;
+            chip.innerHTML = `${name}${price ? `<span class="chip-price">${formatCurrency(price)}</span>` : ''}`;
+
+            chip.addEventListener('click', () => {
+                // Find the first empty product input in the multi-item form
+                const inputs = document.querySelectorAll('.item-product-input');
+                let targetInput = null;
+                inputs.forEach(inp => {
+                    if (!targetInput && inp.value.trim() === '') targetInput = inp;
+                });
+                if (!targetInput) targetInput = inputs[inputs.length - 1];
+                if (!targetInput) return;
+
+                targetInput.value = name;
+                targetInput.dispatchEvent(new Event('input', { bubbles: true }));
+
+                // Also fill price if available
+                if (price) {
+                    const row = targetInput.closest('.item-row');
+                    if (row) {
+                        const amtInput = row.querySelector('.item-amount-input');
+                        if (amtInput && !amtInput.value) {
+                            amtInput.value = price.toFixed(2);
+                            amtInput.dispatchEvent(new Event('input', { bubbles: true }));
+                        }
+                    }
+                }
+
+                // Visual feedback
+                chip.style.background = 'var(--primary-light)';
+                chip.style.borderColor = 'var(--primary)';
+                chip.style.color = 'var(--primary)';
+                setTimeout(() => {
+                    chip.style.background = '';
+                    chip.style.borderColor = '';
+                    chip.style.color = '';
+                }, 600);
+
+                // Focus the input for UX
+                targetInput.focus();
+                showToast(`"${name}" agregado al formulario`);
+            });
+
+            chipsContainer.appendChild(chip);
+        });
+    };
+
+    // =============================================
+    // --- Monthly Projection ---
+    // =============================================
+    const updateMonthlyProjection = () => {
+        const projEl = document.getElementById('monthly-projection');
+        const projText = document.getElementById('monthly-projection-text');
+        if (!projEl || !projText) return;
+
+        // Collect all income across history (to compute daily average)
+        const allData = [...historyData, ...sales].filter(s => s.type !== 'expense');
+        if (allData.length === 0) {
+            projEl.style.display = 'none';
+            return;
+        }
+
+        // Group by date
+        const byDate = {};
+        allData.forEach(s => {
+            const key = new Date(s.timestamp).toISOString().split('T')[0];
+            byDate[key] = (byDate[key] || 0) + s.amount;
+        });
+
+        const days = Object.values(byDate);
+        if (days.length === 0) {
+            projEl.style.display = 'none';
+            return;
+        }
+
+        const avgPerDay = days.reduce((a, b) => a + b, 0) / days.length;
+        const now = new Date();
+        const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+        const projected = avgPerDay * daysInMonth;
+        const monthName = now.toLocaleDateString('es-ES', { month: 'long' });
+
+        projEl.style.display = 'flex';
+        projText.textContent = `Proyección de ${monthName}: ${formatCurrency(projected)} · Promedio ${formatCurrency(avgPerDay)}/día`;
     };
 
     // Run app
