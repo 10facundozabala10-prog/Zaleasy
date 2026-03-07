@@ -237,8 +237,18 @@
                             <div class="sec-metric-icon" style="background:rgba(232,67,147,0.1);color:var(--danger)">
                                 <i class="fa-solid fa-money-bill-wave"></i>
                             </div>
-                            <div class="sec-metric-body">
-                                <span class="sec-metric-label">Efectivo en Caja</span>
+                            <div class="sec-metric-body" style="width: 100%;">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                                    <span class="sec-metric-label">Efectivo en Caja
+                                        <button class="btn-icon" id="edit-cash-base"
+                                            title="Editar monto inicial en caja"
+                                            style="padding: 0; width: auto; height: auto; margin-left: 5px; background: none; border: none; cursor: pointer;">
+                                            <i class="fa-solid fa-pen"
+                                                style="font-size: 0.8rem; color: var(--text-muted);"></i>
+                                        </button>
+                                    </span>
+                                </div>
                                 <span class="sec-metric-value" id="val-cash">$0.00</span>
                             </div>
                         </div>

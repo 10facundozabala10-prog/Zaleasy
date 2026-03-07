@@ -60,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const goalProgressBar = document.getElementById('goal-progress-bar');
     const editGoalBtn = document.getElementById('edit-goal');
     const goalModal = document.getElementById('goal-modal');
+    const editCashBaseBtn = document.getElementById('edit-cash-base');
     const closeModalBtns = document.querySelectorAll('.close-modal, .close-modal-close');
     const saveGoalBtn = document.getElementById('save-goal');
     const newGoalInput = document.getElementById('new-goal');
@@ -114,6 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeCategoryFilter = ''; // for sales table category pill filter
     let alertThreshold = parseFloat(localStorage.getItem('alertThreshold')) || 0;
     let sessionStartTime = localStorage.getItem('sessionStartTime') || Date.now();
+    let cashBase = parseFloat(localStorage.getItem('cashBase')) || 0;
 
     // Type Toggle Elements
     const btnTypeIncome = document.getElementById('btn-type-income');
@@ -1601,6 +1603,24 @@ document.addEventListener('DOMContentLoaded', () => {
         goalModal.classList.add('active');
     });
 
+    if (editCashBaseBtn) {
+        editCashBaseBtn.addEventListener('click', () => {
+            const currentStr = cashBase.toFixed(2);
+            const newBaseStr = prompt('Ingresa el monto inicial (base) en caja hoy:', currentStr);
+            if (newBaseStr !== null) {
+                const parsed = parseFloat(newBaseStr.replace(',', '.').replace(/[^0-9.-]/g, ''));
+                if (!isNaN(parsed) && parsed >= 0) {
+                    cashBase = parsed;
+                    localStorage.setItem('cashBase', cashBase);
+                    updateSecondaryMetrics();
+                    showToast('Base de caja actualizada');
+                } else {
+                    alert('Por favor, ingresa un monto numérico válido.');
+                }
+            }
+        });
+    }
+
     closeModalBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             goalModal.classList.remove('active');
@@ -2048,6 +2068,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        // Calculate total cash expenses to show final cash
+        const cashExpenses = sales.filter(s => s.type === 'expense' && s.method === 'Efectivo').reduce((sum, s) => sum + s.amount, 0);
+        const cashFinal = cashBase + incomeMap['Efectivo'] - cashExpenses;
+
         let summaryHtml = Object.entries(incomeMap)
             .map(([method, amount]) => `
                 <div class="summary-item">
@@ -2062,8 +2086,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 <strong style="color: var(--danger);">-${formatCurrency(totalExpense)}</strong>
             </div>
             <div class="summary-item" style="background: var(--primary-light);">
-                <span>Neto</span>
+                <span>Neto de Hoy</span>
                 <strong style="color: var(--primary);">${formatCurrency(totalIncome - totalExpense)}</strong>
+            </div>
+            <div class="summary-item" style="background: var(--bg-hover); margin-top: 1rem;">
+                <span>Efectivo Final en Caja (Inc. Base)</span>
+                <strong style="color: var(--text-main);">${formatCurrency(cashFinal)}</strong>
             </div>
         `;
 
@@ -2468,7 +2496,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Efectivo en Caja
         const cashIn = incomes.filter(s => s.method === 'Efectivo').reduce((sum, s) => sum + s.amount, 0);
         const cashOut = expenses.filter(s => s.method === 'Efectivo').reduce((sum, s) => sum + s.amount, 0);
-        const cashOnHand = cashIn - cashOut;
+        const cashOnHand = cashBase + cashIn - cashOut;
 
         const elTicket = document.getElementById('val-ticket-avg');
         const elClients = document.getElementById('val-clients');
