@@ -487,6 +487,8 @@ document.addEventListener('DOMContentLoaded', () => {
         setupWeeklySummary();
         setupQuickProducts();
         updateMonthlyProjection();
+        updateSecondaryMetrics();
+        updateActivityFeed();
     };
 
     // --- Date & Greeting ---
@@ -1217,6 +1219,8 @@ document.addEventListener('DOMContentLoaded', () => {
         updateKPITrends();
         updatePeakHours();
         updateTopProduct();
+        updateSecondaryMetrics();
+        updateActivityFeed();
 
         // Animated counter for KPI numbers
         animateKPICounter(kpiRevenue, totalRevenue, true);
@@ -2437,6 +2441,92 @@ document.addEventListener('DOMContentLoaded', () => {
 
         projEl.style.display = 'flex';
         projText.textContent = `Proyección de ${monthName}: ${formatCurrency(projected)} · Promedio ${formatCurrency(avgPerDay)}/día`;
+    };
+
+    // --- Secondary Metrics ---
+    const updateSecondaryMetrics = () => {
+        const incomes = sales.filter(s => s.type !== 'expense');
+        const expenses = sales.filter(s => s.type === 'expense');
+
+        // Ticket Promedio
+        const totalRevenue = incomes.reduce((sum, s) => sum + s.amount, 0);
+        const uniqueGroups = new Set(incomes.map(s => s.groupId || s.timestamp));
+        const ticketAvg = uniqueGroups.size > 0 ? totalRevenue / uniqueGroups.size : 0;
+
+        // Clientes únicos
+        const clientSet = new Set();
+        incomes.forEach(s => {
+            const clientKey = (s.customerName && s.customerName.trim().toLowerCase()) || s.groupId || s.timestamp;
+            clientSet.add(clientKey);
+        });
+        const uniqueClients = clientSet.size;
+
+        // Margen Neto %
+        const totalExpenses = expenses.reduce((sum, s) => sum + s.amount, 0);
+        const margin = totalRevenue > 0 ? ((totalRevenue - totalExpenses) / totalRevenue) * 100 : 0;
+
+        // Efectivo en Caja
+        const cashIn = incomes.filter(s => s.method === 'Efectivo').reduce((sum, s) => sum + s.amount, 0);
+        const cashOut = expenses.filter(s => s.method === 'Efectivo').reduce((sum, s) => sum + s.amount, 0);
+        const cashOnHand = cashIn - cashOut;
+
+        const elTicket = document.getElementById('val-ticket-avg');
+        const elClients = document.getElementById('val-clients');
+        const elMargin = document.getElementById('val-margin');
+        const elCash = document.getElementById('val-cash');
+
+        if (elTicket) elTicket.textContent = formatCurrency(ticketAvg);
+        if (elClients) elClients.textContent = uniqueClients;
+        if (elMargin) elMargin.textContent = margin.toFixed(1) + '%';
+        if (elCash) elCash.textContent = formatCurrency(cashOnHand);
+    };
+
+    // --- Live Activity Feed ---
+    const updateActivityFeed = () => {
+        const feedList = document.getElementById('activity-feed-list');
+        const feedEmpty = document.getElementById('activity-feed-empty');
+        if (!feedList || !feedEmpty) return;
+
+        if (sales.length === 0) {
+            feedList.innerHTML = '';
+            feedEmpty.style.display = 'flex';
+            document.getElementById('activity-feed-count').textContent = '0 hoy';
+            return;
+        }
+
+        feedEmpty.style.display = 'none';
+        feedList.innerHTML = '';
+
+        // Take the last 6 transactions (most recent first)
+        const recentSales = [...sales].sort((a, b) => b.timestamp - a.timestamp).slice(0, 6);
+        document.getElementById('activity-feed-count').textContent = `${sales.length} hoy`;
+
+        recentSales.forEach(s => {
+            const isIncome = s.type !== 'expense';
+            const d = new Date(s.timestamp);
+            const timeStr = d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+
+            const item = document.createElement('div');
+            item.className = 'activity-item';
+
+            let NameText = s.product;
+            // If there's a customer, append it
+            if (s.customerName) {
+                NameText += ` <span style="font-weight:400; color:var(--text-muted); font-size:0.75rem;">(${s.customerName})</span>`;
+            }
+
+            item.innerHTML = `
+                <div class="activity-dot ${isIncome ? 'income' : 'expense'}"></div>
+                <div class="activity-info">
+                    <div class="activity-name" title="${s.product}">${NameText}</div>
+                    <div class="activity-time">${timeStr} • ${s.method}</div>
+                </div>
+                <div class="activity-amount ${isIncome ? 'income' : 'expense'}">
+                    ${isIncome ? '+' : '-'}${formatCurrency(s.amount)}
+                </div>
+            `;
+            feedList.appendChild(item);
+        });
     };
 
     // Run app

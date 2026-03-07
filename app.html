@@ -201,6 +201,49 @@
                         </div>
                     </div>
 
+                    <!-- Secondary Metrics Strip -->
+                    <div class="secondary-metrics-strip" id="secondary-metrics-strip">
+                        <div class="sec-metric" id="sec-ticket-avg">
+                            <div class="sec-metric-icon" style="background:rgba(124,111,240,0.1);color:var(--primary)">
+                                <i class="fa-solid fa-receipt"></i>
+                            </div>
+                            <div class="sec-metric-body">
+                                <span class="sec-metric-label">Ticket Promedio</span>
+                                <span class="sec-metric-value" id="val-ticket-avg">$0.00</span>
+                            </div>
+                        </div>
+                        <div class="sec-metric-divider"></div>
+                        <div class="sec-metric" id="sec-clients">
+                            <div class="sec-metric-icon" style="background:rgba(0,203,164,0.1);color:var(--success)">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                            <div class="sec-metric-body">
+                                <span class="sec-metric-label">Clientes Hoy</span>
+                                <span class="sec-metric-value" id="val-clients">0</span>
+                            </div>
+                        </div>
+                        <div class="sec-metric-divider"></div>
+                        <div class="sec-metric" id="sec-margin">
+                            <div class="sec-metric-icon" style="background:rgba(255,214,110,0.1);color:var(--warning)">
+                                <i class="fa-solid fa-percent"></i>
+                            </div>
+                            <div class="sec-metric-body">
+                                <span class="sec-metric-label">Margen Neto</span>
+                                <span class="sec-metric-value" id="val-margin">0%</span>
+                            </div>
+                        </div>
+                        <div class="sec-metric-divider"></div>
+                        <div class="sec-metric" id="sec-cash">
+                            <div class="sec-metric-icon" style="background:rgba(232,67,147,0.1);color:var(--danger)">
+                                <i class="fa-solid fa-money-bill-wave"></i>
+                            </div>
+                            <div class="sec-metric-body">
+                                <span class="sec-metric-label">Efectivo en Caja</span>
+                                <span class="sec-metric-value" id="val-cash">$0.00</span>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Goal & Chart (new row) -->
                     <div class="charts-row" style="grid-template-columns: 1fr 1fr 1fr 1fr 1fr;">
                         <div class="card goal-card">
@@ -267,8 +310,8 @@
                         </div>
                     </div>
 
-                    <!-- Weekly Summary + Quick Products Row -->
-                    <div class="charts-row" style="grid-template-columns: 2fr 1fr; grid-column: 1 / -1;">
+                    <!-- Weekly Summary + Quick Products + Activity Feed Row -->
+                    <div class="charts-row" style="grid-template-columns: 2fr 1fr 1.2fr; grid-column: 1 / -1;">
                         <!-- Weekly Bar Chart Widget -->
                         <div class="card weekly-summary-card">
                             <div class="card-header">
@@ -301,7 +344,23 @@
                                 <p>Aún no hay productos registrados.</p>
                             </div>
                         </div>
+                        <!-- Live Activity Feed Widget -->
+                        <div class="card activity-feed-card">
+                            <div class="card-header">
+                                <h2><i class="fa-solid fa-bolt-lightning"
+                                        style="color:var(--success);margin-right:.4rem;"></i>Actividad Reciente</h2>
+                                <span class="badge" id="activity-feed-count">0 hoy</span>
+                            </div>
+                            <div id="activity-feed-list" class="activity-feed-list">
+                                <!-- Rendered by JS -->
+                            </div>
+                            <div id="activity-feed-empty" class="activity-feed-empty">
+                                <i class="fa-regular fa-clock"></i>
+                                <p>Sin actividad aún hoy</p>
+                            </div>
+                        </div>
                     </div>
+
 
                     <!-- Notepad Widget (full-width row) -->
                     <div class="card notepad-card" style="grid-column: 1 / -1;">
