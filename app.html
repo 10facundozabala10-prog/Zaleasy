@@ -16,7 +16,7 @@
     <!-- Firebase SDK (Version 10) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics.js";
 
         const firebaseConfig = {
@@ -39,6 +39,8 @@
         window.firebaseSignIn = signInWithPopup;
         window.firebaseSignOut = signOut;
         window.firebaseOnAuth = onAuthStateChanged;
+        window.firebaseSignInWithEmail = signInWithEmailAndPassword;
+        window.firebaseCreateUserWithEmail = createUserWithEmailAndPassword;
     </script>
 </head>
 
@@ -56,8 +58,38 @@
             </div>
             <p class="auth-subtitle">Inicia sesión para gestionar tus ventas en la nube.</p>
 
-            <button id="btn-google-login" class="btn btn-primary btn-block auth-btn">
-                <i class="fa-brands fa-google"></i> Continuar con Google
+            <form id="email-auth-form" style="display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1rem;">
+                <div class="input-wrapper" style="margin-bottom: 0;">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" id="auth-email" placeholder="Correo electrónico" required
+                        style="padding-left: 2.5rem; width: 100%;">
+                </div>
+                <div class="input-wrapper" style="margin-bottom: 0;">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="auth-password" placeholder="Contraseña" required
+                        style="padding-left: 2.5rem; width: 100%;">
+                </div>
+                <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                    <button type="submit" id="btn-email-login" class="btn btn-primary btn-block auth-btn"
+                        style="flex: 1;">
+                        Iniciar Sesión
+                    </button>
+                    <button type="button" id="btn-email-register" class="btn btn-outline btn-block auth-btn"
+                        style="flex: 1; margin: 0;">
+                        Registrarse
+                    </button>
+                </div>
+            </form>
+
+            <div style="display: flex; align-items: center; margin: 1rem 0;">
+                <hr style="flex: 1; border: none; border-top: 1px solid var(--border-color);">
+                <span style="padding: 0 0.8rem; color: var(--text-muted); font-size: 0.9rem;">o</span>
+                <hr style="flex: 1; border: none; border-top: 1px solid var(--border-color);">
+            </div>
+
+            <button id="btn-google-login" class="btn btn-outline btn-block auth-btn"
+                style="border-color: var(--border-color); color: var(--text-main);">
+                <i class="fa-brands fa-google" style="color: #4285F4;"></i> Continuar con Google
             </button>
             <p class="auth-note"><i class="fa-solid fa-shield-halved"></i> Acceso seguro y cifrado</p>
         </div>

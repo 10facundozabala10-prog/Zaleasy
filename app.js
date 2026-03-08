@@ -859,6 +859,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Firebase Auth ---
     const setupAuth = () => {
+        const emailAuthForm = document.getElementById('email-auth-form');
+        const authEmailInput = document.getElementById('auth-email');
+        const authPasswordInput = document.getElementById('auth-password');
+        const btnEmailRegister = document.getElementById('btn-email-register');
+
         // Fallback for visual testing if Firebase script is commented out or missing
         if (!window.firebaseAuth) {
             console.log("Firebase no configurado aún. Mostrando UI Demo.");
@@ -869,6 +874,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 mainApp.style.display = 'flex';
                 showToast('Modo de Prueba (Sin Nube)');
             });
+
+            if (emailAuthForm) {
+                emailAuthForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    authScreen.style.display = 'none';
+                    mainApp.style.display = 'flex';
+                    showToast('Modo de Prueba (Email) (Sin Nube)');
+                });
+            }
+            if (btnEmailRegister) {
+                btnEmailRegister.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    authScreen.style.display = 'none';
+                    mainApp.style.display = 'flex';
+                    showToast('Modo de Prueba (Registro) (Sin Nube)');
+                });
+            }
 
             userProfileBtn.addEventListener('click', () => {
                 if (confirm('¿Cerrar sesión de prueba?')) {
@@ -900,7 +922,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (daysLeft > 0) {
                     trialTitle.innerText = "¡Suscripción / Prueba!";
                     trialTitle.style.color = "white";
-                    trialText.innerHTML = `Tienes <strong>${daysLeft} días</strong> restantes de prueba gratuita en tu cuenta de Google. Adquiere tu licencia Mensual para uso continuo.`;
+                    trialText.innerHTML = `Tienes <strong>${daysLeft} días</strong> restantes de prueba gratuita. Adquiere tu licencia Mensual para uso continuo.`;
                     btnContinueTrial.style.display = 'inline-flex';
                 } else {
                     trialTitle.innerText = "Prueba Expirada";
@@ -913,8 +935,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 btnContinueTrial.onclick = () => {
                     trialScreen.style.display = 'none';
                     mainApp.style.display = 'flex';
-                    userAvatar.src = user.photoURL || "https://ui-avatars.com/api/?name=Admin&background=0D8ABC&color=fff";
-                    showToast(`Bienvenid@, ${user.displayName.split(' ')[0]}`);
+                    userAvatar.src = user.photoURL || "https://ui-avatars.com/api/?name=" + (user.displayName || "User") + "&background=0D8ABC&color=fff";
+                    showToast(`Bienvenid@, ${user.displayName ? user.displayName.split(' ')[0] : (user.email ? user.email.split('@')[0] : 'Usuario')}`);
                 };
 
                 // Logout from interceptor
@@ -939,16 +961,54 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     let errorMsg = "Error en el inicio de sesión.\n\n";
                     if (window.location.protocol === 'file:') {
-                        errorMsg += "⚠️ IMPORTANTE: Estás abriendo el archivo localmente (file:///). Firebase requiere que uses un servidor local (como Live Server en VSCode) o que la página esté subida a internet para que el login de Google funcione por motivos de seguridad.\n\n";
+                        errorMsg += "⚠️ IMPORTANTE: Estás abriendo el archivo localmente (file:///). Firebase requiere que uses un servidor local o que la página esté subida a internet para que el login de Google funcione.\n\n";
                     } else {
                         errorMsg += "Asegúrate de haber 'Habilitado' Google en la pestaña Authentication de tu consola de Firebase.\n\n";
                     }
                     errorMsg += "Detalle técnico: " + error.message;
 
                     alert(errorMsg);
-                    btnGoogleLogin.innerHTML = '<i class="fa-brands fa-google"></i> Continuar con Google';
+                    btnGoogleLogin.innerHTML = '<i class="fa-brands fa-google" style="color: #4285F4;"></i> Continuar con Google';
                 });
         });
+
+        if (emailAuthForm) {
+            emailAuthForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = authEmailInput.value;
+                const password = authPasswordInput.value;
+                const btnOriginalText = document.getElementById('btn-email-login').innerHTML;
+                document.getElementById('btn-email-login').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Iniciando...';
+
+                window.firebaseSignInWithEmail(window.firebaseAuth, email, password)
+                    .catch((error) => {
+                        console.error("Error en login por email:", error);
+                        alert("Error al iniciar sesión: " + error.message);
+                        document.getElementById('btn-email-login').innerHTML = btnOriginalText;
+                    });
+            });
+        }
+
+        if (btnEmailRegister) {
+            btnEmailRegister.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (!emailAuthForm.checkValidity()) {
+                    emailAuthForm.reportValidity();
+                    return;
+                }
+                const email = authEmailInput.value;
+                const password = authPasswordInput.value;
+                const btnOriginalText = btnEmailRegister.innerHTML;
+                btnEmailRegister.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Registrando...';
+
+                window.firebaseCreateUserWithEmail(window.firebaseAuth, email, password)
+                    .catch((error) => {
+                        console.error("Error en registro por email:", error);
+                        alert("Error al registrar: " + error.message);
+                        btnEmailRegister.innerHTML = btnOriginalText;
+                    });
+            });
+        }
 
         userProfileBtn.addEventListener('click', () => {
             if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
