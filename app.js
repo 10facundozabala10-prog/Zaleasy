@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const clearSalesBtn = document.getElementById('clear-sales');
 
     // Close Register Elements
+    const btnShareSummary = document.getElementById('btn-share-summary');
     const btnCloseRegister = document.getElementById('btn-close-register');
     const closeRegisterModal = document.getElementById('close-modal');
     const closeSummaryGrid = document.getElementById('close-summary-grid');
@@ -2147,6 +2148,50 @@ document.addEventListener('DOMContentLoaded', () => {
             calcChangeDisplay.style.color = 'var(--danger)';
         }
     });
+
+    // --- Share Daily Summary Logic ---
+    if (btnShareSummary) {
+        btnShareSummary.addEventListener('click', () => {
+            if (sales.length === 0) {
+                alert('No hay movimientos registrados hoy para compartir. Añade alguna venta primero.');
+                return;
+            }
+
+            const income = sales.filter(s => s.type !== 'expense').reduce((sum, s) => sum + s.amount, 0);
+            const expense = sales.filter(s => s.type === 'expense').reduce((sum, s) => sum + s.amount, 0);
+            const count = sales.filter(s => s.type !== 'expense').length;
+            const net = income - expense;
+            const cashExpenses = sales.filter(s => s.type === 'expense' && s.method === 'Efectivo').reduce((sum, s) => sum + s.amount, 0);
+            const cashIncome = sales.filter(s => s.type !== 'expense' && s.method === 'Efectivo').reduce((sum, s) => sum + s.amount, 0);
+            const cashFinal = cashBase + cashIncome - cashExpenses;
+
+            const d = new Date();
+            const dateStr = d.toLocaleDateString('es-ES');
+
+            let text = `📊 *Resumen Diario - ${storeName}*\n`;
+            text += `📅 Fecha: ${dateStr}\n\n`;
+            text += `💰 *Ingresos de Ventas:* ${formatCurrency(income)}\n`;
+            text += `💸 *Gastos del Día:* ${formatCurrency(expense)}\n`;
+            text += `📈 *Balance Neto:* ${formatCurrency(net)}\n`;
+            text += `💵 *Efectivo Final en Caja:* ${formatCurrency(cashFinal)}\n\n`;
+            text += `🛍️ *Ventas Totales:* ${count}\n\n`;
+            text += `🚀 Control Diario Zaleasy`;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: `Resumen de Ventas - ${dateStr}`,
+                    text: text
+                }).catch(err => {
+                    console.warn('Share error:', err);
+                    const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+                    window.open(url, '_blank');
+                });
+            } else {
+                const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+                window.open(url, '_blank');
+            }
+        });
+    }
 
     // --- Close Register Logic ---
     btnCloseRegister.addEventListener('click', () => {
