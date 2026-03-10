@@ -70,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const receiptModal = document.getElementById('receipt-modal');
     const receiptBody = document.getElementById('receipt-body');
     const btnPrintReceipt = document.getElementById('btn-print-receipt');
+    const btnWhatsappReceipt = document.getElementById('btn-whatsapp-receipt');
 
     // Auth Elements
     const authScreen = document.getElementById('auth-screen');
@@ -2058,8 +2059,47 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // --- WhatsApp Receipt ---
+    const sendWhatsAppReceipt = () => {
+        if (!currentReceiptSale) return;
+        const groupItems = currentReceiptGroup.length > 0 ? currentReceiptGroup : [currentReceiptSale];
+        const repr = groupItems[0];
+        const d = new Date(repr.timestamp);
+        const dateStr = d.toLocaleDateString('es-ES');
+        const timeStr = d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+        const totalAmount = groupItems.reduce((sum, s) => sum + s.amount, 0);
+        const amountFormatted = formatCurrency(totalAmount);
+
+        let text = `🧾 *Recibo de ${storeName}*\n`;
+        text += `Fecha: ${dateStr} ${timeStr}\n\n`;
+
+        if (groupItems.length > 1) {
+            text += `*Detalle de compra:*\n`;
+            groupItems.forEach(it => {
+                text += `• ${it.product}: ${formatCurrency(it.amount)}\n`;
+            });
+            text += `\n*TOTAL: ${amountFormatted}*\n`;
+        } else {
+            text += `*Descripción:* ${repr.product}\n`;
+            text += `*Monto:* ${amountFormatted}\n`;
+        }
+
+        text += `\nMétodo de Pago: ${repr.method}\n`;
+        if (repr.customerName) text += `Cliente: ${repr.customerName}\n`;
+        if (repr.notes) text += `Notas: ${repr.notes}\n`;
+
+        text += `\n¡Gracias por elegirnos!`;
+
+        const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+        window.open(url, '_blank');
+    };
+
     if (btnPrintReceipt) {
         btnPrintReceipt.addEventListener('click', printReceipt);
+    }
+
+    if (btnWhatsappReceipt) {
+        btnWhatsappReceipt.addEventListener('click', sendWhatsAppReceipt);
     }
 
 
