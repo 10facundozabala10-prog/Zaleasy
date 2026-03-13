@@ -125,7 +125,14 @@
             <div class="brand">
                 <img src="assets/logo.png" alt="Zaleasy Logo"
                     style="height: 38px; border-radius: 20%; margin-right: 0.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
-                <h2 id="sidebar-brand-name">Zaleasy</h2>
+                <div style="display: flex; align-items: center; gap: 0.4rem; overflow: hidden;">
+                    <h2 id="sidebar-brand-name"
+                        style="margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Zaleasy</h2>
+                    <button class="btn-icon" id="edit-sidebar-brand" title="Editar Nombre del Negocio"
+                        style="padding: 0; width: auto; height: auto; background: none; border: none; cursor: pointer;">
+                        <i class="fa-solid fa-pen" style="font-size: 0.8rem; color: var(--text-muted);"></i>
+                    </button>
+                </div>
             </div>
 
             <nav class="nav-menu">

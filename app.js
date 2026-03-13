@@ -418,6 +418,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    const editSidebarBrandBtn = document.getElementById('edit-sidebar-brand');
+    if (editSidebarBrandBtn) {
+        editSidebarBrandBtn.addEventListener('click', () => {
+            const newName = prompt('Ingresa el nuevo nombre de tu negocio/proyecto:', storeName);
+            if (newName !== null && newName.trim() !== '') {
+                storeName = newName.trim();
+                localStorage.setItem('storeName', storeName);
+                document.getElementById('sidebar-brand-name').innerText = storeName;
+                configStoreNameInput.value = storeName;
+                showToast('Nombre del negocio actualizado');
+            }
+        });
+    }
+
     document.getElementById('btn-save-config-goal').addEventListener('click', () => {
         const val = parseFloat(configDailyGoalInput.value);
         if (!isNaN(val) && val > 0) {
