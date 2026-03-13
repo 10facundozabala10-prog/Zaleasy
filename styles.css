@@ -1119,6 +1119,12 @@ select:focus {
 @media (max-width: 768px) {
     .sidebar {
         transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
     }
 
     .main-content {
@@ -1128,6 +1134,60 @@ select:focus {
 
     .kpi-cards {
         grid-template-columns: 1fr;
+    }
+
+    .hide-desktop {
+        display: block !important;
+    }
+
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        z-index: 90;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .sidebar-overlay.active {
+        display: block;
+        opacity: 1;
+    }
+
+    .top-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1rem 0;
+    }
+
+    .header-right {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .item-row-fields {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto;
+        gap: 0;
+    }
+
+    .item-field-desc,
+    .item-field-amount,
+    .item-field-cat {
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .item-remove-btn {
+        width: 100%;
+        padding: 0.8rem;
+        background: rgba(232, 67, 147, 0.05);
     }
 }
 

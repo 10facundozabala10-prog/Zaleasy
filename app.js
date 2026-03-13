@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Navigation Logic ---
-    const switchView = (targetId, title) => {
+    let switchView = (targetId, title) => {
         // Update active class on nav
         allNavItems.forEach(item => item.classList.remove('active'));
         document.getElementById(targetId).classList.add('active');
@@ -206,6 +206,31 @@ document.addEventListener('DOMContentLoaded', () => {
     navHistorial.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-historial'); });
     navReportes.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-reportes'); });
     navConfig.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-config', 'Configuraci\u00f3n de Empresa'); });
+
+    // --- Mobile Menu Toggle ---
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const sidebar = document.querySelector('.sidebar');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+    const toggleSidebar = () => {
+        sidebar.classList.toggle('active');
+        sidebarOverlay.classList.toggle('active');
+    };
+
+    const closeSidebar = () => {
+        sidebar.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+    };
+
+    if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', toggleSidebar);
+    if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
+
+    // Patch switchView to also close sidebar on mobile
+    const originalSwitchView = switchView;
+    switchView = (targetId, title) => {
+        originalSwitchView(targetId, title);
+        closeSidebar();
+    };
 
     // --- Reports Chart Instances ---
     let repWeeklyChartInstance = null;

@@ -120,6 +120,8 @@
         </div>
     </div>
     <div class="app-container" id="main-app" style="display: none;">
+        <!-- Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="brand">
@@ -169,6 +171,10 @@
         <main class="main-content">
             <header class="top-header">
                 <div class="header-left">
+                    <button id="mobile-menu-btn" class="btn-icon hide-desktop"
+                        style="display: none; font-size: 1.2rem; color: var(--text-main); margin-right: 0.5rem; background: none; border: none; padding: 0;">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
                     <h1 id="dynamic-greeting">Dashboard de Ventas</h1>
                     <div style="display:flex; align-items:center; gap:1rem;">
                         <p id="current-date">Cargando fecha...</p>
