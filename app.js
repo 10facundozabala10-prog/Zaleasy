@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
     navDashboard.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-dashboard'); });
     navHistorial.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-historial'); });
     navReportes.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-reportes'); });
-    navConfig.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-config', 'Configuración de Empresa'); });
+    navConfig.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-config', 'Configuraci\u00f3n de Empresa'); });
 
     // --- Reports Chart Instances ---
     let repWeeklyChartInstance = null;
@@ -303,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- Category Chart ---
         const catMap = {};
         incomes.forEach(s => {
-            const cat = s.category || 'Sin categoría';
+            const cat = s.category || 'Sin categor\u00eda';
             catMap[cat] = (catMap[cat] || 0) + s.amount;
         });
         const catLabels = Object.keys(catMap);
@@ -429,8 +429,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('btn-factory-reset').addEventListener('click', () => {
-        if (confirm('¿ESTÁS COMPLETAMENTE SEGURO? Esto borrará tu cuenta, tu historial, tus configuraciones y todos tus datos registrados. La aplicación volverá a quedar como recién instalada.')) {
-            if (confirm('ÚLTIMA ADVERTENCIA: Esta acción es final e irreversible. ¿Ejecutar borrado y reiniciar sistema?')) {
+        if (confirm('\u00bfEST\u00c1S COMPLETAMENTE SEGURO? Esto borrar\u00e1 tu cuenta, tu historial, tus configuraciones y todos tus datos registrados. La aplicaci\u00f3n volver\u00e1 a quedar como reci\u00e9n instalada.')) {
+            if (confirm('\u00daLTIMA ADVERTENCIA: Esta acci\u00f3n es final e irreversible. \u00bfEjecutar borrado y reiniciar sistema?')) {
                 localStorage.clear();
                 window.location.reload();
             }
@@ -502,11 +502,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const currentHour = new Date().getHours();
         if (currentHour < 12) {
-            greetingEl.innerHTML = '¡Buenos días! ☀️';
+            greetingEl.innerHTML = '\u00a1Buenos d\u00edas! ☀️';
         } else if (currentHour < 19) {
-            greetingEl.innerHTML = '¡Buenas tardes! 🌤️';
+            greetingEl.innerHTML = '\u00a1Buenas tardes! 🌤️';
         } else {
-            greetingEl.innerHTML = '¡Buenas noches! 🌙';
+            greetingEl.innerHTML = '\u00a1Buenas noches! 🌙';
         }
     };
 
@@ -579,7 +579,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const incomes = sales.filter(s => s.type !== 'expense');
         if (incomes.length === 0) {
-            nameEl.textContent = 'Sin ventas aún';
+            nameEl.textContent = 'Sin ventas a\u00fan';
             amountEl.textContent = '$0.00';
             countEl.textContent = '—';
             return;
@@ -638,7 +638,7 @@ document.addEventListener('DOMContentLoaded', () => {
             subtitle.textContent = `Tu hora pico es a las ${peakHour}:00 hs`;
         } else {
             badge.textContent = '—';
-            subtitle.textContent = 'Registra ventas para ver tu hora más activa.';
+            subtitle.textContent = 'Registra ventas para ver tu hora m\u00e1s activa.';
         }
     };
 
@@ -720,7 +720,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </select>
                     </div>
                 </div>
-                <button type="button" class="item-remove-btn" title="Eliminar ítem" ${isFirst ? 'style="visibility:hidden;"' : ''}>
+                <button type="button" class="item-remove-btn" title="Eliminar \u00edtem" ${isFirst ? 'style="visibility:hidden;"' : ''}>
                     <i class="fa-solid fa-circle-xmark"></i>
                 </button>
             </div>
@@ -868,7 +868,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Fallback for visual testing if Firebase script is commented out or missing
         if (!window.firebaseAuth) {
-            console.log("Firebase no configurado aún. Mostrando UI Demo.");
+            console.log("Firebase no configurado a\u00fan. Mostrando UI Demo.");
 
             btnGoogleLogin.addEventListener('click', () => {
                 // Simulate login
@@ -895,7 +895,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             userProfileBtn.addEventListener('click', () => {
-                if (confirm('¿Cerrar sesión de prueba?')) {
+                if (confirm('\u00bfCerrar sesi\u00f3n de prueba?')) {
                     mainApp.style.display = 'none';
                     authScreen.style.display = 'flex';
                 }
@@ -911,7 +911,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (trialScreen) trialScreen.style.display = 'none';
                 mainApp.style.display = 'flex';
                 userAvatar.src = user.photoURL || "https://ui-avatars.com/api/?name=" + (user.displayName || "User") + "&background=6c5ce7&color=fff";
-                showToast(`¡Bienvenid@, ${user.displayName ? user.displayName.split(' ')[0] : (user.email ? user.email.split('@')[0] : 'Usuario')}! 🚀`);
+                showToast(`\u00a1Bienvenid@, ${user.displayName ? user.displayName.split(' ')[0] : (user.email ? user.email.split('@')[0] : 'Usuario')}! 🚀`);
             } else {
                 // Logged out
                 mainApp.style.display = 'none';
@@ -926,13 +926,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 .catch((error) => {
                     console.error("Error logging in:", error);
 
-                    let errorMsg = "Error en el inicio de sesión.\n\n";
+                    let errorMsg = "Error en el inicio de sesi\u00f3n.\n\n";
                     if (window.location.protocol === 'file:') {
-                        errorMsg += "⚠️ IMPORTANTE: Estás abriendo el archivo localmente (file:///). Firebase requiere que uses un servidor local o que la página esté subida a internet para que el login de Google funcione.\n\n";
+                        errorMsg += "⚠️ IMPORTANTE: Est\u00e1s abriendo el archivo localmente (file:///). Firebase requiere que uses un servidor local o que la p\u00e1gina est\u00e9 subida a internet para que el login de Google funcione.\n\n";
                     } else {
-                        errorMsg += "Asegúrate de haber 'Habilitado' Google en la pestaña Authentication de tu consola de Firebase.\n\n";
+                        errorMsg += "Aseg\u00farate de haber 'Habilitado' Google en la pesta\u00f1a Authentication de tu consola de Firebase.\n\n";
                     }
-                    errorMsg += "Detalle técnico: " + error.message;
+                    errorMsg += "Detalle t\u00e9cnico: " + error.message;
 
                     alert(errorMsg);
                     btnGoogleLogin.innerHTML = '<i class="fa-brands fa-google" style="color: #4285F4;"></i> Continuar con Google';
@@ -950,7 +950,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.firebaseSignInWithEmail(window.firebaseAuth, email, password)
                     .catch((error) => {
                         console.error("Error en login por email:", error);
-                        alert("Error al iniciar sesión: " + error.message);
+                        alert("Error al iniciar sesi\u00f3n: " + error.message);
                         document.getElementById('btn-email-login').innerHTML = btnOriginalText;
                     });
             });
@@ -978,7 +978,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         userProfileBtn.addEventListener('click', () => {
-            if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+            if (confirm('\u00bfEst\u00e1s seguro de que deseas cerrar sesi\u00f3n?')) {
                 window.firebaseSignOut(window.firebaseAuth);
             }
         });
@@ -1094,16 +1094,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         streakCount.textContent = streak;
         if (streak === 0) {
-            streakSubtitle.textContent = '¡Registra una venta hoy para comenzar!';
+            streakSubtitle.textContent = '\u00a1Registra una venta hoy para comenzar!';
             streakBadge.textContent = '💤';
         } else if (streak < 3) {
-            streakSubtitle.textContent = '¡Buen comienzo! Sigue así.';
+            streakSubtitle.textContent = '\u00a1Buen comienzo! Sigue as\u00ed.';
             streakBadge.textContent = '🔥';
         } else if (streak < 7) {
-            streakSubtitle.textContent = `¡${streak} días seguidos! Imparable.`;
+            streakSubtitle.textContent = `\u00a1${streak} d\u00edas seguidos! Imparable.`;
             streakBadge.textContent = '🔥🔥';
         } else {
-            streakSubtitle.textContent = `¡Racha legen-daria de ${streak} días!`;
+            streakSubtitle.textContent = `\u00a1Racha legen-daria de ${streak} d\u00edas!`;
             streakBadge.textContent = '🏆';
         }
     };
@@ -1235,7 +1235,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!goalReachedNotified) {
                 goalReachedNotified = true;
                 fireConfetti();
-                showToast('🎉 ¡Meta del día alcanzada! Excelente trabajo.');
+                showToast('🎉 \u00a1Meta del d\u00eda alcanzada! Excelente trabajo.');
             }
         } else {
             goalProgressBar.style.background = 'linear-gradient(90deg, var(--primary), var(--success))';
@@ -1328,7 +1328,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <button class="btn-icon btn-receipt-sale" data-id="${sale.id}" title="Ver Recibo" style="color: var(--primary); opacity: 0.8; margin-right:4px;">
                             <i class="fa-solid fa-receipt"></i>
                         </button>
-                        <button class="btn-icon btn-delete-sale" data-id="${sale.id}" title="Eliminar Transacción" style="color: var(--danger); opacity: 0.7;">
+                        <button class="btn-icon btn-delete-sale" data-id="${sale.id}" title="Eliminar Transacci\u00f3n" style="color: var(--danger); opacity: 0.7;">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>
@@ -1349,12 +1349,12 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.btn-delete-sale').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const idToRemove = parseInt(e.currentTarget.getAttribute('data-id'));
-                    if (confirm('¿Estás seguro de que deseas eliminar este movimiento individual?')) {
+                    if (confirm('\u00bfEst\u00e1s seguro de que deseas eliminar este movimiento individual?')) {
                         sales = sales.filter(s => s.id !== idToRemove);
                         localStorage.setItem('dailySales', JSON.stringify(sales));
                         renderSales();
                         updateKPIs();
-                        showToast('Transacción eliminada correctamente.');
+                        showToast('Transacci\u00f3n eliminada correctamente.');
                     }
                 });
             });
@@ -1439,7 +1439,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.btn-delete-history').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const idToRemove = parseInt(e.currentTarget.getAttribute('data-id'));
-                    if (confirm('¿Estás SEGURO de eliminar este registro del historial general?')) {
+                    if (confirm('\u00bfEst\u00e1s SEGURO de eliminar este registro del historial general?')) {
                         historyData = historyData.filter(h => h.id !== idToRemove);
                         localStorage.setItem('allHistoryData', JSON.stringify(historyData));
                         renderHistory();
@@ -1464,7 +1464,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     historyClearAll.addEventListener('click', () => {
         if (historyData.length === 0) return;
-        if (confirm('ALERTA: Vas a limpiar absolutamente TODO EL HISTORIAL MUNDIAL. Esta acción no se puede recuperar nunca. ¿Continuar?')) {
+        if (confirm('ALERTA: Vas a limpiar absolutamente TODO EL HISTORIAL MUNDIAL. Esta acci\u00f3n no se puede recuperar nunca. \u00bfContinuar?')) {
             historyData = [];
             localStorage.setItem('allHistoryData', JSON.stringify(historyData));
             renderHistory();
@@ -1478,7 +1478,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        let csvContent = "Fecha,Hora,Descripción,Tipo,Método,Monto\n";
+        let csvContent = "Fecha,Hora,Descripci\u00f3n,Tipo,M\u00e9todo,Monto\n";
         historyData.forEach(sale => {
             const d = new Date(sale.timestamp);
             const dateStr = d.toLocaleDateString('es-ES');
@@ -1499,7 +1499,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        showToast('Exportación Global Descargada');
+        showToast('Exportaci\u00f3n Global Descargada');
     });
 
     // --- Event Listeners ---
@@ -1552,7 +1552,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (hasError || itemsToAdd.length === 0) {
-            showToast('\u26a0\ufe0f Revisá los ítems: descripción y monto son obligatorios.');
+            showToast('\u26a0\ufe0f Revis\u00e1 los \u00edtems: descripci\u00f3n y monto son obligatorios.');
             return;
         }
 
@@ -1601,7 +1601,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateMonthlyProjection();
 
         const label = itemsToAdd.length > 1
-            ? `\u2705 ${itemsToAdd.length} ítems registrados por ${formatCurrency(totalAdded)}`
+            ? `\u2705 ${itemsToAdd.length} \u00edtems registrados por ${formatCurrency(totalAdded)}`
             : `Venta de ${formatCurrency(totalAdded)} registrada!`;
         showToast(label);
 
@@ -1615,7 +1615,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     clearSalesBtn.addEventListener('click', () => {
         if (sales.length === 0) return;
-        if (confirm('¿Estás seguro de que deseas limpiar todo el historial de ventas del día? Esta acción no se puede deshacer.')) {
+        if (confirm('\u00bfEst\u00e1s seguro de que deseas limpiar todo el historial de ventas del d\u00eda? Esta acci\u00f3n no se puede deshacer.')) {
             sales = [];
             localStorage.setItem('dailySales', JSON.stringify(sales));
             renderSales();
@@ -1642,7 +1642,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     updateSecondaryMetrics();
                     showToast('Base de caja actualizada');
                 } else {
-                    alert('Por favor, ingresa un monto numérico válido.');
+                    alert('Por favor, ingresa un monto num\u00e9rico v\u00e1lido.');
                 }
             }
         });
@@ -1714,7 +1714,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const amount = parseFloat(editAmountInput.value);
 
             if (!product || isNaN(amount) || amount <= 0) {
-                alert('Por favor, ingresa datos válidos.');
+                alert('Por favor, ingresa datos v\u00e1lidos.');
                 return;
             }
 
@@ -1740,7 +1740,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             editModal.classList.remove('active');
-            showToast('✅ Transacción actualizada correctamente.');
+            showToast('✅ Transacci\u00f3n actualizada correctamente.');
         });
     };
 
@@ -1779,7 +1779,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Build items rows
         const itemsHtml = isMulti ? `
             <div style="margin-bottom:.5rem;">
-                <span style="color:var(--text-muted); font-size:.85rem;">Ítems</span>
+                <span style="color:var(--text-muted); font-size:.85rem;">\u00cdtems</span>
             </div>
             <div style="background:var(--bg-hover); border-radius:8px; padding:.6rem .8rem; margin-bottom:.5rem;">
                 ${groupItems.map(it => `
@@ -1791,7 +1791,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         ` : `
             <div style="display:flex; justify-content:space-between;">
-                <span style="color:var(--text-muted);">Descripción</span>
+                <span style="color:var(--text-muted);">Descripci\u00f3n</span>
                 <strong>${repr.product}</strong>
             </div>
         `;
@@ -1800,12 +1800,12 @@ document.addEventListener('DOMContentLoaded', () => {
             <div style="text-align:center; margin-bottom:1.5rem; padding-bottom:1rem; border-bottom:2px dashed var(--border-color);">
                 <p style="font-size:1.5rem; margin-bottom:.3rem;">${isExpense ? '💸' : '💰'}</p>
                 <h3 style="font-size:1.5rem; color:${amountColor};">${sign}${formatCurrency(totalAmount)}</h3>
-                <p style="color:var(--text-muted); font-size:.9rem; margin-top:.3rem;">${typeLabel}${isMulti ? ` · ${groupItems.length} ítems` : ''}</p>
+                <p style="color:var(--text-muted); font-size:.9rem; margin-top:.3rem;">${typeLabel}${isMulti ? ` · ${groupItems.length} \u00edtems` : ''}</p>
             </div>
             <div style="display:flex; flex-direction:column; gap:.8rem;">
                 ${itemsHtml}
                 <div style="display:flex; justify-content:space-between;">
-                    <span style="color:var(--text-muted);">Método de Pago</span>
+                    <span style="color:var(--text-muted);">M\u00e9todo de Pago</span>
                     <span style="background:rgba(108,92,231,0.15);color:#6c5ce7;padding:.2rem .6rem;border-radius:20px;font-size:.75rem;font-weight:600;">${repr.method}</span>
                 </div>
                 <div style="display:flex; justify-content:space-between;">
@@ -1859,7 +1859,7 @@ document.addEventListener('DOMContentLoaded', () => {
             : '';
         // Build items section for print
         const itemsSection = isMulti ? `
-            <tr><td colspan="2" style="padding:.8rem 0 .3rem;"><strong style="font-size:.85rem;color:#636e72;text-transform:uppercase;letter-spacing:.05em;">Detalle de ítems</strong></td></tr>
+            <tr><td colspan="2" style="padding:.8rem 0 .3rem;"><strong style="font-size:.85rem;color:#636e72;text-transform:uppercase;letter-spacing:.05em;">Detalle de \u00edtems</strong></td></tr>
             ${groupItems.map(it => `
                 <tr>
                     <td style="padding:.45rem 0; font-size:.9rem;">• ${it.product}</td>
@@ -1868,7 +1868,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `).join('')}
             <tr><td colspan="2"><hr style="border:none;border-top:1px dashed #dfe6e9;margin:.2rem 0;"></td></tr>
         ` : `
-            <tr><td style="color:#636e72;padding:.6rem 0;">Descripción</td><td style="text-align:right;padding:.6rem 0;">${repr.product}</td></tr>
+            <tr><td style="color:#636e72;padding:.6rem 0;">Descripci\u00f3n</td><td style="text-align:right;padding:.6rem 0;">${repr.product}</td></tr>
         `;
 
         const printHtml = `<!DOCTYPE html>
@@ -1979,7 +1979,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="receipt">
         <div class="receipt-header">
             <div class="business-name">${storeName}</div>
-            <div class="receipt-type">Comprobante de Transacción${isMulti ? ` · ${groupItems.length} ítems` : ''}</div>
+            <div class="receipt-type">Comprobante de Transacci\u00f3n${isMulti ? ` · ${groupItems.length} \u00edtems` : ''}</div>
         </div>
         <div class="receipt-amount">
             <div class="emoji">${isExpense ? '💸' : '💰'}</div>
@@ -1991,7 +1991,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ${itemsSection}
                 ${isMulti ? `<tr class="total-row"><td>Total</td><td>${sign}${amountFormatted}</td></tr>` : ''}
                 <tr>
-                    <td>Método</td>
+                    <td>M\u00e9todo</td>
                     <td><span class="badge">${repr.method}</span></td>
                 </tr>
                 <tr>
@@ -2021,7 +2021,7 @@ document.addEventListener('DOMContentLoaded', () => {
             printWin.document.write(printHtml);
             printWin.document.close();
         } else {
-            alert('El navegador bloqueó la ventana emergente. Por favor, permite las ventanas emergentes para esta página e intenta de nuevo.');
+            alert('El navegador bloque\u00f3 la ventana emergente. Por favor, permite las ventanas emergentes para esta p\u00e1gina e intenta de nuevo.');
         }
     };
 
@@ -2046,15 +2046,15 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             text += `\n*TOTAL: ${amountFormatted}*\n`;
         } else {
-            text += `*Descripción:* ${repr.product}\n`;
+            text += `*Descripci\u00f3n:* ${repr.product}\n`;
             text += `*Monto:* ${amountFormatted}\n`;
         }
 
-        text += `\nMétodo de Pago: ${repr.method}\n`;
+        text += `\nM\u00e9todo de Pago: ${repr.method}\n`;
         if (repr.customerName) text += `Cliente: ${repr.customerName}\n`;
         if (repr.notes) text += `Notas: ${repr.notes}\n`;
 
-        text += `\n¡Gracias por elegirnos!`;
+        text += `\n\u00a1Gracias por elegirnos!`;
 
         const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
         window.open(url, '_blank');
@@ -2078,7 +2078,7 @@ document.addEventListener('DOMContentLoaded', () => {
             goalModal.classList.remove('active');
             showToast('Meta diaria actualizada');
         } else {
-            alert('Ingresa una meta válida');
+            alert('Ingresa una meta v\u00e1lida');
         }
     });
 
@@ -2118,7 +2118,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnShareSummary) {
         btnShareSummary.addEventListener('click', () => {
             if (sales.length === 0) {
-                alert('No hay movimientos registrados hoy para compartir. Añade alguna venta primero.');
+                alert('No hay movimientos registrados hoy para compartir. A\u00f1ade alguna venta primero.');
                 return;
             }
 
@@ -2136,7 +2136,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let text = `📊 *Resumen Diario - ${storeName}*\n`;
             text += `📅 Fecha: ${dateStr}\n\n`;
             text += `💰 *Ingresos de Ventas:* ${formatCurrency(income)}\n`;
-            text += `💸 *Gastos del Día:* ${formatCurrency(expense)}\n`;
+            text += `💸 *Gastos del D\u00eda:* ${formatCurrency(expense)}\n`;
             text += `📈 *Balance Neto:* ${formatCurrency(net)}\n`;
             text += `💵 *Efectivo Final en Caja:* ${formatCurrency(cashFinal)}\n\n`;
             text += `🛍️ *Ventas Totales:* ${count}\n\n`;
@@ -2212,7 +2212,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     btnConfirmClose.addEventListener('click', () => {
-        // Guardar las ventas de "hoy" dentro del historial completo histórico antes de borrarlas
+        // Guardar las ventas de "hoy" dentro del historial completo hist\u00f3rico antes de borrarlas
         sales.forEach(s => {
             historyData.push(s);
         });
@@ -2230,7 +2230,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateTopProduct();
         updatePeakHours();
         closeRegisterModal.classList.remove('active');
-        showToast('Cierre de caja completado con éxito!');
+        showToast('Cierre de caja completado con \u00e9xito!');
     });
 
     // --- Export CSV ---
@@ -2240,7 +2240,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        let csvContent = "Fecha,Hora,Descripción,Tipo,Método,Monto\n";
+        let csvContent = "Fecha,Hora,Descripci\u00f3n,Tipo,M\u00e9todo,Monto\n";
 
         sales.forEach(sale => {
             const d = new Date(sale.timestamp);
@@ -2298,12 +2298,12 @@ document.addEventListener('DOMContentLoaded', () => {
             reader.onload = (ev) => {
                 try {
                     const data = JSON.parse(ev.target.result);
-                    if (!data || typeof data !== 'object') throw new Error('Formato inválido');
+                    if (!data || typeof data !== 'object') throw new Error('Formato inv\u00e1lido');
 
                     const confirmed = confirm(
-                        `Se encontraron ${(data.sales || []).length} ventas de hoy y ${(data.historyData || []).length} registros históricos.\n\n` +
-                        `¿Deseas FUSIONAR estos datos con los actuales o REEMPLAZAR TODO?\n\n` +
-                        `Presiona ACEPTAR para FUSIONAR o CANCELAR para cancelar la importación.`
+                        `Se encontraron ${(data.sales || []).length} ventas de hoy y ${(data.historyData || []).length} registros hist\u00f3ricos.\n\n` +
+                        `\u00bfDeseas FUSIONAR estos datos con los actuales o REEMPLAZAR TODO?\n\n` +
+                        `Presiona ACEPTAR para FUSIONAR o CANCELAR para cancelar la importaci\u00f3n.`
                     );
 
                     if (confirmed) {
@@ -2337,7 +2337,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         renderSales();
                         updateKPIs();
                         setupStreakWidget();
-                        showToast(`✅ Importación exitosa: +${newSales.length} ventas, +${newHistory.length} históricos.`);
+                        showToast(`✅ Importaci\u00f3n exitosa: +${newSales.length} ventas, +${newHistory.length} hist\u00f3ricos.`);
                     }
                 } catch (err) {
                     alert('Error al leer el archivo: ' + err.message);
@@ -2358,8 +2358,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const title = toast.querySelector('.toast-title');
         const msg = toast.querySelector('.toast-message');
         if (icon) { icon.innerHTML = '🚀'; icon.style.fontSize = '1.8rem'; }
-        if (title) title.textContent = '¡Venta Grande! 💰';
-        if (msg) msg.textContent = `${product}: ${formatCurrency(amount)} — ¡Excelente!`;
+        if (title) title.textContent = '\u00a1Venta Grande! 💰';
+        if (msg) msg.textContent = `${product}: ${formatCurrency(amount)} — \u00a1Excelente!`;
         toast.style.borderLeftColor = 'var(--warning)';
         toast.classList.add('show');
         setTimeout(() => {
@@ -2578,7 +2578,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const monthName = now.toLocaleDateString('es-ES', { month: 'long' });
 
         projEl.style.display = 'flex';
-        projText.textContent = `Proyección de ${monthName}: ${formatCurrency(projected)} · Promedio ${formatCurrency(avgPerDay)}/día`;
+        projText.textContent = `Proyecci\u00f3n de ${monthName}: ${formatCurrency(projected)} · Promedio ${formatCurrency(avgPerDay)}/d\u00eda`;
     };
 
     // --- Secondary Metrics ---
@@ -2591,7 +2591,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const uniqueGroups = new Set(incomes.map(s => s.groupId || s.timestamp));
         const ticketAvg = uniqueGroups.size > 0 ? totalRevenue / uniqueGroups.size : 0;
 
-        // Clientes únicos
+        // Clientes \u00fanicos
         const clientSet = new Set();
         incomes.forEach(s => {
             const clientKey = (s.customerName && s.customerName.trim().toLowerCase()) || s.groupId || s.timestamp;

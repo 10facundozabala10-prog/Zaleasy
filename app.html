@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zaleasy | Gestión de Ventas</title>
-    <meta name="description" content="Sistema premium para la gestión y seguimiento de ventas diarias.">
+    <title>Zaleasy | Gesti&oacute;n de Ventas</title>
+    <meta name="description" content="Sistema premium para la gesti&oacute;n y seguimiento de ventas diarias.">
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
@@ -56,23 +56,23 @@
                 </div>
                 <h2>Zaleasy</h2>
             </div>
-            <p class="auth-subtitle">Inicia sesión para gestionar tus ventas en la nube.</p>
+            <p class="auth-subtitle">Inicia sesi&oacute;n para gestionar tus ventas en la nube.</p>
 
             <form id="email-auth-form" style="display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1rem;">
                 <div class="input-wrapper" style="margin-bottom: 0;">
                     <i class="fa-solid fa-envelope"></i>
-                    <input type="email" id="auth-email" placeholder="Correo electrónico" required
+                    <input type="email" id="auth-email" placeholder="Correo electr&oacute;nico" required
                         style="padding-left: 2.5rem; width: 100%;">
                 </div>
                 <div class="input-wrapper" style="margin-bottom: 0;">
                     <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="auth-password" placeholder="Contraseña" required
+                    <input type="password" id="auth-password" placeholder="Contrase&ntilde;a" required
                         style="padding-left: 2.5rem; width: 100%;">
                 </div>
                 <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
                     <button type="submit" id="btn-email-login" class="btn btn-primary btn-block auth-btn"
                         style="flex: 1;">
-                        Iniciar Sesión
+                        Iniciar Sesi&oacute;n
                     </button>
                     <button type="button" id="btn-email-register" class="btn btn-outline btn-block auth-btn"
                         style="flex: 1; margin: 0;">
@@ -102,18 +102,18 @@
                 <div class="logo-icon">
                     <i class="fa-solid fa-crown"></i>
                 </div>
-                <h2 id="trial-title">Suscripción</h2>
+                <h2 id="trial-title">Suscripci&oacute;n</h2>
             </div>
             <p class="auth-subtitle" id="trial-text" style="margin-bottom: 2rem;">Cargando estado de tu licencia...</p>
 
             <a href="https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=364f23117bc8491684999f541af2eb09"
                 target="_blank" id="btn-pay-stripe" class="btn btn-primary btn-block auth-btn"
                 style="margin-bottom: 1rem; background-color: #009EE3; color: white;">
-                <i class="fa-solid fa-handshake"></i> Pagar Suscripción - $3.500 ARS al Mes
+                <i class="fa-solid fa-handshake"></i> Pagar Suscripci&oacute;n - $3.500 ARS al Mes
             </a>
 
             <button id="btn-continue-trial" class="btn btn-outline btn-block">
-                Entrar a la Aplicación <i class="fa-solid fa-arrow-right"></i>
+                Entrar a la Aplicaci&oacute;n <i class="fa-solid fa-arrow-right"></i>
             </button>
             <p class="auth-note"><a href="#" id="logout-trial" style="color:var(--text-muted);"><i
                         class="fa-solid fa-right-from-bracket"></i> Cambiar de cuenta</a></p>
@@ -143,7 +143,7 @@
                 </a>
                 <a href="#" class="nav-item" id="nav-config">
                     <i class="fa-solid fa-gear"></i>
-                    <span>Configuración</span>
+                    <span>Configuraci&oacute;n</span>
                 </a>
             </nav>
 
@@ -169,7 +169,7 @@
                     </div>
                 </div>
                 <div class="header-right">
-                    <button class="btn btn-outline" id="btn-share-summary" title="Compartir Resumen del Día"
+                    <button class="btn btn-outline" id="btn-share-summary" title="Compartir Resumen del D&iacute;a"
                         style="gap:.4rem;">
                         <i class="fa-solid fa-share-nodes"></i> <span class="hide-mobile">Compartir</span>
                     </button>
@@ -179,7 +179,7 @@
                     <button class="theme-toggle" id="theme-toggle" aria-label="Cambiar tema">
                         <i class="fa-solid fa-moon"></i>
                     </button>
-                    <div class="user-profile" id="user-profile-btn" style="cursor:pointer;" title="Cerrar Sesión">
+                    <div class="user-profile" id="user-profile-btn" style="cursor:pointer;" title="Cerrar Sesi&oacute;n">
                         <img id="user-avatar" src="https://ui-avatars.com/api/?name=Admin&background=0D8ABC&color=fff"
                             alt="User Profile">
                     </div>
@@ -195,7 +195,7 @@
                                 <i class="fa-solid fa-arrow-trend-up"></i>
                             </div>
                             <div class="kpi-details">
-                                <h3>Ingresos del Día</h3>
+                                <h3>Ingresos del D&iacute;a</h3>
                                 <p class="kpi-value" id="kpi-revenue">$0.00</p>
                                 <span class="kpi-trend" id="kpi-trend-revenue"></span>
                             </div>
@@ -216,7 +216,7 @@
                                 <i class="fa-solid fa-arrow-trend-down"></i>
                             </div>
                             <div class="kpi-details">
-                                <h3>Gastos del Día</h3>
+                                <h3>Gastos del D&iacute;a</h3>
                                 <p class="kpi-value" id="kpi-expenses" style="color: var(--danger);">$0.00</p>
                                 <span class="kpi-trend" id="kpi-trend-expenses"></span>
                             </div>
@@ -315,9 +315,9 @@
                             </div>
                             <div class="streak-display">
                                 <span class="streak-number" id="streak-count">0</span>
-                                <span class="streak-label">días seguidos<br>con ventas</span>
+                                <span class="streak-label">d&iacute;as seguidos<br>con ventas</span>
                             </div>
-                            <p class="goal-subtitle" id="streak-subtitle">¡Registra una venta hoy para comenzar!</p>
+                            <p class="goal-subtitle" id="streak-subtitle">&iexcl;Registra una venta hoy para comenzar!</p>
                         </div>
                         <!-- Top Product Widget -->
                         <div class="card top-product-card">
@@ -332,7 +332,7 @@
                         </div>
                         <div class="card chart-card">
                             <div class="card-header">
-                                <h2>Ingresos por Método</h2>
+                                <h2>Ingresos por M&eacute;todo</h2>
                             </div>
                             <div class="chart-container">
                                 <canvas id="methodsChart"></canvas>
@@ -347,7 +347,7 @@
                             <div id="peak-hour-bars" class="peak-hour-bars">
                                 <!-- 24 mini bars rendered by JS -->
                             </div>
-                            <p class="goal-subtitle" id="peak-hour-subtitle">Registra ventas para ver tu hora más
+                            <p class="goal-subtitle" id="peak-hour-subtitle">Registra ventas para ver tu hora m&aacute;s
                                 activa.</p>
                         </div>
                     </div>
@@ -373,17 +373,17 @@
                         <div class="card quick-products-card">
                             <div class="card-header">
                                 <h2><i class="fa-solid fa-bolt"
-                                        style="color:var(--warning);margin-right:.4rem;"></i>Productos Rápidos</h2>
+                                        style="color:var(--warning);margin-right:.4rem;"></i>Productos R&aacute;pidos</h2>
                                 <span class="badge">Click para agregar</span>
                             </div>
-                            <p style="font-size:.8rem;color:var(--text-muted);margin-bottom:.8rem;">Tus productos más
+                            <p style="font-size:.8rem;color:var(--text-muted);margin-bottom:.8rem;">Tus productos m&aacute;s
                                 usados. Click para agregar al formulario.</p>
                             <div id="quick-products-chips" class="quick-products-chips">
                                 <!-- Rendered by JS -->
                             </div>
                             <div id="quick-products-empty" class="quick-products-empty" style="display:none;">
                                 <i class="fa-solid fa-box-open"></i>
-                                <p>Aún no hay productos registrados.</p>
+                                <p>A&uacute;n no hay productos registrados.</p>
                             </div>
                         </div>
                         <!-- Live Activity Feed Widget -->
@@ -398,7 +398,7 @@
                             </div>
                             <div id="activity-feed-empty" class="activity-feed-empty">
                                 <i class="fa-regular fa-clock"></i>
-                                <p>Sin actividad aún hoy</p>
+                                <p>Sin actividad a&uacute;n hoy</p>
                             </div>
                         </div>
                     </div>
@@ -408,20 +408,20 @@
                     <div class="card notepad-card" style="grid-column: 1 / -1;">
                         <div class="card-header" style="margin-bottom:.8rem;">
                             <h2><i class="fa-solid fa-pen-clip"
-                                    style="color:var(--warning);margin-right:.4rem;"></i>Notas del Día</h2>
+                                    style="color:var(--warning);margin-right:.4rem;"></i>Notas del D&iacute;a</h2>
                             <span id="notepad-saved-indicator"
                                 style="font-size:.75rem; color:var(--success); opacity:0; transition:opacity .5s;"><i
                                     class="fa-solid fa-check"></i> Guardado</span>
                         </div>
                         <textarea id="day-notepad"
-                            placeholder="Anota recordatorios, pendientes o cualquier cosa del día..." rows="2"
+                            placeholder="Anota recordatorios, pendientes o cualquier cosa del d&iacute;a..." rows="2"
                             style="width:100%; resize:vertical; background:var(--bg-hover); border:1px solid var(--border-color); border-radius:var(--radius-sm); color:var(--text-main); font-family:inherit; font-size:.92rem; padding:.8rem 1rem; outline:none; line-height:1.6; transition:border-color .2s;"></textarea>
                     </div>
 
                     <!-- Add Sale Form -->
                     <div class="card form-section">
                         <div class="card-header">
-                            <h2>Nueva Transacción</h2>
+                            <h2>Nueva Transacci&oacute;n</h2>
                             <span class="badge">Nuevo</span>
                         </div>
                         <form id="sale-form" class="sale-form">
@@ -430,7 +430,7 @@
                                 <button type="button" class="btn btn-primary type-btn" data-type="income"
                                     style="flex: 1;" id="btn-type-income">Ingreso / Venta</button>
                                 <button type="button" class="btn btn-outline type-btn" data-type="expense"
-                                    style="flex: 1;" id="btn-type-expense">Añadir Gasto</button>
+                                    style="flex: 1;" id="btn-type-expense">A&ntilde;adir Gasto</button>
                             </div>
                             <!-- Customer Name -->
                             <div class="form-group">
@@ -438,7 +438,7 @@
                                         style="color:var(--text-muted);font-weight:400;">(opcional)</span></label>
                                 <div class="input-wrapper">
                                     <i class="fa-solid fa-user"></i>
-                                    <input type="text" id="customer-name" placeholder="Ej: Juan García, Empresa XYZ..."
+                                    <input type="text" id="customer-name" placeholder="Ej: Juan Garc&iacute;a, Empresa XYZ..."
                                         style="padding-left:2.5rem;">
                                 </div>
                             </div>
@@ -446,26 +446,26 @@
                             <div class="form-group">
                                 <label
                                     style="display:flex; justify-content:space-between; align-items:center; margin-bottom:.6rem;">
-                                    <span>Productos / Ítems</span>
+                                    <span>Productos / &Iacute;tems</span>
                                     <button type="button" id="btn-add-item" class="btn-add-item">
-                                        <i class="fa-solid fa-circle-plus"></i> Agregar ítem
+                                        <i class="fa-solid fa-circle-plus"></i> Agregar &iacute;tem
                                     </button>
                                 </label>
                                 <div id="items-container" class="items-container">
                                     <!-- Item rows injected by JS -->
                                 </div>
                                 <div id="multi-item-total" class="multi-item-total" style="display:none;">
-                                    <span>📋 Total de la transacción</span>
+                                    <span>📋 Total de la transacci&oacute;n</span>
                                     <strong id="multi-item-total-value">$0.00</strong>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="method">Método de Pago</label>
+                                <label for="method">M&eacute;todo de Pago</label>
                                 <div class="input-wrapper">
                                     <i class="fa-solid fa-credit-card"></i>
                                     <select id="method">
                                         <option value="Efectivo">💵 Efectivo</option>
-                                        <option value="Tarjeta">💳 Tarjeta de Crédito/Débito</option>
+                                        <option value="Tarjeta">💳 Tarjeta de Cr&eacute;dito/D&eacute;bito</option>
                                         <option value="Transferencia">🏦 Transferencia</option>
                                         <option value="MercadoPago">📱 MercadoPago</option>
                                     </select>
@@ -516,15 +516,15 @@
                         </div>
                         <div class="search-container">
                             <i class="fa-solid fa-magnifying-glass"></i>
-                            <input type="text" id="search-sales" placeholder="Buscar por descripción...">
+                            <input type="text" id="search-sales" placeholder="Buscar por descripci&oacute;n...">
                         </div>
                         <!-- Category Filter Pills -->
                         <div id="category-filters" class="category-filter-row">
                             <button class="cat-pill active" data-cat="">Todas</button>
                             <button class="cat-pill" data-cat="Producto">📦 Producto</button>
                             <button class="cat-pill" data-cat="Servicio">⚙️ Servicio</button>
-                            <button class="cat-pill" data-cat="Suscripción">🔄 Suscripción</button>
-                            <button class="cat-pill" data-cat="Consultoría">💼 Consultoría</button>
+                            <button class="cat-pill" data-cat="Suscripci&oacute;n">🔄 Suscripci&oacute;n</button>
+                            <button class="cat-pill" data-cat="Consultor&iacute;a">💼 Consultor&iacute;a</button>
                             <button class="cat-pill" data-cat="Alquiler">🏠 Alquiler</button>
                             <button class="cat-pill" data-cat="Marketing">📣 Marketing</button>
                             <button class="cat-pill" data-cat="Insumos">🛒 Insumos</button>
@@ -535,9 +535,9 @@
                                 <thead>
                                     <tr>
                                         <th>Hora</th>
-                                        <th>Descripción</th>
+                                        <th>Descripci&oacute;n</th>
                                         <th>Tipo</th>
-                                        <th>Método</th>
+                                        <th>M&eacute;todo</th>
                                         <th>Monto</th>
                                         <th style="text-align: right;">Acciones</th>
                                     </tr>
@@ -552,7 +552,7 @@
                                 <i class="fa-solid fa-receipt"></i>
                             </div>
                             <p>No hay ventas registradas hoy.</p>
-                            <span>Crea una venta para verla aquí.</span>
+                            <span>Crea una venta para verla aqu&iacute;.</span>
                         </div>
                     </div>
                 </div>
@@ -576,16 +576,16 @@
                     </div>
                     <div class="search-container">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" id="history-search" placeholder="Buscar por producto, método o tipo...">
+                        <input type="text" id="history-search" placeholder="Buscar por producto, m&eacute;todo o tipo...">
                     </div>
                     <div class="table-container">
                         <table class="sales-table">
                             <thead>
                                 <tr>
                                     <th>Fecha y Hora</th>
-                                    <th>Descripción</th>
+                                    <th>Descripci&oacute;n</th>
                                     <th>Tipo</th>
-                                    <th>Método</th>
+                                    <th>M&eacute;todo</th>
                                     <th>Monto</th>
                                     <th style="text-align: right;">Acciones</th>
                                 </tr>
@@ -599,8 +599,8 @@
                         <div class="empty-icon">
                             <i class="fa-solid fa-box-open"></i>
                         </div>
-                        <p>No hay registros históricos.</p>
-                        <span>Tus ventas y gastos pasados aparecerán aquí después de los cierres de caja.</span>
+                        <p>No hay registros hist&oacute;ricos.</p>
+                        <span>Tus ventas y gastos pasados aparecer&aacute;n aqu&iacute; despu&eacute;s de los cierres de caja.</span>
                     </div>
                 </div>
             </div>
@@ -613,7 +613,7 @@
                     <div class="card kpi-card">
                         <div class="kpi-icon revenue"><i class="fa-solid fa-coins"></i></div>
                         <div class="kpi-details">
-                            <h3>Total Histórico</h3>
+                            <h3>Total Hist&oacute;rico</h3>
                             <p class="kpi-value" id="rep-total-revenue">$0.00</p>
                         </div>
                     </div>
@@ -646,7 +646,7 @@
                 <div class="charts-row" style="margin-bottom: 1.5rem;">
                     <div class="card chart-card" style="flex: 2;">
                         <div class="card-header">
-                            <h2>Ingresos de los Últimos 7 Días</h2>
+                            <h2>Ingresos de los &Uacute;ltimos 7 D&iacute;as</h2>
                         </div>
                         <div class="chart-container" style="height: 260px;">
                             <canvas id="rep-weekly-chart"></canvas>
@@ -654,7 +654,7 @@
                     </div>
                     <div class="card chart-card" style="flex: 1;">
                         <div class="card-header">
-                            <h2>Métodos de Pago</h2>
+                            <h2>M&eacute;todos de Pago</h2>
                         </div>
                         <div class="chart-container" style="height: 260px;">
                             <canvas id="rep-methods-chart"></canvas>
@@ -666,7 +666,7 @@
                 <div class="charts-row" style="margin-bottom: 1.5rem;">
                     <div class="card chart-card" style="flex: 1;">
                         <div class="card-header">
-                            <h2>Ventas por Categoría</h2>
+                            <h2>Ventas por Categor&iacute;a</h2>
                         </div>
                         <div class="chart-container" style="height: 260px;">
                             <canvas id="rep-category-chart"></canvas>
@@ -674,10 +674,10 @@
                     </div>
                     <div class="card" style="flex: 1; display:flex; flex-direction:column;">
                         <div class="card-header">
-                            <h2>📅 Actividad por Día</h2>
+                            <h2>📅 Actividad por D&iacute;a</h2>
                         </div>
                         <div id="rep-heatmap" class="rep-heatmap"></div>
-                        <p style="font-size:.8rem;color:var(--text-muted);margin-top:.5rem;">Últimos 30 días de
+                        <p style="font-size:.8rem;color:var(--text-muted);margin-top:.5rem;">&Uacute;ltimos 30 d&iacute;as de
                             transacciones</p>
                     </div>
                 </div>
@@ -686,7 +686,7 @@
                 <div class="card list-section">
                     <div class="card-header">
                         <h2><i class="fa-solid fa-trophy" style="color: gold; margin-right: .5rem;"></i>Top Productos /
-                            Servicios Más Vendidos</h2>
+                            Servicios M&aacute;s Vendidos</h2>
                     </div>
                     <div class="table-container">
                         <table class="sales-table">
@@ -703,7 +703,7 @@
                     </div>
                     <div class="empty-state" id="rep-empty-state">
                         <div class="empty-icon"><i class="fa-solid fa-chart-bar"></i></div>
-                        <p>No hay datos históricos.</p>
+                        <p>No hay datos hist&oacute;ricos.</p>
                         <span>Realiza ventas y cierra la caja para generar reportes.</span>
                     </div>
                 </div>
@@ -730,7 +730,7 @@
                     <div class="empty-state" id="rep-clients-empty-state">
                         <div class="empty-icon"><i class="fa-solid fa-user-slash"></i></div>
                         <p>No hay clientes registrados.</p>
-                        <span>Asocia un nombre de cliente al registrar ventas para verlos aquí.</span>
+                        <span>Asocia un nombre de cliente al registrar ventas para verlos aqu&iacute;.</span>
                     </div>
                 </div>
             </div>
@@ -740,7 +740,7 @@
                 <div class="card list-section" style="max-width: 800px; margin: 0 auto;">
                     <div class="card-header">
                         <h2><i class="fa-solid fa-gear"
-                                style="color: var(--text-muted); margin-right: .5rem;"></i>Configuración de Empresa</h2>
+                                style="color: var(--text-muted); margin-right: .5rem;"></i>Configuraci&oacute;n de Empresa</h2>
                     </div>
 
                     <div style="padding: 1rem 0;">
@@ -782,7 +782,7 @@
                             <h3 style="margin-bottom: 1rem; color: var(--text-main);"><i class="fa-solid fa-bell"
                                     style="margin-right: 0.5rem; color: var(--warning);"></i>Alerta de Venta Grande</h3>
                             <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">Recibe una
-                                notificación especial cuando una venta supere este monto. (0 = desactivado)</p>
+                                notificaci&oacute;n especial cuando una venta supere este monto. (0 = desactivado)</p>
                             <div class="form-group" style="margin-bottom: 1rem;">
                                 <label for="config-alert-threshold">Monto de Alerta (ARS)</label>
                                 <div class="input-wrapper">
@@ -801,7 +801,7 @@
                                     class="fa-solid fa-triangle-exclamation" style="margin-right: 0.5rem;"></i>Zona de
                                 Peligro</h3>
                             <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">Estas acciones
-                                no se pueden deshacer y borrarán tus datos guardados.</p>
+                                no se pueden deshacer y borrar&aacute;n tus datos guardados.</p>
 
                             <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
                                 <button class="btn btn-outline" id="btn-factory-reset"
@@ -827,9 +827,9 @@
                 <div class="card" style="text-align: center; padding: 5rem 2rem;">
                     <i class="fa-solid fa-person-digging"
                         style="font-size: 4rem; color: var(--primary); margin-bottom: 2rem;"></i>
-                    <h2 id="coming-soon-title" style="margin-bottom: 1rem; font-size: 2rem;">Sección en Desarrollo</h2>
-                    <p style="color: var(--text-muted); font-size: 1.1rem;">Nuestros ingenieros están trabajando para
-                        traer este módulo muy pronto.</p>
+                    <h2 id="coming-soon-title" style="margin-bottom: 1rem; font-size: 2rem;">Secci&oacute;n en Desarrollo</h2>
+                    <p style="color: var(--text-muted); font-size: 1.1rem;">Nuestros ingenieros est&aacute;n trabajando para
+                        traer este m&oacute;dulo muy pronto.</p>
                 </div>
             </div>
         </main>
@@ -841,7 +841,7 @@
             <i class="fa-solid fa-check"></i>
         </div>
         <div class="toast-content">
-            <p class="toast-title">Éxito</p>
+            <p class="toast-title">&Eacute;xito</p>
             <p class="toast-message">Venta registrada correctamente.</p>
         </div>
     </div>
@@ -880,11 +880,11 @@
                     <!-- Populated via JS -->
                 </div>
                 <div class="total-highlight">
-                    <span>Total del Día:</span>
+                    <span>Total del D&iacute;a:</span>
                     <strong id="close-total-day">$0.00</strong>
                 </div>
-                <p class="warning-text"><i class="fa-solid fa-triangle-exclamation"></i> Al confirmar, se iniciará un
-                    nuevo ciclo de ventas y el historial actual se archivará.</p>
+                <p class="warning-text"><i class="fa-solid fa-triangle-exclamation"></i> Al confirmar, se iniciar&aacute; un
+                    nuevo ciclo de ventas y el historial actual se archivar&aacute;.</p>
                 <button id="confirm-close" class="btn btn-primary btn-block">
                     <i class="fa-solid fa-check-double"></i> Confirmar Cierre
                 </button>
@@ -928,7 +928,7 @@
         <div class="modal modal-lg" style="max-width:420px;">
             <div class="modal-header">
                 <h2><i class="fa-solid fa-receipt" style="color:var(--primary);margin-right:.5rem;"></i>Recibo de
-                    Transacción</h2>
+                    Transacci&oacute;n</h2>
                 <button class="btn-icon close-modal-close"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="modal-body" id="receipt-body">
@@ -953,7 +953,7 @@
         <div class="modal modal-lg" style="max-width:460px;">
             <div class="modal-header">
                 <h2><i class="fa-solid fa-pen-to-square" style="color:var(--primary);margin-right:.5rem;"></i>Editar
-                    Transacción</h2>
+                    Transacci&oacute;n</h2>
                 <button class="btn-icon" id="close-edit-modal"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="modal-body">
@@ -961,13 +961,13 @@
                 <div style="display:flex; gap:.5rem; margin-bottom:1.5rem;">
                     <button type="button" class="btn btn-primary" id="edit-type-income" style="flex:1;">Ingreso /
                         Venta</button>
-                    <button type="button" class="btn btn-outline" id="edit-type-expense" style="flex:1;">Añadir
+                    <button type="button" class="btn btn-outline" id="edit-type-expense" style="flex:1;">A&ntilde;adir
                         Gasto</button>
                 </div>
                 <div class="form-group">
-                    <label for="edit-product">Producto / Descripción</label>
+                    <label for="edit-product">Producto / Descripci&oacute;n</label>
                     <div class="input-wrapper"><i class="fa-solid fa-tag"></i>
-                        <input type="text" id="edit-product" placeholder="Descripción" required>
+                        <input type="text" id="edit-product" placeholder="Descripci&oacute;n" required>
                     </div>
                 </div>
                 <div class="form-group">
@@ -977,25 +977,25 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="edit-method">Método de Pago</label>
+                    <label for="edit-method">M&eacute;todo de Pago</label>
                     <div class="input-wrapper"><i class="fa-solid fa-credit-card"></i>
                         <select id="edit-method">
                             <option value="Efectivo">Efectivo</option>
-                            <option value="Tarjeta">Tarjeta de Crédito/Débito</option>
+                            <option value="Tarjeta">Tarjeta de Cr&eacute;dito/D&eacute;bito</option>
                             <option value="Transferencia">Transferencia</option>
                             <option value="MercadoPago">MercadoPago</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="edit-category">Categoría</label>
+                    <label for="edit-category">Categor&iacute;a</label>
                     <div class="input-wrapper"><i class="fa-solid fa-folder-open"></i>
                         <select id="edit-category">
-                            <option value="">Sin categoría</option>
+                            <option value="">Sin categor&iacute;a</option>
                             <option value="Producto">📦 Producto</option>
                             <option value="Servicio">⚙️ Servicio</option>
-                            <option value="Suscripción">🔄 Suscripción</option>
-                            <option value="Consultoría">💼 Consultoría</option>
+                            <option value="Suscripci&oacute;n">🔄 Suscripci&oacute;n</option>
+                            <option value="Consultor&iacute;a">💼 Consultor&iacute;a</option>
                             <option value="Alquiler">🏠 Alquiler</option>
                             <option value="Marketing">📣 Marketing</option>
                             <option value="Insumos">🛒 Insumos</option>
@@ -1057,7 +1057,7 @@
         style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;"></canvas>
 
     <!-- Floating Quick-Add Button -->
-    <button id="fab-quick-add" class="fab-btn" title="Agregar venta rápida">
+    <button id="fab-quick-add" class="fab-btn" title="Agregar venta r&aacute;pida">
         <i class="fa-solid fa-plus"></i>
     </button>
 
