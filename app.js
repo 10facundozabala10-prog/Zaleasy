@@ -903,50 +903,15 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Real Firebase Auth Flow
+        // Real Firebase Auth Flow — FREE ACCESS (monetized via Google Ads)
         window.firebaseOnAuth(window.firebaseAuth, (user) => {
             if (user) {
-                // Logged in
+                // Logged in — direct access, no paywall
                 authScreen.style.display = 'none';
-
-                // Trial Logic
-                const creationTime = new Date(user.metadata.creationTime).getTime();
-                const currentTime = new Date().getTime();
-                const daysElapsed = Math.floor((currentTime - creationTime) / (1000 * 60 * 60 * 24));
-                const daysLeft = 30 - daysElapsed;
-
-                const trialTitle = document.getElementById('trial-title');
-                const trialText = document.getElementById('trial-text');
-                const btnContinueTrial = document.getElementById('btn-continue-trial');
-
-                trialScreen.style.display = 'flex'; // Interceptor on!
-
-                if (daysLeft > 0) {
-                    trialTitle.innerText = "¡Suscripción / Prueba!";
-                    trialTitle.style.color = "white";
-                    trialText.innerHTML = `Tienes <strong>${daysLeft} días</strong> restantes de prueba gratuita. Adquiere tu licencia Mensual para uso continuo.`;
-                    btnContinueTrial.style.display = 'inline-flex';
-                } else {
-                    trialTitle.innerText = "Prueba Expirada";
-                    trialTitle.style.color = "var(--danger)";
-                    trialText.innerHTML = `Tu prueba gratuita ha terminado. Para seguir usando tu Panel de Ventas, debes adquirir la licencia mensual por $3.500 ARS.`;
-                    btnContinueTrial.style.display = 'none'; // Lock the app!
-                }
-
-                // Proceed to App only if allowed
-                btnContinueTrial.onclick = () => {
-                    trialScreen.style.display = 'none';
-                    mainApp.style.display = 'flex';
-                    userAvatar.src = user.photoURL || "https://ui-avatars.com/api/?name=" + (user.displayName || "User") + "&background=0D8ABC&color=fff";
-                    showToast(`Bienvenid@, ${user.displayName ? user.displayName.split(' ')[0] : (user.email ? user.email.split('@')[0] : 'Usuario')}`);
-                };
-
-                // Logout from interceptor
-                document.getElementById('logout-trial').onclick = (e) => {
-                    e.preventDefault();
-                    window.firebaseSignOut(window.firebaseAuth);
-                };
-
+                if (trialScreen) trialScreen.style.display = 'none';
+                mainApp.style.display = 'flex';
+                userAvatar.src = user.photoURL || "https://ui-avatars.com/api/?name=" + (user.displayName || "User") + "&background=6c5ce7&color=fff";
+                showToast(`¡Bienvenid@, ${user.displayName ? user.displayName.split(' ')[0] : (user.email ? user.email.split('@')[0] : 'Usuario')}! 🚀`);
             } else {
                 // Logged out
                 mainApp.style.display = 'none';
