@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog - Zaleasy | Consejos sobre ventas</title>
+  <meta name="description"
+    content="Aprende las mejores estrategias, trucos y consejos para gestionar tu negocio y potenciar tus ventas diarias con el blog de Zaleasy." />
+  <link rel="stylesheet" href="landing.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6041920422141090"
+    crossorigin="anonymous"></script>
+  <style>
+    /* Specific Blog Styles */
+    .blog-header {
+      padding: 6rem 0 3rem;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(108, 92, 231, 0.08) 0%, transparent 100%);
+    }
+
+    .blog-header h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    .blog-header p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+      padding: 3rem 0 6rem;
+    }
+
+    .blog-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+      border-color: rgba(108, 92, 231, 0.3);
+    }
+
+    .blog-img {
+      height: 200px;
+      background: linear-gradient(135deg, var(--bg-hover), var(--primary-light));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      color: var(--primary);
+    }
+
+    .blog-card-content {
+      padding: 1.8rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .blog-category {
+      background: var(--primary-light);
+      color: #a29bfe;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: inline-block;
+      align-self: flex-start;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .blog-card h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+      line-height: 1.4;
+      color: var(--text-main);
+    }
+
+    .blog-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+      flex: 1;
+    }
+
+    .blog-footer-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 1rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .btn-read-more {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.2s;
+    }
+
+    .btn-read-more:hover {
+      color: #a29bfe;
+    }
+
+    .btn-read-more i {
+      font-size: 0.85rem;
+      transition: transform 0.2s;
+    }
+
+    .btn-read-more:hover i {
+      transform: translateX(4px);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Background Animation -->
+  <div class="bg-animated"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <div class="brand">
+        <img src="assets/logo.png" alt="Zaleasy Logo" style="
+              height: 45px;
+              border-radius: 50%;
+              box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
+            " />
+        <h2>Zaleasy</h2>
+      </div>
+      <div class="nav-links">
+        <a href="blog.html" style="color: var(--text-main);">Blog</a>
+        <a href="index.html#features">Caracter&iacute;sticas</a>
+        <a href="index.html#how-it-works">&iquest;C&oacute;mo funciona?</a>
+        <a href="index.html#creator">Nuestra Misi&oacute;n</a>
+        <a href="app.html" class="btn btn-primary">Iniciar Sesi&oacute;n</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Blog Header Section -->
+  <header class="blog-header">
+    <div class="container">
+      <h1>Blog de Zaleasy</h1>
+      <p>
+        Consejos, estrategias y herramientas para aprender a gestionar tus ventas, 
+        controlar tus finanzas y hacer crecer tu emprendimiento.
+      </p>
+    </div>
+  </header>
+
+  <!-- Ad Banner -->
+  <div class="ad-banner" aria-label="Publicidad">
+    <p class="ad-label">Publicidad</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6041920422141090" data-ad-slot="6763726885"
+      data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- Blog Articles Grid -->
+  <section class="container">
+    <div class="blog-grid">
+      
+      <!-- Article 1 -->
+      <article class="blog-card">
+        <div class="blog-img">
+          <i class="fa-solid fa-chart-line"></i>
+        </div>
+        <div class="blog-card-content">
+          <span class="blog-category">Crecimiento</span>
+          <h3>5 estrategias probadas para aumentar tus ventas diarias</h3>
+          <p>
+            Descubre los mejores t&eacute;cnicas de persuasi&oacute;n, organizaci&oacute;n y servicio al cliente que te permitir&aacute;n cerrar m&aacute;s ventas cada d&iacute;a sin invertir de m&aacute;s.
+          </p>
+          <div class="blog-footer-meta">
+            <span><i class="fa-regular fa-clock"></i> 5 min lectura</span>
+            <a href="#" class="btn-read-more">Leer art&iacute;culo <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article 2 -->
+      <article class="blog-card">
+        <div class="blog-img">
+          <i class="fa-solid fa-cash-register"></i>
+        </div>
+        <div class="blog-card-content">
+          <span class="blog-category">Finanzas</span>
+          <h3>C&oacute;mo hacer un cierre de caja perfecto sin errores</h3>
+          <p>
+            El cuadre de caja suele ser el momento de mayor estr&eacute;s para los emprendedores. Aprende a evitar los errores comunes y a agilizar el proceso paso a paso.
+          </p>
+          <div class="blog-footer-meta">
+            <span><i class="fa-regular fa-clock"></i> 4 min lectura</span>
+            <a href="#" class="btn-read-more">Leer art&iacute;culo <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article 3 -->
+      <article class="blog-card">
+        <div class="blog-img">
+          <i class="fa-solid fa-users"></i>
+        </div>
+        <div class="blog-card-content">
+          <span class="blog-category">Fidelizaci&oacute;n</span>
+          <h3>Por qu&eacute; identificar a tus "Top Clientes" cambiar&aacute; tu negocio</h3>
+          <p>
+            No todos los clientes aportan el mismo valor. Conoce c&oacute;mo funciona la regla del 80/20 y c&oacute;mo mimar a aquellos clientes que sostienen tu rentabilidad.
+          </p>
+          <div class="blog-footer-meta">
+            <span><i class="fa-regular fa-clock"></i> 6 min lectura</span>
+            <a href="#" class="btn-read-more">Leer art&iacute;culo <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article 4 -->
+      <article class="blog-card">
+        <div class="blog-img" style="font-size: 3rem;">
+          <i class="fa-solid fa-mobile-screen-button"></i>
+        </div>
+        <div class="blog-card-content">
+          <span class="blog-category">Tecnolog&iacute;a</span>
+          <h3>La importancia de llevar tus registros en la nube</h3>
+          <p>
+            Las libretas de papel y los archivos de Excel locales son un riesgo para tu informaci&oacute;n. Descubre las ventajas de usar un software en la nube al que puedas acceder desde cualquier dispositivo.
+          </p>
+          <div class="blog-footer-meta">
+            <span><i class="fa-regular fa-clock"></i> 3 min lectura</span>
+            <a href="#" class="btn-read-more">Leer art&iacute;culo <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article 5 -->
+      <article class="blog-card">
+        <div class="blog-img">
+          <i class="fa-solid fa-bullseye"></i>
+        </div>
+        <div class="blog-card-content">
+          <span class="blog-category">Motivaci&oacute;n</span>
+          <h3>C&oacute;mo establecer metas de ventas diarias (y cumplirlas)</h3>
+          <p>
+            Ponerse una meta mensual puede ser abrumador. En este art&iacute;culo te ense&ntilde;amos a fragmentar la presi&oacute;n en metas microsc&oacute;picas por d&iacute;a para mantener la constancia.
+          </p>
+          <div class="blog-footer-meta">
+            <span><i class="fa-regular fa-clock"></i> 5 min lectura</span>
+            <a href="#" class="btn-read-more">Leer art&iacute;culo <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article 6 -->
+      <article class="blog-card">
+        <div class="blog-img" style="font-size: 3rem;">
+          <i class="fa-solid fa-calculator"></i>
+        </div>
+        <div class="blog-card-content">
+          <span class="blog-category">Finanzas</span>
+          <h3>Margen de ganancia: &iquest;Est&aacute;s cobrando lo suficiente?</h3>
+          <p>
+            Vender mucho no significa ganar mucho. Aprende a calcular correctamente tus m&aacute;rgenes de rentabilidad neto, separando gastos ocultos del ingreso bruto.
+          </p>
+          <div class="blog-footer-meta">
+            <span><i class="fa-regular fa-clock"></i> 7 min lectura</span>
+            <a href="#" class="btn-read-more">Leer art&iacute;culo <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- Ad Banner -->
+  <div class="ad-banner" aria-label="Publicidad">
+    <p class="ad-label">Publicidad</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6041920422141090" data-ad-slot="1410347919"
+      data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <img src="assets/logo.png" alt="Zaleasy Logo" style="
+              height: 35px;
+              border-radius: 50%;
+              margin-bottom: 0.5rem;
+              display: block;
+            " />
+        <h3>Zaleasy</h3>
+        <p>
+          Haciendo la gesti&oacute;n financiera f&aacute;cil y accesible para todos los
+          emprendedores.
+        </p>
+      </div>
+      <div class="footer-links">
+        <h4>Enlaces &Uacute;tiles</h4>
+        <a href="app.html">Iniciar Sesi&oacute;n</a>
+        <a href="blog.html">Blog</a>
+        <a href="index.html#features">Caracter&iacute;sticas</a>
+        <a href="index.html#creator">Nuestra Misi&oacute;n</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Zaleasy. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- WhatsApp Floating Button -->
+  <a href="https://wa.me/5492645859764?text=Hola,%20tengo%20una%20duda%20sobre%20Zaleasy" target="_blank"
+    class="whatsapp-float">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+</body>
+</html>
