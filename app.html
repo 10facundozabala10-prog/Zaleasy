@@ -170,14 +170,16 @@
         <!-- Main Content -->
         <main class="main-content">
             <header class="top-header">
-                <div class="header-left">
-                    <button id="mobile-menu-btn" class="btn-icon hide-desktop"
-                        style="display: none; font-size: 1.2rem; color: var(--text-main); margin-right: 0.5rem; background: none; border: none; padding: 0;">
-                        <i class="fa-solid fa-bars"></i>
-                    </button>
-                    <h1 id="dynamic-greeting">Dashboard de Ventas</h1>
-                    <div style="display:flex; align-items:center; gap:1rem;">
-                        <p id="current-date">Cargando fecha...</p>
+                <div class="header-left" style="min-width: 0;">
+                    <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.4rem; flex-wrap: wrap;">
+                        <button id="mobile-menu-btn" class="btn-icon hide-desktop"
+                            style="display: none; font-size: 1.4rem; color: var(--text-main); background: none; border: none; padding: 0;">
+                            <i class="fa-solid fa-bars"></i>
+                        </button>
+                        <h1 id="dynamic-greeting" style="margin: 0; font-size: 1.4rem; line-height: 1.2;">Dashboard de Ventas</h1>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap: wrap;">
+                        <p id="current-date" style="margin: 0;">Cargando fecha...</p>
                         <span id="live-clock" class="live-clock"></span>
                     </div>
                 </div>

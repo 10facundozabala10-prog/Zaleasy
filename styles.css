@@ -160,6 +160,10 @@ html {
     display: flex;
     min-height: 100vh;
     backdrop-filter: blur(40px);
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+    box-sizing: border-box;
 }
 
 /* Sidebar */
@@ -286,6 +290,8 @@ html {
     padding: 0 var(--content-padding);
     display: flex;
     flex-direction: column;
+    min-width: 0;
+    max-width: 100%;
 }
 
 h1 {
@@ -374,6 +380,7 @@ h1 {
     box-shadow: var(--card-shadow);
     padding: 1.5rem 1.75rem;
     transition: box-shadow var(--transition), border-color var(--transition), transform 0.25s;
+    min-width: 0;
 }
 
 .card:hover {
@@ -1179,6 +1186,16 @@ select:focus {
     .header-right {
         width: 100%;
         justify-content: flex-end;
+        flex-wrap: wrap;
+    }
+
+    .card {
+        padding: 1rem 1.25rem;
+        border-radius: var(--radius-md);
+    }
+    
+    .kpi-card {
+        padding: 1.2rem 1.25rem;
     }
 
     .item-row-fields {
