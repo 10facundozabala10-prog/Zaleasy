@@ -72,6 +72,13 @@ body {
     transition: background-color var(--transition), color var(--transition);
     overflow-x: hidden;
     line-height: 1.6;
+    max-width: 100%;
+    width: 100%;
+}
+
+html {
+    overflow-x: hidden;
+    max-width: 100%;
 }
 
 /* Container Layout */
@@ -746,8 +753,10 @@ select:focus {
 .table-container {
     flex: 1;
     overflow-y: auto;
+    overflow-x: auto;
     max-height: 400px;
     border-radius: var(--radius-sm);
+    -webkit-overflow-scrolling: touch;
 }
 
 .table-container::-webkit-scrollbar {
@@ -767,6 +776,7 @@ select:focus {
     width: 100%;
     border-collapse: collapse;
     text-align: left;
+    min-width: 600px;
 }
 
 .sales-table th {
@@ -1631,16 +1641,7 @@ select:focus {
     }
 }
 
-/* Responsive: stack on small screens */
-@media (max-width: 600px) {
-    .item-row-fields {
-        grid-template-columns: 1fr 100px 36px;
-    }
 
-    .item-field-cat {
-        display: none;
-    }
-}
 
 /* ============================================
    WEEKLY SUMMARY WIDGET

@@ -25,6 +25,13 @@ body {
   color: var(--text-main);
   line-height: 1.6;
   overflow-x: hidden;
+  max-width: 100%;
+  width: 100%;
+}
+
+html {
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 .container {
@@ -531,12 +538,17 @@ body {
     gap: 2rem;
   }
 
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
   .hero-subtitle {
     margin: 1rem auto 2rem;
   }
 
   .hero-actions {
     justify-content: center;
+    flex-wrap: wrap;
   }
 
   .hero-stats {
@@ -547,6 +559,7 @@ body {
   .mockup-window {
     transform: none !important;
     margin-top: 2rem;
+    max-width: 100%;
   }
 
   .features-grid {
@@ -555,6 +568,20 @@ body {
 
   .nav-links {
     display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-actions .btn {
+    width: 100%;
+  }
+  
+  .container {
+    padding: 0 1rem;
   }
 }
 
