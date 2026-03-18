@@ -114,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let isDarkMode = localStorage.getItem('theme') !== 'light';
     let dailyGoal = parseFloat(localStorage.getItem('dailyGoal')) || 100.00;
     let storeName = localStorage.getItem('storeName') || 'Zaleasy';
+    let brandColor = localStorage.getItem('brandColor') || '#6c5ce7';
     let recentProducts = JSON.parse(localStorage.getItem('recentProducts')) || [];
     let productCatalog = JSON.parse(localStorage.getItem('productCatalog')) || [];
     let methodsChartInstance = null;
@@ -368,8 +369,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 datasets: [{
                     label: 'Ingresos',
                     data: weeklyTotals,
-                    backgroundColor: 'rgba(99,102,241,0.7)',
-                    borderColor: 'rgba(99,102,241,1)',
+                    backgroundColor: brandColor,
+                    borderColor: brandColor,
                     borderWidth: 2,
                     borderRadius: 8,
                 }]
@@ -398,7 +399,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 labels: methodLabels.length ? methodLabels : ['Sin datos'],
                 datasets: [{
                     data: methodValues.length ? methodValues : [1],
-                    backgroundColor: ['rgba(99,102,241,0.8)', 'rgba(46,213,115,0.8)', 'rgba(0,158,227,0.8)', 'rgba(255,165,2,0.8)'],
+                    backgroundColor: [brandColor, 'rgba(46,213,115,0.8)', 'rgba(0,158,227,0.8)', 'rgba(255,165,2,0.8)'],
                     borderWidth: 2,
                     borderColor: isDark ? '#1a1d2e' : '#f5f5f5'
                 }]
@@ -423,7 +424,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const catLabels = Object.keys(catMap);
         const catValues = Object.values(catMap);
         const catColors = [
-            'rgba(108,92,231,0.85)', 'rgba(0,184,148,0.85)', 'rgba(253,203,110,0.85)',
+            brandColor, 'rgba(0,184,148,0.85)', 'rgba(253,203,110,0.85)',
             'rgba(0,158,227,0.85)', 'rgba(253,121,168,0.85)', 'rgba(162,155,254,0.85)',
             'rgba(85,239,196,0.85)', 'rgba(255,165,2,0.85)'
         ];
@@ -517,6 +518,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const loadConfigData = () => {
         configStoreNameInput.value = storeName;
+        const brandInput = document.getElementById('config-brand-color');
+        if (brandInput) brandInput.value = brandColor;
         configDailyGoalInput.value = dailyGoal;
         const alertInput = document.getElementById('config-alert-threshold');
         if (alertInput) alertInput.value = alertThreshold || '';
@@ -531,6 +534,19 @@ document.addEventListener('DOMContentLoaded', () => {
             showToast('Nombre del negocio actualizado');
         }
     });
+
+    const btnSaveBrandColor = document.getElementById('btn-save-brand-color');
+    if (btnSaveBrandColor) {
+        btnSaveBrandColor.addEventListener('click', () => {
+            const val = document.getElementById('config-brand-color').value;
+            if (val) {
+                brandColor = val;
+                localStorage.setItem('brandColor', brandColor);
+                applyBrandColor(brandColor);
+                showToast('Color de marca aplicado exitosamente');
+            }
+        });
+    }
 
     const editSidebarBrandBtn = document.getElementById('edit-sidebar-brand');
     if (editSidebarBrandBtn) {
@@ -838,7 +854,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="item-field-amount">
                     <div class="input-wrapper" style="margin-bottom:0;">
                         <i class="fa-solid fa-dollar-sign"></i>
-                        <input type="number" class="item-amount-input" step="0.01" min="0" placeholder="0.00" value="5000" required>
+                        <input type="number" class="item-amount-input" step="0.01" min="0" placeholder="0.00" value="" required>
                     </div>
                 </div>
                 <div class="item-field-cat">
@@ -962,8 +978,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- Theme ---
+    // --- Theme & Branding ---
+    const applyBrandColor = (color) => {
+        document.documentElement.style.setProperty('--primary', color);
+        // Calculate a light version (approx 15% opacity) for badges and outlines
+        let r=108, g=92, b=231;
+        if(color.length === 7) {
+            r = parseInt(color.slice(1,3), 16);
+            g = parseInt(color.slice(3,5), 16);
+            b = parseInt(color.slice(5,7), 16);
+        }
+        document.documentElement.style.setProperty('--primary-light', `rgba(${r}, ${g}, ${b}, 0.15)`);
+        
+        // Update Chart primary color if exists
+        if (methodsChartInstance && methodsChartInstance.data.datasets[0].backgroundColor) {
+            methodsChartInstance.data.datasets[0].backgroundColor[1] = color;
+            methodsChartInstance.update();
+        }
+    };
+
     const setupTheme = () => {
+        applyBrandColor(brandColor);
+
         if (!isDarkMode) {
             document.documentElement.setAttribute('data-theme', 'light');
             themeToggleBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
@@ -1140,7 +1176,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     data: [0, 0, 0, 0],
                     backgroundColor: [
                         '#00b894', // Success (Cash)
-                        '#6c5ce7', // Primary (Card)
+                        brandColor, // Primary (Card)
                         '#fdcb6e', // Warning (Transfer)
                         '#d63031'  // Danger (Crypto)
                     ],
@@ -2403,19 +2439,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         datalist.innerHTML = '';
-        const allNames = new Set([...productCatalog.map(p => p.name), ...recentProducts]);
+        const validCatalogNames = productCatalog.map(p => p.name).filter(n => n);
+        const allNames = new Set([...validCatalogNames, ...recentProducts]);
         
         allNames.forEach(prod => {
-            const option = document.createElement('option');
-            option.value = prod;
-            datalist.appendChild(option);
+            if (prod && String(prod).trim() !== '') {
+                const option = document.createElement('option');
+                option.value = prod;
+                datalist.appendChild(option);
+            }
         });
 
         document.querySelectorAll('.item-product-input').forEach(inp => {
             inp.setAttribute('list', 'products-datalist');
             if (!inp.dataset.autofillHooked) {
                 inp.addEventListener('input', (e) => {
-                    const matchedProd = productCatalog.find(p => p.name.toLowerCase() === e.target.value.toLowerCase());
+                    const matchedProd = productCatalog.find(p => (p.name || '').toLowerCase() === (e.target.value || '').toLowerCase());
                     if (matchedProd && matchedProd.price > 0) {
                         const row = e.target.closest('.item-row');
                         if (row) {
@@ -2453,10 +2492,10 @@ document.addEventListener('DOMContentLoaded', () => {
             tableContainer.style.display = 'block';
             
             const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
-            const filtered = productCatalog.filter(p => p.name.toLowerCase().includes(query));
+            const filtered = productCatalog.filter(p => (p.name || '').toLowerCase().includes(query));
             
             // Sort alphabetically by default
-            filtered.sort((a,b) => a.name.localeCompare(b.name)).forEach(prod => {
+            filtered.sort((a,b) => (a.name || '').localeCompare(b.name || '')).forEach(prod => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td><strong>${prod.name}</strong></td>
