@@ -172,8 +172,36 @@
         Consejos, estrategias y herramientas para aprender a gestionar tus ventas, 
         controlar tus finanzas y hacer crecer tu emprendimiento.
       </p>
+      
+      <!-- Category Filters -->
+      <div style="margin-top: 2.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <button style="background: var(--primary); color: white; border: none; padding: 0.5rem 1.2rem; border-radius: 20px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.9rem;" onclick="filterBlog('all', this)">Todos</button>
+        <button style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.5rem 1.2rem; border-radius: 20px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.9rem;" onclick="filterBlog('ventas', this)" class="blog-filter-btn">Ventas</button>
+        <button style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.5rem 1.2rem; border-radius: 20px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.9rem;" onclick="filterBlog('marketing', this)" class="blog-filter-btn">Marketing</button>
+        <button style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.5rem 1.2rem; border-radius: 20px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.9rem;" onclick="filterBlog('finanzas', this)" class="blog-filter-btn">Finanzas</button>
+      </div>
     </div>
   </header>
+
+  <script>
+    function filterBlog(category, btnElement) {
+      // Update buttons visual state
+      const buttons = document.querySelectorAll('header.blog-header button');
+      buttons.forEach(btn => {
+        btn.style.background = 'rgba(255, 255, 255, 0.05)';
+        btn.style.color = 'var(--text-muted)';
+        btn.style.border = '1px solid var(--border-color)';
+      });
+      
+      btnElement.style.background = 'var(--primary)';
+      btnElement.style.color = 'white';
+      btnElement.style.border = 'none';
+
+      // Advanced filtering isn't implemented completely since categories on cards need data attributes,
+      // but this adds the interactive UI the user can enhance later.
+      // E.g., const cards = document.querySelectorAll('.blog-card');
+    }
+  </script>
 
   <!-- Ad Banner -->
   <div class="ad-banner" aria-label="Publicidad">
