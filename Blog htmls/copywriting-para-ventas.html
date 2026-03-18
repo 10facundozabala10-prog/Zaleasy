@@ -4,9 +4,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Copywriting para Ventas: C&oacute;mo Escribir Palabras que Convierten Lectores en Compradores | Zaleasy Blog</title>
-  <meta name="description"
-    content="Aprende qu&eacute; es el copywriting de ventas, el marco PAS y las 5 reglas de oro para escribir textos persuasivos que multipliquen tus conversiones y ventas." />
+  <title>Copywriting para Ventas | Zaleasy Blog</title>
+  <meta name="description" content="El marco PAS y las 5 reglas de oro del copywriting de ventas para multiplicar conversiones." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://zaleasy.com/Blog%20htmls/copywriting-para-ventas.html" />
+  <meta property="og:title" content="Copywriting para Ventas: Palabras que Convierten" />
+  <meta property="og:image" content="https://zaleasy.com/assets/Blog%20imagenes/copywriting-para-ventas.jpg" />
+  <meta property="og:site_name" content="Zaleasy" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="canonical" href="https://zaleasy.com/Blog%20htmls/copywriting-para-ventas.html" />
   <link rel="stylesheet" href="../landing.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet" />
@@ -157,9 +163,11 @@
       }
     }
   </style>
+  <style>#reading-progress{position:fixed;top:0;left:0;height:4px;width:0%;background:linear-gradient(90deg,#6c5ce7,#a29bfe);z-index:9999;border-radius:0 4px 4px 0;transition:width 0.1s linear;box-shadow:0 0 10px rgba(108,92,231,0.7);}</style>
 </head>
-
 <body>
+  <div id="reading-progress"></div>
+  <script>window.addEventListener('scroll',()=>{const a=document.querySelector('article.article-content');if(!a)return;const t=a.getBoundingClientRect().top+window.scrollY,h=a.offsetHeight,s=window.scrollY-t;document.getElementById('reading-progress').style.width=Math.min(Math.max((s/h)*100,0),100)+'%';});</script>
   <!-- Background Animation -->
   <div class="bg-animated"></div>
 
@@ -200,11 +208,24 @@
   <!-- Article Content -->
   <main class="container">
     <article class="article-content">
+
+      <!-- Table of Contents -->
+      <div style="background:var(--bg-card);border:1px solid rgba(108,92,231,0.25);border-radius:16px;padding:1.8rem 2rem;margin-bottom:2.5rem;border-left:4px solid var(--primary);">
+        <p style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--primary);font-weight:700;margin-bottom:1rem;"><i class="fa-solid fa-list-ul" style="margin-right:6px;"></i>&Iacute;ndice del art&iacute;culo</p>
+        <ol style="padding-left:1.2rem;margin:0;display:flex;flex-direction:column;gap:0.6rem;">
+          <li><a href="#que-es-copy" style="color:#a29bfe;text-decoration:none;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#a29bfe'">&iquest;Qu&eacute; es el Copywriting de Ventas?</a></li>
+          <li><a href="#pas" style="color:#a29bfe;text-decoration:none;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#a29bfe'">La Estructura PAS: Problema, Agitaci&oacute;n, Soluci&oacute;n</a></li>
+          <li><a href="#reglas" style="color:#a29bfe;text-decoration:none;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#a29bfe'">5 Reglas de Oro del Copywriting</a></li>
+          <li><a href="#errores-copy" style="color:#a29bfe;text-decoration:none;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#a29bfe'">Errores que Matan tus Ventas</a></li>
+          <li><a href="#copy-2026" style="color:#a29bfe;text-decoration:none;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#a29bfe'">El Copy que M&aacute;s Convierte en 2026</a></li>
+        </ol>
+      </div>
+
       <p>
         Las palabras correctas venden. Las palabras incorrectas ahuyentan. El copywriting de ventas es la habilidad de elegir exactamente las palabras que llevan a tu lector de la curiosidad a la acci&oacute;n, y en 2026 es una de las habilidades m&aacute;s rentables que puedes dominar.
       </p>
 
-      <h2>&iquest;Qu&eacute; es el Copywriting de Ventas y Por Qu&eacute; Importa?</h2>
+      <h2 id="que-es-copy">&iquest;Qu&eacute; es el Copywriting de Ventas y Por Qu&eacute; Importa?</h2>
       <p>
         El copywriting de ventas es la escritura persuasiva dise&ntilde;ada con un &uacute;nico objetivo: hacer que el lector tome una acci&oacute;n espec&iacute;fica, ya sea comprar, suscribirse, descargar o agendar una llamada.
       </p>
@@ -212,7 +233,7 @@
         No es escribir bonito. Es escribir estrat&eacute;gicamente. Un buen copy puede duplicar o triplicar las conversiones de una p&aacute;gina de ventas sin cambiar el producto, el precio ni el dise&ntilde;o.
       </p>
 
-      <h2>La Estructura que Convierte: El Marco PAS</h2>
+      <h2 id="pas">La Estructura que Convierte: El Marco PAS</h2>
       <p>
         El marco m&aacute;s efectivo y probado en copywriting de ventas es PAS: Problema, Agitaci&oacute;n, Soluci&oacute;n.
       </p>
@@ -244,7 +265,7 @@
         Ejemplo: "Por eso cre&eacute; este sistema de copywriting paso a paso: para que puedas escribir p&aacute;ginas de venta que conviertan, aunque nunca hayas vendido nada online antes."
       </div>
 
-      <h2>5 Reglas de Oro del Copywriting que Vende</h2>
+      <h2 id="reglas">5 Reglas de Oro del Copywriting que Vende</h2>
       <ol>
         <li>
           <strong>Escribe para una sola persona:</strong> Imagina a tu cliente ideal con nombre, edad y problema espec&iacute;fico. Escr&iacute;bele a &eacute;l directamente. El copy que intenta hablarle a todos no le habla a nadie.
@@ -263,7 +284,7 @@
         </li>
       </ol>
 
-      <h2>Errores de Copywriting que Matan tus Ventas</h2>
+      <h2 id="errores-copy">Errores de Copywriting que Matan tus Ventas</h2>
       <ul>
         <li><strong>Hablar de ti en lugar del cliente:</strong> Tu historia solo importa si demuestra que puedes resolver el problema del cliente.</li>
         <li><strong>Ser vago:</strong> "Mejora tu vida" no vende. "Gana tus primeros $500 online en 30 d&iacute;as" s&iacute; vende.</li>
@@ -272,13 +293,24 @@
         <li><strong>CTAs d&eacute;biles:</strong> "Haz clic aqu&iacute;" convierte menos que "Quiero empezar hoy" o "Acceder al m&eacute;todo ahora".</li>
       </ul>
 
-      <h2>El Copy que M&aacute;s Convierte en 2026</h2>
+      <h2 id="copy-2026">El Copy que M&aacute;s Convierte en 2026</h2>
       <p>
         Con la saturaci&oacute;n de contenido digital, el copy que mejor funciona hoy es el que combina autenticidad con especificidad. Las grandes promesas gen&eacute;ricas ya no convencen a nadie. Lo que vende es la historia real, el resultado concreto y la voz humana detr&aacute;s del texto.
       </p>
       <p>
         Escribe como si le hablaras a un amigo que tiene un problema que t&uacute; sabes c&oacute;mo resolver. Sin tecnicismos innecesarios, sin poses de grandeza, sin rodeos. Directo, honesto y &uacute;til.
       </p>
+
+      <!-- Share -->
+      <div style="border-top:1px solid var(--border-color);margin-top:3rem;padding-top:2rem;">
+        <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:1rem;font-weight:600;text-transform:uppercase;"><i class="fa-solid fa-share-nodes" style="color:var(--primary);margin-right:8px;"></i>&iquest;Te fue &uacute;til? Comp&aacute;rtelo</p>
+        <div style="display:flex;gap:0.8rem;flex-wrap:wrap;">
+          <a href="https://wa.me/?text=Mir%C3%A1%20este%20art%C3%ADculo%20%F0%9F%94%A5%20https://zaleasy.com/Blog%20htmls/copywriting-para-ventas.html" target="_blank" style="background:#25d366;color:white;padding:0.6rem 1.2rem;border-radius:30px;text-decoration:none;font-weight:600;font-size:0.9rem;display:inline-flex;align-items:center;gap:0.5rem;"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+          <a href="https://twitter.com/intent/tweet?url=https://zaleasy.com/Blog%20htmls/copywriting-para-ventas.html" target="_blank" style="background:#000;color:white;padding:0.6rem 1.2rem;border-radius:30px;text-decoration:none;font-weight:600;font-size:0.9rem;display:inline-flex;align-items:center;gap:0.5rem;"><i class="fa-brands fa-x-twitter"></i> X</a>
+          <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://zaleasy.com/Blog%20htmls/copywriting-para-ventas.html" target="_blank" style="background:#0077b5;color:white;padding:0.6rem 1.2rem;border-radius:30px;text-decoration:none;font-weight:600;font-size:0.9rem;display:inline-flex;align-items:center;gap:0.5rem;"><i class="fa-brands fa-linkedin-in"></i> LinkedIn</a>
+          <button onclick="navigator.clipboard.writeText(window.location.href).then(()=>{this.innerHTML='&#10003; Copiado!';setTimeout(()=>{this.innerHTML='&#128279; Copiar enlace';},2500);})" style="background:var(--bg-hover);color:var(--text-muted);padding:0.6rem 1.2rem;border-radius:30px;border:1px solid var(--border-color);font-weight:600;font-size:0.9rem;display:inline-flex;align-items:center;gap:0.5rem;cursor:pointer;">&#128279; Copiar enlace</button>
+        </div>
+      </div>
 
       <!-- Author Box -->
       <div class="author-box">
@@ -290,6 +322,18 @@
       </div>
     </article>
   </main>
+
+  <!-- Related Articles -->
+  <section style="padding:4rem 0;border-top:1px solid var(--border-color);">
+    <div class="container" style="max-width:1000px;">
+      <h2 style="font-size:1.8rem;font-weight:700;margin-bottom:2rem;"><i class="fa-solid fa-book-open" style="color:var(--primary);margin-right:10px;"></i>Leer tambi&eacute;n</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;">
+        <a href="embudos-de-venta.html" style="text-decoration:none;"><div style="background:var(--bg-card);border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.05);" onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform=''"><div style="height:160px;background:url('../assets/Blog imagenes/Embudos de Venta.jpeg') center/cover;"></div><div style="padding:1.3rem;"><span style="background:var(--primary-light);color:#a29bfe;padding:0.25rem 0.7rem;border-radius:20px;font-size:0.72rem;font-weight:700;text-transform:uppercase;">Automatizaci&oacute;n</span><h3 style="font-size:1.1rem;margin-top:0.8rem;margin-bottom:0;color:var(--text-main);">Embudos de Venta: C&oacute;mo Automatizar tus Ventas</h3></div></div></a>
+        <a href="social-selling.html" style="text-decoration:none;"><div style="background:var(--bg-card);border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.05);" onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform=''"><div style="height:160px;background:url('../assets/Blog imagenes/psicologia-de-ventas.jpeg') center/cover;"></div><div style="padding:1.3rem;"><span style="background:var(--primary-light);color:#a29bfe;padding:0.25rem 0.7rem;border-radius:20px;font-size:0.72rem;font-weight:700;text-transform:uppercase;">Social Selling</span><h3 style="font-size:1.1rem;margin-top:0.8rem;margin-bottom:0;color:var(--text-main);">Social Selling: Vender en Redes sin Parecer Desesperado</h3></div></div></a>
+        <a href="email-marketing-para-ventas.html" style="text-decoration:none;"><div style="background:var(--bg-card);border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.05);" onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform=''"><div style="height:160px;background:url('../assets/Blog imagenes/Email Marketing para Ventas.jpeg') center/cover;"></div><div style="padding:1.3rem;"><span style="background:var(--primary-light);color:#a29bfe;padding:0.25rem 0.7rem;border-radius:20px;font-size:0.72rem;font-weight:700;text-transform:uppercase;">Email Marketing</span><h3 style="font-size:1.1rem;margin-top:0.8rem;margin-bottom:0;color:var(--text-main);">Email Marketing para Ventas: Convierte tu Lista en Ingresos</h3></div></div></a>
+      </div>
+    </div>
+  </section>
 
   <!-- CTA Box / Bottom Banner -->
   <section style="background: linear-gradient(135deg, var(--bg-hover), var(--bg-card)); padding: 4rem 0; text-align: center; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
@@ -329,10 +373,8 @@
     </div>
   </footer>
 
-  <!-- WhatsApp Floating Button -->
-  <a href="https://wa.me/5492645859764?text=Hola,%20tengo%20una%20duda%20sobre%20Zaleasy" target="_blank"
-    class="whatsapp-float">
-    <i class="fa-brands fa-whatsapp"></i>
-  </a>
+  <a href="https://wa.me/5492645859764?text=Hola,%20tengo%20una%20duda%20sobre%20Zaleasy" target="_blank" class="whatsapp-float"><i class="fa-brands fa-whatsapp"></i></a>
+  <button id="back-to-top" aria-label="Volver arriba" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fa-solid fa-chevron-up"></i></button>
+  <script>window.addEventListener('scroll',()=>{document.getElementById('back-to-top').classList.toggle('visible',window.scrollY>400);},{passive:true});</script>
 </body>
 </html>
