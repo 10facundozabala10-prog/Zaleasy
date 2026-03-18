@@ -1683,6 +1683,56 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    const btnGenerateQuote = document.getElementById('btn-generate-quote');
+    if (btnGenerateQuote) {
+        btnGenerateQuote.addEventListener('click', () => {
+            const itemRows = document.querySelectorAll('.item-row');
+            const method = methodSelect.value;
+            const notes = notesInput ? notesInput.value.trim() : '';
+            const customerName = customerNameInput ? customerNameInput.value.trim() : '';
+            const itemsToAdd = [];
+            let hasError = false;
+
+            itemRows.forEach((row) => {
+                const prodEl = row.querySelector('.item-product-input');
+                const amtEl = row.querySelector('.item-amount-input');
+                const product = prodEl ? prodEl.value.trim() : '';
+                const amount = amtEl ? parseFloat(amtEl.value) : NaN;
+
+                if (!product || isNaN(amount) || amount <= 0) {
+                    prodEl && (prodEl.style.borderColor = 'var(--danger)');
+                    amtEl && (amtEl.style.borderColor = 'var(--danger)');
+                    hasError = true;
+                    return;
+                }
+                prodEl && (prodEl.style.borderColor = '');
+                amtEl && (amtEl.style.borderColor = '');
+                itemsToAdd.push({ product, amount });
+            });
+
+            if (hasError || itemsToAdd.length === 0) {
+                showToast('\u26a0\ufe0f Revis\u00e1 los \u00edtems para generar el presupuesto.');
+                return;
+            }
+
+            const fakeGroupId = 'QUOTE-' + Date.now();
+            const fakeSales = itemsToAdd.map((it, idx) => ({
+                id: fakeGroupId + '-' + idx,
+                timestamp: Date.now(),
+                product: it.product,
+                amount: it.amount,
+                method: method,
+                type: 'income',
+                notes: notes,
+                customerName: customerName,
+                groupId: fakeGroupId,
+                isQuote: true
+            }));
+
+            openReceiptModal(fakeSales[0], fakeSales);
+        });
+    }
+
     saleForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
@@ -1917,16 +1967,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentReceiptSale = null; // Store for printing
     let currentReceiptGroup = []; // All items in the same group
 
-    const openReceiptModal = (sale) => {
+    const openReceiptModal = (sale, customGroupItems = null) => {
         currentReceiptSale = sale;
 
-        // Find all items belonging to the same group (same groupId, or just this sale)
-        const allData = [...sales, ...historyData];
-        const groupItems = sale.groupId
-            ? allData.filter(s => s.groupId === sale.groupId)
-            : [sale];
-        // Sort by id ascending
-        groupItems.sort((a, b) => a.id - b.id);
+        let groupItems = customGroupItems;
+        if (!groupItems) {
+            const allData = [...sales, ...historyData];
+            groupItems = sale.groupId
+                ? allData.filter(s => s.groupId === sale.groupId)
+                : [sale];
+            groupItems.sort((a, b) => a.id - b.id);
+        }
         currentReceiptGroup = groupItems;
 
         const repr = groupItems[0]; // use first item for date/method reference
@@ -1934,10 +1985,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const dateStr = d.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
         const timeStr = d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
         const isExpense = repr.type === 'expense';
-        const amountColor = isExpense ? '#d63031' : '#00b894';
-        const typeLabel = isExpense ? 'Gasto' : 'Ingreso / Venta';
+        const amountColor = repr.isQuote ? 'var(--primary)' : (isExpense ? '#d63031' : '#00b894');
+        const typeLabel = repr.isQuote ? 'Presupuesto' : (isExpense ? 'Gasto' : 'Ingreso / Venta');
         const totalAmount = groupItems.reduce((sum, s) => sum + s.amount, 0);
-        const sign = isExpense ? '-' : '+';
+        const sign = isExpense && !repr.isQuote ? '-' : '+';
         const isMulti = groupItems.length > 1;
 
         // Build items rows
@@ -1994,7 +2045,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
             <div style="text-align:center; margin-top:1.5rem; padding-top:1rem; border-top:2px dashed var(--border-color); color:var(--text-muted); font-size:.8rem;">
-                Generado por ${storeName} • Comprobante #${repr.id.toString().slice(-6)}
+                Generado por ${storeName} • ${repr.isQuote ? 'Presupuesto V\u00e1lido 15 D\u00edas' : 'Comprobante'} #${repr.id.toString().slice(-6)}
             </div>
         `;
         receiptModal.classList.add('active');
@@ -2039,7 +2090,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Recibo - ${storeName}</title>
+    <title>${repr.isQuote ? 'Presupuesto' : 'Recibo'} - ${storeName}</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -2143,7 +2194,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="receipt">
         <div class="receipt-header">
             <div class="business-name">${storeName}</div>
-            <div class="receipt-type">Comprobante de Transacci\u00f3n${isMulti ? ` · ${groupItems.length} \u00edtems` : ''}</div>
+            <div class="receipt-type">${repr.isQuote ? 'Presupuesto V\u00e1lido por 15 d\u00edas' : 'Comprobante de Transacci\u00f3n'}${isMulti ? ` · ${groupItems.length} \u00edtems` : ''}</div>
         </div>
         <div class="receipt-amount">
             <div class="emoji">${isExpense ? '💸' : '💰'}</div>
@@ -2171,7 +2222,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </table>
         </div>
         <div class="receipt-footer">
-            Generado por ${storeName} &bull; Comprobante #${repr.id.toString().slice(-6)}
+            Generado por ${storeName} &bull; ${repr.isQuote ? 'Presupuesto' : 'Comprobante'} #${repr.id.toString().slice(-6)}
         </div>
     </div>
     <script>
@@ -2200,7 +2251,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalAmount = groupItems.reduce((sum, s) => sum + s.amount, 0);
         const amountFormatted = formatCurrency(totalAmount);
 
-        let text = `🧾 *Recibo de ${storeName}*\n`;
+        let text = `🧾 *${repr.isQuote ? 'Presupuesto' : 'Recibo'} de ${storeName}*\n`;
         text += `Fecha: ${dateStr} ${timeStr}\n\n`;
 
         if (groupItems.length > 1) {

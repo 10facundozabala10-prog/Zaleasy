@@ -516,14 +516,15 @@
                                 <button type="button" class="btn btn-outline quick-amount" data-amount="10000">+
                                     $10.000</button>
                             </div>
-                            <div class="form-actions-row" style="display:flex; gap: 0.8rem;">
-                                <button type="submit" class="btn btn-primary btn-block" style="flex: 2;"
-                                    id="btn-submit-transaction">
+                            <div class="form-actions-row" style="display:flex; gap: 0.8rem; flex-wrap: wrap;">
+                                <button type="button" class="btn btn-outline" id="btn-generate-quote" style="flex: 1; min-width: 140px;" title="Generar un presupuesto en PDF/WhatsApp sin afectar la caja">
+                                    <i class="fa-solid fa-file-invoice"></i> Presupuesto
+                                </button>
+                                <button type="submit" class="btn btn-primary" style="flex: 2; min-width: 140px;" id="btn-submit-transaction">
                                     <i class="fa-solid fa-plus"></i> Registrar Venta
                                 </button>
-                                <button type="button" class="btn btn-outline" id="btn-calculator" style="flex: 1;"
-                                    title="Calculadora de vuelto">
-                                    <i class="fa-solid fa-calculator"></i> Vuelto
+                                <button type="button" class="btn btn-outline" id="btn-calculator" style="flex: 0; min-width: 60px; padding: 0 1rem;" title="Calculadora de vuelto">
+                                    <i class="fa-solid fa-calculator"></i>
                                 </button>
                             </div>
                         </form>
