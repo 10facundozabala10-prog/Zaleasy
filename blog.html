@@ -173,8 +173,14 @@
         controlar tus finanzas y hacer crecer tu emprendimiento.
       </p>
       
+      <!-- Search Bar -->
+      <div style="margin-top: 2rem; max-width: 500px; margin-left: auto; margin-right: auto; position: relative;">
+        <input type="text" id="blogSearch" placeholder="Buscar art&iacute;culos, palabras clave..." style="width: 100%; padding: 1rem 1.5rem 1rem 3.5rem; border-radius: 30px; border: 1px solid rgba(162, 155, 254, 0.3); background: rgba(0, 0, 0, 0.2); color: var(--text-main); font-size: 1.05rem; outline: none; transition: border-color 0.3s;" onkeyup="searchBlog()" onfocus="this.style.borderColor='#a29bfe'" onblur="this.style.borderColor='rgba(162, 155, 254, 0.3)'">
+        <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 1.5rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.1rem;"></i>
+      </div>
+
       <!-- Category Filters -->
-      <div style="margin-top: 2.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+      <div style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
         <button style="background: var(--primary); color: white; border: none; padding: 0.5rem 1.2rem; border-radius: 20px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.9rem;" onclick="filterBlog('all', this)">Todos</button>
         <button style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.5rem 1.2rem; border-radius: 20px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.9rem;" onclick="filterBlog('ventas', this)" class="blog-filter-btn">Ventas</button>
         <button style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.5rem 1.2rem; border-radius: 20px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.9rem;" onclick="filterBlog('marketing', this)" class="blog-filter-btn">Marketing</button>
@@ -185,6 +191,9 @@
 
   <script>
     function filterBlog(category, btnElement) {
+      // Restaurar el campo de busqueda
+      document.getElementById('blogSearch').value = "";
+
       // Update buttons visual state
       const buttons = document.querySelectorAll('header.blog-header button');
       buttons.forEach(btn => {
@@ -197,9 +206,41 @@
       btnElement.style.color = 'white';
       btnElement.style.border = 'none';
 
-      // Advanced filtering isn't implemented completely since categories on cards need data attributes,
-      // but this adds the interactive UI the user can enhance later.
-      // E.g., const cards = document.querySelectorAll('.blog-card');
+      // Real filtering
+      const cards = document.querySelectorAll('.blog-card');
+      cards.forEach(card => {
+        const textToSearch = card.innerText.toLowerCase();
+        if (category === 'all' || textToSearch.includes(category)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function searchBlog() {
+      // Resetear visualmente los botones a 'Todos' de forma implicita
+      const buttons = document.querySelectorAll('header.blog-header button');
+      buttons.forEach(btn => {
+        btn.style.background = 'rgba(255, 255, 255, 0.05)';
+        btn.style.color = 'var(--text-muted)';
+        btn.style.border = '1px solid var(--border-color)';
+      });
+      buttons[0].style.background = 'var(--primary)';
+      buttons[0].style.color = 'white';
+      buttons[0].style.border = 'none';
+
+      const input = document.getElementById('blogSearch').value.toLowerCase();
+      const cards = document.querySelectorAll('.blog-card');
+      
+      cards.forEach(card => {
+        const text = card.innerText.toLowerCase();
+        if (text.includes(input)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
     }
   </script>
 
@@ -210,6 +251,53 @@
       data-ad-format="auto" data-full-width-responsive="true"></ins>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
+
+  <!-- Featured Article Banner -->
+  <section class="container" style="padding-top: 3rem;">
+    <div style="
+      background: url('assets/Blog imagenes/Embudos de Venta.jpeg') center/cover;
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      min-height: 360px;
+      display: flex;
+      align-items: flex-end;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    ">
+      <!-- Dark gradient overlay -->
+      <div style="
+        position: absolute; inset: 0;
+        background: linear-gradient(to top, rgba(10,9,26,0.97) 0%, rgba(10,9,26,0.6) 55%, transparent 100%);
+      "></div>
+      <!-- Content -->
+      <div style="position: relative; padding: 2.5rem; max-width: 700px;">
+        <span style="
+          background: var(--primary); color: white;
+          padding: 0.35rem 1rem; border-radius: 20px;
+          font-size: 0.75rem; font-weight: 700;
+          text-transform: uppercase; letter-spacing: 0.08em;
+          display: inline-block; margin-bottom: 1.2rem;
+        "><i class="fa-solid fa-fire" style="margin-right: 6px;"></i>Art&iacute;culo Destacado</span>
+        <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 1rem; line-height: 1.3; color: white;">
+          Embudos de Venta: C&oacute;mo Automatizar tus Ventas y Generar Ingresos Mientras Duermes
+        </h2>
+        <p style="color: rgba(255,255,255,0.7); margin-bottom: 1.8rem; font-size: 1.05rem; line-height: 1.6;">
+          Descubre el sistema m&aacute;s poderoso de cualquier negocio digital. Las 4 etapas del embudo y el embudo m&iacute;nimo viable para empezar hoy.
+        </p>
+        <div style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;">
+          <a href="Blog htmls/embudos-de-venta.html" class="btn btn-primary" style="padding: 0.8rem 2rem; border-radius: 12px; font-size: 1rem;">
+            Leer ahora <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>
+          </a>
+          <span style="color: rgba(255,255,255,0.5); font-size: 0.9rem;">
+            <i class="fa-regular fa-clock" style="margin-right: 5px;"></i> 6 min lectura
+            &nbsp;&nbsp;
+            <i class="fa-solid fa-user-pen" style="margin-right: 5px;"></i> Facundo L. Zabala
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Blog Articles Grid -->
   <section class="container">
