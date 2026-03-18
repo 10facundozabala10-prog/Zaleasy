@@ -520,5 +520,20 @@
     class="whatsapp-float">
     <i class="fa-brands fa-whatsapp"></i>
   </a>
+
+  <!-- Back to Top Button -->
+  <button id="back-to-top" aria-label="Volver arriba" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <i class="fa-solid fa-chevron-up"></i>
+  </button>
+  <script>
+    window.addEventListener('scroll', () => {
+      const btn = document.getElementById('back-to-top');
+      if (window.scrollY > 400) {
+        btn.classList.add('visible');
+      } else {
+        btn.classList.remove('visible');
+      }
+    });
+  </script>
 </body>
 </html>
