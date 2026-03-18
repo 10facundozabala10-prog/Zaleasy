@@ -894,7 +894,17 @@
                                     <input type="text" id="config-store-name" placeholder="Ej: Mi Tienda Online">
                                 </div>
                             </div>
-                            <button class="btn btn-outline" id="btn-save-store-name">Guardar Nombre</button>
+                            <div class="form-group" style="margin-top: 1.5rem; margin-bottom: 1rem;">
+                                <label for="config-brand-color">Color de Marca (Branding Principal)</label>
+                                <div style="display: flex; gap: 0.8rem; align-items: center; margin-top: .5rem; background: var(--bg-hover); padding: .5rem 1rem; border-radius: var(--radius-md);">
+                                    <input type="color" id="config-brand-color" value="#6c5ce7" style="width: 40px; height: 40px; border: none; border-radius: 50%; cursor: pointer; padding: 0; background: transparent;">
+                                    <span style="color: var(--text-muted); font-size: 0.85rem;">Personaliza el color de los elementos de Zaleasy.</span>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 1rem;">
+                                <button class="btn btn-outline" id="btn-save-store-name">Guardar Nombre</button>
+                                <button class="btn btn-primary" id="btn-save-brand-color" style="flex: 1;"><i class="fa-solid fa-palette"></i> Aplicar Color</button>
+                            </div>
                         </div>
 
                         <!-- Daily Goal Default -->
