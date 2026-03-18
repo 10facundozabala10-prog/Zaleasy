@@ -150,6 +150,10 @@
                     <i class="fa-solid fa-chart-pie"></i>
                     <span>Reportes</span>
                 </a>
+                <a href="#" class="nav-item" id="nav-clientes">
+                    <i class="fa-solid fa-address-book"></i>
+                    <span>Clientes</span>
+                </a>
                 <a href="#" class="nav-item" id="nav-config">
                     <i class="fa-solid fa-gear"></i>
                     <span>Configuraci&oacute;n</span>
@@ -754,6 +758,44 @@
                         <div class="empty-icon"><i class="fa-solid fa-user-slash"></i></div>
                         <p>No hay clientes registrados.</p>
                         <span>Asocia un nombre de cliente al registrar ventas para verlos aqu&iacute;.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Clientes View -->
+            <div id="view-clientes" class="dashboard-wrapper" style="display: none;">
+                <div class="card list-section" style="max-width: 1000px; margin: 0 auto; min-height: 70vh;">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-address-book" style="color: var(--primary); margin-right: .5rem;"></i>Directorio de Clientes</h2>
+                        <div class="header-actions">
+                            <button class="btn-icon" id="export-clientes-csv" title="Exportar CSV">
+                                <i class="fa-solid fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="search-container">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="search-clientes" placeholder="Buscar por nombre del cliente...">
+                    </div>
+                    <div class="table-container" id="clientes-table-container">
+                        <table class="sales-table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre del Cliente</th>
+                                    <th>Total de Transacciones</th>
+                                    <th>Total Invertido</th>
+                                    <th>&Uacute;ltima Actividad</th>
+                                </tr>
+                            </thead>
+                            <tbody id="clientes-body">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="empty-state" id="clientes-empty-state">
+                        <div class="empty-icon"><i class="fa-solid fa-user-slash"></i></div>
+                        <p>No hay clientes registrados en el historial.</p>
+                        <span>Asocia nombres de cliente (opcional) al registrar tus ventas para que aparezcan analizados autom&aacute;ticamente en este directorio.</span>
                     </div>
                 </div>
             </div>

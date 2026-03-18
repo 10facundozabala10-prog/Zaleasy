@@ -86,6 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const viewHistorial = document.getElementById('view-historial');
     const viewReportes = document.getElementById('view-reportes');
     const viewConfig = document.getElementById('view-config');
+    const viewClientes = document.getElementById('view-clientes');
     const viewComingSoon = document.getElementById('view-coming-soon');
     const comingSoonTitle = document.getElementById('coming-soon-title');
 
@@ -101,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const navDashboard = document.getElementById('nav-dashboard');
     const navHistorial = document.getElementById('nav-historial');
     const navReportes = document.getElementById('nav-reportes');
+    const navClientes = document.getElementById('nav-clientes');
     const navConfig = document.getElementById('nav-config');
     const allNavItems = document.querySelectorAll('.nav-item');
 
@@ -163,40 +165,28 @@ document.addEventListener('DOMContentLoaded', () => {
     let switchView = (targetId, title) => {
         // Update active class on nav
         allNavItems.forEach(item => item.classList.remove('active'));
-        document.getElementById(targetId).classList.add('active');
+        const navEl = document.getElementById(targetId);
+        if (navEl) navEl.classList.add('active');
+
+        [viewDashboard, viewHistorial, viewReportes, viewConfig, viewClientes, viewComingSoon].forEach(v => {
+            if (v) v.style.display = 'none';
+        });
 
         if (targetId === 'nav-dashboard') {
             viewDashboard.style.display = 'block';
-            viewHistorial.style.display = 'none';
-            viewReportes.style.display = 'none';
-            viewConfig.style.display = 'none';
-            viewComingSoon.style.display = 'none';
         } else if (targetId === 'nav-historial') {
-            viewDashboard.style.display = 'none';
             viewHistorial.style.display = 'block';
-            viewReportes.style.display = 'none';
-            viewConfig.style.display = 'none';
-            viewComingSoon.style.display = 'none';
             renderHistory();
         } else if (targetId === 'nav-reportes') {
-            viewDashboard.style.display = 'none';
-            viewHistorial.style.display = 'none';
             viewReportes.style.display = 'block';
-            viewConfig.style.display = 'none';
-            viewComingSoon.style.display = 'none';
             renderReports();
+        } else if (targetId === 'nav-clientes') {
+            viewClientes.style.display = 'block';
+            renderClientes();
         } else if (targetId === 'nav-config') {
-            viewDashboard.style.display = 'none';
-            viewHistorial.style.display = 'none';
-            viewReportes.style.display = 'none';
             viewConfig.style.display = 'block';
-            viewComingSoon.style.display = 'none';
             loadConfigData();
         } else {
-            viewDashboard.style.display = 'none';
-            viewHistorial.style.display = 'none';
-            viewReportes.style.display = 'none';
-            viewConfig.style.display = 'none';
             viewComingSoon.style.display = 'block';
             comingSoonTitle.innerText = title;
         }
@@ -205,7 +195,99 @@ document.addEventListener('DOMContentLoaded', () => {
     navDashboard.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-dashboard'); });
     navHistorial.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-historial'); });
     navReportes.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-reportes'); });
+    if(navClientes) navClientes.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-clientes'); });
     navConfig.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-config', 'Configuraci\u00f3n de Empresa'); });
+
+    // --- Clientes CRM ---
+    const renderClientes = () => {
+        const clientesBody = document.getElementById('clientes-body');
+        const emptyState = document.getElementById('clientes-empty-state');
+        const tableContainer = document.getElementById('clientes-table-container');
+        if(!clientesBody) return;
+        clientesBody.innerHTML = '';
+        const allTx = [...historyData, ...sales];
+        const clientMap = {};
+        
+        allTx.forEach(tx => {
+            if (tx.customerName && tx.customerName.trim() !== '') {
+                const name = tx.customerName.trim();
+                // We use standard titlecase or exactly as inputted, maybe just uppercase first
+                if (!clientMap[name]) {
+                    clientMap[name] = { totalCompras: 0, totalGastado: 0, ultimaCompra: 0 };
+                }
+                clientMap[name].totalCompras++;
+                if (tx.type !== 'expense') {
+                    clientMap[name].totalGastado += tx.amount;
+                }
+                if (tx.timestamp > clientMap[name].ultimaCompra) {
+                    clientMap[name].ultimaCompra = tx.timestamp;
+                }
+            }
+        });
+
+        const sortedClients = Object.keys(clientMap).sort((a,b) => clientMap[b].totalGastado - clientMap[a].totalGastado);
+
+        if (sortedClients.length === 0) {
+            emptyState.classList.add('active');
+            tableContainer.style.display = 'none';
+        } else {
+            emptyState.classList.remove('active');
+            tableContainer.style.display = 'block';
+
+            const searchQuery = (document.getElementById('search-clientes')?.value || '').toLowerCase().trim();
+
+            sortedClients.forEach(clientName => {
+                if (searchQuery && !clientName.toLowerCase().includes(searchQuery)) return;
+
+                const c = clientMap[clientName];
+                const tr = document.createElement('tr');
+                const lastDate = new Date(c.ultimaCompra).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' });
+                
+                tr.innerHTML = `
+                    <td><i class="fa-solid fa-user-circle" style="color:var(--text-muted); margin-right:6px;"></i><strong>${clientName}</strong></td>
+                    <td><span class="badge">${c.totalCompras} transacciones</span></td>
+                    <td style="color:var(--success); font-weight:bold;">${formatCurrency(c.totalGastado)}</td>
+                    <td style="color:var(--text-muted); font-size: 0.9em;">${lastDate}</td>
+                `;
+                clientesBody.appendChild(tr);
+            });
+        }
+    };
+    
+    const searchClientesInput = document.getElementById('search-clientes');
+    if (searchClientesInput) {
+        searchClientesInput.addEventListener('input', renderClientes);
+    }
+    
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('#export-clientes-csv')) {
+            const allTx = [...historyData, ...sales];
+            const clientMap = {};
+            allTx.forEach(tx => {
+                if (tx.customerName && tx.customerName.trim() !== '') {
+                    const name = tx.customerName.trim();
+                    if (!clientMap[name]) clientMap[name] = { totalCompras: 0, totalGastado: 0, ultimaCompra: 0 };
+                    clientMap[name].totalCompras++;
+                    if (tx.type !== 'expense') clientMap[name].totalGastado += tx.amount;
+                    if (tx.timestamp > clientMap[name].ultimaCompra) clientMap[name].ultimaCompra = tx.timestamp;
+                }
+            });
+            let csvContent = "data:text/csv;charset=utf-8,Cliente,Total de Transacciones,Total Invertido,Ultima Compra\\n";
+            Object.keys(clientMap).sort((a,b) => clientMap[b].totalGastado - clientMap[a].totalGastado).forEach(name => {
+                const c = clientMap[name];
+                const dateStr = new Date(c.ultimaCompra).toLocaleDateString('es-ES');
+                csvContent += `"${name}",${c.totalCompras},${c.totalGastado},"${dateStr}"\n`;
+            });
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement('a');
+            link.setAttribute('href', encodedUri);
+            link.setAttribute('download', `clientes_zaleasy_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast('Directorio de Clientes exportado a CSV');
+        }
+    });
 
     // --- Mobile Menu Toggle ---
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
