@@ -154,6 +154,10 @@
                     <i class="fa-solid fa-address-book"></i>
                     <span>Clientes</span>
                 </a>
+                <a href="#" class="nav-item" id="nav-inventario">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                    <span>Inventario</span>
+                </a>
                 <a href="#" class="nav-item" id="nav-config">
                     <i class="fa-solid fa-gear"></i>
                     <span>Configuraci&oacute;n</span>
@@ -799,6 +803,74 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Inventario View -->
+            <div id="view-inventario" class="dashboard-wrapper" style="display: none;">
+                <div class="card list-section" style="max-width: 1000px; margin: 0 auto; min-height: 70vh;">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-boxes-stacked" style="color: var(--primary); margin-right: .5rem;"></i>Cat&aacute;logo de Productos</h2>
+                        <div class="header-actions">
+                            <button class="btn btn-primary" id="btn-new-product">
+                                <i class="fa-solid fa-plus"></i> Nuevo Producto
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- New Product Form (hidden by default) -->
+                    <div id="new-product-form" style="display: none; background: var(--bg-hover); padding: 1.5rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; border: 1px solid var(--border-color);">
+                        <h3 style="margin-bottom: 1rem;"><i class="fa-solid fa-box-open" style="margin-right: .5rem; color: var(--text-main);"></i>A&ntilde;adir al Cat&aacute;logo</h3>
+                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1rem;">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="inv-name">Nombre del Producto / Servicio</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-tag"></i>
+                                    <input type="text" id="inv-name" placeholder="Ej: Camiseta de algod&oacute;n">
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="inv-price">Precio Base (Opcional)</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-dollar-sign"></i>
+                                    <input type="number" id="inv-price" step="0.01" min="0" placeholder="0.00">
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                            <button class="btn btn-primary" id="btn-save-inv-product"><i class="fa-solid fa-check"></i> Guardar Producto</button>
+                            <button class="btn btn-outline" id="btn-cancel-inv-product">Cancelar</button>
+                        </div>
+                    </div>
+
+                    <div class="search-container">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="search-inventario" placeholder="Buscar productos en el cat&aacute;logo...">
+                    </div>
+                    
+                    <div class="table-container" id="inventario-table-container">
+                        <table class="sales-table">
+                            <thead>
+                                <tr>
+                                    <th>Producto / Servicio</th>
+                                    <th>Precio Base</th>
+                                    <th style="text-align: right;">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventario-body">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="empty-state" id="inventario-empty-state">
+                        <div class="empty-icon"><i class="fa-solid fa-box-open"></i></div>
+                        <p>Tu cat&aacute;logo est&aacute; vac&iacute;o.</p>
+                        <span>A&ntilde;ade productos para que se completen autom&aacute;ticamente al registrar tus ventas de forma m&aacute;s r&aacute;pida.</span>
+                    </div>
+                </div>
+            </div>
+
+            <datalist id="products-datalist">
+                <!-- Injected via JS -->
+            </datalist>
 
             <!-- Config View -->
             <div id="view-config" class="dashboard-wrapper" style="display: none;">

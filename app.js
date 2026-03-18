@@ -87,6 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const viewReportes = document.getElementById('view-reportes');
     const viewConfig = document.getElementById('view-config');
     const viewClientes = document.getElementById('view-clientes');
+    const viewInventario = document.getElementById('view-inventario');
     const viewComingSoon = document.getElementById('view-coming-soon');
     const comingSoonTitle = document.getElementById('coming-soon-title');
 
@@ -103,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const navHistorial = document.getElementById('nav-historial');
     const navReportes = document.getElementById('nav-reportes');
     const navClientes = document.getElementById('nav-clientes');
+    const navInventario = document.getElementById('nav-inventario');
     const navConfig = document.getElementById('nav-config');
     const allNavItems = document.querySelectorAll('.nav-item');
 
@@ -113,6 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let dailyGoal = parseFloat(localStorage.getItem('dailyGoal')) || 100.00;
     let storeName = localStorage.getItem('storeName') || 'Zaleasy';
     let recentProducts = JSON.parse(localStorage.getItem('recentProducts')) || [];
+    let productCatalog = JSON.parse(localStorage.getItem('productCatalog')) || [];
     let methodsChartInstance = null;
     let currentTransactionType = 'income';
     let goalReachedNotified = false;
@@ -168,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const navEl = document.getElementById(targetId);
         if (navEl) navEl.classList.add('active');
 
-        [viewDashboard, viewHistorial, viewReportes, viewConfig, viewClientes, viewComingSoon].forEach(v => {
+        [viewDashboard, viewHistorial, viewReportes, viewConfig, viewClientes, viewInventario, viewComingSoon].forEach(v => {
             if (v) v.style.display = 'none';
         });
 
@@ -183,6 +186,9 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (targetId === 'nav-clientes') {
             viewClientes.style.display = 'block';
             renderClientes();
+        } else if (targetId === 'nav-inventario') {
+            viewInventario.style.display = 'block';
+            renderInventario();
         } else if (targetId === 'nav-config') {
             viewConfig.style.display = 'block';
             loadConfigData();
@@ -196,6 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
     navHistorial.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-historial'); });
     navReportes.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-reportes'); });
     if(navClientes) navClientes.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-clientes'); });
+    if(navInventario) navInventario.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-inventario'); });
     navConfig.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-config', 'Configuraci\u00f3n de Empresa'); });
 
     // --- Clientes CRM ---
@@ -2393,20 +2400,141 @@ document.addEventListener('DOMContentLoaded', () => {
             datalist = document.createElement('datalist');
             datalist.id = 'products-datalist';
             document.body.appendChild(datalist);
-            // All .item-product-input elements already have list="products-datalist" in their template
         }
 
         datalist.innerHTML = '';
-        recentProducts.forEach(prod => {
+        const allNames = new Set([...productCatalog.map(p => p.name), ...recentProducts]);
+        
+        allNames.forEach(prod => {
             const option = document.createElement('option');
             option.value = prod;
             datalist.appendChild(option);
         });
-        // Connect all current item product inputs to datalist
+
         document.querySelectorAll('.item-product-input').forEach(inp => {
             inp.setAttribute('list', 'products-datalist');
+            if (!inp.dataset.autofillHooked) {
+                inp.addEventListener('input', (e) => {
+                    const matchedProd = productCatalog.find(p => p.name.toLowerCase() === e.target.value.toLowerCase());
+                    if (matchedProd && matchedProd.price > 0) {
+                        const row = e.target.closest('.item-row');
+                        if (row) {
+                            const amtInput = row.querySelector('.item-amount-input');
+                            if (amtInput && (!amtInput.value || parseFloat(amtInput.value) === 0)) {
+                                amtInput.value = matchedProd.price.toFixed(2);
+                                amtInput.dispatchEvent(new Event('input', { bubbles: true }));
+                                // Small visual pop
+                                amtInput.style.backgroundColor = 'var(--primary-light)';
+                                setTimeout(() => amtInput.style.backgroundColor = '', 400);
+                            }
+                        }
+                    }
+                });
+                inp.dataset.autofillHooked = "true";
+            }
         });
     };
+
+    // --- Inventario / Catálogo Logic ---
+    const renderInventario = () => {
+        const tbody = document.getElementById('inventario-body');
+        const emptyState = document.getElementById('inventario-empty-state');
+        const searchInput = document.getElementById('search-inventario');
+        const tableContainer = document.getElementById('inventario-table-container');
+        if (!tbody) return;
+        
+        tbody.innerHTML = '';
+        
+        if (productCatalog.length === 0) {
+            emptyState.classList.add('active');
+            tableContainer.style.display = 'none';
+        } else {
+            emptyState.classList.remove('active');
+            tableContainer.style.display = 'block';
+            
+            const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
+            const filtered = productCatalog.filter(p => p.name.toLowerCase().includes(query));
+            
+            // Sort alphabetically by default
+            filtered.sort((a,b) => a.name.localeCompare(b.name)).forEach(prod => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${prod.name}</strong></td>
+                    <td style="color:var(--success); font-weight:bold;">${prod.price > 0 ? formatCurrency(prod.price) : '<span style="color:var(--text-muted); font-size:0.85rem; font-weight:normal;">Sin precio fijo</span>'}</td>
+                    <td style="text-align:right;">
+                        <button class="btn-icon btn-delete-inv" data-id="${prod.id}" title="Eliminar del Catálogo" style="color: var(--danger); opacity: 0.8;">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            
+            // Delete bindings
+            document.querySelectorAll('.btn-delete-inv').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const idToRemove = parseInt(e.currentTarget.getAttribute('data-id'));
+                    if(confirm('¿Eliminar este producto del catálogo?')) {
+                        productCatalog = productCatalog.filter(p => p.id !== idToRemove);
+                        localStorage.setItem('productCatalog', JSON.stringify(productCatalog));
+                        renderInventario();
+                        setupAutocomplete(); // Update datalist and Autofill potential
+                    }
+                });
+            });
+        }
+    };
+
+    const btnNewProduct = document.getElementById('btn-new-product');
+    const newProductForm = document.getElementById('new-product-form');
+    const btnCancelInvProd = document.getElementById('btn-cancel-inv-product');
+    const btnSaveInvProd = document.getElementById('btn-save-inv-product');
+    const searchInventario = document.getElementById('search-inventario');
+    
+    if (btnNewProduct && newProductForm) {
+        btnNewProduct.addEventListener('click', () => {
+            newProductForm.style.display = 'block';
+            document.getElementById('inv-name').focus();
+        });
+        
+        btnCancelInvProd.addEventListener('click', () => {
+            newProductForm.style.display = 'none';
+        });
+        
+        btnSaveInvProd.addEventListener('click', () => {
+            const nameEl = document.getElementById('inv-name');
+            const priceEl = document.getElementById('inv-price');
+            const name = nameEl.value.trim();
+            const price = parseFloat(priceEl.value) || 0;
+            
+            if (!name) {
+                nameEl.style.borderColor = 'var(--danger)';
+                return;
+            }
+            nameEl.style.borderColor = '';
+            
+            const newProd = {
+                id: Date.now(),
+                name: name,
+                price: price
+            };
+            
+            productCatalog.push(newProd);
+            localStorage.setItem('productCatalog', JSON.stringify(productCatalog));
+            
+            nameEl.value = '';
+            priceEl.value = '';
+            newProductForm.style.display = 'none';
+            
+            renderInventario();
+            setupAutocomplete(); // refresh autofill globally
+            showToast('Producto agregado al catálogo!');
+        });
+        
+        if (searchInventario) {
+            searchInventario.addEventListener('input', renderInventario);
+        }
+    }
 
     // --- Import Backup Logic ---
     const setupImportBackup = () => {
