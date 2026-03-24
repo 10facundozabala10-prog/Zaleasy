@@ -637,6 +637,8 @@ document.addEventListener('DOMContentLoaded', () => {
         updateMonthlyProjection();
         updateSecondaryMetrics();
         updateActivityFeed();
+        updateWeekVsLastWeek();
+        initMilestoneCelebrations();
     };
 
     // --- Date & Greeting ---
@@ -1818,6 +1820,12 @@ document.addEventListener('DOMContentLoaded', () => {
             ? `\u2705 ${itemsToAdd.length} \u00edtems registrados por ${formatCurrency(totalAdded)}`
             : `Venta de ${formatCurrency(totalAdded)} registrada!`;
         showToast(label);
+
+        // Refresh activity feed
+        updateActivityFeed();
+
+        // Fire milestone & week-comparison check
+        document.dispatchEvent(new CustomEvent('zaleasy:sale-registered'));
 
         // Alert Threshold Check (use first large item)
         itemsToAdd.forEach(item => {
@@ -3005,6 +3013,226 @@ document.addEventListener('DOMContentLoaded', () => {
             feedList.appendChild(item);
         });
     };
+
+    // =====================================================
+    // FEATURE 1: Week vs Last Week Comparison Widget
+    // =====================================================
+    const updateWeekVsLastWeek = () => {
+        const allData = [...historyData, ...sales];
+        const incomes = allData.filter(s => s.type !== 'expense');
+
+        const now = new Date();
+        const today = now.getDay(); // 0=Sun, 1=Mon...
+        const startOfThisWeek = new Date(now);
+        startOfThisWeek.setDate(now.getDate() - today);
+        startOfThisWeek.setHours(0, 0, 0, 0);
+
+        const startOfLastWeek = new Date(startOfThisWeek);
+        startOfLastWeek.setDate(startOfThisWeek.getDate() - 7);
+        const endOfLastWeek = new Date(startOfThisWeek);
+        endOfLastWeek.setMilliseconds(-1);
+
+        const thisWeekTotal = incomes
+            .filter(s => s.timestamp >= startOfThisWeek.getTime())
+            .reduce((sum, s) => sum + s.amount, 0);
+
+        const lastWeekTotal = incomes
+            .filter(s => s.timestamp >= startOfLastWeek.getTime() && s.timestamp <= endOfLastWeek.getTime())
+            .reduce((sum, s) => sum + s.amount, 0);
+
+        const thisWeekEl = document.getElementById('wvw-this-week');
+        const lastWeekEl = document.getElementById('wvw-last-week');
+        const trendIcon = document.getElementById('wvw-trend-icon');
+        const diffText = document.getElementById('wvw-diff-text');
+        const pctLabel = document.getElementById('wvw-pct-label');
+        const progressBar = document.getElementById('wvw-progress-bar');
+        const statusBadge = document.getElementById('wvw-status-badge');
+
+        if (!thisWeekEl) return;
+
+        thisWeekEl.textContent = formatCurrency(thisWeekTotal);
+        lastWeekEl.textContent = formatCurrency(lastWeekTotal);
+
+        const diff = thisWeekTotal - lastWeekTotal;
+        const pct = lastWeekTotal > 0 ? Math.abs(diff / lastWeekTotal * 100).toFixed(1) : (thisWeekTotal > 0 ? 100 : 0);
+
+        // Progress bar: how much of last week has been matched
+        const barWidth = lastWeekTotal > 0 ? Math.min((thisWeekTotal / lastWeekTotal) * 100, 100) : (thisWeekTotal > 0 ? 100 : 0);
+
+        setTimeout(() => {
+            progressBar.style.width = barWidth + '%';
+        }, 400);
+        pctLabel.textContent = Math.round(barWidth) + '%';
+
+        if (diff > 0) {
+            trendIcon.textContent = '📈';
+            diffText.textContent = `+${pct}% vs semana pasada`;
+            diffText.style.color = 'var(--success)';
+            progressBar.style.background = 'var(--success)';
+            statusBadge.textContent = '✅ Vas mejor';
+            statusBadge.style.background = 'rgba(46,213,115,0.15)';
+            statusBadge.style.color = 'var(--success)';
+        } else if (diff < 0) {
+            trendIcon.textContent = '📉';
+            diffText.textContent = `-${pct}% vs semana pasada`;
+            diffText.style.color = 'var(--danger)';
+            progressBar.style.background = 'var(--danger)';
+            statusBadge.textContent = '⚡ Remontá esta semana';
+            statusBadge.style.background = 'rgba(232,67,147,0.15)';
+            statusBadge.style.color = 'var(--danger)';
+        } else {
+            trendIcon.textContent = '↔️';
+            diffText.textContent = 'Sin cambios';
+            diffText.style.color = 'var(--text-muted)';
+            statusBadge.textContent = 'Igual que antes';
+        }
+    };
+
+    // =====================================================
+    // FEATURE 2: Milestone Celebration System (Confetti + Toast)
+    // =====================================================
+    const initMilestoneCelebrations = () => {
+        // Inject confetti canvas (hidden by default)
+        if (document.getElementById('confetti-canvas')) return;
+        const canvas = document.createElement('canvas');
+        canvas.id = 'confetti-canvas';
+        canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;display:none;';
+        document.body.appendChild(canvas);
+    };
+
+    const launchConfetti = (durationMs = 2800) => {
+        const canvas = document.getElementById('confetti-canvas');
+        if (!canvas) return;
+        canvas.style.display = 'block';
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const ctx = canvas.getContext('2d');
+
+        const colors = ['#6c5ce7','#a29bfe','#00d2d3','#2ed573','#ffa502','#ff6b81','#fdcb6e'];
+        const pieces = Array.from({ length: 120 }, () => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height - canvas.height,
+            w: Math.random() * 10 + 5,
+            h: Math.random() * 6 + 3,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            rotation: Math.random() * 360,
+            rotSpeed: (Math.random() - 0.5) * 4,
+            speedY: Math.random() * 3 + 2,
+            speedX: (Math.random() - 0.5) * 2,
+            opacity: 1
+        }));
+
+        const start = Date.now();
+        const tick = () => {
+            const elapsed = Date.now() - start;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            pieces.forEach(p => {
+                p.y += p.speedY;
+                p.x += p.speedX;
+                p.rotation += p.rotSpeed;
+                if (elapsed > durationMs - 800) p.opacity = Math.max(0, p.opacity - 0.018);
+                ctx.save();
+                ctx.globalAlpha = p.opacity;
+                ctx.fillStyle = p.color;
+                ctx.translate(p.x + p.w / 2, p.y + p.h / 2);
+                ctx.rotate((p.rotation * Math.PI) / 180);
+                ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                ctx.restore();
+            });
+            if (elapsed < durationMs) {
+                requestAnimationFrame(tick);
+            } else {
+                canvas.style.display = 'none';
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        };
+        tick();
+    };
+
+    const showMilestoneToast = (emoji, title, message) => {
+        const existing = document.getElementById('milestone-toast');
+        if (existing) existing.remove();
+
+        const el = document.createElement('div');
+        el.id = 'milestone-toast';
+        el.style.cssText = `
+            position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(40px);
+            background: var(--bg-card); border: 1px solid rgba(108,92,231,0.4);
+            border-radius: 20px; padding: 1.2rem 2rem; text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4); z-index: 9998;
+            font-family: inherit; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s;
+            opacity: 0; min-width: 300px;
+        `;
+        el.innerHTML = `
+            <div style="font-size:3rem;margin-bottom:.5rem;">${emoji}</div>
+            <div style="font-size:1.1rem;font-weight:800;color:var(--text-main);margin-bottom:.3rem;">${title}</div>
+            <div style="font-size:.9rem;color:var(--text-muted);">${message}</div>
+        `;
+        document.body.appendChild(el);
+
+        setTimeout(() => {
+            el.style.opacity = '1';
+            el.style.transform = 'translateX(-50%) translateY(0)';
+        }, 50);
+
+        setTimeout(() => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateX(-50%) translateY(20px)';
+            setTimeout(() => el.remove(), 400);
+        }, 4000);
+    };
+
+    // Called after every sale is registered — checks milestones
+    const checkMilestones = () => {
+        const incomes = sales.filter(s => s.type !== 'expense');
+        const totalRevenue = incomes.reduce((sum, s) => sum + s.amount, 0);
+        const salesCount = incomes.length;
+        const goalPct = dailyGoal > 0 ? (totalRevenue / dailyGoal) * 100 : 0;
+
+        const celebratedKey = `celebrated_${new Date().toISOString().split('T')[0]}`;
+        const celebrated = JSON.parse(localStorage.getItem(celebratedKey) || '{}');
+
+        // 🎯 Goal reached (100%)
+        if (goalPct >= 100 && !celebrated.goal) {
+            celebrated.goal = true;
+            localStorage.setItem(celebratedKey, JSON.stringify(celebrated));
+            launchConfetti(3500);
+            showMilestoneToast('🎯', '¡Meta diaria alcanzada!', `Llegaste a ${formatCurrency(dailyGoal)}. ¡Excelente trabajo!`);
+            return;
+        }
+        // 🌟 Halfway to goal (50%)
+        if (goalPct >= 50 && !celebrated.halfGoal) {
+            celebrated.halfGoal = true;
+            localStorage.setItem(celebratedKey, JSON.stringify(celebrated));
+            launchConfetti(1800);
+            showMilestoneToast('⭐', '¡Mitad del camino!', '¡Ya lograste el 50% de tu meta de hoy!');
+            return;
+        }
+        // 🛒 First sale of the day
+        if (salesCount === 1 && !celebrated.firstSale) {
+            celebrated.firstSale = true;
+            localStorage.setItem(celebratedKey, JSON.stringify(celebrated));
+            showMilestoneToast('🚀', '¡Primera venta del día!', '¡Arrancó el motor! Que sigan los ingresos.');
+            return;
+        }
+        // 💰 Milestone sales counts
+        const milestones = [5, 10, 20, 50];
+        for (const m of milestones) {
+            if (salesCount === m && !celebrated[`sales${m}`]) {
+                celebrated[`sales${m}`] = true;
+                localStorage.setItem(celebratedKey, JSON.stringify(celebrated));
+                launchConfetti(2000);
+                showMilestoneToast('🏆', `¡${m} ventas hoy!`, 'Un logro increíble. ¡Seguí así!');
+                return;
+            }
+        }
+    };
+
+    // Patch sale submission to trigger milestone check
+    document.addEventListener('zaleasy:sale-registered', () => {
+        checkMilestones();
+        updateWeekVsLastWeek();
+    });
 
     // Run app
     init();
