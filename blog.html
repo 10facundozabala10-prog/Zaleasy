@@ -94,8 +94,6 @@
     }
 
     .blog-category {
-      background: var(--primary-light);
-      color: #a29bfe;
       padding: 0.3rem 0.8rem;
       border-radius: 20px;
       font-size: 0.75rem;
@@ -105,6 +103,34 @@
       margin-bottom: 1rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
+    }
+
+    /* Category color palette */
+    .blog-card[data-category~="ventas"] .blog-category,
+    .blog-card[data-category~="automatizacion"] .blog-category {
+      background: rgba(108, 92, 231, 0.15);
+      color: #a29bfe;
+    }
+    .blog-card[data-category~="marketing"] .blog-category {
+      background: rgba(0, 184, 212, 0.15);
+      color: #00d2d3;
+    }
+    .blog-card[data-category~="finanzas"] .blog-category {
+      background: rgba(46, 213, 115, 0.15);
+      color: #2ed573;
+    }
+    .blog-card[data-category~="tecnologia"] .blog-category {
+      background: rgba(255, 165, 2, 0.15);
+      color: #ffa502;
+    }
+    .blog-card[data-category~="motivacion"] .blog-category {
+      background: rgba(255, 71, 87, 0.15);
+      color: #ff6b81;
+    }
+    /* Fallback for cards without data-category */
+    .blog-card:not([data-category]) .blog-category {
+      background: var(--primary-light);
+      color: #a29bfe;
     }
 
     .blog-card h3 {
@@ -168,6 +194,90 @@
 
     .fadeInScale {
       animation: fadeInScale 0.4s ease forwards;
+    }
+
+    /* Scroll-reveal: cards start invisible, JS adds .revealed */
+    .blog-card {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .blog-card.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* But coming-soon cards revealed stay at 0.6 opacity */
+    .blog-card.coming-soon.revealed {
+      opacity: 0.6;
+    }
+
+    /* Blog Stats Strip */
+    .blog-stats-strip {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      background: var(--bg-card);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      overflow: hidden;
+    }
+
+    .blog-stat-item {
+      flex: 1;
+      max-width: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1.8rem 1.5rem;
+      border-right: 1px solid rgba(255,255,255,0.05);
+      transition: background 0.25s;
+    }
+
+    .blog-stat-item:last-child {
+      border-right: none;
+    }
+
+    .blog-stat-item:hover {
+      background: rgba(108, 92, 231, 0.06);
+    }
+
+    .blog-stat-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .blog-stat-text strong {
+      display: block;
+      font-size: 1.6rem;
+      font-weight: 800;
+      line-height: 1;
+      color: var(--text-main);
+    }
+
+    .blog-stat-text span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    @media (max-width: 600px) {
+      .blog-stats-strip {
+        flex-wrap: wrap;
+      }
+      .blog-stat-item {
+        min-width: 50%;
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+      }
     }
 
     /* Article count badge */
@@ -408,8 +518,69 @@
     window.addEventListener('DOMContentLoaded', () => {
       const total = document.querySelectorAll('.blog-card:not(.coming-soon)').length;
       updateCount(total);
+
+      // ── Scroll-reveal with IntersectionObserver ──
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, i) => {
+          if (entry.isIntersecting) {
+            // Stagger the delay for cards in the same batch
+            const delay = (entry.target.dataset.revealIndex || 0) * 80;
+            setTimeout(() => {
+              entry.target.classList.add('revealed');
+            }, delay);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.08 });
+
+      // Assign stagger indexes per row
+      const allCards = document.querySelectorAll('.blog-card');
+      allCards.forEach((card, i) => {
+        card.dataset.revealIndex = i % 3; // up to 3 per row
+        observer.observe(card);
+      });
     });
   </script>
+
+  <!-- Blog Stats Strip -->
+  <div class="blog-stats-strip">
+    <div class="blog-stat-item">
+      <div class="blog-stat-icon" style="background: rgba(108,92,231,0.15); color: #a29bfe;">
+        <i class="fa-solid fa-newspaper"></i>
+      </div>
+      <div class="blog-stat-text">
+        <strong>10</strong>
+        <span>Art&iacute;culos en total</span>
+      </div>
+    </div>
+    <div class="blog-stat-item">
+      <div class="blog-stat-icon" style="background: rgba(46,213,115,0.12); color: #2ed573;">
+        <i class="fa-regular fa-clock"></i>
+      </div>
+      <div class="blog-stat-text">
+        <strong>~60</strong>
+        <span>Minutos de lectura</span>
+      </div>
+    </div>
+    <div class="blog-stat-item">
+      <div class="blog-stat-icon" style="background: rgba(0,184,212,0.12); color: #00d2d3;">
+        <i class="fa-solid fa-tags"></i>
+      </div>
+      <div class="blog-stat-text">
+        <strong>6</strong>
+        <span>Categor&iacute;as cubiertas</span>
+      </div>
+    </div>
+    <div class="blog-stat-item">
+      <div class="blog-stat-icon" style="background: rgba(255,165,2,0.12); color: #ffa502;">
+        <i class="fa-solid fa-fire"></i>
+      </div>
+      <div class="blog-stat-text">
+        <strong>100%</strong>
+        <span>Contenido gratuito</span>
+      </div>
+    </div>
+  </div>
 
   <!-- Ad Banner -->
   <div class="ad-banner" aria-label="Publicidad">
