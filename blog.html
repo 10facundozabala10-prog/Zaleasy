@@ -169,6 +169,113 @@
     .fadeInScale {
       animation: fadeInScale 0.4s ease forwards;
     }
+
+    /* Article count badge */
+    .article-count-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(108, 92, 231, 0.15);
+      border: 1px solid rgba(108, 92, 231, 0.3);
+      color: #a29bfe;
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+    }
+
+    /* Coming Soon card styling */
+    .blog-card.coming-soon {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .blog-card.coming-soon .blog-img {
+      background: repeating-linear-gradient(
+        -45deg,
+        var(--bg-hover),
+        var(--bg-hover) 10px,
+        var(--bg-card) 10px,
+        var(--bg-card) 20px
+      );
+    }
+
+    .coming-soon-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(255, 193, 7, 0.15);
+      border: 1px solid rgba(255, 193, 7, 0.3);
+      color: #ffc107;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      align-self: flex-start;
+      margin-bottom: 1rem;
+    }
+
+    /* CTA Section */
+    .blog-cta {
+      background: var(--bg-card);
+      border: 1px solid rgba(108, 92, 231, 0.2);
+      border-radius: 24px;
+      padding: 4rem 2rem;
+      text-align: center;
+      margin: 0 0 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .blog-cta::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(108, 92, 231, 0.12) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .blog-cta h2 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      line-height: 1.25;
+    }
+
+    .blog-cta p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 550px;
+      margin: 0 auto 2rem;
+      line-height: 1.6;
+    }
+
+    .blog-cta-features {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+
+    .blog-cta-feature {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .blog-cta-feature i {
+      color: var(--success);
+    }
   </style>
 </head>
 
@@ -200,6 +307,9 @@
   <!-- Blog Header Section -->
   <header class="blog-header">
     <div class="container">
+      <span class="article-count-badge" id="articleCountBadge">
+        <i class="fa-solid fa-newspaper"></i> <span id="articleCountNum">10</span> art&iacute;culos publicados
+      </span>
       <h1>Blog de Zaleasy</h1>
       <p>
         Consejos, estrategias y herramientas para aprender a gestionar tus ventas, 
@@ -218,49 +328,47 @@
         <button style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.5rem 1.2rem; border-radius: 20px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.9rem;" onclick="filterBlog('ventas', this)" class="blog-filter-btn">Ventas</button>
         <button style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.5rem 1.2rem; border-radius: 20px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.9rem;" onclick="filterBlog('marketing', this)" class="blog-filter-btn">Marketing</button>
         <button style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.5rem 1.2rem; border-radius: 20px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.9rem;" onclick="filterBlog('finanzas', this)" class="blog-filter-btn">Finanzas</button>
+        <button style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.5rem 1.2rem; border-radius: 20px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.9rem;" onclick="filterBlog('tecnologia', this)" class="blog-filter-btn">Tecnolog&iacute;a</button>
+        <button style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.5rem 1.2rem; border-radius: 20px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.9rem;" onclick="filterBlog('motivacion', this)" class="blog-filter-btn">Motivaci&oacute;n</button>
       </div>
     </div>
   </header>
 
   <script>
     function filterBlog(category, btnElement) {
-      // Restaurar el campo de busqueda
       document.getElementById('blogSearch').value = "";
 
-      // Update buttons visual state
       const buttons = document.querySelectorAll('header.blog-header button');
       buttons.forEach(btn => {
         btn.style.background = 'rgba(255, 255, 255, 0.05)';
         btn.style.color = 'var(--text-muted)';
         btn.style.border = '1px solid var(--border-color)';
       });
-      
       btnElement.style.background = 'var(--primary)';
       btnElement.style.color = 'white';
       btnElement.style.border = 'none';
 
-      // Real filtering
-      const cards = document.querySelectorAll('.blog-card');
+      const cards = document.querySelectorAll('.blog-card:not(.coming-soon)');
       let visibleCount = 0;
       cards.forEach(card => {
-        const textToSearch = card.innerText.toLowerCase();
-        if (category === 'all' || textToSearch.includes(category)) {
+        const cats = card.dataset.category || '';
+        const matches = category === 'all' || cats.includes(category);
+        if (matches) {
           card.style.display = 'flex';
           card.classList.remove('fadeInScale');
-          void card.offsetWidth; // trigger reflow
+          void card.offsetWidth;
           card.classList.add('fadeInScale');
           visibleCount++;
         } else {
           card.style.display = 'none';
         }
       });
-      
+      updateCount(visibleCount);
       const noResults = document.getElementById('noResults');
       if (noResults) noResults.style.display = visibleCount === 0 ? 'block' : 'none';
     }
 
     function searchBlog() {
-      // Resetear visualmente los botones a 'Todos' de forma implicita
       const buttons = document.querySelectorAll('header.blog-header button');
       buttons.forEach(btn => {
         btn.style.background = 'rgba(255, 255, 255, 0.05)';
@@ -272,25 +380,35 @@
       buttons[0].style.border = 'none';
 
       const input = document.getElementById('blogSearch').value.toLowerCase();
-      const cards = document.querySelectorAll('.blog-card');
+      const cards = document.querySelectorAll('.blog-card:not(.coming-soon)');
       let visibleCount = 0;
-      
       cards.forEach(card => {
         const text = card.innerText.toLowerCase();
         if (text.includes(input)) {
           card.style.display = 'flex';
           card.classList.remove('fadeInScale');
-          void card.offsetWidth; // trigger reflow
+          void card.offsetWidth;
           card.classList.add('fadeInScale');
           visibleCount++;
         } else {
           card.style.display = 'none';
         }
       });
-      
+      updateCount(visibleCount);
       const noResults = document.getElementById('noResults');
       if (noResults) noResults.style.display = visibleCount === 0 ? 'block' : 'none';
     }
+
+    function updateCount(n) {
+      const el = document.getElementById('articleCountNum');
+      if (el) el.textContent = n;
+    }
+
+    // Init count on load
+    window.addEventListener('DOMContentLoaded', () => {
+      const total = document.querySelectorAll('.blog-card:not(.coming-soon)').length;
+      updateCount(total);
+    });
   </script>
 
   <!-- Ad Banner -->
@@ -361,7 +479,7 @@
       </div>
 
       <!-- Article Embudos de Venta -->
-      <article class="blog-card">
+      <article class="blog-card" data-category="ventas marketing automatizacion">
         <div class="blog-img" style="background: url('assets/Blog imagenes/Embudos de Venta.jpeg') center/cover; height: 220px;">
         </div>
         <div class="blog-card-content">
@@ -378,7 +496,7 @@
       </article>
 
       <!-- Article Social Selling -->
-      <article class="blog-card">
+      <article class="blog-card" data-category="ventas marketing">
         <div class="blog-img" style="background: url('assets/Blog imagenes/Cómo Vender en Redes Sociales sin Parecer un Vendedor Desesperado.jpeg') center/cover; height: 220px;">
         </div>
         <div class="blog-card-content">
@@ -395,7 +513,7 @@
       </article>
 
       <!-- Article Email Marketing -->
-      <article class="blog-card">
+      <article class="blog-card" data-category="ventas marketing">
         <div class="blog-img" style="background: url('assets/Blog imagenes/Email Marketing para Ventas.jpeg') center/cover; height: 220px;">
         </div>
         <div class="blog-card-content">
@@ -412,7 +530,7 @@
       </article>
 
       <!-- Article Manejo de Objeciones -->
-      <article class="blog-card">
+      <article class="blog-card" data-category="ventas">
         <div class="blog-img" style="background: url('assets/Blog imagenes/Cómo Manejar Objeciones de Ventas y Convertir el No en una Oportunidad.jpeg') center/cover; height: 220px;">
         </div>
         <div class="blog-card-content">
@@ -429,7 +547,7 @@
       </article>
 
       <!-- Article Estrategias de Precios -->
-      <article class="blog-card">
+      <article class="blog-card" data-category="ventas finanzas">
         <div class="blog-img" style="background: url('assets/Blog imagenes/Estrategias de Precios que Venden.jpeg') center/cover; height: 220px;">
         </div>
         <div class="blog-card-content">
@@ -446,7 +564,7 @@
       </article>
 
       <!-- Article Upselling y Cross-Selling -->
-      <article class="blog-card">
+      <article class="blog-card" data-category="ventas">
         <div class="blog-img" style="background: url('assets/Blog imagenes/Upselling y Cross-Selling.jpeg') center/cover; height: 220px;">
         </div>
         <div class="blog-card-content">
@@ -462,8 +580,8 @@
         </div>
       </article>
 
-      <!-- Article New -->
-      <article class="blog-card">
+      <!-- Article Copywriting -->
+      <article class="blog-card" data-category="ventas marketing">
         <div class="blog-img" style="background: url('assets/Blog imagenes/copywriting-para-ventas.jpg') center/cover; height: 220px;">
         </div>
         <div class="blog-card-content">
@@ -479,8 +597,8 @@
         </div>
       </article>
 
-      <!-- Article 1 -->
-      <article class="blog-card">
+      <!-- Article 5 tecnicas cierre -->
+      <article class="blog-card" data-category="ventas">
         <div class="blog-img" style="background: url('assets/tecnicas_cierre.png') center/cover; height: 220px;">
         </div>
         <div class="blog-card-content">
@@ -496,8 +614,8 @@
         </div>
       </article>
 
-      <!-- Article 2 -->
-      <article class="blog-card">
+      <!-- Article como vender sin vender -->
+      <article class="blog-card" data-category="ventas">
         <div class="blog-img" style="background: url('assets/Blog imagenes/como-vender-sin-vender.png') center/cover; height: 220px;">
         </div>
         <div class="blog-card-content">
@@ -513,8 +631,8 @@
         </div>
       </article>
 
-      <!-- Article 3 -->
-      <article class="blog-card">
+      <!-- Article psicologia de ventas -->
+      <article class="blog-card" data-category="ventas">
         <div class="blog-img" style="background: url('assets/Blog imagenes/psicologia-de-ventas.jpeg') center/cover; height: 220px;">
         </div>
         <div class="blog-card-content">
@@ -530,56 +648,56 @@
         </div>
       </article>
 
-      <!-- Article 4 -->
-      <article class="blog-card">
-        <div class="blog-img" style="font-size: 3rem;">
+      <!-- Article 4 - Coming Soon -->
+      <article class="blog-card coming-soon" data-category="tecnologia">
+        <div class="blog-img" style="height: 220px;">
           <i class="fa-solid fa-mobile-screen-button"></i>
         </div>
         <div class="blog-card-content">
-          <span class="blog-category">Tecnolog&iacute;a</span>
+          <span class="coming-soon-badge"><i class="fa-solid fa-hourglass-half"></i> Pr&oacute;ximamente</span>
           <h3>La importancia de llevar tus registros en la nube</h3>
           <p>
             Las libretas de papel y los archivos de Excel locales son un riesgo para tu informaci&oacute;n. Descubre las ventajas de usar un software en la nube al que puedas acceder desde cualquier dispositivo.
           </p>
           <div class="blog-footer-meta">
             <span><i class="fa-regular fa-clock"></i> 3 min lectura</span>
-            <a href="#" class="btn-read-more">Leer art&iacute;culo <i class="fa-solid fa-arrow-right"></i></a>
+            <span style="color: var(--text-muted); font-size: 0.85rem;">En construcci&oacute;n</span>
           </div>
         </div>
       </article>
 
-      <!-- Article 5 -->
-      <article class="blog-card">
-        <div class="blog-img">
+      <!-- Article 5 - Coming Soon -->
+      <article class="blog-card coming-soon" data-category="motivacion">
+        <div class="blog-img" style="height: 220px;">
           <i class="fa-solid fa-bullseye"></i>
         </div>
         <div class="blog-card-content">
-          <span class="blog-category">Motivaci&oacute;n</span>
+          <span class="coming-soon-badge"><i class="fa-solid fa-hourglass-half"></i> Pr&oacute;ximamente</span>
           <h3>C&oacute;mo establecer metas de ventas diarias (y cumplirlas)</h3>
           <p>
             Ponerse una meta mensual puede ser abrumador. En este art&iacute;culo te ense&ntilde;amos a fragmentar la presi&oacute;n en metas microsc&oacute;picas por d&iacute;a para mantener la constancia.
           </p>
           <div class="blog-footer-meta">
             <span><i class="fa-regular fa-clock"></i> 5 min lectura</span>
-            <a href="#" class="btn-read-more">Leer art&iacute;culo <i class="fa-solid fa-arrow-right"></i></a>
+            <span style="color: var(--text-muted); font-size: 0.85rem;">En construcci&oacute;n</span>
           </div>
         </div>
       </article>
 
-      <!-- Article 6 -->
-      <article class="blog-card">
-        <div class="blog-img" style="font-size: 3rem;">
+      <!-- Article 6 - Coming Soon -->
+      <article class="blog-card coming-soon" data-category="finanzas">
+        <div class="blog-img" style="height: 220px;">
           <i class="fa-solid fa-calculator"></i>
         </div>
         <div class="blog-card-content">
-          <span class="blog-category">Finanzas</span>
+          <span class="coming-soon-badge"><i class="fa-solid fa-hourglass-half"></i> Pr&oacute;ximamente</span>
           <h3>Margen de ganancia: &iquest;Est&aacute;s cobrando lo suficiente?</h3>
           <p>
             Vender mucho no significa ganar mucho. Aprende a calcular correctamente tus m&aacute;rgenes de rentabilidad neto, separando gastos ocultos del ingreso bruto.
           </p>
           <div class="blog-footer-meta">
             <span><i class="fa-regular fa-clock"></i> 7 min lectura</span>
-            <a href="#" class="btn-read-more">Leer art&iacute;culo <i class="fa-solid fa-arrow-right"></i></a>
+            <span style="color: var(--text-muted); font-size: 0.85rem;">En construcci&oacute;n</span>
           </div>
         </div>
       </article>
@@ -587,38 +705,27 @@
     </div>
   </section>
 
-  <!-- Newsletter Section (Lead Generation) -->
-  <section class="container" style="padding-bottom: 4rem;">
-    <div style="background: linear-gradient(135deg, var(--primary), #8e84fa); border-radius: 24px; padding: 4rem 2rem; text-align: center; color: white; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(108, 92, 231, 0.25);">
-      <!-- Decorative elements -->
-      <div style="position: absolute; top: -50px; left: -50px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%); border-radius: 50%;"></div>
-      <div style="position: absolute; bottom: -80px; right: -50px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); border-radius: 50%;"></div>
-      
-      <div style="position: relative; z-index: 1; max-width: 650px; margin: 0 auto;">
-        <span style="display: inline-flex; align-items: center; justify-content: center; width: 70px; height: 70px; background: rgba(255,255,255,0.15); border-radius: 50%; margin-bottom: 1.5rem; backdrop-filter: blur(10px);">
-          <i class="fa-regular fa-envelope-open" style="font-size: 2.2rem;"></i>
-        </span>
-        <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; line-height: 1.2;">&Uacute;nete a m&aacute;s de 3,500 emprendedores</h2>
-        <p style="font-size: 1.15rem; margin-bottom: 2.5rem; opacity: 0.9; line-height: 1.6;">
-          Suscr&iacute;bete gratis a nuestra newsletter y recibe cada semana las mejores estrategias de ventas, marketing y finanzas directo en tu correo.
+  <!-- CTA Section -->
+  <section class="container">
+    <div class="blog-cta">
+      <div style="position: relative; z-index: 1;">
+        <p style="color: #a29bfe; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.8rem;">
+          <i class="fa-solid fa-rocket" style="margin-right: 6px;"></i>Lleva lo aprendido a la pr&aacute;ctica
         </p>
-        
-        <form id="newsletterForm" style="display: flex; gap: 0.8rem; max-width: 500px; margin: 0 auto; flex-wrap: wrap; justify-content: center;" onsubmit="event.preventDefault(); document.getElementById('newsletterForm').style.display='none'; document.getElementById('newsletterSuccess').style.display='block';">
-          <input type="email" placeholder="Tu correo electr&oacute;nico principal..." required style="flex: 1; min-width: 250px; padding: 1.2rem 1.5rem; border-radius: 30px; border: 2px solid transparent; font-size: 1rem; outline: none; box-shadow: 0 8px 20px rgba(0,0,0,0.1); transition: border 0.3s;" onfocus="this.style.border='2px solid rgba(255,255,255,0.5)'" onblur="this.style.border='2px solid transparent'">
-          <button type="submit" style="background: var(--bg-main); color: var(--text-main); border-radius: 30px; padding: 1.2rem 2.5rem; border: none; font-weight: 700; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; font-size: 1rem;">
-            Suscribirme <i class="fa-solid fa-paper-plane" style="margin-left: 8px;"></i>
-          </button>
-        </form>
-        <div id="newsletterSuccess" style="display: none; background: rgba(255,255,255,0.15); padding: 1.5rem; border-radius: 16px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); max-width: 500px; margin: 0 auto;">
-          <i class="fa-solid fa-circle-check" style="font-size: 2.5rem; color: #00d2d3; margin-bottom: 0.8rem;"></i>
-          <h3 style="font-size: 1.3rem; margin-bottom: 0.5rem; font-weight: 700;">&iexcl;Suscripci&oacute;n exitosa!</h3>
-          <p style="font-size: 1rem; opacity: 0.9;">Revisa tu bandeja de entrada (y la carpeta de promociones). Te acabamos de enviar tu primer correo.</p>
+        <h2>Gestiona tus ventas con Zaleasy</h2>
+        <p>Aplica todo lo que aprendiste en el blog: registra cada venta, controla tus gastos y cierra tu caja en segundos. Gratis para siempre.</p>
+        <div class="blog-cta-features">
+          <span class="blog-cta-feature"><i class="fa-solid fa-check"></i> 100% Gratuito</span>
+          <span class="blog-cta-feature"><i class="fa-solid fa-check"></i> Sin instalaciones</span>
+          <span class="blog-cta-feature"><i class="fa-solid fa-check"></i> Desde el celular</span>
+          <span class="blog-cta-feature"><i class="fa-solid fa-check"></i> Reportes autom&aacute;ticos</span>
         </div>
-        <p style="font-size: 0.85rem; margin-top: 1.2rem; opacity: 0.75;"><i class="fa-solid fa-shield-halved" style="margin-right: 5px;"></i> Cero spam. 100% valor. Date de baja cuando quieras.</p>
+        <a href="app.html" class="btn btn-primary" style="padding: 1rem 2.5rem; font-size: 1.05rem; border-radius: 14px;">
+          Empezar Gratis <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>
+        </a>
       </div>
     </div>
   </section>
-
   <!-- Ad Banner -->
   <div class="ad-banner" aria-label="Publicidad">
     <p class="ad-label">Publicidad</p>
