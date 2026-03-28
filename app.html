@@ -859,19 +859,26 @@
                     <!-- New Product Form (hidden by default) -->
                     <div id="new-product-form" style="display: none; background: var(--bg-hover); padding: 1.5rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; border: 1px solid var(--border-color);">
                         <h3 style="margin-bottom: 1rem;"><i class="fa-solid fa-box-open" style="margin-right: .5rem; color: var(--text-main);"></i>A&ntilde;adir al Cat&aacute;logo</h3>
-                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1rem;">
+                        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 1rem;">
                             <div class="form-group" style="margin-bottom: 0;">
-                                <label for="inv-name">Nombre del Producto / Servicio</label>
+                                <label for="inv-name">Nombre del Producto</label>
                                 <div class="input-wrapper">
                                     <i class="fa-solid fa-tag"></i>
-                                    <input type="text" id="inv-name" placeholder="Ej: Camiseta de algod&oacute;n">
+                                    <input type="text" id="inv-name" placeholder="Ej: Camiseta">
                                 </div>
                             </div>
                             <div class="form-group" style="margin-bottom: 0;">
-                                <label for="inv-price">Precio Base (Opcional)</label>
+                                <label for="inv-price">Precio (Opcional)</label>
                                 <div class="input-wrapper">
                                     <i class="fa-solid fa-dollar-sign"></i>
                                     <input type="number" id="inv-price" step="0.01" min="0" placeholder="0.00">
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="inv-stock">Stock (Opcional)</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-boxes-stacked"></i>
+                                    <input type="number" id="inv-stock" min="0" placeholder="Ej: 50">
                                 </div>
                             </div>
                         </div>
@@ -892,6 +899,7 @@
                                 <tr>
                                     <th>Producto / Servicio</th>
                                     <th>Precio Base</th>
+                                    <th>Stock Disponible</th>
                                     <th style="text-align: right;">Acciones</th>
                                 </tr>
                             </thead>

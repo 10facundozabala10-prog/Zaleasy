@@ -1815,6 +1815,18 @@ document.addEventListener('DOMContentLoaded', () => {
             sales.push(newSale);
             totalAdded += item.amount;
 
+            if (currentTransactionType === 'income') {
+                const catalogIdx = productCatalog.findIndex(p => p.name.toLowerCase() === item.product.toLowerCase());
+                if (catalogIdx !== -1 && productCatalog[catalogIdx].stock !== undefined && productCatalog[catalogIdx].stock !== null) {
+                    productCatalog[catalogIdx].stock = Math.max(0, productCatalog[catalogIdx].stock - 1);
+                    localStorage.setItem('productCatalog', JSON.stringify(productCatalog));
+                    // Update inventario view in background if active
+                    if (document.getElementById('view-inventario').style.display === 'block') {
+                        renderInventario();
+                    }
+                }
+            }
+
             // Autocomplete
             if (!recentProducts.includes(item.product)) {
                 recentProducts.unshift(item.product);
@@ -2581,9 +2593,14 @@ document.addEventListener('DOMContentLoaded', () => {
             // Sort alphabetically by default
             filtered.sort((a,b) => (a.name || '').localeCompare(b.name || '')).forEach(prod => {
                 const tr = document.createElement('tr');
+                const stockHtml = prod.stock !== undefined && prod.stock !== null 
+                    ? `<span class="badge" style="background:${prod.stock > 5 ? 'var(--primary-light)' : 'rgba(232, 67, 147, 0.15)'}; color:${prod.stock > 5 ? 'var(--primary)' : 'var(--danger)'};">${prod.stock} u.</span>` 
+                    : `<span style="color:var(--text-muted); font-size:0.85rem;">—</span>`;
+
                 tr.innerHTML = `
                     <td><strong>${prod.name}</strong></td>
                     <td style="color:var(--success); font-weight:bold;">${prod.price > 0 ? formatCurrency(prod.price) : '<span style="color:var(--text-muted); font-size:0.85rem; font-weight:normal;">Sin precio fijo</span>'}</td>
+                    <td>${stockHtml}</td>
                     <td style="text-align:right;">
                         <button class="btn-icon btn-delete-inv" data-id="${prod.id}" title="Eliminar del Catálogo" style="color: var(--danger); opacity: 0.8;">
                             <i class="fa-solid fa-trash"></i>
@@ -2627,8 +2644,10 @@ document.addEventListener('DOMContentLoaded', () => {
         btnSaveInvProd.addEventListener('click', () => {
             const nameEl = document.getElementById('inv-name');
             const priceEl = document.getElementById('inv-price');
+            const stockEl = document.getElementById('inv-stock');
             const name = nameEl.value.trim();
             const price = parseFloat(priceEl.value) || 0;
+            const stockVal = stockEl && stockEl.value.trim() !== '' ? parseInt(stockEl.value) : null;
             
             if (!name) {
                 nameEl.style.borderColor = 'var(--danger)';
@@ -2639,7 +2658,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const newProd = {
                 id: Date.now(),
                 name: name,
-                price: price
+                price: price,
+                stock: stockVal
             };
             
             productCatalog.push(newProd);
@@ -2647,6 +2667,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             nameEl.value = '';
             priceEl.value = '';
+            if (stockEl) stockEl.value = '';
             newProductForm.style.display = 'none';
             
             renderInventario();
