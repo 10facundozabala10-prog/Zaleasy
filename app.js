@@ -221,11 +221,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const name = tx.customerName.trim();
                 // We use standard titlecase or exactly as inputted, maybe just uppercase first
                 if (!clientMap[name]) {
-                    clientMap[name] = { totalCompras: 0, totalGastado: 0, ultimaCompra: 0 };
+                    clientMap[name] = { totalCompras: 0, totalGastado: 0, totalDeuda: 0, ultimaCompra: 0 };
                 }
                 clientMap[name].totalCompras++;
                 if (tx.type !== 'expense') {
-                    clientMap[name].totalGastado += tx.amount;
+                    if (tx.method === 'A Cobrar') {
+                        clientMap[name].totalDeuda += tx.amount;
+                    } else {
+                        clientMap[name].totalGastado += tx.amount;
+                    }
                 }
                 if (tx.timestamp > clientMap[name].ultimaCompra) {
                     clientMap[name].ultimaCompra = tx.timestamp;
@@ -251,11 +255,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 const tr = document.createElement('tr');
                 const lastDate = new Date(c.ultimaCompra).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' });
                 
+                const debtHtml = c.totalDeuda > 0 
+                    ? `<span style="color:var(--danger); font-weight:bold;">${formatCurrency(c.totalDeuda)}</span>` 
+                    : `<span style="color:var(--text-muted);">Sin deuda</span>`;
+                    
+                const actionHtml = c.totalDeuda > 0
+                    ? `<button class="btn btn-outline btn-sm btn-wsp-debt" data-client="${clientName}" data-debt="${c.totalDeuda}" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; border-color: #25D366; color: #25D366;" title="Recordatorio WhatsApp"><i class="fa-brands fa-whatsapp"></i> Cobrar</button>`
+                    : `<span style="color:var(--text-muted); font-size: 0.8rem;">—</span>`;
+
                 tr.innerHTML = `
                     <td><i class="fa-solid fa-user-circle" style="color:var(--text-muted); margin-right:6px;"></i><strong>${clientName}</strong></td>
                     <td><span class="badge">${c.totalCompras} transacciones</span></td>
                     <td style="color:var(--success); font-weight:bold;">${formatCurrency(c.totalGastado)}</td>
+                    <td>${debtHtml}</td>
                     <td style="color:var(--text-muted); font-size: 0.9em;">${lastDate}</td>
+                    <td style="text-align: right;">${actionHtml}</td>
                 `;
                 clientesBody.appendChild(tr);
             });
@@ -268,23 +282,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     document.addEventListener('click', (e) => {
+        if (e.target.closest('.btn-wsp-debt')) {
+            const btn = e.target.closest('.btn-wsp-debt');
+            const client = btn.getAttribute('data-client');
+            const debt = parseFloat(btn.getAttribute('data-debt'));
+            const msg = `Hola ${client}, te escribo de ${storeName || 'nuestra tienda'}. Este es un recordatorio amigable sobre tu saldo pendiente de ${formatCurrency(debt)}. ¡Gracias!`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
         if (e.target.closest('#export-clientes-csv')) {
             const allTx = [...historyData, ...sales];
             const clientMap = {};
             allTx.forEach(tx => {
                 if (tx.customerName && tx.customerName.trim() !== '') {
                     const name = tx.customerName.trim();
-                    if (!clientMap[name]) clientMap[name] = { totalCompras: 0, totalGastado: 0, ultimaCompra: 0 };
+                    if (!clientMap[name]) clientMap[name] = { totalCompras: 0, totalGastado: 0, totalDeuda: 0, ultimaCompra: 0 };
                     clientMap[name].totalCompras++;
-                    if (tx.type !== 'expense') clientMap[name].totalGastado += tx.amount;
+                    if (tx.type !== 'expense') {
+                        if (tx.method === 'A Cobrar') clientMap[name].totalDeuda += tx.amount;
+                        else clientMap[name].totalGastado += tx.amount;
+                    }
                     if (tx.timestamp > clientMap[name].ultimaCompra) clientMap[name].ultimaCompra = tx.timestamp;
                 }
             });
-            let csvContent = "data:text/csv;charset=utf-8,Cliente,Total de Transacciones,Total Invertido,Ultima Compra\\n";
+            let csvContent = "data:text/csv;charset=utf-8,Cliente,Total de Transacciones,Total Invertido,Deuda Pendiente,Ultima Compra\n";
             Object.keys(clientMap).sort((a,b) => clientMap[b].totalGastado - clientMap[a].totalGastado).forEach(name => {
                 const c = clientMap[name];
                 const dateStr = new Date(c.ultimaCompra).toLocaleDateString('es-ES');
-                csvContent += `"${name}",${c.totalCompras},${c.totalGastado},"${dateStr}"\n`;
+                csvContent += `"${name}",${c.totalCompras},${c.totalGastado},${c.totalDeuda},"${dateStr}"\n`;
             });
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement('a');
