@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Retención de Clientes: Por Qué Mantener a tus Clientes Vale Más que Conseguir Nuevos | Zaleasy Blog</title>
+  <meta name="description" content="Conseguir un cliente nuevo cuesta entre 5 y 7 veces más que mantener uno que ya tienes. Aprende los 5 pilares de una estrategia de retención efectiva." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://zaleasy.com/Blog%20htmls/retencion-de-clientes.html" />
+  <meta property="og:title" content="Retención de Clientes: Por Qué Mantener a tus Clientes Vale Más que Conseguir Nuevos" />
+  <meta property="og:image" content="https://zaleasy.com/assets/Blog%20imagenes/Retenci%C3%B3n%20de%20Clientes.jpeg" />
+  <meta property="og:site_name" content="Zaleasy" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="canonical" href="https://zaleasy.com/Blog%20htmls/retencion-de-clientes.html" />
+  <link rel="stylesheet" href="../landing.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6041920422141090" crossorigin="anonymous"></script>
+  <style>
+    .article-header {
+      padding: 4rem 0 2rem;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(108, 92, 231, 0.08) 0%, transparent 100%);
+    }
+    .article-category {
+      background: var(--primary-light);
+      color: #a29bfe;
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: inline-block;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .article-title {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .article-meta {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 2.5rem;
+    }
+    .article-meta span {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .article-cover {
+      width: 100%;
+      height: 450px;
+      max-width: 1000px;
+      margin: 0 auto;
+      border-radius: 20px;
+      background: url('../assets/Blog imagenes/Retención de Clientes.jpeg') center/cover;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      position: relative;
+      margin-bottom: 4rem;
+    }
+    .article-content {
+      max-width: 750px;
+      margin: 0 auto 5rem;
+      font-size: 1.15rem;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.85);
+    }
+    .article-content h2 {
+      font-size: 2rem;
+      color: var(--text-main);
+      margin: 2.5rem 0 1rem;
+      font-weight: 700;
+    }
+    .article-content h3 {
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin: 2rem 0 1rem;
+      font-weight: 600;
+    }
+    .article-content p { margin-bottom: 1.5rem; }
+    .article-content strong { color: var(--text-main); font-weight: 600; }
+    .article-content .quote-block {
+      background: var(--bg-card);
+      border-left: 4px solid var(--primary);
+      padding: 1.5rem 2rem;
+      margin: 2rem 0;
+      border-radius: 0 12px 12px 0;
+      font-style: italic;
+      color: #a29bfe;
+      font-size: 1.25rem;
+    }
+    .article-content ul, .article-content ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+    }
+    .article-content li { margin-bottom: 0.5rem; }
+
+    /* Belief blocks */
+    .belief-block {
+      background: var(--bg-card);
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.05);
+      padding: 1.8rem 2rem;
+      margin: 1.5rem 0;
+      position: relative;
+    }
+    .belief-block .belief-num {
+      position: absolute;
+      top: -14px;
+      left: 1.5rem;
+      background: var(--primary);
+      color: white;
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 0.3rem 0.9rem;
+      border-radius: 20px;
+    }
+
+    /* Practice block */
+    .practice-block {
+      background: var(--bg-card);
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.05);
+      padding: 1.5rem 1.8rem;
+      margin: 1.2rem 0;
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
+    }
+    .practice-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(108, 92, 231, 0.15);
+      color: #a29bfe;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .practice-content h4 {
+      color: var(--text-main);
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+    .practice-content p {
+      margin-bottom: 0;
+      font-size: 1rem;
+      color: rgba(255,255,255,0.75);
+    }
+
+    .author-box {
+      background: var(--bg-hover);
+      padding: 2.5rem;
+      border-radius: 16px;
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      margin-top: 4rem;
+      border: 1px solid var(--border-color);
+    }
+    .author-img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--primary);
+    }
+
+    @media (max-width: 768px) {
+      .article-title { font-size: 2.2rem; }
+      .article-cover { height: 250px; border-radius: 10px; }
+      .author-box { flex-direction: column; text-align: center; }
+      .practice-block { flex-direction: column; }
+    }
+  </style>
+  <style>#reading-progress{position:fixed;top:0;left:0;height:4px;width:0%;background:linear-gradient(90deg,#6c5ce7,#a29bfe);z-index:9999;border-radius:0 4px 4px 0;transition:width 0.1s linear;box-shadow:0 0 10px rgba(108,92,231,0.7);}</style>
+</head>
+
+<body>
+  <div id="reading-progress"></div>
+  <script>window.addEventListener('scroll',()=>{const a=document.querySelector('article.article-content');if(!a)return;const t=a.getBoundingClientRect().top+window.scrollY,h=a.offsetHeight,s=window.scrollY-t;document.getElementById('reading-progress').style.width=Math.min(Math.max((s/h)*100,0),100)+'%';});</script>
+  <!-- Background Animation -->
+  <div class="bg-animated"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <div class="brand">
+        <a href="../index.html" style="text-decoration: none; display: flex; align-items: center; gap: 1rem;">
+          <img src="../assets/logo.png" alt="Zaleasy Logo" style="height: 45px; border-radius: 50%; box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);" />
+          <h2 style="color: var(--text-main);">Zaleasy</h2>
+        </a>
+      </div>
+      <div class="nav-links">
+        <a href="../blog.html" style="color: var(--primary);">Volver al Blog</a>
+        <a href="../app.html" class="btn btn-primary">Iniciar Sesi&oacute;n</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Article Header -->
+  <header class="article-header">
+    <div class="container">
+      <span class="article-category"><i class="fa-solid fa-users" style="margin-right:6px;"></i>Retención</span>
+      <h1 class="article-title">Retención de Clientes: Por Qué Mantener a tus Clientes Vale Más que Conseguir Nuevos</h1>
+      <div class="article-meta">
+        <span><i class="fa-solid fa-user-pen"></i> Facundo Luis Zabala</span>
+        <span><i class="fa-regular fa-calendar-days"></i> Abril 2026</span>
+        <span><i class="fa-regular fa-clock"></i> 7 min lectura</span>
+      </div>
+      <div class="article-cover"></div>
+    </div>
+  </header>
+
+  <!-- Article Content -->
+  <main class="container">
+    <article class="article-content">
+
+      <!-- Table of Contents -->
+      <div style="background:var(--bg-card);border:1px solid rgba(108,92,231,0.25);border-radius:16px;padding:1.8rem 2rem;margin-bottom:2.5rem;border-left:4px solid var(--primary);">
+        <p style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--primary);font-weight:700;margin-bottom:1rem;"><i class="fa-solid fa-list-ul" style="margin-right:6px;"></i>&Iacute;ndice del art&iacute;culo</p>
+        <ol style="padding-left:1.2rem;margin:0;display:flex;flex-direction:column;gap:0.6rem;">
+          <li><a href="#rentable" style="color:#a29bfe;text-decoration:none;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#a29bfe'">Por Qu&eacute; la Retenci&oacute;n es la Estrategia de Crecimiento m&aacute;s Rentable</a></li>
+          <li><a href="#pilares" style="color:#a29bfe;text-decoration:none;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#a29bfe'">Los 5 Pilares de una Estrategia de Retenci&oacute;n Efectiva</a></li>
+          <li><a href="#metricas" style="color:#a29bfe;text-decoration:none;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#a29bfe'">Las M&eacute;tricas de Retenci&oacute;n que Todo Negocio Debe Monitorear</a></li>
+          <li><a href="#ignorar" style="color:#a29bfe;text-decoration:none;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#a29bfe'">El Costo Real de Ignorar la Retenci&oacute;n</a></li>
+          <li><a href="#plan" style="color:#a29bfe;text-decoration:none;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#a29bfe'">Tu Plan de Retenci&oacute;n M&iacute;nimo Viable</a></li>
+        </ol>
+      </div>
+
+      <p>
+        Conseguir un cliente nuevo cuesta entre <strong>5 y 7 veces m&aacute;s</strong> que mantener uno que ya tienes. Sin embargo, la mayor&iacute;a de los negocios invierten el 90% de su energ&iacute;a en captaci&oacute;n y apenas el 10% en retenci&oacute;n. Ese desequilibrio es uno de los errores m&aacute;s costosos que comete un emprendedor digital.
+      </p>
+
+      <h2 id="rentable">Por Qu&eacute; la Retenci&oacute;n es la Estrategia de Crecimiento m&aacute;s Rentable</h2>
+      <p>
+        Un cliente que ya te compr&oacute; te conoce, conf&iacute;a en ti y tuvo una experiencia con tu producto. La barrera psicol&oacute;gica m&aacute;s dif&iacute;cil de superar en ventas, <strong>la desconfianza inicial</strong>, ya fue superada. Venderle de nuevo no requiere convencerlo desde cero. Solo requiere seguir siendo relevante para su vida.
+      </p>
+      <p>
+        Adem&aacute;s, los clientes retenidos tienen un comportamiento de compra diferente al de los nuevos: compran con m&aacute;s frecuencia, compran productos de mayor valor y son infinitamente m&aacute;s propensos a recomendarte a otros. Un cliente fiel no es solo un comprador repetido, <strong>es un canal de captaci&oacute;n org&aacute;nico.</strong>
+      </p>
+
+      <h2 id="pilares">Los 5 Pilares de una Estrategia de Retenci&oacute;n Efectiva</h2>
+
+      <div class="belief-block">
+        <span class="belief-num">Pilar 1</span>
+        <h3 style="margin-top:0.8rem;color:var(--text-main);">Onboarding Impecable: La Primera Experiencia lo Define Todo</h3>
+        <p>
+          El per&iacute;odo m&aacute;s cr&iacute;tico de la relaci&oacute;n con un cliente no es antes de que compre, sino inmediatamente despu&eacute;s. Los primeros 7 d&iacute;as tras la compra determinan si ese cliente se convierte en un fan o en alguien que pide reembolso.
+        </p>
+        <p>
+          Un buen onboarding tiene un solo objetivo: llevar al cliente a su primera victoria r&aacute;pida. Si compr&oacute; un curso, que en las primeras 24 horas ya haya aplicado algo y visto un resultado concreto. Si contrat&oacute; un servicio, que en la primera semana ya sienta que tom&oacute; la mejor decisi&oacute;n de su vida.
+        </p>
+        <p style="margin-bottom:0;">
+          <strong>La primera victoria r&aacute;pida es el ancla emocional que construye lealtad a largo plazo.</strong>
+        </p>
+      </div>
+
+      <div class="belief-block">
+        <span class="belief-num">Pilar 2</span>
+        <h3 style="margin-top:0.8rem;color:var(--text-main);">Comunicaci&oacute;n Constante de Valor</h3>
+        <p>
+          El mayor enemigo de la retenci&oacute;n no es la competencia. Es el silencio. Cuando dejas de comunicarte con un cliente despu&eacute;s de la venta, el cliente siente que solo te importaba su dinero, no su resultado.
+        </p>
+        <p style="margin-bottom:0;">
+          Mant&eacute;n una comunicaci&oacute;n regular que aporte valor: tips adicionales relacionados con su compra, novedades relevantes para su situaci&oacute;n, contenido exclusivo para clientes actuales. No cada comunicaci&oacute;n tiene que vender algo. La mayor&iacute;a debe simplemente recordarle que est&aacute;s ah&iacute; y que te importa su progreso.
+        </p>
+      </div>
+
+      <div class="belief-block">
+        <span class="belief-num">Pilar 3</span>
+        <h3 style="margin-top:0.8rem;color:var(--text-main);">Programa de Fidelizaci&oacute;n Estrat&eacute;gico</h3>
+        <p>
+          Los programas de fidelizaci&oacute;n no son exclusivos de las grandes empresas. Cualquier negocio digital puede implementar un sistema simple que recompense la lealtad:
+        </p>
+        <ul>
+          <li>Descuentos exclusivos para clientes que repiten compra</li>
+          <li>Acceso anticipado a nuevos productos antes que el p&uacute;blico general</li>
+          <li>Bonuses sorpresa para clientes de m&aacute;s de 6 meses</li>
+          <li>Reconocimiento p&uacute;blico de los clientes m&aacute;s comprometidos en tu comunidad</li>
+        </ul>
+        <p style="margin-bottom:0;">
+          La clave es que el cliente sienta que ser tu cliente habitual tiene beneficios reales que no obtendr&iacute;a siendo un comprador nuevo.
+        </p>
+      </div>
+
+      <div class="belief-block">
+        <span class="belief-num">Pilar 4</span>
+        <h3 style="margin-top:0.8rem;color:var(--text-main);">Solicitar y Actuar sobre el Feedback</h3>
+        <p>
+          Pedir feedback no es solo una cortes&iacute;a. Es la herramienta m&aacute;s poderosa para identificar los puntos de fuga antes de que un cliente se vaya silenciosamente.
+        </p>
+        <p>
+          Una encuesta simple de 3 preguntas enviada 30 d&iacute;as despu&eacute;s de la compra puede revelarte informaci&oacute;n que ning&uacute;n an&aacute;lisis de datos te dar&iacute;a:
+        </p>
+        <ul>
+          <li>&iquest;Qu&eacute; fue lo m&aacute;s valioso que obtuviste?</li>
+          <li>&iquest;Qu&eacute; mejorar&iacute;as o qu&eacute; echaste en falta?</li>
+          <li>&iquest;Hay algo en lo que todav&iacute;a necesitas ayuda?</li>
+        </ul>
+        <p style="margin-bottom:0;">
+          Pero solicitar feedback solo tiene valor si act&uacute;as sobre &eacute;l. <strong>Cuando un cliente ve que su opini&oacute;n gener&oacute; un cambio real, su nivel de lealtad se multiplica.</strong>
+        </p>
+      </div>
+
+      <div class="belief-block">
+        <span class="belief-num">Pilar 5</span>
+        <h3 style="margin-top:0.8rem;color:var(--text-main);">Anticipar las Necesidades del Cliente Antes de que las Exprese</h3>
+        <p>
+          Los negocios que retienen mejor a sus clientes no esperan a que estos vuelvan a comprar. Se anticipan a la siguiente necesidad natural del cliente y la presentan en el momento justo.
+        </p>
+        <p>
+          Si un cliente compr&oacute; tu curso de copywriting b&aacute;sico y lo complet&oacute;, la siguiente necesidad l&oacute;gica es aprender copywriting avanzado o implementaci&oacute;n pr&aacute;ctica. Si contrat&oacute; un servicio de dise&ntilde;o y qued&oacute; satisfecho, la siguiente necesidad puede ser el mantenimiento o la actualizaci&oacute;n.
+        </p>
+        <p style="margin-bottom:0;">
+          Conocer el journey natural de tu cliente y anticiparse a cada etapa es la diferencia entre un negocio que depende de la captaci&oacute;n constante y uno que crece de forma org&aacute;nica gracias a su base de clientes existente.
+        </p>
+      </div>
+
+      <h2 id="metricas">Las M&eacute;tricas de Retenci&oacute;n que Todo Negocio Debe Monitorear</h2>
+      <ul>
+        <li><strong>Tasa de recompra:</strong> Porcentaje de clientes que vuelven a comprar en los primeros 90 d&iacute;as</li>
+        <li><strong>Churn rate:</strong> Porcentaje de clientes que no renuevan o no vuelven a comprar en un per&iacute;odo determinado</li>
+        <li><strong>Lifetime Value (LTV):</strong> Ingreso total promedio que genera un cliente durante toda su relaci&oacute;n contigo</li>
+        <li><strong>Net Promoter Score (NPS):</strong> Probabilidad de que tus clientes te recomienden a otros en una escala del 1 al 10</li>
+      </ul>
+      <p>
+        Si no mides estas m&eacute;tricas, no puedes mejorarlas. Y si no las mejoras, est&aacute;s construyendo un negocio con un balde agujereado: captando por arriba mientras pierdes por abajo.
+      </p>
+
+      <div class="quote-block">
+        En cambio, mejorar la retenci&oacute;n un 5% puede aumentar la rentabilidad de un negocio entre un 25% y un 95%.
+      </div>
+
+      <h2 id="ignorar">El Costo Real de Ignorar la Retenci&oacute;n</h2>
+      <p>
+        Un negocio con una tasa de retenci&oacute;n del 60% necesita reemplazar el 40% de sus clientes cada a&ntilde;o solo para mantenerse estable. Eso significa que todo el presupuesto de marketing, todo el esfuerzo de captaci&oacute;n y toda la energ&iacute;a invertida en conseguir nuevos clientes se destina a compensar la p&eacute;rdida, no al crecimiento real.
+      </p>
+      <p>
+        Mejorar la retenci&oacute;n no es una cifra menor. Es la diferencia entre un negocio que sobrevive y uno que escala.
+      </p>
+
+      <h2 id="plan">Tu Plan de Retenci&oacute;n M&iacute;nimo Viable</h2>
+      <p>
+        Si hoy no tienes ninguna estrategia de retenci&oacute;n, empieza con estos tres pasos esta semana:
+      </p>
+
+      <div class="practice-block">
+        <div class="practice-icon"><i class="fa-regular fa-envelope"></i></div>
+        <div class="practice-content">
+          <h4>Env&iacute;a un email de Check-in</h4>
+          <p>Env&iacute;a un email a tus clientes actuales preguntando c&oacute;mo est&aacute;n y si necesitan ayuda con algo relacionado con su compra.</p>
+        </div>
+      </div>
+
+      <div class="practice-block">
+        <div class="practice-icon"><i class="fa-solid fa-magic"></i></div>
+        <div class="practice-content">
+          <h4>Crea una Secuencia de Onboarding</h4>
+          <p>Crea una secuencia de onboarding de 5 emails para nuevos clientes que los gu&iacute;e hacia su primera victoria r&aacute;pida.</p>
+        </div>
+      </div>
+
+      <div class="practice-block">
+        <div class="practice-icon"><i class="fa-solid fa-gift"></i></div>
+        <div class="practice-content">
+          <h4>Prepara una Oferta Exclusiva</h4>
+          <p>Identifica tu producto o servicio complementario m&aacute;s l&oacute;gico y prepara una oferta exclusiva para clientes existentes.</p>
+        </div>
+      </div>
+
+      <p style="margin-top:2rem;">
+        Con esos tres pasos ya tienes una base de retenci&oacute;n funcionando. El resto es optimizar con datos reales.
+      </p>
+
+      <!-- Share -->
+      <div style="border-top:1px solid var(--border-color);margin-top:3rem;padding-top:2rem;">
+        <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:1rem;font-weight:600;text-transform:uppercase;"><i class="fa-solid fa-share-nodes" style="color:var(--primary);margin-right:8px;"></i>&iquest;Te fue &uacute;til? Comp&aacute;rtelo</p>
+        <div style="display:flex;gap:0.8rem;flex-wrap:wrap;">
+          <a href="https://wa.me/?text=Mir%C3%A1%20este%20art%C3%ADculo%20%F0%9F%94%A5%20https://zaleasy.com/Blog%20htmls/retencion-de-clientes.html" target="_blank" style="background:#25d366;color:white;padding:0.6rem 1.2rem;border-radius:30px;text-decoration:none;font-weight:600;font-size:0.9rem;display:inline-flex;align-items:center;gap:0.5rem;"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+          <a href="https://twitter.com/intent/tweet?url=https://zaleasy.com/Blog%20htmls/retencion-de-clientes.html" target="_blank" style="background:#000;color:white;padding:0.6rem 1.2rem;border-radius:30px;text-decoration:none;font-weight:600;font-size:0.9rem;display:inline-flex;align-items:center;gap:0.5rem;"><i class="fa-brands fa-x-twitter"></i> X</a>
+          <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://zaleasy.com/Blog%20htmls/retencion-de-clientes.html" target="_blank" style="background:#0077b5;color:white;padding:0.6rem 1.2rem;border-radius:30px;text-decoration:none;font-weight:600;font-size:0.9rem;display:inline-flex;align-items:center;gap:0.5rem;"><i class="fa-brands fa-linkedin-in"></i> LinkedIn</a>
+          <button onclick="navigator.clipboard.writeText(window.location.href).then(()=>{this.innerHTML='&#10003; Copiado!';setTimeout(()=>{this.innerHTML='&#128279; Copiar enlace';},2500);})" style="background:var(--bg-hover);color:var(--text-muted);padding:0.6rem 1.2rem;border-radius:30px;border:1px solid var(--border-color);font-weight:600;font-size:0.9rem;display:inline-flex;align-items:center;gap:0.5rem;cursor:pointer;">&#128279; Copiar enlace</button>
+        </div>
+      </div>
+
+      <!-- Author Box -->
+      <div class="author-box">
+        <img src="../assets/facundo.jpg" alt="Facundo Luis Zabala" class="author-img" onerror="this.src='https://ui-avatars.com/api/?name=Facundo+Zabala&background=0D8ABC&color=fff'">
+        <div>
+          <h4 style="font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--text-main);">Facundo Luis Zabala</h4>
+          <p style="margin-bottom: 0; font-size: 0.95rem;">Empresario, creador de Zaleasy y experto en simplificar las finanzas y las ventas para emprendedores y PyMEs en Latinoam&eacute;rica.</p>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <!-- Related Articles -->
+  <section style="padding:4rem 0;border-top:1px solid var(--border-color);">
+    <div class="container" style="max-width:1000px;">
+      <h2 style="font-size:1.8rem;font-weight:700;margin-bottom:2rem;"><i class="fa-solid fa-book-open" style="color:var(--primary);margin-right:10px;"></i>Leer tambi&eacute;n</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;">
+        <a href="embudos-de-venta.html" style="text-decoration:none;"><div style="background:var(--bg-card);border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.05);transition:transform 0.3s;" onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform=''"><div style="height:160px;background:url('../assets/Blog imagenes/Embudos de Venta.jpeg') center/cover;"></div><div style="padding:1.3rem;"><span style="background:var(--primary-light);color:#a29bfe;padding:0.25rem 0.7rem;border-radius:20px;font-size:0.72rem;font-weight:700;text-transform:uppercase;">Automatizaci&oacute;n</span><h3 style="font-size:1.1rem;margin-top:0.8rem;margin-bottom:0;color:var(--text-main);">Embudos de Venta: C&oacute;mo Automatizar tus Ventas</h3></div></div></a>
+        <a href="upselling-y-cross-selling.html" style="text-decoration:none;"><div style="background:var(--bg-card);border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.05);transition:transform 0.3s;" onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform=''"><div style="height:160px;background:url('../assets/Blog imagenes/Upselling y Cross-Selling.jpeg') center/cover;"></div><div style="padding:1.3rem;"><span style="background:var(--primary-light);color:#a29bfe;padding:0.25rem 0.7rem;border-radius:20px;font-size:0.72rem;font-weight:700;text-transform:uppercase;">Ventas</span><h3 style="font-size:1.1rem;margin-top:0.8rem;margin-bottom:0;color:var(--text-main);">Upselling y Cross-Selling: C&oacute;mo Vender M&aacute;s a tus Clientes</h3></div></div></a>
+        <a href="psicologia-de-ventas.html" style="text-decoration:none;"><div style="background:var(--bg-card);border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.05);transition:transform 0.3s;" onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform=''"><div style="height:160px;background:url('../assets/Blog imagenes/psicologia-de-ventas.jpeg') center/cover;"></div><div style="padding:1.3rem;"><span style="background:var(--primary-light);color:#a29bfe;padding:0.25rem 0.7rem;border-radius:20px;font-size:0.72rem;font-weight:700;text-transform:uppercase;">Ventas</span><h3 style="font-size:1.1rem;margin-top:0.8rem;margin-bottom:0;color:var(--text-main);">Psicolog&iacute;a de Ventas: 6 Principios que Hacen Comprar</h3></div></div></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section style="background: linear-gradient(135deg, var(--bg-hover), var(--bg-card)); padding: 4rem 0; text-align: center; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+    <div class="container" style="max-width: 600px;">
+      <h2 style="font-size: 2rem; margin-bottom: 1rem;">Mide tu progreso en ventas con datos reales</h2>
+      <p style="color: var(--text-muted); margin-bottom: 2rem; font-size: 1.1rem;">Usa Zaleasy gratis para registrar cada venta, controlar tus gastos y ver exactamente d&oacute;nde est&aacute; tu dinero. La estrategia correcta m&aacute;s datos reales es la f&oacute;rmula ganadora.</p>
+      <a href="../app.html" class="btn btn-primary btn-lg" style="padding: 1rem 3rem; border-radius: 12px; font-size: 1.2rem;">Crear Cuenta Gratis</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <img src="../assets/logo.png" alt="Zaleasy Logo" style="height: 35px; border-radius: 50%; margin-bottom: 0.5rem; display: block;" />
+        <h3>Zaleasy</h3>
+        <p>Haciendo la gesti&oacute;n financiera f&aacute;cil y accesible para todos los emprendedores.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Enlaces &Uacute;tiles</h4>
+        <a href="../app.html">Iniciar Sesi&oacute;n</a>
+        <a href="../blog.html">Blog</a>
+        <a href="../index.html#features">Caracter&iacute;sticas</a>
+        <a href="../index.html#creator">Nuestra Misi&oacute;n</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Zaleasy. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/5492645859764?text=Hola,%20tengo%20una%20duda%20sobre%20Zaleasy" target="_blank" class="whatsapp-float"><i class="fa-brands fa-whatsapp"></i></a>
+  <button id="back-to-top" aria-label="Volver arriba" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fa-solid fa-chevron-up"></i></button>
+  <script>window.addEventListener('scroll',()=>{document.getElementById('back-to-top').classList.toggle('visible',window.scrollY>400);},{passive:true});</script>
+</body>
+</html>
