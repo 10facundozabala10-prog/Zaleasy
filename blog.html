@@ -744,6 +744,63 @@
     </div>
   </section>
 
+  <!-- Learning Path Section -->
+  <section class="container" style="padding-top: 3rem; padding-bottom: 1rem;">
+    <div style="background: var(--bg-card); border: 1px solid rgba(0, 210, 211, 0.2); border-radius: 20px; padding: 2.5rem; position: relative; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.2);">
+      <!-- Decorative background glow -->
+      <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(0,210,211,0.1) 0%, transparent 70%); border-radius: 50%;"></div>
+      
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <span style="background: rgba(0, 210, 211, 0.15); color: #00d2d3; padding: 0.35rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; display: inline-block; margin-bottom: 0.8rem; border: 1px solid rgba(0, 210, 211, 0.3);">
+            <i class="fa-solid fa-map-location-dot" style="margin-right: 6px;"></i> ¿Nuevo en el blog?
+          </span>
+          <h2 style="font-size: 1.8rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.5rem;">Tu Ruta de Aprendizaje Inicial</h2>
+          <p style="color: var(--text-muted); font-size: 1rem;">Te sugerimos leer estos 3 artículos clave en orden para construir una base sólida.</p>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; position: relative;">
+        <!-- Connecting Line for desktop -->
+        <div style="position: absolute; top: 25px; left: 10%; right: 10%; height: 2px; background: rgba(255,255,255,0.05); z-index: 1;" class="learning-path-line"></div>
+
+        <!-- Step 1 -->
+        <a href="Blog htmls/mentalidad-de-ventas.html" style="text-decoration: none; position: relative; z-index: 2;">
+          <div style="background: var(--bg-main); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 1.5rem; text-align: center; height: 100%; transition: transform 0.3s, border-color 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)';">
+            <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: bold; margin: 0 auto 1rem; box-shadow: 0 0 0 5px var(--bg-card); position: relative;">1</div>
+            <h4 style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 0.5rem;">Domina tu Mente</h4>
+            <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">El primer artículo: Mentalidad de Ventas y creencias limitantes.</p>
+          </div>
+        </a>
+
+        <!-- Step 2 -->
+        <a href="Blog htmls/storytelling-para-ventas.html" style="text-decoration: none; position: relative; z-index: 2;">
+          <div style="background: var(--bg-main); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 1.5rem; text-align: center; height: 100%; transition: transform 0.3s, border-color 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='var(--success)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)';">
+            <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--success); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: bold; margin: 0 auto 1rem; box-shadow: 0 0 0 5px var(--bg-card); position: relative;">2</div>
+            <h4 style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 0.5rem;">Crea tu Mensaje</h4>
+            <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">Segundo artículo: Storytelling para conectar y no parecer vendedor.</p>
+          </div>
+        </a>
+
+        <!-- Step 3 -->
+        <a href="Blog htmls/5-tecnicas-de-cierre-de-ventas.html" style="text-decoration: none; position: relative; z-index: 2;">
+          <div style="background: var(--bg-main); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 1.5rem; text-align: center; height: 100%; transition: transform 0.3s, border-color 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ffa502';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)';">
+            <div style="width: 50px; height: 50px; border-radius: 50%; background: #ffa502; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: bold; margin: 0 auto 1rem; box-shadow: 0 0 0 5px var(--bg-card); position: relative;">3</div>
+            <h4 style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 0.5rem;">Cierra Tratos</h4>
+            <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">Tercer artículo: Las 5 técnicas de cierre que multiplican tus ingresos.</p>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <style>
+    @media (max-width: 768px) {
+      .learning-path-line { display: none !important; }
+    }
+  </style>
+
   <!-- Blog Articles Grid -->
   <section class="container">
     <div class="blog-grid">
@@ -755,6 +812,23 @@
         <p style="color: var(--text-muted); font-size: 1.05rem;">Intenta buscando con otras palabras clave o explora todas las categor&iacute;as.</p>
         <button onclick="filterBlog('all', document.querySelectorAll('header.blog-header button')[0])" class="btn btn-primary" style="margin-top: 1.5rem; padding: 0.6rem 1.5rem; border-radius: 20px;">Ver todos los art&iacute;culos</button>
       </div>
+
+      <!-- Article Gastos Hormiga -->
+      <article class="blog-card" data-category="finanzas ventas">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/gastos-hormiga.png') center/cover; height: 220px;">
+        </div>
+        <div class="blog-card-content">
+          <span class="blog-category" style="background: rgba(255, 71, 87, 0.15); color: #ff4757;">Finanzas</span>
+          <h3>Gastos Hormiga en tu Negocio: Por qué sientes que vendes mucho pero no ganas nada</h3>
+          <p>
+            Descubre c&oacute;mo los peque&ntilde;os gastos diarios no registrados est&aacute;n devorando silenciosamente la rentabilidad de tu negocio.
+          </p>
+          <div class="blog-footer-meta">
+            <span><i class="fa-regular fa-clock"></i> 7 min lectura</span>
+            <a href="Blog htmls/gastos-hormiga-en-tu-negocio.html" class="btn-read-more">Leer art&iacute;culo <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </article>
 
       <!-- Article Mentalidad de Ventas -->
       <article class="blog-card" data-category="ventas motivacion">
