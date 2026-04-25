@@ -386,6 +386,155 @@
     .blog-cta-feature i {
       color: var(--success);
     }
+
+    /* Newsletter Section */
+    .newsletter-cta {
+      background: linear-gradient(135deg, rgba(162, 155, 254, 0.08), rgba(0, 184, 212, 0.05));
+      border: 1px solid rgba(108, 92, 231, 0.3);
+      border-radius: 24px;
+      padding: 0;
+      display: flex;
+      overflow: hidden;
+      margin: 4rem 0 2rem;
+      position: relative;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+
+    .newsletter-content {
+      padding: 4.5rem 4rem;
+      flex: 1.2;
+      position: relative;
+      z-index: 2;
+      background: linear-gradient(90deg, var(--bg-card) 60%, transparent 100%);
+    }
+
+    .newsletter-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(0, 210, 211, 0.15);
+      border: 1px solid rgba(0, 210, 211, 0.3);
+      color: #00d2d3;
+      padding: 0.5rem 1.2rem;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .newsletter-content h2 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 1.2rem;
+      line-height: 1.2;
+      color: #fff;
+    }
+
+    .newsletter-content p {
+      color: var(--text-muted);
+      font-size: 1.15rem;
+      margin-bottom: 2.5rem;
+      line-height: 1.6;
+      max-width: 520px;
+    }
+
+    .newsletter-form {
+      display: flex;
+      gap: 1rem;
+      max-width: 520px;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .newsletter-form input {
+      flex: 1;
+      padding: 1.1rem 1.5rem;
+      border-radius: 14px;
+      border: 1px solid rgba(162, 155, 254, 0.4);
+      background: rgba(0, 0, 0, 0.4);
+      color: #fff;
+      font-size: 1.05rem;
+      outline: none;
+      transition: all 0.3s;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .newsletter-form input:focus {
+      border-color: #a29bfe;
+      background: rgba(0, 0, 0, 0.6);
+      box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.2), inset 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .newsletter-form input::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .newsletter-form button {
+      padding: 1.1rem 2rem;
+      border-radius: 14px;
+      white-space: nowrap;
+      font-size: 1.05rem;
+      font-weight: 700;
+      box-shadow: 0 10px 20px rgba(108, 92, 231, 0.3);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .newsletter-form button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 25px rgba(108, 92, 231, 0.4);
+    }
+
+    .newsletter-disclaimer {
+      font-size: 0.85rem !important;
+      color: rgba(255, 255, 255, 0.4) !important;
+      margin-bottom: 0 !important;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .newsletter-image {
+      flex: 1;
+      background: url("assets/Blog imagenes/Email Marketing para Ventas.jpeg") center/cover;
+      position: relative;
+      min-height: 100%;
+    }
+
+    .newsletter-image::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, var(--bg-card) 0%, rgba(10, 9, 26, 0.6) 40%, transparent 100%);
+    }
+
+    @media (max-width: 900px) {
+      .newsletter-cta {
+        flex-direction: column;
+        margin: 3rem 0;
+      }
+      .newsletter-image {
+        min-height: 250px;
+        order: -1;
+      }
+      .newsletter-content {
+        background: var(--bg-card);
+        padding: 3rem 2rem;
+      }
+      .newsletter-image::before {
+        background: linear-gradient(to bottom, transparent 0%, var(--bg-card) 100%);
+      }
+      .newsletter-form {
+        flex-direction: column;
+      }
+      .newsletter-form button {
+        width: 100%;
+      }
+      .newsletter-content h2 {
+        font-size: 2rem;
+      }
+    }
   </style>
 </head>
 
@@ -1026,6 +1175,23 @@
         </div>
       </article>
 
+    </div>
+  </section>
+
+  <!-- Newsletter Section -->
+  <section class="container">
+    <div class="newsletter-cta" data-aos="fade-up">
+      <div class="newsletter-content">
+        <span class="newsletter-badge"><i class="fa-solid fa-envelope-open-text"></i> Newsletter Semanal</span>
+        <h2>¿Quieres vender más todos los días?</h2>
+        <p>Únete a más de 5,000 emprendedores y vendedores que reciben nuestras mejores estrategias de ventas, negocio y mentalidad directamente en su correo. Cero spam, solo valor puro.</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault(); const btn = this.querySelector('button'); const originalText = btn.innerHTML; btn.innerHTML = '<i class=\'fa-solid fa-check\'></i> ¡Suscrito!'; btn.style.background = '#2ed573'; btn.style.color = '#fff'; setTimeout(() => { btn.innerHTML = originalText; btn.style.background = ''; this.reset(); }, 3000);">
+          <input type="email" placeholder="Tu mejor correo electrónico" required>
+          <button type="submit" class="btn btn-primary">Quiero suscribirme <i class="fa-solid fa-paper-plane" style="margin-left: 8px;"></i></button>
+        </form>
+        <p class="newsletter-disclaimer"><i class="fa-solid fa-shield-halved"></i> Tu información está 100% segura. Puedes darte de baja cuando quieras.</p>
+      </div>
+      <div class="newsletter-image"></div>
     </div>
   </section>
 
