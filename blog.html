@@ -1777,7 +1777,245 @@
     }
   </script>
 
+  <!-- ── Testimonials Carousel ── -->
+  <section class="container" style="margin: 3rem auto;">
+    <div style="text-align:center; margin-bottom:2rem;">
+      <span style="background:rgba(46,213,115,0.12);color:#2ed573;padding:0.3rem 1rem;border-radius:20px;font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;border:1px solid rgba(46,213,115,0.25);display:inline-block;margin-bottom:1rem;">
+        <i class="fa-solid fa-star" style="margin-right:5px;"></i> Testimonios Reales
+      </span>
+      <h2 style="font-size:2rem;font-weight:800;color:var(--text-main);margin-bottom:0.5rem;">Lo que dicen nuestros lectores</h2>
+      <p style="color:var(--text-muted);font-size:1rem;">Emprendedores que aplicaron lo que aprendieron en el blog</p>
+    </div>
+
+    <div id="testimonialCarousel" style="position:relative;overflow:hidden;border-radius:20px;" onmouseenter="pauseTestimonials()" onmouseleave="resumeTestimonials()">
+
+      <!-- Track -->
+      <div id="testimonialTrack" style="display:flex;transition:transform 0.55s cubic-bezier(0.4,0,0.2,1);">
+
+        <!-- T1 -->
+        <div class="t-slide">
+          <div class="t-stars">★★★★★</div>
+          <p class="t-quote">"Leí el artículo de objeciones de ventas y lo apliqué esa misma tarde. Cerré 3 ventas que tenía estancadas hace semanas. Increíble lo simple y directo que está explicado."</p>
+          <div class="t-author">
+            <div class="t-avatar" style="background:linear-gradient(135deg,#6c5ce7,#a29bfe);">MR</div>
+            <div>
+              <strong>Martín R.</strong>
+              <span>Consultor de Marketing · Córdoba, AR</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- T2 -->
+        <div class="t-slide">
+          <div class="t-stars">★★★★★</div>
+          <p class="t-quote">"Jamás pensé que el cierre de caja diario pudiera cambiar tanto mi perspectiva. Ahora sé exactamente cuánto gano cada día y dejé de sentir que el dinero 'desaparece'. Gracias Zaleasy."</p>
+          <div class="t-author">
+            <div class="t-avatar" style="background:linear-gradient(135deg,#00b894,#00d2d3);">CL</div>
+            <div>
+              <strong>Carolina L.</strong>
+              <span>Dueña de boutique · Lima, PE</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- T3 -->
+        <div class="t-slide">
+          <div class="t-stars">★★★★★</div>
+          <p class="t-quote">"El artículo de Copywriting me abrió los ojos. Reescribí los textos de mi Instagram y en 10 días pasé de 2-3 consultas por semana a más de 15. El contenido de este blog es oro puro."</p>
+          <div class="t-author">
+            <div class="t-avatar" style="background:linear-gradient(135deg,#fd79a8,#e84393);">SV</div>
+            <div>
+              <strong>Sofía V.</strong>
+              <span>Fotógrafa freelance · Santiago, CL</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- T4 -->
+        <div class="t-slide">
+          <div class="t-stars">★★★★★</div>
+          <p class="t-quote">"Llevaba 2 años con miedo de cobrar lo que vale mi trabajo. El artículo de mentalidad de ventas me dio el golpe de realidad que necesitaba. Subí mis precios un 40% y no perdí ni un cliente."</p>
+          <div class="t-author">
+            <div class="t-avatar" style="background:linear-gradient(135deg,#ffa502,#ff6348);">JP</div>
+            <div>
+              <strong>Javier P.</strong>
+              <span>Diseñador gráfico · Bogotá, CO</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- T5 -->
+        <div class="t-slide">
+          <div class="t-stars">★★★★★</div>
+          <p class="t-quote">"La guía de Ventas por WhatsApp la compartí con todo mi equipo de 6 vendedores. En el primer mes aplicándola nuestra tasa de cierre pasó del 18% al 31%. No exagero."</p>
+          <div class="t-author">
+            <div class="t-avatar" style="background:linear-gradient(135deg,#6c5ce7,#00d2d3);">RM</div>
+            <div>
+              <strong>Ricardo M.</strong>
+              <span>Director Comercial · Monterrey, MX</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- T6 -->
+        <div class="t-slide">
+          <div class="t-stars">★★★★★</div>
+          <p class="t-quote">"Apliqué la estrategia de upselling que explican en el blog. Mis clientes actuales ahora me compran en promedio un 60% más que antes. Y lo mejor es que no lo siento como una venta forzada."</p>
+          <div class="t-author">
+            <div class="t-avatar" style="background:linear-gradient(135deg,#2ed573,#00b894);">AG</div>
+            <div>
+              <strong>Andrea G.</strong>
+              <span>Nutricionista · Buenos Aires, AR</span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /track -->
+
+      <!-- Prev / Next arrows -->
+      <button class="t-arrow t-prev" onclick="moveTestimonial(-1)" aria-label="Anterior">&#8592;</button>
+      <button class="t-arrow t-next" onclick="moveTestimonial(1)" aria-label="Siguiente">&#8594;</button>
+    </div>
+
+    <!-- Dots -->
+    <div id="testimonialDots" style="display:flex;justify-content:center;gap:0.5rem;margin-top:1.5rem;"></div>
+  </section>
+
+  <style>
+    .t-slide {
+      min-width: 100%;
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 20px;
+      padding: 2.5rem 3rem;
+      box-sizing: border-box;
+    }
+    .t-stars {
+      color: #ffa502;
+      font-size: 1.3rem;
+      letter-spacing: 2px;
+      margin-bottom: 1.2rem;
+    }
+    .t-quote {
+      font-size: 1.15rem;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.88);
+      font-style: italic;
+      margin-bottom: 1.8rem;
+      max-width: 720px;
+    }
+    .t-author {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .t-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.9rem;
+      color: white;
+      flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+    }
+    .t-author strong {
+      display: block;
+      color: var(--text-main);
+      font-size: 1rem;
+    }
+    .t-author span {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+    .t-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: white;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.25s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+    }
+    .t-arrow:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+      box-shadow: 0 4px 14px rgba(108,92,231,0.4);
+    }
+    .t-prev { left: 14px; }
+    .t-next { right: 14px; }
+    .t-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      padding: 0;
+    }
+    .t-dot.active {
+      background: var(--primary);
+      width: 24px;
+      border-radius: 4px;
+    }
+    @media(max-width:600px){
+      .t-slide { padding: 2rem 1.5rem; }
+      .t-quote { font-size: 1rem; }
+      .t-arrow { display: none; }
+    }
+  </style>
+
+  <script>
+    (function(){
+      const total = 6;
+      let cur = 0;
+      let timer;
+
+      const track = document.getElementById('testimonialTrack');
+      const dotsEl = document.getElementById('testimonialDots');
+
+      // Build dots
+      for(let i=0;i<total;i++){
+        const d = document.createElement('button');
+        d.className='t-dot'+(i===0?' active':'');
+        d.setAttribute('aria-label','Testimonio '+(i+1));
+        d.onclick=(()=>{const idx=i;return()=>goTo(idx);})();
+        dotsEl.appendChild(d);
+      }
+
+      function goTo(idx){
+        cur = (idx+total)%total;
+        track.style.transform='translateX(-'+cur+'00%)';
+        dotsEl.querySelectorAll('.t-dot').forEach((d,i)=>d.classList.toggle('active',i===cur));
+      }
+
+      window.moveTestimonial = function(dir){ goTo(cur+dir); resetTimer(); };
+      window.pauseTestimonials = function(){ clearInterval(timer); };
+      window.resumeTestimonials = function(){ resetTimer(); };
+
+      function resetTimer(){
+        clearInterval(timer);
+        timer = setInterval(()=>goTo(cur+1), 4500);
+      }
+      resetTimer();
+    })();
+  </script>
+
   <!-- Author Section -->
+
   <section class="container">
     <div class="author-box" data-aos="fade-up">
       <div class="author-image">
