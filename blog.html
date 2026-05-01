@@ -953,7 +953,179 @@
     }
   </style>
 
+  <!-- ── Random Tip Generator ── -->
+  <section class="container" style="padding: 2rem 0 0;" id="generador">
+
+    <!-- Header row -->
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.4rem;">
+      <div>
+        <span style="background:rgba(255,165,2,0.14);color:#ffa502;padding:0.28rem 0.9rem;border-radius:20px;font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;border:1px solid rgba(255,165,2,0.3);display:inline-block;margin-bottom:0.5rem;">
+          <i class="fa-solid fa-dice" style="margin-right:5px;"></i> Generador de Tips
+        </span>
+        <h2 style="font-size:1.7rem;font-weight:800;color:var(--text-main);margin:0;">Consejo de ventas aleatorio</h2>
+      </div>
+      <div style="text-align:right;">
+        <span style="font-size:2rem;font-weight:800;color:var(--primary);" id="tipCount">0</span>
+        <span style="display:block;font-size:0.72rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;">tips generados</span>
+      </div>
+    </div>
+
+    <!-- Card flip scene -->
+    <div style="perspective:1000px;" id="tipScene">
+      <div id="tipCard" style="
+        position:relative; min-height:240px;
+        transform-style:preserve-3d;
+        transition:transform 0.6s cubic-bezier(0.4,0,0.2,1);
+        border-radius:20px;
+      ">
+        <!-- Front (placeholder, replaced by JS) -->
+        <div class="tip-face tip-front" id="tipFront" style="
+          position:absolute;inset:0;backface-visibility:hidden;
+          background:var(--bg-card);border:1px solid rgba(108,92,231,0.22);
+          border-radius:20px;padding:2.2rem 2.5rem;display:flex;flex-direction:column;justify-content:space-between;
+          box-shadow:0 15px 40px rgba(0,0,0,0.25);
+        ">
+          <div>
+            <span id="tipCategoryBadge" style="font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;padding:0.28rem 0.8rem;border-radius:20px;display:inline-block;margin-bottom:1.2rem;"></span>
+            <p id="tipNumber" style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.5rem;"></p>
+            <p id="tipText" style="font-size:1.2rem;font-weight:600;color:var(--text-main);line-height:1.7;margin:0;"></p>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.8rem;margin-top:1.5rem;">
+            <a id="tipArticleLink" href="#" style="color:#a29bfe;font-size:0.88rem;font-weight:600;text-decoration:none;display:flex;align-items:center;gap:0.4rem;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#a29bfe'">
+              <i class="fa-solid fa-book-open" style="font-size:0.78rem;"></i>
+              <span id="tipArticleLabel">Leer art&iacute;culo completo</span>
+            </a>
+            <div style="display:flex;gap:0.5rem;">
+              <button id="tipShareWA" title="Compartir" style="background:#25d366;border:none;color:white;width:34px;height:34px;border-radius:50%;font-size:0.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform=''"><i class="fa-brands fa-whatsapp"></i></button>
+              <button id="tipCopyBtn" title="Copiar tip" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:var(--text-muted);width:34px;height:34px;border-radius:50%;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'"><i class="fa-regular fa-copy"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Back (spins to this on click) -->
+        <div class="tip-face" id="tipBack" style="
+          position:absolute;inset:0;backface-visibility:hidden;transform:rotateY(180deg);
+          background:linear-gradient(135deg,rgba(108,92,231,0.18),rgba(0,210,211,0.1));
+          border:1px solid rgba(108,92,231,0.3);
+          border-radius:20px;display:flex;align-items:center;justify-content:center;
+          box-shadow:0 15px 40px rgba(0,0,0,0.25);
+        ">
+          <div style="text-align:center;">
+            <div style="font-size:3rem;margin-bottom:0.5rem;">🎲</div>
+            <p style="color:var(--text-muted);font-size:0.9rem;">Generando nuevo tip...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA button -->
+    <div style="text-align:center;margin-top:1.5rem;">
+      <button id="tipGenBtn" onclick="generateTip()" style="
+        background:linear-gradient(135deg,var(--primary),#a29bfe);
+        border:none;color:white;padding:1rem 2.8rem;border-radius:40px;
+        font-size:1.05rem;font-weight:700;cursor:pointer;font-family:inherit;
+        box-shadow:0 8px 24px rgba(108,92,231,0.4);
+        transition:transform 0.2s,box-shadow 0.2s;
+        display:inline-flex;align-items:center;gap:0.7rem;
+      " onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 30px rgba(108,92,231,0.55)'" onmouseout="this.style.transform='';this.style.boxShadow='0 8px 24px rgba(108,92,231,0.4)'">
+        <i class="fa-solid fa-dice-d6"></i> Generar otro tip
+      </button>
+    </div>
+  </section>
+
+  <script>
+  (function(){
+    const tips = [
+      { cat:'Cierre',       catColor:'rgba(255,71,87,0.15)',   catText:'#ff6b81',  text:'Cuando un cliente dice "lo pienso", no lo dejes ir sin preguntarle: "¿Qué es lo que necesitarías ver para tomar la decisión hoy?". La respuesta te dirá exactamente qué objeción real falta resolver.',    article:'Blog htmls/tecnicas-de-cierre-sin-suplicar.html', articleLabel:'Técnicas de Cierre Sin Suplicar' },
+      { cat:'Psicología',   catColor:'rgba(108,92,231,0.15)',  catText:'#a29bfe',  text:'La gente no compra lógica, compra emoción y justifica con lógica después. Primero crea la emoción (el resultado deseado) y luego dale los argumentos racionales para que se sienta bien con la decisión.',     article:'Blog htmls/psicologia-de-ventas.html',             articleLabel:'Psicología de Ventas' },
+      { cat:'Precios',      catColor:'rgba(255,165,2,0.15)',   catText:'#ffa502',  text:'Nunca presentes el precio solo. Siempre anúncialo entre dos capas de valor: primero lo que van a ganar, luego el precio, luego recuérdales lo que van a ganar. Así el precio se encoge perceptivamente.',          article:'Blog htmls/estrategias-de-precios-que-venden.html', articleLabel:'Estrategias de Precios' },
+      { cat:'Seguimiento',  catColor:'rgba(0,210,211,0.15)',   catText:'#00d2d3',  text:'El 80% de los vendedores se rinden tras el primer contacto. El 80% de las ventas se cierran entre el 5° y el 12° contacto. La persistencia educada es tu ventaja competitiva más barata.',                         article:'Blog htmls/el-poder-del-seguimiento.html',          articleLabel:'El Poder del Seguimiento' },
+      { cat:'Copywriting',  catColor:'rgba(46,213,115,0.15)',  catText:'#2ed573',  text:'La fórmula de ventas más poderosa tiene 3 partes: (1) Nombra el dolor específico, (2) Amplifica las consecuencias de no resolverlo, (3) Presenta tu solución como el camino más directo. PAS: Problema-Agitación-Solución.',  article:'Blog htmls/copywriting-para-ventas.html',           articleLabel:'Copywriting para Ventas' },
+      { cat:'Mentalidad',   catColor:'rgba(253,121,168,0.15)', catText:'#fd79a8',  text:'Tu tasa de cierre nunca va a superar el nivel de confianza que tienes en tu propio producto. Antes de tu próxima llamada de ventas, pregúntate: "¿Lo compraría yo al precio que lo ofrezco?" Si dudas, el cliente lo siente.',   article:'Blog htmls/mentalidad-de-ventas.html',             articleLabel:'Mentalidad de Ventas' },
+      { cat:'WhatsApp',     catColor:'rgba(37,211,102,0.15)',  catText:'#25d366',  text:'El primer mensaje de un prospecto define el 70% de la venta. Si tu primera respuesta es un catálogo de PDF, perdiste. En su lugar, pregunta primero: "¿Para quién es el producto? ¿Qué estás buscando exactamente?" Califica antes de cotizar.',  article:'Blog htmls/ventas-por-whatsapp.html',              articleLabel:'Ventas por WhatsApp' },
+      { cat:'Objeciones',   catColor:'rgba(255,165,2,0.15)',   catText:'#ffa502',  text:'Las objeciones son preguntas disfrazadas. "Es muy caro" significa "no veo suficiente valor". "Lo tengo que pensar" significa "me falta información o confianza". Aprende a traducirlas en lugar de combatirlas.',    article:'Blog htmls/manejo-de-objeciones-de-ventas.html',   articleLabel:'Manejo de Objeciones' },
+      { cat:'Pitch',        catColor:'rgba(108,92,231,0.15)',  catText:'#a29bfe',  text:'El mejor elevator pitch tiene esta estructura: "Ayudo a [cliente específico] a [resultado deseado] sin [obstáculo que temen]." Ejemplo: "Ayudo a freelancers a conseguir 3 clientes nuevos al mes sin perseguir a nadie."', article:'Blog htmls/elevator-pitch.html',                    articleLabel:'El Pitch Perfecto' },
+      { cat:'Networking',   catColor:'rgba(0,210,211,0.15)',   catText:'#00d2d3',  text:'En networking, el error más costoso es intentar venderle a todos. En cambio, enfócate en ser útil: conecta personas, comparte información valiosa. Cuando llegue el momento de que necesiten lo que ofreces, serás el primero en quien piensen.',  article:'Blog htmls/networking-estrategico.html',           articleLabel:'Networking Estratégico' },
+      { cat:'Precios',      catColor:'rgba(255,165,2,0.15)',   catText:'#ffa502',  text:'Cada vez que bajas tu precio sin razón, estás enviando un mensaje inconsciente: "yo mismo no creo que valga lo que pedía antes." El descuento mata la confianza más rápido que cualquier competidor.', article:'Blog htmls/la-trampa-de-los-descuentos.html',       articleLabel:'La Trampa de los Descuentos' },
+      { cat:'Cierre',       catColor:'rgba(255,71,87,0.15)',   catText:'#ff6b81',  text:'El cierre más poderoso es el cierre de asunción: actúa como si la venta ya estuviera hecha. "¿Cómo prefieres pagar, en efectivo o transferencia?" En lugar de "¿Te interesa?" Das por hecho que sí, y la gente raramente te corrige.',  article:'Blog htmls/tecnicas-de-cierre-sin-suplicar.html',  articleLabel:'Técnicas de Cierre' },
+      { cat:'Marketing',    catColor:'rgba(46,213,115,0.15)',  catText:'#2ed573',  text:'El contenido gratuito de valor es el activo de ventas más poderoso a largo plazo. Cada artículo útil que publicas trabaja 24/7 para pre-calificar prospectos y construir confianza antes de que te contacten.',  article:'Blog htmls/como-vender-sin-vender.html',           articleLabel:'Cómo Vender Sin Vender' },
+      { cat:'Finanzas',     catColor:'rgba(253,121,168,0.15)', catText:'#fd79a8',  text:'El vendedor inteligente no mide solo cuánto vendió. Mide cuánto le costó vender eso. Si gastaste 3 horas para cerrar un cliente de $1,000, tu hora valió $333. Registra y analiza para optimizar.',                 article:'Blog htmls/gastos-hormiga-en-tu-negocio.html',     articleLabel:'Gastos Hormiga en tu Negocio' },
+      { cat:'Social',       catColor:'rgba(108,92,231,0.15)',  catText:'#a29bfe',  text:'La prueba social funciona porque reduce el riesgo percibido. Un testimonio específico vale 100 veces más que uno genérico. "Me ayudó mucho" no vende. "Cerré 3 clientes nuevos en la primera semana" sí vende.',        article:'Blog htmls/prueba-social-en-ventas.html',          articleLabel:'Prueba Social en Ventas' },
+      { cat:'B2B',          catColor:'rgba(0,184,148,0.15)',   catText:'#00b894',  text:'En ventas B2B, nunca vendas a quien no tiene poder de decisión. Identifica al tomador de decisión y al influenciador interno. Tu trabajo es convertir al influenciador en tu vendedor interno dentro de la empresa.',     article:'Blog htmls/ventas-b2b-2026.html',                  articleLabel:'Ventas B2B en 2026' },
+      { cat:'Mentalidad',   catColor:'rgba(253,121,168,0.15)', catText:'#fd79a8',  text:'El mejor ejercicio de mentalidad antes de una negociación: recuerda que el cliente necesita una solución tanto como tú necesitas venderla. No eres un suplicante, eres un médico con la cura. Entra desde ese lugar.',   article:'Blog htmls/miedo-a-vender.html',                   articleLabel:'Cómo Superar el Miedo a Vender' },
+      { cat:'Embudos',      catColor:'rgba(0,210,211,0.15)',   catText:'#00d2d3',  text:'El mayor error en un embudo de ventas es ir demasiado rápido a la venta. Si alguien acaba de conocerte, pedirle que compre es como pedirle matrimonio en la primera cita. Construye confianza en etapas.',               article:'Blog htmls/embudos-de-venta.html',                 articleLabel:'Embudos de Venta' },
+      { cat:'Negociación',  catColor:'rgba(255,165,2,0.15)',   catText:'#ffa502',  text:'En cualquier negociación, quien habla el precio primero pierde terreno. Si el cliente te pregunta cuánto cuesta antes de que hayas mostrado todo el valor, responde: "Depende de lo que necesites. Cuéntame más sobre tu situación."', article:'Blog htmls/tecnicas-de-negociacion.html',          articleLabel:'Técnicas de Negociación' },
+      { cat:'Productividad',catColor:'rgba(46,213,115,0.15)',  catText:'#2ed573',  text:'Los vendedores de alto rendimiento dedican el 80% de su tiempo a prospectos que tienen alta probabilidad de cierre, no a intentar convencer a quien claramente no quiere comprar. Califica rápido, descarta sin culpa.',   article:'Blog htmls/productividad-para-vendedores.html',    articleLabel:'Productividad para Vendedores' },
+    ];
+
+    let shown = 0;
+    let totalGenerated = 0;
+    let isFlipped = false;
+    let currentTip = null;
+
+    function pickTip(){
+      // Avoid repeating
+      let idx;
+      do { idx = Math.floor(Math.random()*tips.length); } while(tips[idx]===currentTip && tips.length>1);
+      currentTip = tips[idx];
+      shown++;
+      return currentTip;
+    }
+
+    function renderTip(tip){
+      document.getElementById('tipCategoryBadge').textContent = tip.cat;
+      document.getElementById('tipCategoryBadge').style.background = tip.catColor;
+      document.getElementById('tipCategoryBadge').style.color = tip.catText;
+      document.getElementById('tipCategoryBadge').style.border = '1px solid '+tip.catText.replace(')',',0.3)').replace('rgb','rgba');
+      document.getElementById('tipNumber').textContent = 'Tip #'+shown+' de 20';
+      document.getElementById('tipText').textContent = tip.text;
+      document.getElementById('tipArticleLink').href = tip.article;
+      document.getElementById('tipArticleLabel').textContent = tip.articleLabel;
+      // Share
+      document.getElementById('tipShareWA').onclick = ()=> window.open('https://wa.me/?text='+encodeURIComponent('💡 Tip de ventas:\n\n"'+tip.text+'"\n\nVía Zaleasy: https://zaleasy.com/blog.html'),'_blank');
+      document.getElementById('tipCopyBtn').onclick = ()=>{
+        navigator.clipboard.writeText('"'+tip.text+'" — Blog Zaleasy');
+        const btn=document.getElementById('tipCopyBtn');
+        btn.innerHTML='<i class="fa-solid fa-check"></i>';
+        setTimeout(()=>{btn.innerHTML='<i class="fa-regular fa-copy"></i>';},2000);
+      };
+    }
+
+    window.generateTip = function(){
+      totalGenerated++;
+      document.getElementById('tipCount').textContent = totalGenerated;
+      const card = document.getElementById('tipCard');
+
+      if(!isFlipped){
+        // Flip to back
+        card.style.transform='rotateY(180deg)';
+        isFlipped=true;
+        setTimeout(()=>{
+          const tip=pickTip();
+          renderTip(tip);
+          card.style.transform='rotateY(360deg)';
+          isFlipped=false;
+        }, 320);
+      } else {
+        card.style.transform='rotateY(360deg)';
+        isFlipped=false;
+        setTimeout(()=>{
+          const tip=pickTip();
+          renderTip(tip);
+        }, 320);
+      }
+    };
+
+    // Show first tip immediately
+    const first=pickTip();
+    renderTip(first);
+    totalGenerated=1;
+    document.getElementById('tipCount').textContent='1';
+  })();
+  </script>
+
   <!-- ── Quote of the Day ── -->
+
   <section class="container" style="padding: 2rem 0 1rem;">
     <div id="qotdCard" style="background:linear-gradient(135deg,rgba(108,92,231,0.12),rgba(0,210,211,0.06));border:1px solid rgba(108,92,231,0.22);border-radius:20px;padding:2.2rem 2.5rem;display:flex;align-items:center;gap:2rem;position:relative;overflow:hidden;">
       <!-- Left accent -->
