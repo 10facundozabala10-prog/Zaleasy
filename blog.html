@@ -1590,6 +1590,177 @@
     </div>
   </section>
 
+  <!-- ── Live Poll ── -->
+  <section class="container" style="margin: 2rem auto;" id="encuesta">
+    <div style="background:var(--bg-card);border:1px solid rgba(255,255,255,0.07);border-radius:24px;overflow:hidden;box-shadow:0 15px 40px rgba(0,0,0,0.25);">
+
+      <!-- Header -->
+      <div style="background:linear-gradient(135deg,rgba(0,210,211,0.1),rgba(108,92,231,0.08));padding:2rem 2.5rem 1.8rem;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+        <div>
+          <span style="background:rgba(0,210,211,0.15);color:#00d2d3;padding:0.3rem 0.9rem;border-radius:20px;font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;border:1px solid rgba(0,210,211,0.3);display:inline-block;margin-bottom:0.7rem;">
+            <i class="fa-solid fa-chart-bar" style="margin-right:5px;"></i> Encuesta de la comunidad
+          </span>
+          <h2 style="font-size:1.6rem;font-weight:800;color:var(--text-main);margin:0;line-height:1.3;">&iquest;Cu&aacute;l es tu mayor desaf&iacute;o actual en ventas?</h2>
+        </div>
+        <div id="pollVoteCount" style="text-align:center;flex-shrink:0;">
+          <span style="font-size:2rem;font-weight:800;color:var(--primary);" id="pollTotal">0</span>
+          <span style="display:block;font-size:0.78rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">votos</span>
+        </div>
+      </div>
+
+      <!-- Poll body -->
+      <div style="padding:2rem 2.5rem;" id="pollBody">
+
+        <!-- Vote options (pre-vote) -->
+        <div id="pollOptions">
+          <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.2rem;">Vota y ve los resultados de toda la comunidad:</p>
+          <div id="pollBtns" style="display:flex;flex-direction:column;gap:0.8rem;"></div>
+        </div>
+
+        <!-- Results (post-vote) -->
+        <div id="pollResults" style="display:none;">
+          <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.4rem;"><i class="fa-solid fa-users" style="color:var(--primary);margin-right:6px;"></i>Resultados de la comunidad Zaleasy &mdash; <span id="pollTotalResult"></span> votos</p>
+          <div id="pollBars" style="display:flex;flex-direction:column;gap:1rem;"></div>
+          <div id="pollRecommendation" style="margin-top:1.8rem;background:rgba(108,92,231,0.08);border:1px solid rgba(108,92,231,0.2);border-radius:14px;padding:1.2rem 1.5rem;"></div>
+          <button onclick="pollReset()" style="margin-top:1.2rem;background:none;border:1px solid rgba(255,255,255,0.1);color:var(--text-muted);padding:0.5rem 1.2rem;border-radius:20px;font-size:0.82rem;cursor:pointer;transition:all 0.2s;font-family:inherit;" onmouseover="this.style.borderColor='var(--primary)';this.style.color='white'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='var(--text-muted)'">
+            <i class="fa-solid fa-rotate-left" style="margin-right:5px;"></i>Votar de nuevo
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .poll-btn {
+      display:flex; align-items:center; gap:0.8rem;
+      background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);
+      border-radius:12px; padding:0.9rem 1.2rem; cursor:pointer;
+      transition:all 0.25s; color:rgba(255,255,255,0.85); font-size:0.98rem;
+      font-family:inherit; text-align:left; width:100%;
+    }
+    .poll-btn:hover {
+      background:rgba(108,92,231,0.1); border-color:rgba(108,92,231,0.35);
+      color:white; transform:translateX(6px);
+    }
+    .poll-btn .poll-icon { font-size:1.3rem; flex-shrink:0; }
+    .poll-bar-wrap { position:relative; }
+    .poll-bar-label { display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem; }
+    .poll-bar-label span:first-child { font-size:0.92rem; color:rgba(255,255,255,0.85); }
+    .poll-bar-label span:last-child  { font-size:0.88rem; font-weight:700; }
+    .poll-bar-track { height:10px; background:rgba(255,255,255,0.06); border-radius:30px; overflow:hidden; }
+    .poll-bar-fill  { height:100%; border-radius:30px; width:0%; transition:width 0.9s cubic-bezier(0.4,0,0.2,1); }
+    .poll-my-vote   { font-size:0.72rem; color:var(--primary); font-weight:700; margin-left:6px; }
+  </style>
+
+  <script>
+  (function(){
+    // Seed data — realistic base counts
+    const options = [
+      { id:'miedo',      icon:'😰', label:'Miedo o vergüenza al vender',         base:312, color:'linear-gradient(90deg,#6c5ce7,#a29bfe)',   articles:['Blog htmls/miedo-a-vender.html|Cómo Superar el Miedo a Vender','Blog htmls/mentalidad-de-ventas.html|Mentalidad de Ventas','Blog htmls/psicologia-de-ventas.html|Psicología de Ventas'] },
+      { id:'objeciones', icon:'💬', label:'Manejar el "está muy caro" y objeciones', base:489, color:'linear-gradient(90deg,#00b894,#00d2d3)',   articles:['Blog htmls/manejo-de-objeciones-de-ventas.html|Cómo Manejar Objeciones','Blog htmls/como-responder-a-esta-muy-caro.html|Cómo Responder "Está Muy Caro"','Blog htmls/la-trampa-de-los-descuentos.html|La Trampa de los Descuentos'] },
+      { id:'prospectos', icon:'🔍', label:'Conseguir clientes potenciales',        base:278, color:'linear-gradient(90deg,#ffa502,#ffcc02)',   articles:['Blog htmls/social-selling.html|Social Selling en Redes','Blog htmls/networking-estrategico.html|Networking Estratégico','Blog htmls/ventas-por-whatsapp.html|Ventas por WhatsApp'] },
+      { id:'cierre',     icon:'🎯', label:'Cerrar la venta y que no "se lo piensen"', base:401, color:'linear-gradient(90deg,#ff4757,#ff6b81)', articles:['Blog htmls/tecnicas-de-cierre-sin-suplicar.html|Técnicas de Cierre Sin Suplicar','Blog htmls/el-poder-del-seguimiento.html|El Poder del Seguimiento','Blog htmls/elevator-pitch.html|El Pitch Perfecto'] },
+      { id:'precio',     icon:'💎', label:'Cobrar lo que realmente vale mi trabajo',base:355, color:'linear-gradient(90deg,#a29bfe,#6c5ce7)',  articles:['Blog htmls/estrategias-de-precios-que-venden.html|Estrategias de Precios','Blog htmls/vender-servicios-intangibles.html|Vender Servicios Intangibles','Blog htmls/el-mito-del-precio-al-privado.html|El Mito del Precio al Privado'] },
+    ];
+
+    const LS_KEY = 'zaleasy_poll_v1';
+    let votes = JSON.parse(localStorage.getItem(LS_KEY) || 'null') || {};
+    let myVote = votes.__myVote || null;
+
+    function totalVotes(){ return options.reduce((s,o)=>s+(votes[o.id]||o.base),0); }
+
+    function renderVoteCount(){
+      const t = totalVotes();
+      document.getElementById('pollTotal').textContent = t.toLocaleString('es-AR');
+      const tr = document.getElementById('pollTotalResult');
+      if(tr) tr.textContent = t.toLocaleString('es-AR');
+    }
+
+    function buildButtons(){
+      const wrap = document.getElementById('pollBtns');
+      wrap.innerHTML = '';
+      options.forEach(o=>{
+        const btn = document.createElement('button');
+        btn.className='poll-btn';
+        btn.innerHTML=`<span class="poll-icon">${o.icon}</span><span>${o.label}</span>`;
+        btn.onclick=()=>castVote(o.id);
+        wrap.appendChild(btn);
+      });
+    }
+
+    function buildBars(voted){
+      const wrap = document.getElementById('pollBars');
+      wrap.innerHTML='';
+      const total = totalVotes();
+      options.forEach(o=>{
+        const count = votes[o.id]||o.base;
+        const pct   = total>0 ? Math.round((count/total)*100) : 0;
+        const isMine= voted===o.id;
+        const div = document.createElement('div');
+        div.className='poll-bar-wrap';
+        div.innerHTML=`
+          <div class="poll-bar-label">
+            <span>${o.icon} ${o.label}${isMine?'<span class="poll-my-vote">← tu voto</span>':''}</span>
+            <span style="color:${isMine?'#a29bfe':'var(--text-muted)'}">${pct}%</span>
+          </div>
+          <div class="poll-bar-track">
+            <div class="poll-bar-fill" style="background:${o.color}" data-pct="${pct}"></div>
+          </div>`;
+        wrap.appendChild(div);
+      });
+      // Animate bars after paint
+      requestAnimationFrame(()=>{
+        requestAnimationFrame(()=>{
+          wrap.querySelectorAll('.poll-bar-fill').forEach(bar=>{
+            bar.style.width=bar.dataset.pct+'%';
+          });
+        });
+      });
+    }
+
+    function buildRecommendation(voted){
+      const opt = options.find(o=>o.id===voted);
+      if(!opt) return;
+      const el = document.getElementById('pollRecommendation');
+      const links = opt.articles.map(a=>{
+        const [href,label]=a.split('|');
+        return `<a href="${href}" class="quiz-result-link" style="display:flex;align-items:center;gap:0.6rem;color:#a29bfe;text-decoration:none;font-size:0.93rem;padding:0.3rem 0;transition:color 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#a29bfe'"><i class="fa-solid fa-arrow-right" style="font-size:0.75rem;color:var(--primary);flex-shrink:0;"></i>${label}</a>`;
+      }).join('');
+      el.innerHTML=`
+        <p style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--primary);margin-bottom:0.7rem;"><i class="fa-solid fa-bookmark" style="margin-right:5px;"></i>Artículos recomendados para ti</p>
+        ${links}`;
+    }
+
+    function castVote(id){
+      votes[id] = (votes[id]||options.find(o=>o.id===id).base) + 1;
+      votes.__myVote = id;
+      myVote = id;
+      localStorage.setItem(LS_KEY, JSON.stringify(votes));
+      showResults(id);
+    }
+
+    function showResults(voted){
+      document.getElementById('pollOptions').style.display='none';
+      document.getElementById('pollResults').style.display='block';
+      renderVoteCount();
+      buildBars(voted);
+      buildRecommendation(voted);
+    }
+
+    window.pollReset = function(){
+      delete votes.__myVote; myVote=null;
+      localStorage.setItem(LS_KEY,JSON.stringify(votes));
+      document.getElementById('pollOptions').style.display='block';
+      document.getElementById('pollResults').style.display='none';
+    };
+
+    // Init
+    buildButtons();
+    renderVoteCount();
+    if(myVote) showResults(myVote);
+  })();
+  </script>
+
   <!-- Interactive Sales Quiz Section -->
   <section class="container" style="margin-top: 2rem; margin-bottom: 2rem;" id="quiz-section">
     <div style="background: var(--bg-card); border: 1px solid rgba(108, 92, 231, 0.25); border-radius: 24px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3); position: relative;">
