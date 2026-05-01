@@ -1534,33 +1534,248 @@
     </div>
   </section>
 
-  <!-- Newsletter Section -->
-  <section class="container" style="margin-top: 2rem; margin-bottom: 2rem;">
-    <div style="background: linear-gradient(135deg, rgba(108, 92, 231, 0.1), rgba(0, 210, 211, 0.05)); border: 1px solid rgba(108, 92, 231, 0.2); border-radius: 24px; padding: 4rem 2rem; text-align: center; position: relative; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.2);">
-      
-      <!-- Background elements -->
-      <div style="position: absolute; top: -50px; left: -50px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(108,92,231,0.15) 0%, transparent 70%); border-radius: 50%;"></div>
-      <div style="position: absolute; bottom: -50px; right: -50px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(0,210,211,0.1) 0%, transparent 70%); border-radius: 50%;"></div>
+  <!-- Interactive Sales Quiz Section -->
+  <section class="container" style="margin-top: 2rem; margin-bottom: 2rem;" id="quiz-section">
+    <div style="background: var(--bg-card); border: 1px solid rgba(108, 92, 231, 0.25); border-radius: 24px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3); position: relative;">
 
-      <div style="position: relative; z-index: 1; max-width: 600px; margin: 0 auto;">
-        <span style="background: rgba(108, 92, 231, 0.15); color: #a29bfe; padding: 0.35rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; display: inline-block; margin-bottom: 1.2rem; border: 1px solid rgba(108, 92, 231, 0.3);">
-          <i class="fa-regular fa-envelope" style="margin-right: 6px;"></i> Newsletter Semanal
+      <!-- Quiz Header -->
+      <div style="background: linear-gradient(135deg, rgba(108,92,231,0.2), rgba(0,210,211,0.08)); padding: 2.5rem 2.5rem 2rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); position: relative; overflow: hidden;">
+        <div style="position:absolute;top:-40px;right:-40px;width:180px;height:180px;background:radial-gradient(circle,rgba(108,92,231,0.2) 0%,transparent 70%);border-radius:50%;"></div>
+        <span style="background:rgba(255,165,2,0.15);color:#ffa502;padding:0.3rem 1rem;border-radius:20px;font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;display:inline-block;margin-bottom:1rem;border:1px solid rgba(255,165,2,0.3);">
+          <i class="fa-solid fa-brain" style="margin-right:6px;"></i> Test Interactivo
         </span>
-        <h2 style="font-size: 2.2rem; font-weight: 800; color: var(--text-main); margin-bottom: 1rem; line-height: 1.2;">&Uacute;nete a +5,000 emprendedores</h2>
-        <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.6; margin-bottom: 2rem;">
-          Recibe cada semana nuestras mejores estrategias de ventas, tips de finanzas y secretos para hacer crecer tu negocio. Sin spam, solo valor real.
-        </p>
+        <h2 style="font-size:2rem;font-weight:800;color:var(--text-main);margin-bottom:0.6rem;line-height:1.2;">&iquest;Qu&eacute; tipo de vendedor eres?</h2>
+        <p style="color:var(--text-muted);font-size:1rem;max-width:500px;margin:0 auto;">Responde 5 preguntas r&aacute;pidas y descubre tu perfil de ventas + los art&iacute;culos del blog que m&aacute;s te sirven.</p>
+        <!-- Progress bar -->
+        <div style="max-width:400px;margin:1.5rem auto 0;background:rgba(255,255,255,0.06);border-radius:30px;height:6px;overflow:hidden;">
+          <div id="quizProgress" style="height:100%;width:0%;background:linear-gradient(90deg,var(--primary),#a29bfe);border-radius:30px;transition:width 0.4s ease;"></div>
+        </div>
+        <p id="quizProgressLabel" style="color:var(--text-muted);font-size:0.8rem;margin-top:0.5rem;">Pregunta <span id="quizCurrent">1</span> de 5</p>
+      </div>
 
-        <form action="#" method="POST" style="display: flex; gap: 0.8rem; max-width: 500px; margin: 0 auto; flex-wrap: wrap; justify-content: center;" onsubmit="event.preventDefault(); alert('¡Gracias por suscribirte! Revisa tu bandeja de entrada para confirmar.');">
-          <input type="email" placeholder="Tu correo electr&oacute;nico..." required style="flex: 1; min-width: 250px; padding: 1rem 1.5rem; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; font-size: 1rem; outline: none; transition: border-color 0.3s;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
-          <button type="submit" class="btn btn-primary" style="padding: 1rem 2rem; border-radius: 30px; font-weight: 600; font-size: 1rem; border: none; cursor: pointer;">
-            Suscribirme <i class="fa-solid fa-paper-plane" style="margin-left: 8px;"></i>
+      <!-- Quiz Body -->
+      <div style="padding:2.5rem;" id="quizBody">
+
+        <!-- Q1 -->
+        <div class="quiz-step" id="qStep1">
+          <p style="font-size:1.2rem;font-weight:700;color:var(--text-main);margin-bottom:1.5rem;line-height:1.4;">Un cliente te dice <em style="color:#a29bfe;">"lo tengo que pensar"</em>. &iquest;Qu&eacute; haces?</p>
+          <div class="quiz-options" id="qOpts1">
+            <button class="quiz-btn" onclick="quizAnswer(1,'A')">Le doy espacio y espero a que me contacte.</button>
+            <button class="quiz-btn" onclick="quizAnswer(1,'B')">Le pregunto qu&eacute; es lo que le genera duda para resolverlo ahora.</button>
+            <button class="quiz-btn" onclick="quizAnswer(1,'C')">Le env&iacute;o un mensaje al d&iacute;a siguiente con m&aacute;s informaci&oacute;n.</button>
+            <button class="quiz-btn" onclick="quizAnswer(1,'D')">Le ofrezco un descuento para cerrar en el momento.</button>
+          </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="quiz-step" id="qStep2" style="display:none;">
+          <p style="font-size:1.2rem;font-weight:700;color:var(--text-main);margin-bottom:1.5rem;line-height:1.4;">&iquest;Cu&aacute;l es tu mayor fortaleza al vender?</p>
+          <div class="quiz-options" id="qOpts2">
+            <button class="quiz-btn" onclick="quizAnswer(2,'A')">Escuchar y entender al cliente en profundidad.</button>
+            <button class="quiz-btn" onclick="quizAnswer(2,'B')">Crear urgencia y cerrar con confianza.</button>
+            <button class="quiz-btn" onclick="quizAnswer(2,'C')">Construir relaciones de largo plazo.</button>
+            <button class="quiz-btn" onclick="quizAnswer(2,'D')">Explicar con detalle los beneficios del producto.</button>
+          </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="quiz-step" id="qStep3" style="display:none;">
+          <p style="font-size:1.2rem;font-weight:700;color:var(--text-main);margin-bottom:1.5rem;line-height:1.4;">&iquest;Con qu&eacute; frecuencia haces seguimiento a tus prospectos?</p>
+          <div class="quiz-options" id="qOpts3">
+            <button class="quiz-btn" onclick="quizAnswer(3,'A')">Casi nunca, siento que molesto.</button>
+            <button class="quiz-btn" onclick="quizAnswer(3,'B')">Siempre, tengo un sistema de follow-up.</button>
+            <button class="quiz-btn" onclick="quizAnswer(3,'C')">Solo cuando me acuerdo o tengo tiempo.</button>
+            <button class="quiz-btn" onclick="quizAnswer(3,'D')">Cuando hay una oferta o descuento nuevo.</button>
+          </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="quiz-step" id="qStep4" style="display:none;">
+          <p style="font-size:1.2rem;font-weight:700;color:var(--text-main);margin-bottom:1.5rem;line-height:1.4;">Un cliente dice que tu precio es caro. &iquest;Cu&aacute;l es tu reacci&oacute;n inmediata?</p>
+          <div class="quiz-options" id="qOpts4">
+            <button class="quiz-btn" onclick="quizAnswer(4,'A')">Bajo el precio r&aacute;pidamente para no perder la venta.</button>
+            <button class="quiz-btn" onclick="quizAnswer(4,'B')">Reencuadro el valor y explico el retorno de inversi&oacute;n.</button>
+            <button class="quiz-btn" onclick="quizAnswer(4,'C')">Le pregunto con qu&eacute; lo est&aacute; comparando.</button>
+            <button class="quiz-btn" onclick="quizAnswer(4,'D')">Me incomoda y pierdo seguridad en la conversaci&oacute;n.</button>
+          </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="quiz-step" id="qStep5" style="display:none;">
+          <p style="font-size:1.2rem;font-weight:700;color:var(--text-main);margin-bottom:1.5rem;line-height:1.4;">&iquest;C&oacute;mo describes mejor tu estilo de comunicaci&oacute;n con clientes?</p>
+          <div class="quiz-options" id="qOpts5">
+            <button class="quiz-btn" onclick="quizAnswer(5,'A')">Directo, concreto y enfocado en el cierre.</button>
+            <button class="quiz-btn" onclick="quizAnswer(5,'B')">Emp&aacute;tico, curioso y orientado a entender.</button>
+            <button class="quiz-btn" onclick="quizAnswer(5,'C')">Educativo, detallista y paciente.</button>
+            <button class="quiz-btn" onclick="quizAnswer(5,'D')">Amigable y construyo confianza antes de vender.</button>
+          </div>
+        </div>
+
+        <!-- Result -->
+        <div id="quizResult" style="display:none; text-align:center; animation: fadeInScale 0.5s ease both;">
+          <div id="quizResultEmoji" style="font-size:4rem; margin-bottom:1rem;"></div>
+          <h3 id="quizResultTitle" style="font-size:1.8rem;font-weight:800;color:var(--text-main);margin-bottom:0.8rem;"></h3>
+          <p id="quizResultDesc" style="color:var(--text-muted);font-size:1.05rem;line-height:1.7;max-width:560px;margin:0 auto 1.5rem;"></p>
+          <div id="quizResultArticles" style="background:rgba(108,92,231,0.08);border:1px solid rgba(108,92,231,0.2);border-radius:16px;padding:1.5rem;margin-bottom:1.8rem;text-align:left;">
+            <p style="font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--primary);margin-bottom:0.8rem;"><i class="fa-solid fa-bookmark" style="margin-right:6px;"></i>Art&iacute;culos recomendados para ti</p>
+            <div id="quizArticleLinks"></div>
+          </div>
+          <button onclick="quizRestart()" style="background:rgba(255,255,255,0.06);color:var(--text-muted);border:1px solid rgba(255,255,255,0.1);padding:0.7rem 1.5rem;border-radius:30px;font-weight:600;cursor:pointer;font-size:0.9rem;transition:all 0.3s;" onmouseover="this.style.borderColor='var(--primary)';this.style.color='white';" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='var(--text-muted)';">
+            <i class="fa-solid fa-rotate-left" style="margin-right:6px;"></i> Repetir test
           </button>
-        </form>
-        <p style="color: rgba(255,255,255,0.4); font-size: 0.85rem; margin-top: 1.5rem;">Puedes darte de baja en cualquier momento con un solo clic.</p>
+        </div>
       </div>
     </div>
   </section>
+
+  <style>
+    .quiz-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.85);
+      padding: 1rem 1.4rem;
+      border-radius: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-bottom: 0.75rem;
+      transition: all 0.25s;
+      font-family: inherit;
+      line-height: 1.4;
+    }
+    .quiz-btn:hover {
+      background: rgba(108,92,231,0.12);
+      border-color: rgba(108,92,231,0.4);
+      color: white;
+      transform: translateX(6px);
+    }
+    .quiz-btn.selected {
+      background: rgba(108,92,231,0.2);
+      border-color: var(--primary);
+      color: white;
+    }
+    .quiz-result-link {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: #a29bfe;
+      text-decoration: none;
+      font-size: 0.95rem;
+      padding: 0.4rem 0;
+      transition: color 0.2s, gap 0.2s;
+    }
+    .quiz-result-link:hover { color: white; gap: 0.9rem; }
+  </style>
+
+  <script>
+    const quizAnswers = {};
+    const profiles = {
+      closer: {
+        emoji: '🎯',
+        title: 'El Cerrador Nato',
+        desc: 'Tenés instinto comercial y confianza. Sos directo, vas al cierre y no le tenés miedo al "no". Tu desafío es aprender a escuchar más y no apresurarte. Cuando combines tu fuerza de cierre con empatía, serás imparable.',
+        articles: [
+          { text: 'Técnicas de Cierre Sin Suplicar', href: 'Blog htmls/tecnicas-de-cierre-sin-suplicar.html' },
+          { text: 'Cómo Manejar Objeciones de Ventas', href: 'Blog htmls/manejo-de-objeciones-de-ventas.html' },
+          { text: 'El Pitch Perfecto: Vende en 60 Segundos', href: 'Blog htmls/elevator-pitch.html' },
+        ]
+      },
+      consultant: {
+        emoji: '🧠',
+        title: 'El Consultor Empático',
+        desc: 'Eres el vendedor que los clientes aman. Escuchas, preguntas y entiendes. Tu riesgo es no cerrar por miedo a incomodar. Aprende a hacer el cierre como un paso natural y tu potencial de ingresos se disparará.',
+        articles: [
+          { text: 'Cómo Vender Sin Vender: La Venta Consultiva', href: 'Blog htmls/como-vender-sin-vender.html' },
+          { text: 'Cómo Superar el Miedo a Vender', href: 'Blog htmls/miedo-a-vender.html' },
+          { text: 'Psicología de Ventas', href: 'Blog htmls/psicologia-de-ventas.html' },
+        ]
+      },
+      strategist: {
+        emoji: '📊',
+        title: 'El Estratega Sistemático',
+        desc: 'Piensas en procesos, en datos y en el largo plazo. Eso es una enorme ventaja. Tu desafío es añadir más calidez humana a tus interacciones y aprender a adaptar tu mensaje de forma más emocional.',
+        articles: [
+          { text: 'El Poder del Seguimiento en Ventas', href: 'Blog htmls/el-poder-del-seguimiento.html' },
+          { text: 'Embudos de Venta: Automatiza tus Ventas', href: 'Blog htmls/embudos-de-venta.html' },
+          { text: 'Estrategias de Precios que Venden', href: 'Blog htmls/estrategias-de-precios-que-venden.html' },
+        ]
+      },
+      connector: {
+        emoji: '🤝',
+        title: 'El Conector Relacional',
+        desc: 'Construyes confianza como nadie. La gente te compra por quién eres. Tu gran desafío es acelerar el proceso: no toda relación necesita 6 meses para convertirse en cliente. Aprende a crear urgencia genuina.',
+        articles: [
+          { text: 'Networking Estratégico para Ventas', href: 'Blog htmls/networking-estrategico.html' },
+          { text: 'Marca Personal y Ventas', href: 'Blog htmls/marca-personal-y-ventas.html' },
+          { text: 'Social Selling: Vende en Redes Sociales', href: 'Blog htmls/social-selling.html' },
+        ]
+      }
+    };
+
+    function quizAnswer(step, option) {
+      quizAnswers[step] = option;
+      const btns = document.querySelectorAll('#qOpts' + step + ' .quiz-btn');
+      btns.forEach(b => b.classList.remove('selected'));
+      event.target.classList.add('selected');
+
+      setTimeout(() => {
+        document.getElementById('qStep' + step).style.display = 'none';
+        if (step < 5) {
+          document.getElementById('qStep' + (step + 1)).style.display = 'block';
+          document.getElementById('quizCurrent').textContent = step + 1;
+          document.getElementById('quizProgress').style.width = (step * 20) + '%';
+        } else {
+          document.getElementById('quizProgress').style.width = '100%';
+          document.getElementById('quizProgressLabel').style.display = 'none';
+          showResult();
+        }
+      }, 320);
+    }
+
+    function showResult() {
+      const counts = { closer: 0, consultant: 0, strategist: 0, connector: 0 };
+      const map = {
+        1: { A:'connector', B:'consultant', C:'strategist', D:'closer' },
+        2: { A:'consultant', B:'closer', C:'connector', D:'strategist' },
+        3: { A:'connector', B:'strategist', C:'closer', D:'closer' },
+        4: { A:'connector', B:'closer', C:'consultant', D:'consultant' },
+        5: { A:'closer', B:'consultant', C:'strategist', D:'connector' }
+      };
+      for (let i = 1; i <= 5; i++) {
+        const type = map[i][quizAnswers[i]];
+        if (type) counts[type]++;
+      }
+      const winner = Object.keys(counts).reduce((a,b) => counts[a] >= counts[b] ? a : b);
+      const p = profiles[winner];
+
+      document.getElementById('quizResultEmoji').textContent = p.emoji;
+      document.getElementById('quizResultTitle').textContent = p.title;
+      document.getElementById('quizResultDesc').textContent = p.desc;
+
+      const linksEl = document.getElementById('quizArticleLinks');
+      linksEl.innerHTML = p.articles.map(a =>
+        `<a href="${a.href}" class="quiz-result-link"><i class="fa-solid fa-arrow-right" style="font-size:0.8rem;color:var(--primary);flex-shrink:0;"></i>${a.text}</a>`
+      ).join('');
+
+      document.getElementById('quizResult').style.display = 'block';
+    }
+
+    function quizRestart() {
+      for (let i=1; i<=5; i++) {
+        const el = document.getElementById('qStep'+i);
+        if(el) { el.style.display = i===1?'block':'none'; }
+        const opts = document.querySelectorAll('#qOpts'+i+' .quiz-btn');
+        opts.forEach(b => b.classList.remove('selected'));
+      }
+      document.getElementById('quizResult').style.display = 'none';
+      document.getElementById('quizProgress').style.width = '0%';
+      document.getElementById('quizCurrent').textContent = '1';
+      document.getElementById('quizProgressLabel').style.display = 'block';
+      Object.keys(quizAnswers).forEach(k => delete quizAnswers[k]);
+    }
+  </script>
 
   <!-- Author Section -->
   <section class="container">
