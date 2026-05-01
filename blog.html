@@ -1381,6 +1381,34 @@
     </div>
   </section>
 
+  <!-- Newsletter Section -->
+  <section class="container" style="margin-top: 2rem; margin-bottom: 2rem;">
+    <div style="background: linear-gradient(135deg, rgba(108, 92, 231, 0.1), rgba(0, 210, 211, 0.05)); border: 1px solid rgba(108, 92, 231, 0.2); border-radius: 24px; padding: 4rem 2rem; text-align: center; position: relative; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.2);">
+      
+      <!-- Background elements -->
+      <div style="position: absolute; top: -50px; left: -50px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(108,92,231,0.15) 0%, transparent 70%); border-radius: 50%;"></div>
+      <div style="position: absolute; bottom: -50px; right: -50px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(0,210,211,0.1) 0%, transparent 70%); border-radius: 50%;"></div>
+
+      <div style="position: relative; z-index: 1; max-width: 600px; margin: 0 auto;">
+        <span style="background: rgba(108, 92, 231, 0.15); color: #a29bfe; padding: 0.35rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; display: inline-block; margin-bottom: 1.2rem; border: 1px solid rgba(108, 92, 231, 0.3);">
+          <i class="fa-regular fa-envelope" style="margin-right: 6px;"></i> Newsletter Semanal
+        </span>
+        <h2 style="font-size: 2.2rem; font-weight: 800; color: var(--text-main); margin-bottom: 1rem; line-height: 1.2;">&Uacute;nete a +5,000 emprendedores</h2>
+        <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.6; margin-bottom: 2rem;">
+          Recibe cada semana nuestras mejores estrategias de ventas, tips de finanzas y secretos para hacer crecer tu negocio. Sin spam, solo valor real.
+        </p>
+
+        <form action="#" method="POST" style="display: flex; gap: 0.8rem; max-width: 500px; margin: 0 auto; flex-wrap: wrap; justify-content: center;" onsubmit="event.preventDefault(); alert('¡Gracias por suscribirte! Revisa tu bandeja de entrada para confirmar.');">
+          <input type="email" placeholder="Tu correo electr&oacute;nico..." required style="flex: 1; min-width: 250px; padding: 1rem 1.5rem; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; font-size: 1rem; outline: none; transition: border-color 0.3s;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+          <button type="submit" class="btn btn-primary" style="padding: 1rem 2rem; border-radius: 30px; font-weight: 600; font-size: 1rem; border: none; cursor: pointer;">
+            Suscribirme <i class="fa-solid fa-paper-plane" style="margin-left: 8px;"></i>
+          </button>
+        </form>
+        <p style="color: rgba(255,255,255,0.4); font-size: 0.85rem; margin-top: 1.5rem;">Puedes darte de baja en cualquier momento con un solo clic.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- Author Section -->
   <section class="container">
     <div class="author-box" data-aos="fade-up">
