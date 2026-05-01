@@ -953,7 +953,63 @@
     }
   </style>
 
+  <!-- ── Quote of the Day ── -->
+  <section class="container" style="padding: 2rem 0 1rem;">
+    <div id="qotdCard" style="background:linear-gradient(135deg,rgba(108,92,231,0.12),rgba(0,210,211,0.06));border:1px solid rgba(108,92,231,0.22);border-radius:20px;padding:2.2rem 2.5rem;display:flex;align-items:center;gap:2rem;position:relative;overflow:hidden;">
+      <!-- Left accent -->
+      <div style="width:5px;height:80%;background:linear-gradient(to bottom,var(--primary),#00d2d3);border-radius:4px;flex-shrink:0;position:absolute;left:0;top:10%;"></div>
+      <!-- Big quote mark -->
+      <div style="font-size:5rem;line-height:1;color:rgba(108,92,231,0.18);font-family:Georgia,serif;flex-shrink:0;margin-left:1.5rem;user-select:none;">&ldquo;</div>
+      <!-- Text -->
+      <div style="flex:1;">
+        <p style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--primary);margin-bottom:0.6rem;">
+          <i class="fa-regular fa-lightbulb" style="margin-right:5px;"></i>Frase de la semana
+        </p>
+        <p id="qotdText" style="font-size:1.25rem;font-weight:600;color:var(--text-main);line-height:1.6;margin-bottom:0.8rem;font-style:italic;"></p>
+        <p id="qotdAuthor" style="font-size:0.88rem;color:var(--text-muted);"></p>
+      </div>
+      <!-- Share buttons -->
+      <div style="display:flex;flex-direction:column;gap:0.6rem;flex-shrink:0;">
+        <button id="qotdShareWA" title="Compartir en WhatsApp" style="background:#25d366;border:none;color:white;width:40px;height:40px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 0.2s,box-shadow 0.2s;" onmouseover="this.style.transform='scale(1.15)';this.style.boxShadow='0 4px 14px rgba(37,211,102,0.5)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+          <i class="fa-brands fa-whatsapp"></i>
+        </button>
+        <button id="qotdShareX" title="Compartir en X" style="background:#000;border:none;color:white;width:40px;height:40px;border-radius:50%;font-size:0.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform=''">
+          <i class="fa-brands fa-x-twitter"></i>
+        </button>
+        <button onclick="nextQotd()" title="Ver otra frase" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:var(--text-muted);width:40px;height:40px;border-radius:50%;font-size:0.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--primary)';this.style.color='white'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='var(--text-muted)'">
+          <i class="fa-solid fa-rotate-right"></i>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const quotes = [
+      { text: "No le vendas a la gente lo que necesitan. Véndeles lo que quieren y dales lo que necesitan.", author: "— Seth Godin" },
+      { text: "La diferencia entre un vendedor mediocre y uno extraordinario no es el talento. Es el número de 'no' que están dispuestos a escuchar.", author: "— Facundo Zabala, Zaleasy" },
+      { text: "Tu trabajo no es convencer a la gente de comprar. Tu trabajo es encontrar a las personas que ya quieren lo que tienes.", author: "— Zig Ziglar" },
+      { text: "El precio que cobras es una declaración del valor que tú mismo te das. Si bajas tus precios sin razón, estás diciéndole al mundo que no eres tan bueno.", author: "— Facundo Zabala, Zaleasy" },
+      { text: "Las ventas son la consecuencia de una relación bien construida, no la razón por la que la construiste.", author: "— Jeffrey Gitomer" },
+      { text: "Todo el mundo vive vendiendo algo. El que no lo acepta, simplemente lo hace mal.", author: "— Robert Louis Stevenson" },
+      { text: "La confianza se construye con consistencia. Aparece cuando prometiste, entrega más de lo que prometiste.", author: "— Facundo Zabala, Zaleasy" },
+    ];
+    let qIdx = new Date().getDay(); // starts at today's weekday
+    function renderQotd(){
+      const q = quotes[qIdx % quotes.length];
+      const el = document.getElementById('qotdText');
+      const au = document.getElementById('qotdAuthor');
+      if(el && au){ el.textContent = q.text; au.textContent = q.author; }
+      const wa = document.getElementById('qotdShareWA');
+      const x  = document.getElementById('qotdShareX');
+      if(wa) wa.onclick = ()=> window.open('https://wa.me/?text='+encodeURIComponent('"'+q.text+'" '+q.author+' — Blog Zaleasy: https://zaleasy.com/blog.html'),'_blank');
+      if(x)  x.onclick  = ()=> window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent('"'+q.text+'" '+q.author)+'&url=https://zaleasy.com/blog.html','_blank');
+    }
+    window.nextQotd = function(){ qIdx++; renderQotd(); };
+    document.addEventListener('DOMContentLoaded', renderQotd);
+  </script>
+
   <!-- Blog Articles Grid -->
+
   <section class="container">
     <div class="blog-grid">
       
@@ -2014,7 +2070,180 @@
     })();
   </script>
 
+  <!-- ── Sales Revenue Calculator ── -->
+  <section class="container" style="margin: 3rem auto;" id="calculadora">
+    <div style="background: var(--bg-card); border: 1px solid rgba(108,92,231,0.25); border-radius: 24px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
+
+      <!-- Header -->
+      <div style="background:linear-gradient(135deg,rgba(255,165,2,0.12),rgba(108,92,231,0.12));padding:2.5rem 2.5rem 2rem;text-align:center;border-bottom:1px solid rgba(255,255,255,0.05);position:relative;overflow:hidden;">
+        <div style="position:absolute;bottom:-60px;left:-60px;width:220px;height:220px;background:radial-gradient(circle,rgba(255,165,2,0.1) 0%,transparent 70%);border-radius:50%;"></div>
+        <span style="background:rgba(255,165,2,0.15);color:#ffa502;padding:0.3rem 1rem;border-radius:20px;font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;border:1px solid rgba(255,165,2,0.3);display:inline-block;margin-bottom:1rem;">
+          <i class="fa-solid fa-calculator" style="margin-right:5px;"></i> Herramienta Gratuita
+        </span>
+        <h2 style="font-size:2rem;font-weight:800;color:var(--text-main);margin-bottom:0.6rem;line-height:1.2;">Calculadora de Potencial de Ventas</h2>
+        <p style="color:var(--text-muted);font-size:1rem;max-width:520px;margin:0 auto;">&iquest;Cu&aacute;nto dinero est&aacute;s dejando de ganar cada mes? Descubrelo en 30 segundos.</p>
+      </div>
+
+      <!-- Calculator body -->
+      <div style="padding:2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:start;" id="calcGrid">
+
+        <!-- Inputs -->
+        <div>
+          <p style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--primary);margin-bottom:1.5rem;"><i class="fa-solid fa-sliders" style="margin-right:6px;"></i>Tus datos actuales</p>
+
+          <div class="calc-field">
+            <label>Prospectos que contactas <strong>por semana</strong></label>
+            <div class="calc-input-wrap">
+              <i class="fa-solid fa-users"></i>
+              <input type="number" id="cProspectos" value="20" min="1" max="500" oninput="calcUpdate()">
+            </div>
+            <input type="range" id="rProspectos" min="1" max="200" value="20" class="calc-range" oninput="document.getElementById('cProspectos').value=this.value;calcUpdate()">
+          </div>
+
+          <div class="calc-field">
+            <label>Tasa de cierre actual <strong>(%)</strong></label>
+            <div class="calc-input-wrap">
+              <i class="fa-solid fa-percent"></i>
+              <input type="number" id="cCierre" value="20" min="1" max="100" oninput="calcUpdate()">
+            </div>
+            <input type="range" id="rCierre" min="1" max="100" value="20" class="calc-range" oninput="document.getElementById('cCierre').value=this.value;calcUpdate()">
+          </div>
+
+          <div class="calc-field">
+            <label>Ticket promedio por venta <strong>($)</strong></label>
+            <div class="calc-input-wrap">
+              <i class="fa-solid fa-dollar-sign"></i>
+              <input type="number" id="cTicket" value="5000" min="100" step="100" oninput="calcUpdate()">
+            </div>
+            <input type="range" id="rTicket" min="100" max="50000" step="100" value="5000" class="calc-range" oninput="document.getElementById('cTicket').value=this.value;calcUpdate()">
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div>
+          <p style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#2ed573;margin-bottom:1.5rem;"><i class="fa-solid fa-chart-line" style="margin-right:6px;"></i>Tu potencial de ingresos</p>
+
+          <!-- Current -->
+          <div class="calc-result-box" style="border-color:rgba(255,255,255,0.08);">
+            <span class="calc-result-label">Ingresos actuales / mes</span>
+            <span class="calc-result-val" id="rActual" style="color:var(--text-main);">$0</span>
+            <span class="calc-result-sub" id="rActualSub"></span>
+          </div>
+
+          <!-- +10% closing -->
+          <div class="calc-result-box" style="border-color:rgba(46,213,115,0.25);background:rgba(46,213,115,0.05);">
+            <span class="calc-result-label"><i class="fa-solid fa-arrow-trend-up" style="color:#2ed573;margin-right:5px;"></i>Si mejoras tu cierre un <strong style="color:#2ed573;">+10%</strong></span>
+            <span class="calc-result-val" id="rCierre10" style="color:#2ed573;">$0</span>
+            <span class="calc-result-sub" id="rCierre10Sub" style="color:rgba(46,213,115,0.7);"></span>
+          </div>
+
+          <!-- +20% ticket -->
+          <div class="calc-result-box" style="border-color:rgba(162,155,254,0.25);background:rgba(108,92,231,0.06);">
+            <span class="calc-result-label"><i class="fa-solid fa-arrow-trend-up" style="color:#a29bfe;margin-right:5px;"></i>Si subes tu ticket un <strong style="color:#a29bfe;">+20%</strong></span>
+            <span class="calc-result-val" id="rTicket20" style="color:#a29bfe;">$0</span>
+            <span class="calc-result-sub" id="rTicket20Sub" style="color:rgba(162,155,254,0.7);"></span>
+          </div>
+
+          <!-- Recommended article -->
+          <div id="calcTip" style="margin-top:1.2rem;background:rgba(255,165,2,0.07);border:1px solid rgba(255,165,2,0.2);border-radius:14px;padding:1rem 1.2rem;font-size:0.9rem;color:rgba(255,255,255,0.75);display:none;">
+            <p style="color:#ffa502;font-weight:700;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.4rem;"><i class="fa-solid fa-lightbulb" style="margin-right:5px;"></i>Consejo personalizado</p>
+            <p id="calcTipText" style="margin:0;line-height:1.5;"></p>
+          </div>
+        </div>
+
+      </div><!-- /calcGrid -->
+    </div>
+  </section>
+
+  <style>
+    .calc-field { margin-bottom: 1.4rem; }
+    .calc-field label { display:block; font-size:0.92rem; color:var(--text-muted); margin-bottom:0.6rem; }
+    .calc-field label strong { color:var(--text-main); }
+    .calc-input-wrap {
+      display:flex; align-items:center; gap:0.7rem;
+      background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1);
+      border-radius:10px; padding:0.6rem 1rem;
+      transition:border-color 0.25s;
+    }
+    .calc-input-wrap:focus-within { border-color:var(--primary); }
+    .calc-input-wrap i { color:var(--primary); font-size:0.9rem; flex-shrink:0; }
+    .calc-input-wrap input {
+      background:transparent; border:none; outline:none;
+      color:var(--text-main); font-size:1.1rem; font-weight:700;
+      font-family:inherit; width:100%;
+    }
+    .calc-range {
+      width:100%; margin-top:0.5rem; accent-color:var(--primary);
+      cursor:pointer; height:4px;
+    }
+    .calc-result-box {
+      border: 1px solid; border-radius:14px; padding:1rem 1.2rem;
+      margin-bottom:0.8rem; transition: transform 0.2s;
+    }
+    .calc-result-box:hover { transform:translateX(4px); }
+    .calc-result-label { display:block; font-size:0.85rem; color:var(--text-muted); margin-bottom:0.3rem; }
+    .calc-result-val {
+      display:block; font-size:2rem; font-weight:800; line-height:1;
+      font-variant-numeric:tabular-nums; transition:all 0.3s;
+    }
+    .calc-result-sub { display:block; font-size:0.8rem; margin-top:0.25rem; color:var(--text-muted); }
+    @media(max-width:700px){
+      #calcGrid { grid-template-columns:1fr; }
+    }
+  </style>
+
+  <script>
+    function fmt(n){ return '$' + Math.round(n).toLocaleString('es-AR'); }
+    function calcUpdate(){
+      const p = parseInt(document.getElementById('cProspectos').value)||0;
+      const c = parseFloat(document.getElementById('cCierre').value)||0;
+      const t = parseFloat(document.getElementById('cTicket').value)||0;
+
+      // Sync sliders
+      document.getElementById('rProspectos').value = p;
+      document.getElementById('rCierre').value = c;
+      document.getElementById('rTicket').value = t;
+
+      const ventasSem = p * (c/100);
+      const ingresoSem = ventasSem * t;
+      const ingresoMes = ingresoSem * 4.33;
+
+      // +10% closing rate
+      const c2 = Math.min(c + 10, 100);
+      const mes2 = p * (c2/100) * t * 4.33;
+      const diff2 = mes2 - ingresoMes;
+
+      // +20% ticket
+      const mes3 = ventasSem * (t * 1.2) * 4.33;
+      const diff3 = mes3 - ingresoMes;
+
+      document.getElementById('rActual').textContent   = fmt(ingresoMes);
+      document.getElementById('rActualSub').textContent = Math.round(ventasSem*4.33)+' ventas/mes · '+fmt(ingresoSem)+'/sem';
+      document.getElementById('rCierre10').textContent   = fmt(mes2);
+      document.getElementById('rCierre10Sub').textContent = '+'+fmt(diff2)+' extra al mes';
+      document.getElementById('rTicket20').textContent    = fmt(mes3);
+      document.getElementById('rTicket20Sub').textContent = '+'+fmt(diff3)+' extra al mes';
+
+      // Contextual tip
+      const tipEl = document.getElementById('calcTip');
+      const tipText = document.getElementById('calcTipText');
+      tipEl.style.display='block';
+      if(c < 20){
+        tipText.innerHTML = 'Tu tasa de cierre tiene mucho margen de mejora. Lee <a href="Blog htmls/manejo-de-objeciones-de-ventas.html" style="color:#ffa502;font-weight:600;">Cómo Manejar Objeciones</a> y <a href="Blog htmls/tecnicas-de-cierre-sin-suplicar.html" style="color:#ffa502;font-weight:600;">Técnicas de Cierre</a> para duplicarla.';
+      } else if(t < 3000){
+        tipText.innerHTML = 'Tu ticket promedio es bajo. Aprende a subirlo con <a href="Blog htmls/upselling-y-cross-selling.html" style="color:#ffa502;font-weight:600;">Upselling y Cross-Selling</a> y <a href="Blog htmls/estrategias-de-precios-que-venden.html" style="color:#ffa502;font-weight:600;">Estrategias de Precios</a>.';
+      } else if(p < 10){
+        tipText.innerHTML = 'Contactas pocos prospectos. Amplía tu red con <a href="Blog htmls/networking-estrategico.html" style="color:#ffa502;font-weight:600;">Networking Estratégico</a> y <a href="Blog htmls/social-selling.html" style="color:#ffa502;font-weight:600;">Social Selling</a>.';
+      } else {
+        tipText.innerHTML = '¡Vas bien! El siguiente nivel es el seguimiento. El 80% de las ventas se cierran después del 5° contacto. Lee <a href="Blog htmls/el-poder-del-seguimiento.html" style="color:#ffa502;font-weight:600;">El Poder del Seguimiento</a>.';
+      }
+    }
+    // Init on load
+    document.addEventListener('DOMContentLoaded', calcUpdate);
+  </script>
+
   <!-- Author Section -->
+
 
   <section class="container">
     <div class="author-box" data-aos="fade-up">
@@ -2112,6 +2341,59 @@
         btn.classList.remove('visible');
       }
     });
+  </script>
+
+  <!-- ── Live Social Proof Notification ── -->
+  <div id="liveNotif" style="
+    position:fixed; bottom:90px; left:20px; z-index:9998;
+    background:var(--bg-card,#1a1a2e); border:1px solid rgba(255,255,255,0.1);
+    border-radius:16px; padding:0.9rem 1.1rem; max-width:290px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.4); display:flex; align-items:center; gap:0.9rem;
+    transform:translateX(-120%); transition:transform 0.5s cubic-bezier(0.34,1.56,0.64,1);
+    cursor:pointer;
+  " onclick="this.style.transform='translateX(-120%)'">
+    <div id="lnAvatar" style="width:42px;height:42px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:800;color:white;"></div>
+    <div style="flex:1;min-width:0;">
+      <p id="lnText" style="font-size:0.82rem;color:rgba(255,255,255,0.85);margin:0;line-height:1.4;"></p>
+      <p style="font-size:0.72rem;color:rgba(255,255,255,0.4);margin:0.2rem 0 0;">hace un momento · blog.zaleasy.com</p>
+    </div>
+    <button onclick="event.stopPropagation();document.getElementById('liveNotif').style.transform='translateX(-120%)'" style="background:none;border:none;color:rgba(255,255,255,0.3);font-size:0.9rem;cursor:pointer;padding:0;flex-shrink:0;">&times;</button>
+  </div>
+
+  <style>
+    @media(max-width:480px){
+      #liveNotif { max-width:calc(100vw - 40px); }
+    }
+  </style>
+
+  <script>
+    (function(){
+      const notifications = [
+        { name:"Sofía G.",  city:"Santiago, CL",  color:"linear-gradient(135deg,#fd79a8,#e84393)", initials:"SG", msg:"está aplicando el artículo de Copywriting en su negocio 📝" },
+        { name:"Martín R.", city:"Córdoba, AR",    color:"linear-gradient(135deg,#6c5ce7,#a29bfe)", initials:"MR", msg:"acaba de leer sobre manejo de objeciones 🎯" },
+        { name:"Diego L.",  city:"Bogotá, CO",     color:"linear-gradient(135deg,#ffa502,#ff6348)", initials:"DL", msg:"cerró una venta usando el Elevator Pitch 🚀" },
+        { name:"Ana P.",    city:"Lima, PE",        color:"linear-gradient(135deg,#00b894,#00d2d3)", initials:"AP", msg:"está leyendo sobre gastos hormiga en su tienda 💰" },
+        { name:"Camila T.", city:"Montevideo, UY",  color:"linear-gradient(135deg,#2ed573,#00b894)", initials:"CT", msg:"terminó el quiz y descubrió su perfil de ventas 🧠" },
+        { name:"Ricardo M.","city":"Monterrey, MX", color:"linear-gradient(135deg,#0984e3,#74b9ff)", initials:"RM", msg:"subió sus precios tras leer el artículo de valor percibido 💎" },
+        { name:"Valeria F.", city:"Asunción, PY",   color:"linear-gradient(135deg,#6c5ce7,#00d2d3)", initials:"VF", msg:"está probando la calculadora de ventas 📊" },
+        { name:"Jorge S.",  city:"Santiago, DO",    color:"linear-gradient(135deg,#e17055,#d63031)", initials:"JS", msg:"aprendió a cerrar sin suplicar ✅" },
+      ];
+      let shown = 0;
+      function showNotif(){
+        const n = notifications[shown % notifications.length];
+        shown++;
+        const el   = document.getElementById('liveNotif');
+        const av   = document.getElementById('lnAvatar');
+        const txt  = document.getElementById('lnText');
+        av.style.background = n.color;
+        av.textContent = n.initials;
+        txt.innerHTML = '<strong style="color:white;">'+n.name+'</strong> de '+n.city+'<br>'+n.msg;
+        el.style.transform = 'translateX(0)';
+        setTimeout(()=>{ el.style.transform='translateX(-120%)'; }, 5000);
+      }
+      // First show after 8s, then every 14s
+      setTimeout(()=>{ showNotif(); setInterval(showNotif, 14000); }, 8000);
+    })();
   </script>
 </body>
 </html>
