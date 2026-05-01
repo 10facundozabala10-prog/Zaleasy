@@ -493,6 +493,129 @@
         justify-content: center;
       }
     }
+
+    /* ── Ticker Strip ── */
+    .tips-ticker {
+      background: linear-gradient(90deg, rgba(108,92,231,0.18) 0%, rgba(0,210,211,0.10) 100%);
+      border-top: 1px solid rgba(108,92,231,0.25);
+      border-bottom: 1px solid rgba(108,92,231,0.25);
+      padding: 0;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      height: 44px;
+      position: relative;
+    }
+
+    .ticker-label {
+      flex-shrink: 0;
+      background: var(--primary);
+      color: white;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 0 1.2rem;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+      z-index: 2;
+    }
+
+    .ticker-track-wrapper {
+      flex: 1;
+      overflow: hidden;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .ticker-track {
+      display: flex;
+      gap: 0;
+      white-space: nowrap;
+      animation: ticker-scroll 40s linear infinite;
+    }
+
+    .ticker-track:hover {
+      animation-play-state: paused;
+    }
+
+    .ticker-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.8);
+      padding: 0 2.5rem;
+      border-right: 1px solid rgba(255,255,255,0.08);
+      white-space: nowrap;
+    }
+
+    .ticker-item i {
+      color: #a29bfe;
+      font-size: 0.82rem;
+    }
+
+    @keyframes ticker-scroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ── Hot / Trending badge on cards ── */
+    .badge-hot {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: linear-gradient(135deg, #ff4757, #ff6b81);
+      color: white;
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.28rem 0.7rem;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      box-shadow: 0 4px 14px rgba(255,71,87,0.45);
+      animation: pulse-badge 2s ease-in-out infinite;
+      z-index: 3;
+    }
+
+    @keyframes pulse-badge {
+      0%, 100% { box-shadow: 0 4px 14px rgba(255,71,87,0.45); }
+      50%       { box-shadow: 0 4px 22px rgba(255,71,87,0.75); }
+    }
+
+    /* ── Gradient card hover overlay ── */
+    .blog-card .blog-img {
+      position: relative;
+    }
+
+    .blog-card .blog-img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,9,26,0.55) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.35s;
+    }
+
+    .blog-card:hover .blog-img::after {
+      opacity: 1;
+    }
+
+    /* ── Animated number counters in stats ── */
+    @keyframes count-up {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .blog-stat-text strong {
+      animation: count-up 0.6s ease both;
+    }
   </style>
 </head>
 
@@ -695,6 +818,35 @@
     <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6041920422141090" data-ad-slot="6763726885"
       data-ad-format="auto" data-full-width-responsive="true"></ins>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- ── Animated Tips Ticker ── -->
+  <div class="tips-ticker" aria-label="Consejos r&aacute;pidos de ventas" role="marquee">
+    <div class="ticker-label">
+      <i class="fa-solid fa-bolt"></i> Tip R&aacute;pido
+    </div>
+    <div class="ticker-track-wrapper">
+      <div class="ticker-track" id="tickerTrack">
+        <!-- Set A -->
+        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> El 80% de las ventas se cierran en el 5&ordm; contacto o despu&eacute;s &mdash; nunca abandones en el primero.</span>
+        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> Escucha el doble de lo que hablas: tienes dos o&iacute;dos y una boca por algo.</span>
+        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> El precio nunca es el verdadero problema; la falta de valor percibido s&iacute; lo es.</span>
+        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> Vende resultados, no caracter&iacute;sticas. Tu cliente compra c&oacute;mo mejorar&aacute; su vida.</span>
+        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> Una propuesta de valor clara vale m&aacute;s que mil argumentos de venta.</span>
+        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> La urgencia real cierra m&aacute;s ventas que cualquier descuento. Ofrece fechas l&iacute;mite genuinas.</span>
+        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> El mejor momento para pedir una referencia es justo despu&eacute;s de cerrar una venta.</span>
+        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> Registra cada venta del d&iacute;a en Zaleasy &mdash; los n&uacute;meros que no ves, no los puedes mejorar.</span>
+        <!-- Set B (duplicate for seamless loop) -->
+        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> El 80% de las ventas se cierran en el 5&ordm; contacto o despu&eacute;s &mdash; nunca abandones en el primero.</span>
+        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> Escucha el doble de lo que hablas: tienes dos o&iacute;dos y una boca por algo.</span>
+        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> El precio nunca es el verdadero problema; la falta de valor percibido s&iacute; lo es.</span>
+        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> Vende resultados, no caracter&iacute;sticas. Tu cliente compra c&oacute;mo mejorar&aacute; su vida.</span>
+        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> Una propuesta de valor clara vale m&aacute;s que mil argumentos de venta.</span>
+        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> La urgencia real cierra m&aacute;s ventas que cualquier descuento. Ofrece fechas l&iacute;mite genuinas.</span>
+        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> El mejor momento para pedir una referencia es justo despu&eacute;s de cerrar una venta.</span>
+        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> Registra cada venta del d&iacute;a en Zaleasy &mdash; los n&uacute;meros que no ves, no los puedes mejorar.</span>
+      </div>
+    </div>
   </div>
 
   <!-- Featured Article Banner -->
@@ -953,6 +1105,7 @@
       <!-- Article Mentalidad de Ventas -->
       <article class="blog-card" data-category="ventas motivacion">
         <div class="blog-img" style="background: url('assets/Blog imagenes/Mentalidad de Ventas.png') center/cover; height: 220px;">
+          <span class="badge-hot"><i class="fa-solid fa-fire"></i> M&aacute;s Le&iacute;do</span>
         </div>
         <div class="blog-card-content">
           <span class="blog-category">Mentalidad</span>
