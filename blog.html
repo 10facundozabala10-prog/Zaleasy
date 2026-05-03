@@ -741,10 +741,12 @@
   <!-- Blog Header Section -->
   <header class="blog-header">
     <div class="container">
-      <span class="article-count-badge" id="articleCountBadge" style="animation: pulse-badge 2s infinite;">
-        <i class="fa-solid fa-newspaper"></i> <span id="articleCountNum">27</span> art&iacute;culos publicados
-      </span>
-      <h1 style="background: linear-gradient(135deg, #ffffff 0%, #a29bfe 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: inline-block; font-size: 4rem; letter-spacing: -1px;">Blog de Zaleasy</h1>
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 0.5rem;">
+        <span class="article-count-badge" id="articleCountBadge" style="animation: pulse-badge 2s infinite; margin-bottom: 1rem;">
+          <i class="fa-solid fa-newspaper"></i> <span id="articleCountNum">27</span> art&iacute;culos publicados
+        </span>
+        <h1 style="background: linear-gradient(135deg, #ffffff 0%, #a29bfe 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: inline-block; font-size: 4rem; letter-spacing: -1px; margin: 0;">Blog de Zaleasy</h1>
+      </div>
       <p style="font-size: 1.2rem; line-height: 1.6; margin-top: 0.5rem;">
         Consejos, estrategias y herramientas para aprender a gestionar tus ventas, 
         controlar tus finanzas y hacer crecer tu emprendimiento.
@@ -1273,6 +1275,57 @@
     window.nextQotd = function(){ qIdx++; renderQotd(); };
     document.addEventListener('DOMContentLoaded', renderQotd);
   </script>
+
+  <!-- ── Glosario Rápido de Ventas ── -->
+  <section class="container" style="padding: 2.5rem 0 2rem;">
+    <div style="display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
+      <div>
+        <span style="background: rgba(108, 92, 231, 0.15); color: #a29bfe; padding: 0.35rem 1rem; border-radius: 20px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; display: inline-block; margin-bottom: 0.8rem; border: 1px solid rgba(108, 92, 231, 0.3);">
+          <i class="fa-solid fa-spell-check" style="margin-right: 6px;"></i> Diccionario
+        </span>
+        <h2 style="font-size: 1.8rem; font-weight: 800; color: var(--text-main); margin: 0;">Glosario R&aacute;pido de Ventas</h2>
+      </div>
+      <p style="color: var(--text-muted); font-size: 0.95rem; max-width: 400px; text-align: right; margin: 0; line-height: 1.5;">Los 4 t&eacute;rminos clave que necesitas dominar para entender y optimizar las m&eacute;tricas de tu negocio.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem;">
+      
+      <!-- Term 1 -->
+      <div style="background: var(--bg-card); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 1.8rem; position: relative; overflow: hidden; transition: all 0.3s; cursor: default;" onmouseover="this.style.borderColor='rgba(46,213,115,0.4)'; this.style.transform='translateY(-4px)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.3)';" onmouseout="this.style.borderColor='rgba(255,255,255,0.06)'; this.style.transform='none'; this.style.boxShadow='none';">
+        <div style="position: absolute; top: -30px; right: -30px; width: 100px; height: 100px; background: radial-gradient(circle, rgba(46,213,115,0.15) 0%, transparent 70%); border-radius: 50%;"></div>
+        <h3 style="color: #2ed573; font-size: 1.4rem; font-weight: 800; margin-bottom: 0.6rem; position: relative;">Lead</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin: 0; position: relative;">Una persona o empresa que ha mostrado inter&eacute;s en tu producto (ej. dejando su email). Es el paso previo a convertirse en un cliente potencial cualificado (prospecto).</p>
+      </div>
+
+      <!-- Term 2 -->
+      <div style="background: var(--bg-card); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 1.8rem; position: relative; overflow: hidden; transition: all 0.3s; cursor: default;" onmouseover="this.style.borderColor='rgba(255,165,2,0.4)'; this.style.transform='translateY(-4px)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.3)';" onmouseout="this.style.borderColor='rgba(255,255,255,0.06)'; this.style.transform='none'; this.style.boxShadow='none';">
+        <div style="position: absolute; top: -30px; right: -30px; width: 100px; height: 100px; background: radial-gradient(circle, rgba(255,165,2,0.15) 0%, transparent 70%); border-radius: 50%;"></div>
+        <h3 style="color: #ffa502; font-size: 1.4rem; font-weight: 800; margin-bottom: 0.6rem; position: relative;">CAC</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin: 0; position: relative;"><strong>Costo de Adquisici&oacute;n de Cliente.</strong> Cu&aacute;nto dinero y recursos inviertes en promedio (anuncios, tiempo, marketing) para lograr que un cliente nuevo te compre.</p>
+      </div>
+
+      <!-- Term 3 -->
+      <div style="background: var(--bg-card); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 1.8rem; position: relative; overflow: hidden; transition: all 0.3s; cursor: default;" onmouseover="this.style.borderColor='rgba(108,92,231,0.4)'; this.style.transform='translateY(-4px)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.3)';" onmouseout="this.style.borderColor='rgba(255,255,255,0.06)'; this.style.transform='none'; this.style.boxShadow='none';">
+        <div style="position: absolute; top: -30px; right: -30px; width: 100px; height: 100px; background: radial-gradient(circle, rgba(108,92,231,0.15) 0%, transparent 70%); border-radius: 50%;"></div>
+        <h3 style="color: #a29bfe; font-size: 1.4rem; font-weight: 800; margin-bottom: 0.6rem; position: relative;">LTV</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin: 0; position: relative;"><strong>Life Time Value.</strong> El ingreso total esperado que un cliente generar&aacute; en tu negocio a lo largo de toda su vida como comprador.</p>
+      </div>
+
+      <!-- Term 4 -->
+      <div style="background: var(--bg-card); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 1.8rem; position: relative; overflow: hidden; transition: all 0.3s; cursor: default;" onmouseover="this.style.borderColor='rgba(0,210,211,0.4)'; this.style.transform='translateY(-4px)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.3)';" onmouseout="this.style.borderColor='rgba(255,255,255,0.06)'; this.style.transform='none'; this.style.boxShadow='none';">
+        <div style="position: absolute; top: -30px; right: -30px; width: 100px; height: 100px; background: radial-gradient(circle, rgba(0,210,211,0.15) 0%, transparent 70%); border-radius: 50%;"></div>
+        <h3 style="color: #00d2d3; font-size: 1.4rem; font-weight: 800; margin-bottom: 0.6rem; position: relative;">Ticket Medio</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin: 0; position: relative;">El monto promedio que gasta un cliente en una sola transacci&oacute;n. Subir el ticket medio es la forma m&aacute;s directa de aumentar ingresos sin buscar clientes nuevos.</p>
+      </div>
+
+    </div>
+    
+    <style>
+      @media (max-width: 768px) {
+        #glosario-header p { text-align: left !important; margin-top: 1rem !important; }
+      }
+    </style>
+  </section>
 
   <!-- Blog Articles Grid -->
 
