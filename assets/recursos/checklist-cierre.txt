@@ -1,0 +1,12 @@
+--- CHECKLIST DE CIERRE DIARIO ---
+
+[ ] 1. Registrar todas las ventas del día en el sistema Zaleasy.
+[ ] 2. Contar el efectivo físico en caja.
+[ ] 3. Sumar comprobantes de pagos digitales (transferencias, tarjetas).
+[ ] 4. Restar gastos diarios o retiros de caja chica.
+[ ] 5. Comparar el total teórico con el físico.
+[ ] 6. Archivar recibos del día.
+[ ] 7. Marcar "Cierre de Caja" exitoso en la aplicación.
+
+¡Felicidades por un día más de ventas!
+[Zaleasy Blog - Herramientas Gratuitas]
