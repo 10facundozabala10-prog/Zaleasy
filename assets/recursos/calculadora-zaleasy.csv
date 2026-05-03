@@ -1,3 +1,13 @@
-Producto,Costo_Materiales,Costo_ManoDeObra,Costo_Fijo_Asignado,Costo_Total,Margen_Deseado_Porcentaje,Precio_Sugerido
-Ejemplo 1, 100, 50, 20, 170, 30, 242.85
-Ejemplo 2, 200, 80, 40, 320, 40, 533.33
+Producto/Servicio;Costo de Materiales;Costo de Mano de Obra;Costos Fijos Asignados;COSTO TOTAL;Margen de Ganancia Deseado (%);PRECIO DE VENTA SUGERIDO
+"Ejemplo: Zapatillas Deportivas";12000;3000;1500;16500;35%;25384.61
+"Ejemplo: Remera Básica";4500;1000;500;6000;40%;10000.00
+"Ejemplo: Pantalón de Jean";18000;4500;2000;24500;30%;35000.00
+"";0;0;0;0;0%;0.00
+"";0;0;0;0;0%;0.00
+"";0;0;0;0;0%;0.00
+"";0;0;0;0;0%;0.00
+
+--- INSTRUCCIONES ---;;;;;;
+1. Llena las columnas B, C y D con tus costos.;;;;;;
+2. El Costo Total (E) es la suma de B+C+D.;;;;;;
+3. El Precio de Venta (G) se calcula así: Costo Total / (1 - (Margen / 100));;;;;;
