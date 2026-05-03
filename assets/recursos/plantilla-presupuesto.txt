@@ -1,0 +1,24 @@
+--- PLANTILLA DE PRESUPUESTO COMERCIAL B2B ---
+
+[Tu Logo / Nombre de Empresa]
+Fecha: DD/MM/AAAA
+Presupuesto Válido hasta: DD/MM/AAAA
+
+Cliente: [Nombre del Cliente]
+Empresa: [Nombre de la Empresa del Cliente]
+
+RESUMEN EJECUTIVO:
+Entendemos que el objetivo principal de [Empresa Cliente] es [Objetivo]. Esta propuesta detalla cómo nuestra solución ayudará a lograrlo en [X] tiempo.
+
+ENTREGABLES Y PRECIOS:
+1. [Servicio/Producto 1] - Breve descripción del beneficio - $XXX.XX
+2. [Servicio/Producto 2] - Breve descripción del beneficio - $XXX.XX
+
+INVERSIÓN TOTAL: $XXX.XX
+
+PRÓXIMOS PASOS:
+1. Aprobación de este documento respondiendo a este correo.
+2. Emisión de factura y pago del 50% de anticipo.
+3. Inicio del proyecto el día [Fecha].
+
+[Zaleasy Blog - Herramientas Gratuitas]
