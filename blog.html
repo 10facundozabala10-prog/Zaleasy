@@ -33,6 +33,89 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6041920422141090"
     crossorigin="anonymous"></script>
   <style>
+    /* Premium Visual Effects */
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    .animated-gradient-text {
+      background: linear-gradient(135deg, #ffffff, #a29bfe, #00d2d3, #a29bfe);
+      background-size: 300% 300%;
+      animation: gradientBG 6s ease infinite;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .glass-search-input {
+      width: 100%;
+      padding: 1.2rem 1.5rem 1.2rem 3.5rem;
+      border-radius: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: var(--text-main);
+      font-size: 1.05rem;
+      outline: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+    }
+
+    .glass-search-input:focus {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--primary);
+      box-shadow: 0 0 20px rgba(162, 155, 254, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      transition: color 0.3s;
+    }
+    
+    .glass-search-input:focus ~ .search-icon {
+      color: var(--primary);
+    }
+
+    .glass-filter-btn {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 0.6rem 1.5rem;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      font-size: 0.9rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    
+    .glass-filter-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(108, 92, 231, 0.2);
+      border-color: rgba(162, 155, 254, 0.4);
+    }
+    
+    .glass-filter-btn.active {
+      background: linear-gradient(135deg, var(--primary), #a29bfe);
+      color: white;
+      border: none;
+      box-shadow: 0 8px 20px rgba(108, 92, 231, 0.4);
+      transform: translateY(-3px);
+    }
+
     /* Specific Blog Styles */
     .blog-header {
       padding: 6rem 0 3rem;
@@ -61,29 +144,37 @@
     }
 
     .blog-card {
-      background: var(--bg-card);
-      border-radius: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(25, 23, 45, 0.65);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
       overflow: hidden;
-      transition: transform 0.3s, box-shadow 0.3s;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       display: flex;
       flex-direction: column;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
     }
 
     .blog-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-      border-color: rgba(108, 92, 231, 0.3);
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 25px 50px rgba(108, 92, 231, 0.25);
+      border-color: rgba(162, 155, 254, 0.5);
     }
 
     .blog-img {
-      height: 200px;
+      height: 220px;
       background: linear-gradient(135deg, var(--bg-hover), var(--primary-light));
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 3.5rem;
       color: var(--primary);
+      transition: transform 0.5s ease;
+    }
+
+    .blog-card:hover .blog-img {
+      transform: scale(1.08);
     }
 
     .blog-card-content {
@@ -103,6 +194,9 @@
       margin-bottom: 1rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 2;
     }
 
     /* Category color palette */
@@ -745,27 +839,27 @@
         <span class="article-count-badge" id="articleCountBadge" style="animation: pulse-badge 2s infinite; margin-bottom: 1rem;">
           <i class="fa-solid fa-newspaper"></i> <span id="articleCountNum">27</span> art&iacute;culos publicados
         </span>
-        <h1 style="background: linear-gradient(135deg, #ffffff 0%, #a29bfe 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: inline-block; font-size: 4rem; letter-spacing: -1px; margin: 0;">Blog de Zaleasy</h1>
+        <h1 class="animated-gradient-text" style="display: inline-block; font-size: 4rem; letter-spacing: -1px; margin: 0;">Blog de Zaleasy</h1>
       </div>
-      <p style="font-size: 1.2rem; line-height: 1.6; margin-top: 0.5rem;">
+      <p style="font-size: 1.2rem; line-height: 1.6; margin-top: 0.5rem; color: rgba(255,255,255,0.85);">
         Consejos, estrategias y herramientas para aprender a gestionar tus ventas, 
         controlar tus finanzas y hacer crecer tu emprendimiento.
       </p>
       
       <!-- Search Bar -->
       <div style="margin-top: 2rem; max-width: 500px; margin-left: auto; margin-right: auto; position: relative;">
-        <input type="text" id="blogSearch" placeholder="Buscar art&iacute;culos, palabras clave..." style="width: 100%; padding: 1rem 1.5rem 1rem 3.5rem; border-radius: 30px; border: 1px solid rgba(162, 155, 254, 0.3); background: rgba(0, 0, 0, 0.2); color: var(--text-main); font-size: 1.05rem; outline: none; transition: border-color 0.3s;" onkeyup="searchBlog()" onfocus="this.style.borderColor='#a29bfe'" onblur="this.style.borderColor='rgba(162, 155, 254, 0.3)'">
-        <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 1.5rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.1rem;"></i>
+        <input type="text" id="blogSearch" placeholder="Buscar art&iacute;culos, palabras clave..." class="glass-search-input" onkeyup="searchBlog()">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
       </div>
 
       <!-- Category Filters -->
       <div class="blog-filters-container" style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-        <button style="background: var(--primary); color: white; border: none; padding: 0.5rem 1.2rem; border-radius: 20px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.9rem;" onclick="filterBlog('all', this)">Todos</button>
-        <button style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.5rem 1.2rem; border-radius: 20px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.9rem;" onclick="filterBlog('ventas', this)" class="blog-filter-btn">Ventas</button>
-        <button style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.5rem 1.2rem; border-radius: 20px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.9rem;" onclick="filterBlog('marketing', this)" class="blog-filter-btn">Marketing</button>
-        <button style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.5rem 1.2rem; border-radius: 20px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.9rem;" onclick="filterBlog('finanzas', this)" class="blog-filter-btn">Finanzas</button>
-        <button style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.5rem 1.2rem; border-radius: 20px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.9rem;" onclick="filterBlog('tecnologia', this)" class="blog-filter-btn">Tecnolog&iacute;a</button>
-        <button style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.5rem 1.2rem; border-radius: 20px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.9rem;" onclick="filterBlog('motivacion', this)" class="blog-filter-btn">Motivaci&oacute;n</button>
+        <button class="glass-filter-btn active" onclick="filterBlog('all', this)">Todos</button>
+        <button class="glass-filter-btn" onclick="filterBlog('ventas', this)">Ventas</button>
+        <button class="glass-filter-btn" onclick="filterBlog('marketing', this)">Marketing</button>
+        <button class="glass-filter-btn" onclick="filterBlog('finanzas', this)">Finanzas</button>
+        <button class="glass-filter-btn" onclick="filterBlog('tecnologia', this)">Tecnolog&iacute;a</button>
+        <button class="glass-filter-btn" onclick="filterBlog('motivacion', this)">Motivaci&oacute;n</button>
       </div>
     </div>
   </header>
@@ -775,14 +869,8 @@
       document.getElementById('blogSearch').value = "";
 
       const buttons = document.querySelectorAll('header.blog-header button');
-      buttons.forEach(btn => {
-        btn.style.background = 'rgba(255, 255, 255, 0.05)';
-        btn.style.color = 'var(--text-muted)';
-        btn.style.border = '1px solid var(--border-color)';
-      });
-      btnElement.style.background = 'var(--primary)';
-      btnElement.style.color = 'white';
-      btnElement.style.border = 'none';
+      buttons.forEach(btn => btn.classList.remove('active'));
+      btnElement.classList.add('active');
 
       const cards = document.querySelectorAll('.blog-card:not(.coming-soon)');
       let visibleCount = 0;
@@ -806,14 +894,8 @@
 
     function searchBlog() {
       const buttons = document.querySelectorAll('header.blog-header button');
-      buttons.forEach(btn => {
-        btn.style.background = 'rgba(255, 255, 255, 0.05)';
-        btn.style.color = 'var(--text-muted)';
-        btn.style.border = '1px solid var(--border-color)';
-      });
-      buttons[0].style.background = 'var(--primary)';
-      buttons[0].style.color = 'white';
-      buttons[0].style.border = 'none';
+      buttons.forEach(btn => btn.classList.remove('active'));
+      buttons[0].classList.add('active');
 
       const input = document.getElementById('blogSearch').value.toLowerCase();
       const cards = document.querySelectorAll('.blog-card:not(.coming-soon)');
@@ -949,19 +1031,20 @@
   <section class="container" style="padding-top: 3rem;">
     <div style="
       background: url('assets/Blog imagenes/Embudos de Venta.jpeg') center/cover;
-      border-radius: 20px;
+      border-radius: 24px;
       overflow: hidden;
       position: relative;
-      min-height: 360px;
+      min-height: 400px;
       display: flex;
       align-items: flex-end;
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-    ">
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+    " onmouseover="this.style.transform='translateY(-5px) scale(1.01)'; this.style.boxShadow='0 25px 60px rgba(108, 92, 231, 0.3)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 20px 50px rgba(0,0,0,0.4)';">
       <!-- Dark gradient overlay -->
       <div style="
         position: absolute; inset: 0;
-        background: linear-gradient(to top, rgba(10,9,26,0.97) 0%, rgba(10,9,26,0.6) 55%, transparent 100%);
+        background: linear-gradient(to top, rgba(15,13,35,0.95) 0%, rgba(15,13,35,0.7) 40%, transparent 100%);
       "></div>
       <!-- Content -->
       <div style="position: relative; padding: 2.5rem; max-width: 700px;">
@@ -1014,28 +1097,28 @@
 
         <!-- Step 1 -->
         <a href="Blog htmls/mentalidad-de-ventas.html" style="text-decoration: none; position: relative; z-index: 2;">
-          <div style="background: var(--bg-main); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 1.5rem; text-align: center; height: 100%; transition: transform 0.3s, border-color 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)';">
-            <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: bold; margin: 0 auto 1rem; box-shadow: 0 0 0 5px var(--bg-card); position: relative;">1</div>
-            <h4 style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 0.5rem;">Domina tu Mente</h4>
-            <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">El primer artículo: Mentalidad de Ventas y creencias limitantes.</p>
+          <div style="background: rgba(25,23,45,0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 2rem 1.5rem; text-align: center; height: 100%; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.4s, box-shadow 0.4s;" onmouseover="this.style.transform='translateY(-8px) scale(1.02)'; this.style.borderColor='var(--primary)'; this.style.boxShadow='0 15px 30px rgba(108, 92, 231, 0.2)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.08)'; this.style.boxShadow='none';">
+            <div style="width: 55px; height: 55px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), #a29bfe); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: bold; margin: 0 auto 1.2rem; box-shadow: 0 0 0 6px rgba(108, 92, 231, 0.2); position: relative;">1</div>
+            <h4 style="color: var(--text-main); font-size: 1.2rem; margin-bottom: 0.5rem; font-weight: 700;">Domina tu Mente</h4>
+            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">El primer artículo: Mentalidad de Ventas y creencias limitantes.</p>
           </div>
         </a>
 
         <!-- Step 2 -->
         <a href="Blog htmls/storytelling-para-ventas.html" style="text-decoration: none; position: relative; z-index: 2;">
-          <div style="background: var(--bg-main); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 1.5rem; text-align: center; height: 100%; transition: transform 0.3s, border-color 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='var(--success)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)';">
-            <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--success); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: bold; margin: 0 auto 1rem; box-shadow: 0 0 0 5px var(--bg-card); position: relative;">2</div>
-            <h4 style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 0.5rem;">Crea tu Mensaje</h4>
-            <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">Segundo artículo: Storytelling para conectar y no parecer vendedor.</p>
+          <div style="background: rgba(25,23,45,0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 2rem 1.5rem; text-align: center; height: 100%; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.4s, box-shadow 0.4s;" onmouseover="this.style.transform='translateY(-8px) scale(1.02)'; this.style.borderColor='var(--success)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.08)'; this.style.boxShadow='none';">
+            <div style="width: 55px; height: 55px; border-radius: 50%; background: linear-gradient(135deg, var(--success), #2ed573); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: bold; margin: 0 auto 1.2rem; box-shadow: 0 0 0 6px rgba(46, 213, 115, 0.2); position: relative;">2</div>
+            <h4 style="color: var(--text-main); font-size: 1.2rem; margin-bottom: 0.5rem; font-weight: 700;">Crea tu Mensaje</h4>
+            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">Segundo artículo: Storytelling para conectar y no parecer vendedor.</p>
           </div>
         </a>
 
         <!-- Step 3 -->
         <a href="Blog htmls/5-tecnicas-de-cierre-de-ventas.html" style="text-decoration: none; position: relative; z-index: 2;">
-          <div style="background: var(--bg-main); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 1.5rem; text-align: center; height: 100%; transition: transform 0.3s, border-color 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ffa502';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)';">
-            <div style="width: 50px; height: 50px; border-radius: 50%; background: #ffa502; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: bold; margin: 0 auto 1rem; box-shadow: 0 0 0 5px var(--bg-card); position: relative;">3</div>
-            <h4 style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 0.5rem;">Cierra Tratos</h4>
-            <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">Tercer artículo: Las 5 técnicas de cierre que multiplican tus ingresos.</p>
+          <div style="background: rgba(25,23,45,0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 2rem 1.5rem; text-align: center; height: 100%; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.4s, box-shadow 0.4s;" onmouseover="this.style.transform='translateY(-8px) scale(1.02)'; this.style.borderColor='#ffa502';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.08)'; this.style.boxShadow='none';">
+            <div style="width: 55px; height: 55px; border-radius: 50%; background: linear-gradient(135deg, #ffa502, #ff7f50); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: bold; margin: 0 auto 1.2rem; box-shadow: 0 0 0 6px rgba(255, 165, 2, 0.2); position: relative;">3</div>
+            <h4 style="color: var(--text-main); font-size: 1.2rem; margin-bottom: 0.5rem; font-weight: 700;">Cierra Tratos</h4>
+            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">Tercer artículo: Las 5 técnicas de cierre que multiplican tus ingresos.</p>
           </div>
         </a>
 
@@ -2282,6 +2365,63 @@
     </div>
   </section>
 
+  <!-- ── Interactive Extras: Tip Generator ── -->
+  <section class="container" style="margin: 3rem auto; max-width: 600px;">
+      <!-- Tip Generator -->
+      <div style="background: rgba(25, 23, 45, 0.65); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 2.5rem; position: relative; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.2); text-align: center;">
+        <div style="position: absolute; top: -50px; right: -50px; width: 180px; height: 180px; background: radial-gradient(circle, rgba(108,92,231,0.2) 0%, transparent 70%); border-radius: 50%; pointer-events: none;"></div>
+        
+        <span style="background:rgba(108,92,231,0.15);color:#a29bfe;padding:0.3rem 1rem;border-radius:20px;font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;border:1px solid rgba(108,92,231,0.3);display:inline-block;margin-bottom:1rem;">
+          <i class="fa-solid fa-lightbulb" style="margin-right:6px;"></i> Tip Aleatorio
+        </span>
+        <h3 style="font-size:1.6rem;font-weight:800;color:var(--text-main);margin-bottom:1rem;line-height:1.2;">Generador de Ventas</h3>
+        
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 1.5rem; min-height: 140px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; position: relative; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);">
+          <p id="tipText" style="font-size: 1.05rem; color: rgba(255,255,255,0.9); line-height: 1.6; margin: 0; text-align: center; font-style: italic; transition: opacity 0.3s;">
+            "El precio solo es un problema en ausencia de valor. Concéntrate en el problema que resuelves."
+          </p>
+        </div>
+        
+        <button onclick="generateTip()" id="btnGenerateTip" style="width: 100%; background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: white; border: none; padding: 1rem; border-radius: 14px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 4px 15px rgba(108,92,231,0.4);" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 25px rgba(108,92,231,0.5)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 15px rgba(108,92,231,0.4)';">
+          <i class="fa-solid fa-dice" id="tipIcon" style="transition: transform 0.5s;"></i> Generar Nuevo Tip
+        </button>
+      </div>
+  </section>
+
+  <script>
+    const salesTips = [
+      "El precio solo es un problema en ausencia de valor. Concéntrate en el problema que resuelves.",
+      "El 80% de las ventas se cierran entre el 5to y 12vo contacto. ¡Haz seguimiento!",
+      "No vendas características, vende la transformación que tu cliente obtendrá.",
+      "Si el cliente te dice 'está muy caro', pregúntale: '¿Caro comparado con qué?'",
+      "Habla un 20% del tiempo y escucha un 80%. Las mejores ventas se hacen escuchando.",
+      "Una objeción no es un 'no', es una petición de más información.",
+      "Las personas compran por emociones y lo justifican con la lógica.",
+      "Conseguir un cliente nuevo cuesta 5 veces más que retener a uno actual.",
+      "Tu energía vende más que tu discurso. Mantén una postura de abundancia.",
+      "Nunca asumas el presupuesto de tu cliente. Ofrécele siempre la mejor opción primero."
+    ];
+
+    function generateTip() {
+      const tipText = document.getElementById('tipText');
+      const tipIcon = document.getElementById('tipIcon');
+      
+      tipIcon.style.transform = 'rotate(360deg)';
+      setTimeout(() => tipIcon.style.transform = 'rotate(0deg)', 500);
+
+      tipText.style.opacity = '0';
+      
+      setTimeout(() => {
+        let randomTip = salesTips[Math.floor(Math.random() * salesTips.length)];
+        while (randomTip === tipText.innerText && salesTips.length > 1) {
+          randomTip = salesTips[Math.floor(Math.random() * salesTips.length)];
+        }
+        tipText.innerText = randomTip;
+        tipText.style.opacity = '1';
+      }, 300);
+    }
+  </script>
+
   <!-- ── Live Poll ── -->
   <section class="container" style="margin: 2rem auto;" id="encuesta">
     <div style="background:var(--bg-card);border:1px solid rgba(255,255,255,0.07);border-radius:24px;overflow:hidden;box-shadow:0 15px 40px rgba(0,0,0,0.25);">
@@ -2326,22 +2466,25 @@
     .poll-btn {
       display:flex; align-items:center; gap:0.8rem;
       background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);
-      border-radius:12px; padding:0.9rem 1.2rem; cursor:pointer;
-      transition:all 0.25s; color:rgba(255,255,255,0.85); font-size:0.98rem;
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border-radius:16px; padding:1rem 1.4rem; cursor:pointer;
+      transition:all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); color:rgba(255,255,255,0.85); font-size:1rem;
       font-family:inherit; text-align:left; width:100%;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
     .poll-btn:hover {
-      background:rgba(108,92,231,0.1); border-color:rgba(108,92,231,0.35);
-      color:white; transform:translateX(6px);
+      background:rgba(108,92,231,0.15); border-color:var(--primary);
+      color:white; transform:translateX(8px);
+      box-shadow: 0 8px 25px rgba(108,92,231,0.25);
     }
     .poll-btn .poll-icon { font-size:1.3rem; flex-shrink:0; }
     .poll-bar-wrap { position:relative; }
     .poll-bar-label { display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem; }
     .poll-bar-label span:first-child { font-size:0.92rem; color:rgba(255,255,255,0.85); }
     .poll-bar-label span:last-child  { font-size:0.88rem; font-weight:700; }
-    .poll-bar-track { height:10px; background:rgba(255,255,255,0.06); border-radius:30px; overflow:hidden; }
-    .poll-bar-fill  { height:100%; border-radius:30px; width:0%; transition:width 0.9s cubic-bezier(0.4,0,0.2,1); }
-    .poll-my-vote   { font-size:0.72rem; color:var(--primary); font-weight:700; margin-left:6px; }
+    .poll-bar-track { height:12px; background:rgba(255,255,255,0.06); border-radius:30px; overflow:hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); }
+    .poll-bar-fill  { height:100%; border-radius:30px; width:0%; transition:width 1s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .poll-my-vote   { font-size:0.72rem; color:var(--primary); font-weight:700; margin-left:6px; background: rgba(108,92,231,0.2); padding: 0.2rem 0.5rem; border-radius: 12px; }
   </style>
 
   <script>
@@ -2553,27 +2696,32 @@
       width: 100%;
       text-align: left;
       background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       border: 1px solid rgba(255,255,255,0.08);
       color: rgba(255,255,255,0.85);
-      padding: 1rem 1.4rem;
-      border-radius: 12px;
-      font-size: 1rem;
+      padding: 1.2rem 1.5rem;
+      border-radius: 16px;
+      font-size: 1.05rem;
       cursor: pointer;
-      margin-bottom: 0.75rem;
-      transition: all 0.25s;
+      margin-bottom: 0.8rem;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       font-family: inherit;
-      line-height: 1.4;
+      line-height: 1.5;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
     .quiz-btn:hover {
-      background: rgba(108,92,231,0.12);
-      border-color: rgba(108,92,231,0.4);
-      color: white;
-      transform: translateX(6px);
-    }
-    .quiz-btn.selected {
-      background: rgba(108,92,231,0.2);
+      background: rgba(108,92,231,0.15);
       border-color: var(--primary);
       color: white;
+      transform: translateX(8px);
+      box-shadow: 0 8px 25px rgba(108,92,231,0.25);
+    }
+    .quiz-btn.selected {
+      background: linear-gradient(135deg, rgba(108,92,231,0.3), rgba(108,92,231,0.1));
+      border-color: var(--primary);
+      color: white;
+      box-shadow: 0 8px 25px rgba(108,92,231,0.4);
     }
     .quiz-result-link {
       display: flex;
@@ -2582,10 +2730,10 @@
       color: #a29bfe;
       text-decoration: none;
       font-size: 0.95rem;
-      padding: 0.4rem 0;
-      transition: color 0.2s, gap 0.2s;
+      padding: 0.5rem 0;
+      transition: color 0.3s, gap 0.3s;
     }
-    .quiz-result-link:hover { color: white; gap: 0.9rem; }
+    .quiz-result-link:hover { color: white; gap: 1rem; }
   </style>
 
   <script>
@@ -2803,52 +2951,56 @@
   <style>
     .t-slide {
       min-width: 100%;
-      background: var(--bg-card);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 20px;
-      padding: 2.5rem 3rem;
+      background: rgba(25, 23, 45, 0.65);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      padding: 3rem 4rem;
       box-sizing: border-box;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
     }
     .t-stars {
       color: #ffa502;
-      font-size: 1.3rem;
-      letter-spacing: 2px;
-      margin-bottom: 1.2rem;
+      font-size: 1.4rem;
+      letter-spacing: 3px;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 2px 10px rgba(255, 165, 2, 0.4);
     }
     .t-quote {
-      font-size: 1.15rem;
+      font-size: 1.25rem;
       line-height: 1.8;
-      color: rgba(255,255,255,0.88);
+      color: white;
       font-style: italic;
-      margin-bottom: 1.8rem;
-      max-width: 720px;
+      margin-bottom: 2rem;
+      max-width: 800px;
     }
     .t-author {
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: 1.2rem;
     }
     .t-avatar {
-      width: 48px;
-      height: 48px;
+      width: 56px;
+      height: 56px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
-      font-size: 0.9rem;
+      font-size: 1rem;
       color: white;
       flex-shrink: 0;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
     }
     .t-author strong {
       display: block;
       color: var(--text-main);
-      font-size: 1rem;
+      font-size: 1.1rem;
     }
     .t-author span {
       color: var(--text-muted);
-      font-size: 0.85rem;
+      font-size: 0.9rem;
     }
     .t-arrow {
       position: absolute;
@@ -3019,37 +3171,47 @@
   </section>
 
   <style>
-    .calc-field { margin-bottom: 1.4rem; }
-    .calc-field label { display:block; font-size:0.92rem; color:var(--text-muted); margin-bottom:0.6rem; }
+    .calc-field { margin-bottom: 1.8rem; }
+    .calc-field label { display:block; font-size:0.95rem; color:var(--text-muted); margin-bottom:0.8rem; }
     .calc-field label strong { color:var(--text-main); }
     .calc-input-wrap {
-      display:flex; align-items:center; gap:0.7rem;
-      background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1);
-      border-radius:10px; padding:0.6rem 1rem;
-      transition:border-color 0.25s;
+      display:flex; align-items:center; gap:0.8rem;
+      background:rgba(25, 23, 45, 0.6); backdrop-filter: blur(8px);
+      border:1px solid rgba(255,255,255,0.1);
+      border-radius:14px; padding:0.8rem 1.2rem;
+      transition:all 0.3s ease;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
     }
-    .calc-input-wrap:focus-within { border-color:var(--primary); }
-    .calc-input-wrap i { color:var(--primary); font-size:0.9rem; flex-shrink:0; }
+    .calc-input-wrap:focus-within { 
+      border-color:var(--primary); 
+      box-shadow: 0 0 15px rgba(108, 92, 231, 0.3), inset 0 2px 4px rgba(0,0,0,0.1); 
+    }
+    .calc-input-wrap i { color:var(--primary); font-size:1rem; flex-shrink:0; }
     .calc-input-wrap input {
       background:transparent; border:none; outline:none;
-      color:var(--text-main); font-size:1.1rem; font-weight:700;
+      color:white; font-size:1.2rem; font-weight:800;
       font-family:inherit; width:100%;
     }
     .calc-range {
-      width:100%; margin-top:0.5rem; accent-color:var(--primary);
-      cursor:pointer; height:4px;
+      width:100%; margin-top:0.8rem; accent-color:var(--primary);
+      cursor:pointer; height:6px; border-radius:3px;
     }
     .calc-result-box {
-      border: 1px solid; border-radius:14px; padding:1rem 1.2rem;
-      margin-bottom:0.8rem; transition: transform 0.2s;
+      border: 1px solid; border-radius:18px; padding:1.2rem 1.5rem;
+      margin-bottom:1rem; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
     }
-    .calc-result-box:hover { transform:translateX(4px); }
-    .calc-result-label { display:block; font-size:0.85rem; color:var(--text-muted); margin-bottom:0.3rem; }
+    .calc-result-box:hover { 
+      transform:translateX(6px) scale(1.02); 
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2); 
+    }
+    .calc-result-label { display:block; font-size:0.9rem; color:var(--text-muted); margin-bottom:0.4rem; }
     .calc-result-val {
-      display:block; font-size:2rem; font-weight:800; line-height:1;
-      font-variant-numeric:tabular-nums; transition:all 0.3s;
+      display:block; font-size:2.2rem; font-weight:800; line-height:1;
+      font-variant-numeric:tabular-nums; transition:all 0.4s ease;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.2);
     }
-    .calc-result-sub { display:block; font-size:0.8rem; margin-top:0.25rem; color:var(--text-muted); }
+    .calc-result-sub { display:block; font-size:0.85rem; margin-top:0.3rem; color:rgba(255,255,255,0.6); }
     @media(max-width:700px){
       #calcGrid { grid-template-columns:1fr; }
     }
@@ -3105,6 +3267,158 @@
     document.addEventListener('DOMContentLoaded', calcUpdate);
   </script>
 
+  <!-- ── Interactive Glossary ── -->
+  <section class="container" style="margin: 4rem auto;">
+    <div style="background: rgba(25, 23, 45, 0.4); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 3rem 2.5rem; position: relative; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.2);">
+      
+      <!-- Background glow -->
+      <div style="position: absolute; top: -100px; left: -100px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(232, 67, 147, 0.15) 0%, transparent 70%); border-radius: 50%; pointer-events: none;"></div>
+
+      <div style="text-align: center; margin-bottom: 2.5rem; position: relative; z-index: 1;">
+        <span style="background: rgba(232, 67, 147, 0.15); color: #e84393; padding: 0.4rem 1.2rem; border-radius: 20px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; border: 1px solid rgba(232, 67, 147, 0.3); display: inline-block; margin-bottom: 1rem;">
+          <i class="fa-solid fa-book-bookmark" style="margin-right: 6px;"></i> Diccionario Emprendedor
+        </span>
+        <h2 style="font-size: 2.2rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.8rem;">Glosario R&aacute;pido de Ventas</h2>
+        <p style="color: var(--text-muted); font-size: 1.05rem; max-width: 600px; margin: 0 auto;">&iquest;Cansado de la jerga complicada? Aqu&iacute; tienes los conceptos clave explicados en espa&ntilde;ol simple.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; position: relative; z-index: 1;">
+        
+        <!-- Term 1 -->
+        <div class="glossary-item" onclick="this.classList.toggle('active')">
+          <div class="glossary-header">
+            <h4>CAC <span>(Costo de Adquisici&oacute;n)</span></h4>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <div class="glossary-body">
+            <p>Es el dinero exacto que te cuesta conseguir un nuevo cliente (publicidad, tiempo, herramientas). Si tu CAC es m&aacute;s alto que tu ganancia, est&aacute;s perdiendo dinero al vender.</p>
+          </div>
+        </div>
+
+        <!-- Term 2 -->
+        <div class="glossary-item" onclick="this.classList.toggle('active')">
+          <div class="glossary-header">
+            <h4>Ticket Promedio</h4>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <div class="glossary-body">
+            <p>El valor promedio de cada venta. Puedes duplicar tus ingresos sin conseguir m&aacute;s clientes, simplemente logrando que los actuales compren un poco m&aacute;s (Upselling).</p>
+          </div>
+        </div>
+
+        <!-- Term 3 -->
+        <div class="glossary-item" onclick="this.classList.toggle('active')">
+          <div class="glossary-header">
+            <h4>LTV <span>(Valor de Vida)</span></h4>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <div class="glossary-body">
+            <p>Todo el dinero que un cliente te deja desde que te compra la primera vez hasta que se va. Por eso fidelizar clientes es mucho m&aacute;s rentable que buscar nuevos.</p>
+          </div>
+        </div>
+
+        <!-- Term 4 -->
+        <div class="glossary-item" onclick="this.classList.toggle('active')">
+          <div class="glossary-header">
+            <h4>Tasa de Conversi&oacute;n</h4>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <div class="glossary-body">
+            <p>El porcentaje de prospectos que terminan comprando. Si hablas con 100 personas y te compran 5, tu tasa es del 5%. Mejorar esto es clave para crecer.</p>
+          </div>
+        </div>
+
+        <!-- Term 5 -->
+        <div class="glossary-item" onclick="this.classList.toggle('active')">
+          <div class="glossary-header">
+            <h4>Churn Rate <span>(Tasa de Abandono)</span></h4>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <div class="glossary-body">
+            <p>El porcentaje de clientes que dejan de comprarte en un periodo. Un Churn alto significa que tienes un problema con tu producto o tu atenci&oacute;n al cliente.</p>
+          </div>
+        </div>
+
+        <!-- Term 6 -->
+        <div class="glossary-item" onclick="this.classList.toggle('active')">
+          <div class="glossary-header">
+            <h4>Follow-up <span>(Seguimiento)</span></h4>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <div class="glossary-body">
+            <p>El acto de volver a contactar a un prospecto que no compr&oacute; en la primera reuni&oacute;n. El 80% de las ventas requieren m&aacute;s de 5 seguimientos. &iexcl;No te rindas!</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .glossary-item {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .glossary-item:hover {
+      background: rgba(232, 67, 147, 0.08);
+      border-color: rgba(232, 67, 147, 0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+    .glossary-header {
+      padding: 1.2rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+    .glossary-header h4 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .glossary-header h4 span {
+      font-size: 0.8rem;
+      color: #e84393;
+      font-weight: 600;
+    }
+    .glossary-header i {
+      color: var(--text-muted);
+      transition: transform 0.3s ease;
+    }
+    .glossary-body {
+      padding: 0 1.5rem;
+      max-height: 0;
+      opacity: 0;
+      transition: all 0.4s ease;
+    }
+    .glossary-body p {
+      color: rgba(255,255,255,0.8);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin: 0 0 1.2rem 0;
+    }
+    .glossary-item.active {
+      background: rgba(232, 67, 147, 0.12);
+      border-color: #e84393;
+    }
+    .glossary-item.active .glossary-header i {
+      transform: rotate(180deg);
+      color: #e84393;
+    }
+    .glossary-item.active .glossary-body {
+      max-height: 200px;
+      opacity: 1;
+    }
+  </style>
+
   <!-- Recursos Gratuitos Section -->
   <section class="container" style="margin-top: 4rem; margin-bottom: 4rem;" id="recursos">
     <div style="background: var(--bg-card); border: 1px solid rgba(0, 184, 148, 0.2); border-radius: 24px; padding: 3rem 2.5rem; position: relative; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.2);">
@@ -3120,66 +3434,98 @@
         <p style="color: var(--text-muted); font-size: 1.05rem; max-width: 500px; margin: 0 auto;">Acelera tus resultados con estas herramientas listas para usar en tu negocio hoy mismo.</p>
       </div>
 
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+      <style>
+        .resource-card {
+          background: rgba(25, 23, 45, 0.4);
+          backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+          border: 1px solid rgba(255,255,255,0.08);
+          border-radius: 20px;
+          padding: 2.2rem;
+          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+          position: relative;
+          overflow: hidden;
+        }
+        .resource-card:hover {
+          transform: translateY(-8px) scale(1.02);
+          border-color: var(--rc-color);
+          box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+        }
+        .resource-card::before {
+          content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+          background: var(--rc-color); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease;
+        }
+        .resource-card:hover::before { transform: scaleX(1); }
+        .resource-btn {
+          display: block; text-align: center; background: rgba(255,255,255,0.05); color: white;
+          padding: 1rem; border-radius: 14px; font-weight: 600; text-decoration: none;
+          border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s;
+        }
+        .resource-card:hover .resource-btn {
+          background: var(--rc-color); border-color: var(--rc-color); color: white;
+          box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+      </style>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.8rem;">
         
         <!-- Recurso 1 -->
-        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 1.8rem; transition: transform 0.3s, border-color 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#00b894';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.06)';">
-          <div style="width: 50px; height: 50px; background: rgba(0,184,148,0.15); color: #00b894; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.2rem;">
+        <div class="resource-card" style="--rc-color: #00b894;">
+          <div style="width: 56px; height: 56px; background: rgba(0,184,148,0.15); color: #00b894; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 1.5rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);">
             <i class="fa-solid fa-file-excel"></i>
           </div>
-          <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.6rem;">Calculadora de Precio y Margen</h3>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5;">Plantilla de Excel automatizada para descubrir tu costo real y definir precios rentables sin miedo.</p>
-          <a href="assets/recursos/calculadora-zaleasy.csv" download="Calculadora_Precio_y_Margen.csv" style="display: block; text-align: center; background: rgba(255,255,255,0.05); color: white; padding: 0.8rem; border-radius: 8px; font-weight: 600; text-decoration: none; border: 1px solid rgba(255,255,255,0.1); transition: all 0.2s;" onmouseover="this.style.background='#00b894'; this.style.borderColor='#00b894';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';"><i class="fa-solid fa-download" style="margin-right: 6px;"></i> Descargar Plantilla</a>
+          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.8rem;">Calculadora de Precio y Margen</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.8rem; line-height: 1.6;">Plantilla de Excel automatizada para descubrir tu costo real y definir precios rentables sin miedo.</p>
+          <a href="assets/recursos/calculadora-zaleasy.csv" download="Calculadora_Precio_y_Margen.csv" class="resource-btn"><i class="fa-solid fa-download" style="margin-right: 6px;"></i> Descargar Plantilla</a>
         </div>
 
         <!-- Recurso 2 -->
-        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 1.8rem; transition: transform 0.3s, border-color 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#a29bfe';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.06)';">
-          <div style="width: 50px; height: 50px; background: rgba(108,92,231,0.15); color: #a29bfe; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.2rem;">
+        <div class="resource-card" style="--rc-color: #a29bfe;">
+          <div style="width: 56px; height: 56px; background: rgba(108,92,231,0.15); color: #a29bfe; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 1.5rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);">
             <i class="fa-solid fa-file-pdf"></i>
           </div>
-          <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.6rem;">Guiones para WhatsApp</h3>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5;">PDF con 10 respuestas exactas de copiar y pegar para rebatir objeciones y cerrar ventas por chat.</p>
-          <a href="assets/recursos/guiones-whatsapp.txt" download="Guiones_WhatsApp_Zaleasy.txt" style="display: block; text-align: center; background: rgba(255,255,255,0.05); color: white; padding: 0.8rem; border-radius: 8px; font-weight: 600; text-decoration: none; border: 1px solid rgba(255,255,255,0.1); transition: all 0.2s;" onmouseover="this.style.background='#6c5ce7'; this.style.borderColor='#6c5ce7';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';"><i class="fa-solid fa-download" style="margin-right: 6px;"></i> Descargar Guiones</a>
+          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.8rem;">Guiones para WhatsApp</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.8rem; line-height: 1.6;">PDF con 10 respuestas exactas de copiar y pegar para rebatir objeciones y cerrar ventas por chat.</p>
+          <a href="assets/recursos/guiones-whatsapp.txt" download="Guiones_WhatsApp_Zaleasy.txt" class="resource-btn"><i class="fa-solid fa-download" style="margin-right: 6px;"></i> Descargar Guiones</a>
         </div>
 
         <!-- Recurso 3 -->
-        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 1.8rem; transition: transform 0.3s, border-color 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ffa502';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.06)';">
-          <div style="width: 50px; height: 50px; background: rgba(255,165,2,0.15); color: #ffa502; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.2rem;">
+        <div class="resource-card" style="--rc-color: #ffa502;">
+          <div style="width: 56px; height: 56px; background: rgba(255,165,2,0.15); color: #ffa502; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 1.5rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);">
             <i class="fa-solid fa-list-check"></i>
           </div>
-          <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.6rem;">Checklist de Cierre Diario</h3>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5;">Una lista de verificación paso a paso para asegurarte de que tus finanzas diarias cuadren a la perfección.</p>
-          <a href="assets/recursos/checklist-cierre.txt" download="Checklist_Cierre_Diario.txt" style="display: block; text-align: center; background: rgba(255,255,255,0.05); color: white; padding: 0.8rem; border-radius: 8px; font-weight: 600; text-decoration: none; border: 1px solid rgba(255,255,255,0.1); transition: all 0.2s;" onmouseover="this.style.background='#ffa502'; this.style.borderColor='#ffa502';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';"><i class="fa-solid fa-download" style="margin-right: 6px;"></i> Descargar Checklist</a>
+          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.8rem;">Checklist de Cierre Diario</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.8rem; line-height: 1.6;">Una lista de verificación paso a paso para asegurarte de que tus finanzas diarias cuadren a la perfección.</p>
+          <a href="assets/recursos/checklist-cierre.txt" download="Checklist_Cierre_Diario.txt" class="resource-btn"><i class="fa-solid fa-download" style="margin-right: 6px;"></i> Descargar Checklist</a>
         </div>
 
         <!-- Recurso 4 -->
-        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 1.8rem; transition: transform 0.3s, border-color 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#fd79a8';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.06)';">
-          <div style="width: 50px; height: 50px; background: rgba(253,121,168,0.15); color: #fd79a8; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.2rem;">
+        <div class="resource-card" style="--rc-color: #fd79a8;">
+          <div style="width: 56px; height: 56px; background: rgba(253,121,168,0.15); color: #fd79a8; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 1.5rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);">
             <i class="fa-regular fa-calendar-days"></i>
           </div>
-          <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.6rem;">Calendario de Contenido</h3>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5;">Plantilla en CSV para organizar tus posts, historias y reels de todo el mes sin estresarte ni improvisar.</p>
-          <a href="assets/recursos/calendario-contenido.csv" download="Calendario_Contenidos_Zaleasy.csv" style="display: block; text-align: center; background: rgba(255,255,255,0.05); color: white; padding: 0.8rem; border-radius: 8px; font-weight: 600; text-decoration: none; border: 1px solid rgba(255,255,255,0.1); transition: all 0.2s;" onmouseover="this.style.background='#fd79a8'; this.style.borderColor='#fd79a8';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';"><i class="fa-solid fa-download" style="margin-right: 6px;"></i> Descargar Plantilla</a>
+          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.8rem;">Calendario de Contenido</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.8rem; line-height: 1.6;">Plantilla en CSV para organizar tus posts, historias y reels de todo el mes sin estresarte ni improvisar.</p>
+          <a href="assets/recursos/calendario-contenido.csv" download="Calendario_Contenidos_Zaleasy.csv" class="resource-btn"><i class="fa-solid fa-download" style="margin-right: 6px;"></i> Descargar Plantilla</a>
         </div>
 
         <!-- Recurso 5 -->
-        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 1.8rem; transition: transform 0.3s, border-color 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#0984e3';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.06)';">
-          <div style="width: 50px; height: 50px; background: rgba(9,132,227,0.15); color: #0984e3; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.2rem;">
+        <div class="resource-card" style="--rc-color: #0984e3;">
+          <div style="width: 56px; height: 56px; background: rgba(9,132,227,0.15); color: #0984e3; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 1.5rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);">
             <i class="fa-solid fa-book-open"></i>
           </div>
-          <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.6rem;">Manual de Objeciones</h3>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5;">Guía rápida con las objeciones más comunes y las estructuras psicológicas exactas para rebatirlas.</p>
-          <a href="assets/recursos/manual-objeciones.txt" download="Manual_Objeciones_Zaleasy.txt" style="display: block; text-align: center; background: rgba(255,255,255,0.05); color: white; padding: 0.8rem; border-radius: 8px; font-weight: 600; text-decoration: none; border: 1px solid rgba(255,255,255,0.1); transition: all 0.2s;" onmouseover="this.style.background='#0984e3'; this.style.borderColor='#0984e3';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';"><i class="fa-solid fa-download" style="margin-right: 6px;"></i> Descargar Manual</a>
+          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.8rem;">Manual de Objeciones</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.8rem; line-height: 1.6;">Guía rápida con las objeciones más comunes y las estructuras psicológicas exactas para rebatirlas.</p>
+          <a href="assets/recursos/manual-objeciones.txt" download="Manual_Objeciones_Zaleasy.txt" class="resource-btn"><i class="fa-solid fa-download" style="margin-right: 6px;"></i> Descargar Manual</a>
         </div>
 
         <!-- Recurso 6 -->
-        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 1.8rem; transition: transform 0.3s, border-color 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#e17055';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.06)';">
-          <div style="width: 50px; height: 50px; background: rgba(225,112,85,0.15); color: #e17055; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.2rem;">
+        <div class="resource-card" style="--rc-color: #e17055;">
+          <div style="width: 56px; height: 56px; background: rgba(225,112,85,0.15); color: #e17055; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 1.5rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);">
             <i class="fa-solid fa-file-invoice-dollar"></i>
           </div>
-          <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.6rem;">Plantilla de Presupuesto</h3>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5;">El formato exacto que debes usar para enviar cotizaciones a otras empresas y verte 100% profesional.</p>
-          <a href="assets/recursos/plantilla-presupuesto.txt" download="Plantilla_Presupuesto_Zaleasy.txt" style="display: block; text-align: center; background: rgba(255,255,255,0.05); color: white; padding: 0.8rem; border-radius: 8px; font-weight: 600; text-decoration: none; border: 1px solid rgba(255,255,255,0.1); transition: all 0.2s;" onmouseover="this.style.background='#e17055'; this.style.borderColor='#e17055';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';"><i class="fa-solid fa-download" style="margin-right: 6px;"></i> Descargar Plantilla</a>
+          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.8rem;">Plantilla de Presupuesto</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.8rem; line-height: 1.6;">El formato exacto que debes usar para enviar cotizaciones a otras empresas y verte 100% profesional.</p>
+          <a href="assets/recursos/plantilla-presupuesto.txt" download="Plantilla_Presupuesto_Zaleasy.txt" class="resource-btn"><i class="fa-solid fa-download" style="margin-right: 6px;"></i> Descargar Plantilla</a>
         </div>
 
       </div>
@@ -3290,13 +3636,15 @@
   <!-- ── Live Social Proof Notification ── -->
   <div id="liveNotif" style="
     position:fixed; bottom:90px; left:20px; z-index:9998;
-    background:var(--bg-card,#1a1a2e); border:1px solid rgba(255,255,255,0.1);
-    border-radius:16px; padding:0.9rem 1.1rem; max-width:290px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.4); display:flex; align-items:center; gap:0.9rem;
-    transform:translateX(-120%); transition:transform 0.5s cubic-bezier(0.34,1.56,0.64,1);
+    background:rgba(26, 26, 46, 0.75); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:18px; padding:1rem 1.2rem; max-width:310px;
+    box-shadow:0 15px 35px rgba(0,0,0,0.4), inset 0 2px 5px rgba(255,255,255,0.05); 
+    display:flex; align-items:center; gap:1rem;
+    transform:translateX(-120%); transition:transform 0.6s cubic-bezier(0.34,1.56,0.64,1);
     cursor:pointer;
   " onclick="this.style.transform='translateX(-120%)'">
-    <div id="lnAvatar" style="width:42px;height:42px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:800;color:white;"></div>
+    <div id="lnAvatar" style="width:46px;height:46px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:800;color:white;box-shadow:0 4px 10px rgba(0,0,0,0.3);"></div>
     <div style="flex:1;min-width:0;">
       <p id="lnText" style="font-size:0.82rem;color:rgba(255,255,255,0.85);margin:0;line-height:1.4;"></p>
       <p style="font-size:0.72rem;color:rgba(255,255,255,0.4);margin:0.2rem 0 0;">hace un momento · blog.zaleasy.com</p>
