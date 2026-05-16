@@ -1,0 +1,436 @@
+    {
+        id: "P227",
+        name: "TAPON CARTER 26mm. S/IMAN ALLEN OM447",
+        brand: "Mercedes Benz",
+        code: "4039970230",
+        image: "img/products/om447/tapon-carter-26mm-om447.jpg",
+        description: "TapÃ³n de cÃ¡rter de 26mm, sin imÃ¡n, con cabeza Allen. Compatible con motores Mercedes Benz OM447. CÃ³digo original 4039970230."
+    },
+    {
+        id: "P228",
+        name: "BUJE GUIA TAPA CILINDRO OM447/449",
+        brand: "Mercedes Benz",
+        code: "1079910041",
+        image: "img/products/om447/buje-guia-tapa-cilindro-om447.jpg",
+        description: "Buje guÃa de tapa de cilindro. Compatible con motores Mercedes Benz OM447 y OM449. CÃ³digo original 1079910041."
+    },
+    {
+        id: "P229",
+        name: "JUEGO JUNTA DESCARBONIZACION OM447/449 ELRING",
+        brand: "Mercedes Benz",
+        code: "4760100120",
+        image: "img/products/om447/juego-junta-descarbonizacion-om447.jpg",
+        description: "Juego de juntas para descarbonizaciÃ³n Elring. Compatible con motores Mercedes Benz OM447 y OM449. CÃ³digo original 4760100120."
+    },
+    {
+        id: "P230",
+        name: "VARILLA NIVEL ACEITE 970mm. OM447/O400",
+        brand: "Mercedes Benz",
+        code: "4760107272",
+        image: "img/products/om447/varilla-nivel-aceite-om447.jpg",
+        description: "Varilla de nivel de aceite, longitud 970mm. Compatible con motores Mercedes Benz OM447 y O400. CÃ³digo original 4760107272."
+    },
+    {
+        id: "P231",
+        name: "TAPON CARTER 26mm. C/IMAN ALLEN OM447/904/906",
+        brand: "Mercedes Benz",
+        code: "4039970230",
+        image: "img/products/om447/tapon-carter-26mm-con-iman-om447.jpg",
+        description: "TapÃ³n de cÃ¡rter de 26mm, con imÃ¡n, cabeza Allen. Compatible con motores Mercedes Benz OM447, OM904 y OM906. CÃ³digo original 4039970230."
+    },
+    {
+        id: "P232",
+        name: "INYECTOR LUBRICACION BOTADORES OM447",
+        brand: "Mercedes Benz",
+        code: "4271800043",
+        image: "img/products/om447/inyector-lubricacion-botadores-om447.jpg",
+        description: "Inyector de lubricaciÃ³n para botadores. Compatible con motores Mercedes Benz OM447. CÃ³digo original 4271800043."
+    },
+    {
+        id: "P233",
+        name: "BULON CARTER LEGITIMO 8X35 OM447/449/457",
+        brand: "Mercedes Benz",
+        code: "910105008014",
+        image: "img/products/om447/bulon-carter-legitimo-om447.jpg",
+        description: "BulÃ³n de cÃ¡rter legÃtimo, medidas 8x35mm. Compatible con motores Mercedes Benz OM447, OM449 y OM457. CÃ³digo original 910105008014."
+    },
+    {
+        id: "P234",
+        name: "VARILLA NIVEL ACEITE 720mm. OM447/449",
+        brand: "Mercedes Benz",
+        code: "4750100072",
+        image: "img/products/om447/varilla-nivel-aceite-720mm-om447.jpg",
+        description: "Varilla de nivel de aceite, longitud 720mm. Compatible con motores Mercedes Benz OM447 y OM449. CÃ³digo original 4750100072."
+    },
+    {
+        id: "P235",
+        name: "CAÃ‘O GOMA LLENADO ACEITE OM457/O500",
+        brand: "Mercedes Benz",
+        code: "4570180082",
+        image: "img/products/om457/cano-goma-llenado-aceite-om457.jpg",
+        description: "CaÃ±o de goma para llenado de aceite. Compatible con motores Mercedes Benz OM457 y chasis O500. CÃ³digo original 4570180082. Fabricado en goma de alta resistencia para soportar altas temperaturas y presiÃ³n del sistema de lubricaciÃ³n."
+    },
+    {
+        id: "P236",
+        name: "CABEZAL REFRIGERADOR ACEITE ALUMINIO AXOR OM457 P/SENSOR",
+        brand: "Mercedes Benz",
+        code: "4571840408",
+        image: "img/products/om457/cabezal-refrigerador-aceite-om457.jpg",
+        description: "Cabezal de refrigerador de aceite fabricado en aluminio para sensor. Compatible con Mercedes Benz AXOR con motor OM457. CÃ³digo original 4571840408. Componente de alta calidad para el sistema de enfriamiento de aceite del motor."
+    },
+    {
+        id: "P237",
+        name: "BULBO PRESION UREA DOSIFICADOR ROSCA M16 X 1.5 / 3 PINES OM457/OM501/OM924/OM926 Euro 5",
+        brand: "Mercedes Benz",
+        code: "0061537528",
+        image: "img/products/om457/bulbo-presion-urea-om457.jpg",
+        description: "Bulbo sensor de presiÃ³n de urea para dosificador con rosca M16 x 1.5 y conector de 3 pines. Compatible con motores Mercedes Benz OM457, OM501, OM924 y OM926 Euro 5. CÃ³digo original 0061537528. Componente esencial del sistema de tratamiento de gases AdBlue/SCR."
+    },
+    {
+        id: "P238",
+        name: "JUEGO JUNTA ELRING DESCARBONIZACION SELLO BAJO T/ ALUM OM457",
+        brand: "Elring",
+        code: "4570108120",
+        originalCode: "4570108120",
+        image: "img/products/om457/juego-junta-elring-om457.jpg",
+        description: "Juego de juntas de marca Elring para descarbonizaciÃ³n con sello bajo tapa de aluminio para motores Mercedes Benz OM457. CÃ³digo original 4570108120. Rubro: TAPA CILINDRO Y VÃLVULA. Este kit de alta calidad incluye todas las juntas y sellos necesarios para el mantenimiento integral de la culata, asegurando un sellado estanco y duradero bajo las especificaciones del fabricante original."
+    },
+    {
+        id: "P239",
+        name: "PALETA PLASTICO CON VISCOSA OM457 C/ARO 8 PALAS 750mm. AXOR",
+        brand: "Mercedes Benz",
+        code: "0002008022",
+        image: "img/products/om457/paleta-plastico-viscosa-om457.jpg",
+        description: "Paleta de ventilador de plÃ¡stico con acople viscoso, con aro, 8 palas y 750mm de diÃ¡metro. Compatible con motores Mercedes Benz OM457 en camiones AXOR. CÃ³digo original 0002008022. Sistema de refrigeraciÃ³n de alta eficiencia con control automÃ¡tico de temperatura."
+    },
+    {
+        id: "P240",
+        name: "TUBO ALIMENTACION ACEITE OM457",
+        brand: "Mercedes Benz",
+        code: "4570101364",
+        image: "img/products/om457/tubo-alimentacion-aceite-om457.jpg",
+        description: "Tubo de alimentaciÃ³n de aceite para motores Mercedes Benz OM457. CÃ³digo original 4570101364. Componente del sistema de lubricaciÃ³n fabricado con materiales resistentes a altas temperaturas y presiÃ³n del aceite del motor."
+    },
+    {
+        id: "P241",
+        name: "PREFILTRO FLOTANTE TANQUE UREA OM457/924/926 EURO V",
+        brand: "Mercedes Benz",
+        code: "9585420217",
+        image: "img/products/om457/prefiltro-flotante-tanque-urea-om457.jpg",
+        description: "Prefiltro flotante para tanque de urea AdBlue. Compatible con motores Mercedes Benz OM457, OM924 y OM926 Euro V. CÃ³digo original 9585420217. Componente esencial del sistema SCR para filtrar impurezas del lÃquido de urea antes de su dosificaciÃ³n."
+    },
+    {
+        id: "P242",
+        name: "CAÃ‘O RAD.AXOR 2044/OM457 SUPERIOR 22/22",
+        brand: "Mercedes Benz",
+        code: "9405011282",
+        image: "img/products/om457/cano-radiador-axor-om457-superior.jpg",
+        description: "CaÃ±o superior de radiador para Mercedes Benz AXOR 2044 con motor OM457. Medidas 22mm/22mm. CÃ³digo original 9405011282. Fabricado en goma de alta resistencia para soportar altas temperaturas y presiÃ³n del sistema de refrigeraciÃ³n."
+    },
+    {
+        id: "P243",
+        name: "COMPRESOR 85mm OM457 TAPA LARGA SIN ENGRANAJE",
+        brand: "Mercedes Benz",
+        code: "4571304415 / 4123520260 / 412350270 / 412350310 / 4571306815 / 4571304515 / 4571302415 / 4571306715",
+        image: "img/products/om457/compresor-85mm-om457.jpg",
+        description: "Compresor de aire de 85mm con tapa larga sin engranaje para motores Mercedes Benz OM457. Compatible con mÃºltiples cÃ³digos originales. Componente esencial del sistema de frenos neumÃ¡ticos, fabricado con estÃ¡ndares de alta calidad para garantizar presiÃ³n constante y seguridad en el frenado."
+    },
+    {
+        id: "P244",
+        name: "CAÃ‘O COMPRESOR (SERPENTINA) 5Â°TRAMO C/SALIDA RECTA O500/OM457 LA",
+        brand: "Mercedes Benz",
+        code: "6344209029 / 3844204228",
+        image: "img/products/om457/cano-compresor-serpentina-om457.jpg",
+        description: "CaÃ±o de compresor tipo serpentina, 5Â° tramo con salida recta. Compatible con chasis Mercedes Benz O500 y motor OM457 LA. CÃ³digos originales 6344209029 / 3844204228. Fabricado en goma de alta resistencia para soportar la presiÃ³n del sistema de aire comprimido."
+    },
+    {
+        id: "P245",
+        name: "CODO TERMOSTATO ALUMINIO AXOR OM457",
+        brand: "Mercedes Benz",
+        code: "4572010231",
+        image: "img/products/om457/codo-termostato-aluminio-om457.jpg",
+        description: "Codo de termostato fabricado en aluminio para Mercedes Benz AXOR con motor OM457. CÃ³digo original 4572010231. Componente del sistema de refrigeraciÃ³n diseÃ±ado para un ajuste perfecto y excelente disipaciÃ³n de calor."
+    },
+    {
+        id: "P246",
+        name: "CONECTOR 16X1.5 TAPA FILTRO GAS-OIL (49516) OM457/904/906/924",
+        brand: "Mercedes Benz",
+        code: "9799970172",
+        image: "img/products/om457/conector-tapa-filtro-gasoil-om457.jpg",
+        description: "Conector de 16x1.5 para tapa de filtro de gas-oil (referencia 49516). Compatible con motores Mercedes Benz OM457, OM904, OM906 y OM924. CÃ³digo original 9799970172. Componente de precisiÃ³n para el sistema de alimentaciÃ³n de combustible."
+    },
+    {
+        id: "P247",
+        name: "REPARACION F/MOTOR COMP. OM457 AXOR/ACTROS (19470)",
+        brand: "Mercedes Benz",
+        code: "5411400163 / 5411400763 / 5411400063 / 4571402253 / 4571401553",
+        image: "img/products/om457/reparacion-freno-motor-om457.jpg",
+        description: "Kit de reparaciÃ³n completo para freno motor (referencia 19470). Compatible con motores Mercedes Benz OM457 en camiones AXOR y ACTROS. Incluye todos los componentes necesarios para la reparaciÃ³n del sistema de freno motor. Compatible con mÃºltiples cÃ³digos originales."
+    },
+    {
+        id: "P248",
+        name: "PISTON EMBOLO (CON ORING) DE FRENO MOTOR M. BENZ OM447 OM457 CON VALVULA TOP BRAKE",
+        brand: "Mercedes Benz",
+        code: "5410160690 / 5410160090 / 5410160290 / 5410160490 / 4429975047 / 44201600",
+        image: "img/products/om457/piston-embolo-freno-motor-om457.jpg",
+        description: "PistÃ³n Ã©mbolo con O-ring para freno motor con vÃ¡lvula Top Brake. Compatible con motores Mercedes Benz OM447 y OM457. Compatible con mÃºltiples cÃ³digos originales. Componente de precisiÃ³n para el sistema de freno motor, fabricado con materiales de alta resistencia."
+    },
+    {
+        id: "P249",
+        name: "JGO.JUNTA DESCARBONIZACION COMPLETO SABO OM457 EURO III (1 BOCA) ORING ALTO",
+        brand: "Mercedes Benz",
+        code: "4570160121 / 4571410080 / 4571420180 / 4600160420 / 5411420180",
+        image: "img/products/om457/juego-junta-descarbonizacion-completo-om457.jpg",
+        description: "Juego de juntas de descarbonizaciÃ³n completo marca SABO para motores Mercedes Benz OM457 Euro III (1 boca) con O-ring alto. Compatible con mÃºltiples cÃ³digos originales. Incluye todas las juntas necesarias para el proceso completo de descarbonizaciÃ³n y mantenimiento del motor."
+    },
+    {
+        id: "P250",
+        name: "VALVULA CONTROL ENTRADA COMBUSTIBLE OM457 1634/AXOR",
+        brand: "Mercedes Benz",
+        code: "4570980257",
+        image: "img/products/om457/valvula-control-entrada-combustible-om457.jpg",
+        description: "VÃ¡lvula de control de entrada de combustible para motores Mercedes Benz OM457 en modelos 1634 y AXOR. CÃ³digo original 4570980257. Componente de precisiÃ³n del sistema de alimentaciÃ³n de combustible para regular el flujo de gasoil al motor."
+    },
+    {
+        id: "P251",
+        name: "CAÃ‘O RAD.O500/OM457 FLEXIBLE DE AGUA AL RADIADOR",
+        brand: "Mercedes Benz",
+        code: "6345010482",
+        image: "img/products/om457/cano-radiador-flexible-o500-om457.jpg",
+        description: "CaÃ±o flexible de agua al radiador para chasis Mercedes Benz O500 con motor OM457. CÃ³digo original 6345010482. Fabricado con materiales de alta calidad para asegurar un flujo constante y resistir las vibraciones del sistema de refrigeraciÃ³n."
+    },
+    {
+        id: "P252",
+        name: "CAÃ‘O RAD.1635/1735 OM457 ATRON INFERIOR",
+        brand: "Mercedes Benz",
+        code: "6955012882",
+        image: "img/products/om457/cano-radiador-atron-inferior-om457.jpg",
+        description: "CaÃ±o inferior de radiador para modelos Mercedes Benz 1635 y 1735 Atron con motor OM457. CÃ³digo original 6955012882. DiseÃ±o especÃfico para un ajuste preciso y Ã³ptimo rendimiento en el sistema de enfriamiento del motor."
+    },
+    {
+        id: "P253",
+        name: "JUNTA CARTER OM457 M/N",
+        brand: "Mercedes Benz",
+        code: "4570140522",
+        image: "img/products/om457/junta-carter-om457.jpg",
+        description: "Junta de cÃ¡rter modelo nuevo (M/N) para motores Mercedes Benz OM457. CÃ³digo original 4570140522. Fabricada con materiales de alta calidad para asegurar un sellado hermÃ©tico y duradero, evitando fugas de aceite."
+    },
+    {
+        id: "P254",
+        name: "CAÃ‘O GUIA VARILLA NIVEL ACEITE 1634 OM457",
+        brand: "Mercedes Benz",
+        code: "4570100866",
+        image: "img/products/om457/cano-guia-varilla-nivel-aceite-1634-om457.jpg",
+        description: "CaÃ±o guÃa de varilla de nivel de aceite para motores Mercedes Benz OM457, modelo 1634. CÃ³digo original 4570100866. Fabricado con materiales de alta resistencia para garantizar un ajuste preciso y durabilidad."
+    },
+    {
+        id: "P255",
+        name: "SOPORTE ALTERNADOR OM457",
+        brand: "Mercedes Benz",
+        code: "4571552535",
+        image: "img/products/om457/soporte-alternador-om457.jpg",
+        description: "Soporte de alternador para motores Mercedes Benz OM457. CÃ³digo original 4571552535. Pieza estructural de alta resistencia diseÃ±ada para un montaje seguro y alineaciÃ³n precisa del alternador."
+    },
+    {
+        id: "P256",
+        name: "FLEXIBLE COMBUSTIBLE A BLOCK OM457",
+        brand: "Mercedes Benz",
+        code: "4570901676",
+        image: "img/products/om457/flexible-combustible-block-om457.jpg",
+        description: "Flexible de combustible a block para motores Mercedes Benz OM457. CÃ³digo original 4570901676. Manguera flexible de alta presiÃ³n fabricada con materiales resistentes al combustible diÃ©sel, garantizando un sellado perfecto y durabilidad en el sistema de alimentaciÃ³n."
+    },
+    {
+        id: "P257",
+        name: "FILTRO ACEITE HU12140X OM457/ELECT. 1938",
+        brand: "Mercedes Benz",
+        code: "5411800209 / 4571800009",
+        originalCode: "5411800209 / 4571800009",
+        image: "img/products/om457/filtro-aceite-hu12140x-om457.jpg",
+        description: "Filtro de aceite tipo elemento HU12140X para motores Mercedes Benz OM457 y modelos electrÃ³nicos 1938. CÃ³digos originales: 5411800209 y 4571800009. Filtro de alta eficiencia que garantiza la mÃ¡xima protecciÃ³n del motor, eliminando impurezas y prolongando la vida Ãºtil del sistema de lubricaciÃ³n."
+    },
+    {
+        id: "P258",
+        name: "FILTRO ACEITE AXOR OM457 MAN",
+        brand: "Mercedes Benz",
+        code: "4571840125 / 0001802109",
+        image: "img/products/om457/filtro-aceite-axor-om457-man.jpg",
+        description: "Filtro de aceite tipo elemento para Mercedes Benz Axor con motor OM457. Compatible con marca MAN. CÃ³digos originales 4571840125 y 0001802109. Filtro de alta calidad que garantiza la protecciÃ³n Ã³ptima del motor, eliminando partÃculas e impurezas del aceite lubricante."
+    },
+    {
+        id: "P259",
+        name: "FILTRO COMBUSTIBLE R120L-10MB AQII OM457/906 (WIX)",
+        brand: "Mercedes Benz",
+        code: ">49513/1",
+        image: "img/products/om457/filtro-combustible-r120l-10mb-om457.jpg",
+        description: "Filtro de combustible R120L-10MB AQII marca WIX para motores Mercedes Benz OM457 y OM906. CÃ³digo >49513/1. Filtro de alta eficiencia con separador de agua integrado, garantiza la mÃ¡xima pureza del combustible y protecciÃ³n del sistema de inyecciÃ³n diÃ©sel."
+    },
+    {
+        id: "P260",
+        name: "CAÃ‘O LUBRICACION TURBO OM457 O500",
+        brand: "Mercedes Benz",
+        code: "5411801422",
+        image: "img/products/om457/cano-lubricacion-turbo-om457-o500.jpg",
+        description: "CaÃ±o de lubricaciÃ³n para turbocompresor en motores Mercedes Benz OM457, modelo O500. CÃ³digo original 5411801422. TuberÃa de alimentaciÃ³n de aceite al turbo fabricada en acero inoxidable de alta resistencia, garantizando el flujo correcto de lubricante y protecciÃ³n del turbocompresor."
+    },
+    {
+        id: "P261",
+        name: "TAPA COMPRESOR WABCO 85mm SOLA OM457 1634",
+        brand: "Mercedes Benz",
+        code: "0009982790 / 2V2145291 / 4123526594 / 4129056544",
+        image: "img/products/om457/tapa-compresor-wabco-85mm-om457.jpg",
+        description: "Tapa de compresor WABCO de 85mm (solo tapa) para motores Mercedes Benz OM457, modelo 1634. CÃ³digos originales 0009982790, 2V2145291, 4123526594 y 4129056544. Fabricada en aluminio de alta resistencia con acabado mecanizado de precisiÃ³n para un sellado perfecto del compresor de aire."
+    },
+    {
+        id: "P262",
+        name: "VALVULA CONTROL ENTRADA COMBUSTIBLE OM457 1634/AXOR ROSCA MACHO",
+        brand: "Mercedes Benz",
+        code: "4570980057 / 9040980057 / 5410980557",
+        image: "img/products/om457/valvula-control-entrada-combustible-om457.jpg",
+        description: "VÃ¡lvula de control de entrada de combustible con rosca macho para motores Mercedes Benz OM457, modelos 1634 y Axor. CÃ³digos originales 4570980057, 9040980057 y 5410980557. Componente de precisiÃ³n del sistema de inyecciÃ³n que regula el flujo de combustible, fabricada con materiales de alta calidad resistentes al diÃ©sel."
+    },
+    {
+        id: "P263",
+        name: "ENTRETAPA 85mm WABCO OM457 MONOCIL TAPA LARGA",
+        brand: "Mercedes Benz",
+        code: "0001305019 / 2V2145615 / 4123526582",
+        image: "img/products/om457/entretapa-85mm-wabco-om457.jpg",
+        description: "Entretapa de compresor WABCO de 85mm monocilÃndrico con tapa larga para motores Mercedes Benz OM457. CÃ³digos originales 0001305019, 2V2145615 y 4123526582. Fabricada en aluminio de alta calidad con canales de refrigeraciÃ³n integrados, garantiza el correcto funcionamiento del compresor de aire."
+    },
+    {
+        id: "P264",
+        name: "VISCOSO SOLO C/CABLE ELECTROMAGNETICO OM457LA EURO V AXOR 2036/2041",
+        brand: "Mercedes Benz",
+        code: "0002007722 / 4572001122 / 0002007822",
+        image: "img/products/om457/viscoso-cable-electromagnetico-om457la.jpg",
+        description: "Viscoso electromagnÃ©tico con cable para motores Mercedes Benz OM457LA Euro V, modelos Axor 2036 y 2041. CÃ³digos originales 0002007722, 4572001122 y 0002007822. Embrague viscoso de ventilador con control electrÃ³nico que regula automÃ¡ticamente la velocidad del ventilador segÃºn la temperatura del motor, optimizando el rendimiento y reduciendo el consumo de combustible."
+    },
+    {
+        id: "P265",
+        name: "CORREA 8PK1614 AXOR 2 OM457",
+        brand: "Mercedes Benz",
+        code: ">8PK1614",
+        originalCode: "0019932596",
+        image: "img/products/om457/correa-8pk1614-axor-om457.jpg",
+        description: "Correa poli-V 8PK1614 para Mercedes Benz Axor 2 con motor OM457. CÃ³digo >8PK1614, cÃ³digo original 0019932596. Correa de 8 canales tipo PK de 1614mm de longitud, fabricada en caucho de alta resistencia con refuerzos de fibra para transmisiÃ³n de potencia a accesorios del motor (alternador, bomba de agua, direcciÃ³n hidrÃ¡ulica, compresor)."
+    },
+    {
+        id: "P266",
+        name: "VOLANTE MOTOR C/CORONA 430MM.160 DTES. 1634/AXOR OM457",
+        brand: "Mercedes Benz",
+        code: ">10775",
+        originalCode: "4570300605",
+        image: "img/products/om457/volante-motor-corona-430mm-om457.jpg",
+        description: "Volante de motor con corona de arranque de 430mm y 160 dientes. Compatible con Mercedes Benz 1634 y Axor con motor OM457. CÃ³digo original 4570300605. Fabricado en fundiciÃ³n de alta resistencia para un balanceo perfecto y durabilidad."
+    },
+    {
+        id: "P267",
+        name: "INYECTOR UREA OM457 AXOR",
+        brand: "Mercedes Benz",
+        code: "0001403268",
+        image: "img/products/om457/inyector-urea-om457-axor.jpg",
+        description: "Inyector de urea (AdBlue) para sistemas SCR de motores Mercedes Benz OM457, compatible con modelos Axor. CÃ³digo original 0001403268. Componente de precisiÃ³n para el control de emisiones Euro V / Euro VI, fabricado en acero inoxidable para resistir la corrosiÃ³n."
+    },
+    {
+        id: "P268",
+        name: "CABEZAL COMPLETO REFRIGERADOR/FILTRO ACEITE OM457 1634E/AXOR",
+        brand: "Mercedes Benz",
+        code: "4571803210 / 4571800138 / 4571801010 / 4571803110",
+        image: "img/products/om457/cabezal-refrigerador-aceite-om457.jpg",
+        description: "Cabezal completo para refrigerador y filtro de aceite de motores Mercedes Benz OM457, modelos 1634E y Axor. CÃ³digos originales 4571803210, 4571800138, 4571801010 y 4571803110. Fabricado en fundiciÃ³n de aluminio de alta resistencia, incluye porta filtro y conexiones para el sistema de lubricaciÃ³n y enfriamiento de aceite."
+    },
+    {
+        id: "P269",
+        name: "POLEA TENSOR AXOR 2 OM457",
+        brand: "Mercedes Benz",
+        code: "0005501933 / 4572001070",
+        image: "img/products/om457/tensor-correa-axor-2035-om457.jpg",
+        description: "Polea para tensor de correas de motores Mercedes Benz Axor 2 con motor OM457. CÃ³digos originales 0005501933 y 4572001070. Fabricada en acero con rodamiento de alta precisiÃ³n para un giro suave y duradero, esencial para el correcto funcionamiento del sistema de accesorios."
+    },
+    {
+        id: "P270",
+        name: "JUNTA FRENTE COMPRESOR WABCO 85MM TAPA LARGA OM457",
+        brand: "Mercedes Benz",
+        code: "4571310180",
+        image: "img/products/om457/juego-junta-flapers-85mm-om457.jpg",
+        description: "Junta de frente para compresor de aire WABCO de 85mm con tapa larga, compatible con motores Mercedes Benz OM457. CÃ³digo original 4571310180. Fabricada en material de alta calidad resistente a la temperatura y presiÃ³n, asegurando un sellado hermÃ©tico entre el compresor y el block del motor."
+    },
+    {
+        id: "P271",
+        name: "ENGRANAJE COMPRESOR 27DTES.WABCO (CIG.)OM457 T/LARGA",
+        brand: "Mercedes Benz",
+        code: "4571320905 / 4571321105 / 8959051884",
+        image: "img/products/om457/engranaje-compresor-27dtes-om457.jpg",
+        description: "Engranaje de 27 dientes para compresor de aire WABCO (lado cigÃ¼eÃ±al), compatible con motores Mercedes Benz OM457 con tapa larga. CÃ³digos originales 4571320905, 4571321105 y 8959051884. Fabricado en acero endurecido de alta resistencia para garantizar una transmisiÃ³n de potencia precisa y duradera en el sistema de distribuciÃ³n."
+    },
+    {
+        id: "P272",
+        name: "BOMBA AGUA ELECT. TURBINA 135MM 2 BRIDAS OM457 1938S/1944S/2638/0-400 SUPER TORQUE",
+        brand: "Mercedes Benz",
+        code: "4572000201 / 4572000501",
+        image: "img/products/om457/bomba-agua-turbina-135mm-om457.jpg",
+        description: "Bomba de agua con turbina de 135mm y 2 bridas para motores Mercedes Benz OM457 electrÃ³nicos. Compatible con modelos 1938S, 1944S, 2638 y O-400 Super Torque. CÃ³digos originales 4572000201 y 4572000501. Fabricada con materiales de alta calidad y sellos mecÃ¡nicos reforzados para garantizar una Ã³ptima refrigeraciÃ³n del sistema."
+    },
+    {
+        id: "P273",
+        name: "COMPRESOR COMPLETO 85mm OM457 AXOR BICILINDRICO TAPA LARGA",
+        brand: "Mercedes Benz",
+        code: "4571307215 / 4571305515 / 9125102010 / 9125101050",
+        image: "img/products/om457/compresor-completo-85mm-om457-axor.jpg",
+        description: "Compresor de aire bicilÃndrico WABCO de 85mm con tapa larga para motores Mercedes Benz OM457, modelos Axor. CÃ³digos originales 4571307215, 4571305515, 9125102010 y 9125101050. Equipo original completo de alta capacidad, diseÃ±ado para garantizar el suministro de aire comprimido en sistemas de frenado y suspensiÃ³n."
+    },
+    {
+        id: "P274",
+        name: "BOTADOR VALVULA 1 AGUJERO OM457/501/502",
+        brand: "Mercedes Benz",
+        code: "5410500722 / 5410500922 / 5410500322 / 5410501722 / 5410501222 / 5410502022",
+        image: "img/products/om457/botador-valvula-1-agujero-om457.jpg",
+        description: "Botador de vÃ¡lvula de 1 agujero para motores Mercedes Benz OM457, OM501 y OM502. CÃ³digos originales 5410500722, 5410500922, 5410500322, 5410501722, 5410501222 y 5410502022. Fabricado en acero de alta dureza cementado para resistir el desgaste por fricciÃ³n constante con el Ã¡rbol de levas."
+    },
+    {
+        id: "P275",
+        name: "FLEXIBLE REFRIG.COMPRESOR OM457 1634",
+        brand: "Mercedes Benz",
+        code: "4572005052 / 4572004952",
+        image: "img/products/om457/flexible-refrigeracion-compresor-om457-1634.jpg",
+        description: "Manguera flexible de refrigeraciÃ³n para compresor de motores Mercedes Benz OM457, modelo 1634. CÃ³digos originales 4572005052 y 4572004952. Fabricada con materiales resistentes a la alta temperatura y presiÃ³n del sistema de enfriamiento."
+    },
+    {
+        id: "P276",
+        name: "FLEXIBLE DE BOMBA A VALVULA GAS-OIL 1634/1938/AXOR OM457",
+        brand: "Mercedes Benz",
+        code: "4570900376",
+        image: "img/products/om457/flexible-bomba-valvula-gasoil-om457.jpg",
+        description: "Flexible de alimentaciÃ³n para bomba a vÃ¡lvula de gas-oil, compatible con motores Mercedes Benz OM457, modelos 1634, 1938 y Axor. CÃ³digo original 4570900376. Fabricado con materiales de alta calidad resistentes a hidrocarburos para garantizar un flujo constante de combustible."
+    },
+    {
+        id: "P277",
+        name: "FLEXIBLE DE BOMBA A FILTRO GAS-OIL 1634/1938/AXOR OM457",
+        brand: "Mercedes Benz",
+        code: "4570900876",
+        image: "img/products/om457/flexible-bomba-filtro-gasoil-om457.jpg",
+        description: "Flexible de alimentaciÃ³n para bomba a filtro de gas-oil, compatible con motores Mercedes Benz OM457, modelos 1634, 1938 y Axor. CÃ³digo original 4570900876. Fabricado con materiales de alta resistencia diseÃ±ados para el sistema de combustible de alta presiÃ³n."
+    },
+    {
+        id: "P278",
+        name: "FLEXIBLE DE FILTRO A DEPOSITO GAS-OIL 1634/1938/AXOR OM457",
+        brand: "Mercedes Benz",
+        code: "4570900076",
+        image: "img/products/om457/flexible-filtro-deposito-gasoil-om457.jpg",
+        description: "Flexible de retorno para filtro a depÃ³sito de gas-oil, compatible con motores Mercedes Benz OM457, modelos 1634, 1938 y Axor. CÃ³digo original 4570900076. Fabricado con materiales resistentes a hidrocarburos y vibraciones, garantizando un retorno seguro del combustible al tanque."
+    },
+    {
+        id: "P279",
+        name: "CONECTOR GOMA ASPIRACION TAPA COMPRESOR 85 LARGA OM457",
+        brand: "Mercedes Benz",
+        code: "0029980601",
+        image: "img/products/om457/conector-goma-aspiracion-compresor-om457.jpg",
+        description: "Conector de goma para la aspiraciÃ³n de la tapa del compresor (85mm tapa larga) de motores Mercedes Benz OM457. CÃ³digo original 0029980601. Pieza de caucho de alta resistencia diseÃ±ada para un sellado hermÃ©tico y duradero en el sistema de admisiÃ³n de aire del compresor."
+    },
+    {
+        id: "P280",
+        name: "VISCOSO SOLA O-400/O-500 OM457",
+        brand: "Mercedes Benz",
+        code: "4752000222 / 4762000622 / 4752050106 / 4752057906",
+        image: "img/products/om457/viscoso-sola-o400-o500-om457.jpg",
+        description: "Acople viscoso (solo viscoso) para ventilador de motores Mercedes Benz OM457, modelos de buses O-400 y O-500. CÃ³digos originales 4752000222, 4762000622, 4752050106 y 4752057906. Componente de alta precisiÃ³n que regula la velocidad del ventilador segÃºn la temperatura del motor para una Ã³ptima gestiÃ³n tÃ©rmica."
+    },

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Repuesto | Zabala Repuestos</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Repuesto para Camión | Zabala Repuestos">
+    <meta property="og:description" content="Consulta disponibilidad y precio de este repuesto. Trabajamos con Mercedes Benz, Iveco, Ford y más.">
+    <meta property="og:image" content="fondo_local.jpg">
+    <meta property="og:type" content="product">
+    <style>
+        .product-detail-section {
+            padding: 120px 0 60px;
+            min-height: 80vh;
+        }
+
+        .product-detail-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            box-shadow: var(--shadow-lg);
+        }
+
+        @media (max-width: 768px) {
+            .product-detail-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .product-detail-img-container {
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px;
+        }
+
+        .product-detail-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            max-height: 500px;
+        }
+
+        .product-detail-info {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .back-link:hover {
+            color: var(--primary-color);
+        }
+
+        .product-detail-brand {
+            color: var(--primary-color);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-detail-name {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .product-detail-code {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            margin-bottom: 2rem;
+        }
+
+        .product-detail-description {
+            color: #94a3b8;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .product-compatible-trucks {
+            margin-bottom: 2.5rem;
+            padding: 1.25rem;
+            background: rgba(37, 99, 235, 0.08);
+            border: 1px solid rgba(37, 99, 235, 0.22);
+            border-radius: 14px;
+        }
+
+        .product-compatible-trucks h2 {
+            margin: 0 0 0.85rem;
+            font-size: 1.05rem;
+            color: #e2e8f0;
+        }
+
+        .product-compatible-trucks ul {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .product-compatible-trucks li {
+            padding: 0.45rem 0.75rem;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 999px;
+            color: #cbd5e1;
+            font-size: 0.9rem;
+        }
+
+        .btn-whatsapp-large {
+            background: #25D366;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 1.2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            margin-top: auto;
+        }
+
+        .btn-whatsapp-large:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.2);
+        }
+
+        .error-message {
+            text-align: center;
+            padding: 4rem;
+            color: var(--text-muted);
+        }
+
+        .related-products-section {
+            max-width: 1180px;
+            margin: 3rem auto 0;
+        }
+
+        .related-products-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .related-products-header h2 {
+            font-size: 1.5rem;
+            line-height: 1.2;
+            margin: 0;
+        }
+
+        .related-products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .related-product-card {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+            overflow: hidden;
+            background: rgba(15, 23, 42, 0.92);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            color: inherit;
+            text-decoration: none;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .related-product-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(37, 99, 235, 0.75);
+            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.22);
+        }
+
+        .related-product-image {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .related-product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .related-product-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+            padding: 1rem;
+        }
+
+        .related-product-info span {
+            color: var(--primary-color);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .related-product-info h3 {
+            margin: 0;
+            font-size: 0.98rem;
+            line-height: 1.3;
+        }
+
+        .related-product-info p {
+            margin: 0;
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .related-products-section {
+                margin-top: 2rem;
+            }
+
+            .related-products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 0.85rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="main-header">
+        <div class="container header-content">
+            <div class="logo">
+                <a href="index.html" style="text-decoration: none;">
+                    <h1>Zabala<span class="highlight">Repuestos</span></h1>
+                </a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="nosotros.html">Nosotros</a></li>
+                    <li><a href="catalogo.html" class="active">Catálogo</a></li>
+                    <li><a href="index.html#marcas">Marcas</a></li>
+                    <li><a href="index.html#cotizar">Cotizar</a></li>
+                    <li><a href="index.html#faq">FAQ</a></li>
+                    <li><a href="index.html#ubicacion">Ubicación</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="product-detail-section">
+            <div class="container">
+                <div id="productDetailContainer">
+                    <!-- Product details will be injected here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo">
+                        <h3>Zabala<span class="highlight">Repuestos</span></h3>
+                    </div>
+                    <p class="footer-desc">Tu aliado de confianza en repuestos para camiones. Calidad, garantía y trayectoria desde 1955 en San Juan.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Enlaces Rápidos</h4>
+                    <ul>
+                        <li><a href="index.html#inicio">Inicio</a></li>
+                        <li><a href="nosotros.html">Nosotros</a></li>
+                        <li><a href="catalogo.html">Catálogo</a></li>
+                        <li><a href="index.html#cotizar">Cotizar</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contacto</h4>
+                    <ul>
+                        <li>📍 Av Rioja 931 Sur, San Juan</li>
+                        <li>📞 Tel: 4220004</li>
+                        <li>📱 WhatsApp: +54 9 264 585-9764</li>
+                        <li>✉️ zabalarepuestos@gmail.com</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Horarios</h4>
+                    <ul>
+                        <li>Lunes a Viernes:</li>
+                        <li>8:30 - 13:00 / 16:00 - 19:30</li>
+                        <li>Sábados:</li>
+                        <li>9:00 - 13:00</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Zabala Repuestos. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="products.js?v=6"></script>
+    <script src="producto.js?v=4"></script>
+    <a href="https://wa.me/5492645859764" class="whatsapp-float" target="_blank" rel="noopener noreferrer">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" width="30" height="30" fill="white">
+            <!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+            <path
+                d="M248 8C111 8 0 119 0 256c0 58.8 22.1 114.5 62.1 158.4L8.7 512.6c-1.3 5.4 2.8 9.6 8.3 8.3l108.8-57.9c43.6 28.1 94.9 43 147.2 43 137 0 248-111 248-248S385 8 248 8zm120.3 365.1c-6.8 19.1-39.7 34.9-54.3 37.1-12.7 1.9-28.5 3.3-80.9-17-48.4-18.7-79.6-66.3-81.8-69.3-2.2-3-19.4-25.8-19.4-49.2 0-23.4 12.1-35 16.4-39.7 3.5-3.8 7.7-4.4 10.3-4.4 2.6 0 5.2 0 7.4.1 2.4.1 5.7.5 8.7 7.7 3.3 7.9 11.2 27.4 12.2 29.4s1.7 4.3.3 6.9-2.2 4-4.4 6.6c-2.4 2.8-5.1 6.3-7.2 8.5-2.6 2.6-5.3 5.5-2.2 10.8 3.1 5.3 13.9 22.8 29.8 37 20.3 18.1 37.4 24.2 42.7 26.9 5.3 2.7 8.5 2.2 11.6-1.4 3.1-3.6 13.5-15.7 17.1-21 3.6-5.3 7.3-4.4 12.3-2.6 5.1 1.8 32.2 15.2 37.7 17.9 5.5 2.7 9.2 4 10.5 6.3 1.3 2.3 1.3 13.2-5.5 32.3z" />
+        </svg>
+    </a>
+</body>
+
+</html>

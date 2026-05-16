@@ -1,0 +1,10 @@
+Los siguientes productos no tienen imagen en el catalogo porque los archivos no se encontraron en la carpeta img/products/om457/:
+
+1. P267 - INYECTOR UREA OM457 AXOR (Archivo esperado: inyector-urea-om457-axor.jpg)
+2. P269 - POLEA TENSOR AXOR 2 OM457 (Archivo esperado: polea-tensor-axor-2-om457.jpg)
+3. P270 - JUNTA FRENTE COMPRESOR WABCO 85MM TAPA LARGA OM457 (Archivo esperado: junta-frente-compresor-om457.jpg)
+
+Se han corregido las imagenes de:
+- P238 (Se verificó la ruta y se reescribió para asegurar integridad)
+- P268 (Se asignó la imagen existente: cabezal-refrigerador-aceite-om457.jpg)
+- P283 (Se asignó la imagen existente: paleta-plastico-viscosa-om457.jpg)

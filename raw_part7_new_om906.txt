@@ -1,0 +1,63 @@
+    {
+        id: "P428",
+        name: "VISCOSO SOLO OM906 EURO 1 8 AGUJEROS",
+        brand: "Mercedes Benz",
+        code: "9062001422",
+        originalCode: "9062001422",
+        image: "img/products/om906/viscoso-solo-om906-euro1.jpg",
+        description: "Viscoso de ventilador (solo) para motores Mercedes Benz OM906 Euro 1. Diseño de 8 agujeros. Código original 9062001422. Rubro: SISTEMA DE REFRIGERACIÓN. Componente esencial para el control de temperatura del motor."
+    },
+    {
+        id: "P429",
+        name: "VISCOSO OM906/926 ATEGO/AXOR ELECTROMAGNETICO C/CABLE",
+        brand: "Mercedes Benz",
+        code: "9062004223 / 9062001822",
+        originalCode: "9062004223 / 9062001822",
+        image: "img/products/om906/viscoso-om906-om926-atego-axor.jpg",
+        description: "Embrague viscoso electromagnético con cable para motores Mercedes Benz OM906 y OM926. Aplicable a camiones Atego y Axor. Códigos originales 9062004223, 9062001822. Rubro: SISTEMA DE REFRIGERACIÓN. Tecnología de control preciso para la ventilación del motor."
+    },
+    {
+        id: "P430",
+        name: "PALETA VENTILADOR VISCOSO OM906 (49980)",
+        brand: "Mercedes Benz",
+        code: "9062050206",
+        originalCode: "9062050206",
+        image: "img/products/om906/paleta-ventilador-viscoso-om906.jpg",
+        description: "Paleta de ventilador para acople viscoso de motores Mercedes Benz OM906. Referencia 49980. Código original 9062050206. Rubro: SISTEMA DE REFRIGERACIÓN. Diseñada para maximizar el flujo de aire a través del radiador."
+    },
+    {
+        id: "P431",
+        name: "PALETA VENTILADOR PLASTICO OM906 9 PALAS 640mm",
+        brand: "Mercedes Benz",
+        code: "9062000623",
+        originalCode: "9062000623",
+        image: "img/products/om906/paleta-ventilador-plastico-om906.jpg",
+        description: "Paleta de ventilador de plástico de 9 palas y 640mm de diámetro para motores Mercedes Benz OM906. Código original 9062000623. Rubro: SISTEMA DE REFRIGERACIÓN. Material ligero y resistente para una refrigeración eficiente."
+    },
+    {
+        id: "P432",
+        name: "CUBO ACOPLE VENTILADOR OM906",
+        brand: "Mercedes Benz",
+        code: "9062050006",
+        originalCode: "9062050006",
+        image: "img/products/om906/cubo-acople-ventilador-om906.jpg",
+        description: "Cubo de acople para ventilador de motores Mercedes Benz OM906. Código original 9062050006. Rubro: SISTEMA DE REFRIGERACIÓN. Pieza de conexión robusta para el montaje del ventilador."
+    },
+    {
+        id: "P433",
+        name: "VARILLA ACEITE CORTA OM906/1624",
+        brand: "Mercedes Benz",
+        code: "9060101672",
+        originalCode: "9060101672",
+        image: "img/products/om906/varilla-aceite-corta-om906-1624.jpg",
+        description: "Varilla de nivel de aceite corta para motores Mercedes Benz OM906, modelo 1624. Código original 9060101672. Rubro: BLOCK DE MOTOR Y CÁRTER. Herramienta precisa para la medición del nivel de aceite."
+    },
+    {
+        id: "P434",
+        name: "VARILLA NIVEL ACEITE 485MM. ATEGO/AXOR OM906/26",
+        brand: "Mercedes Benz",
+        code: "9060101072 / 9260104272",
+        originalCode: "9060101072 / 9260104272",
+        image: "img/products/om906/varilla-nivel-aceite-485mm-om906.jpg",
+        description: "Varilla de nivel de aceite de 485mm de largo para motores Mercedes Benz OM906 y OM926. Aplicable a camiones Atego y Axor. Códigos originales 9060101072, 9260104272. Rubro: BLOCK DE MOTOR Y CÁRTER. Herramienta esencial para el mantenimiento y control del lubricante."
+    }

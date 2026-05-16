@@ -1,0 +1,406 @@
+    {
+        id: "P101",
+        name: "JTA.SAL.ESC.DOBLE. OM366",
+        brand: "Mercedes Benz",
+        code: "6844927080",
+        image: "img/products/om366/junta-salida-escape-doble-om366.jpg",
+        description: "Junta de salida de escape doble para motores Mercedes Benz OM366. Fabricada en material resistente a altas temperaturas y gases de escape. DiseÃ±ada para sellar perfectamente la conexiÃ³n doble del mÃºltiple de escape, evitando fugas de gases."
+    },
+    {
+        id: "P102",
+        name: "SILENCIADOR 1620/OM366A 3 1/2 C/COLA 4.\" LLENO",
+        brand: "Mercedes Benz",
+        code: "3824907201",
+        image: "img/products/om366/silenciador-1620-om366a.jpg",
+        description: "Silenciador de escape para Mercedes Benz 1620 con motor OM366A. Entrada de 3 1/2 pulgadas con cola de 4 pulgadas, modelo lleno. Fabricado con materiales resistentes a la corrosiÃ³n y altas temperaturas para un rendimiento Ã³ptimo del sistema de escape."
+    },
+    {
+        id: "P103",
+        name: "CAÃ‘O SALIDA DE BOMBA HIDRAULICA 1215 OM366",
+        brand: "Mercedes Benz",
+        code: "3444608624",
+        image: "img/products/om366/cano-salida-bomba-hidraulica-1215-om366.jpg",
+        description: "CaÃ±o de salida de bomba hidrÃ¡ulica para Mercedes Benz 1215 con motor OM366. Fabricado en acero de alta resistencia con acabado anticorrosivo. DiseÃ±ado para garantizar el flujo Ã³ptimo del fluido hidrÃ¡ulico desde la bomba hacia el sistema de direcciÃ³n."
+    },
+    {
+        id: "P104",
+        name: "CILINDRO FRENO MOTOR T/KNORR OM366/447/449/457",
+        brand: "Mercedes Benz",
+        code: "0004306026",
+        originalCode: "I94326 0004304926 0004305926 0004305026 I90281 8845021210 0004304826",
+        image: "img/products/om366/cilindro-freno-motor-knorr-om366.jpg",
+        description: "Cilindro de freno motor tipo KNORR compatible con motores Mercedes Benz OM366, OM447, OM449 y OM457. Fabricado con materiales de alta resistencia para soportar las exigencias del sistema de frenado auxiliar. Componente esencial para el control del freno motor en vehÃculos pesados."
+    },
+    {
+        id: "P105",
+        name: "FLEXIBLE EMBRAGUE (220mm) H/H 1215 OM366 14mm",
+        brand: "Mercedes Benz",
+        code: "3762957035",
+        image: "img/products/om366/flexible-embrague-1215-om366.jpg",
+        description: "Flexible de embrague de 220mm hembra/hembra para Mercedes Benz 1215 con motor OM366. Rosca de 14mm. Fabricado con manguera de alta presiÃ³n y conexiones de acero reforzado. Componente esencial para el sistema de accionamiento hidrÃ¡ulico del embrague."
+    },
+    {
+        id: "P106",
+        name: "RIGIDO BOMBIN EMBRAGUE L1620 OM366LA",
+        brand: "Mercedes Benz",
+        code: "6952907213",
+        image: "img/products/om366/rigido-bombin-embrague-l1620-om366la.jpg",
+        description: "CaÃ±o rÃgido de bombÃn de embrague para Mercedes Benz L1620 con motor OM366LA. Fabricado en acero de alta resistencia con acabado anticorrosivo. DiseÃ±ado para conectar el sistema hidrÃ¡ulico del embrague, garantizando una transmisiÃ³n eficiente de la presiÃ³n hidrÃ¡ulica."
+    },
+    {
+        id: "P107",
+        name: "RIGIDO BOMBA EMBRAGUE L1620 OM366LA",
+        brand: "Mercedes Benz",
+        code: "6952907113",
+        image: "img/products/om366/rigido-bomba-embrague-l1620-om366la.jpg",
+        description: "CaÃ±o rÃgido de bomba de embrague para Mercedes Benz L1620 con motor OM366LA. Fabricado en acero de alta resistencia con acabado anticorrosivo. Componente del sistema hidrÃ¡ulico que conecta la bomba de embrague, asegurando una transmisiÃ³n eficiente de la presiÃ³n."
+    },
+    {
+        id: "P108",
+        name: "PORTACRAPODINA OM366",
+        brand: "Mercedes Benz",
+        code: "3812501415",
+        image: "img/products/om366/portacrapodina-om366.jpg",
+        description: "Porta crapodina (porta collarin) para motores Mercedes Benz OM366. Fabricado en fundiciÃ³n de alta resistencia. Componente esencial del sistema de embrague que aloja y soporta el collarÃn de empuje, garantizando un accionamiento suave y preciso del embrague."
+    },
+    {
+        id: "P109",
+        name: "PALETA PLASTICO OM366 7 PALAS 550mm",
+        brand: "Mercedes Benz",
+        code: "3762000224",
+        image: "img/products/om366/paleta-plastico-om366-7-palas.jpg",
+        description: "Paleta de ventilador de plÃ¡stico de 7 palas, diÃ¡metro 550mm para motores Mercedes Benz OM366. Fabricada en material plÃ¡stico de alta resistencia a temperaturas extremas. DiseÃ±ada para optimizar el flujo de aire y la refrigeraciÃ³n del motor."
+    },
+    {
+        id: "P110",
+        name: "PALETA PLASTICO OM366 C/CHAP.10PAL",
+        brand: "Mercedes Benz",
+        code: "3762000224",
+        image: "img/products/om366/paleta-plastico-om366-10-palas.jpg",
+        description: "Paleta de ventilador de plÃ¡stico con chapa de 10 palas para motores Mercedes Benz OM366. Fabricada en material plÃ¡stico de alta resistencia con refuerzo metÃ¡lico central. DiseÃ±ada para maximizar el flujo de aire y mejorar la eficiencia del sistema de refrigeraciÃ³n."
+    },
+    {
+        id: "P111",
+        name: "PALETA PLASTICO OM366 C/CHAP.9PALAS 6 AGUJ.515mm",
+        brand: "Mercedes Benz",
+        code: "3762000224",
+        image: "img/products/om366/paleta-plastico-om366-9-palas.jpg",
+        description: "Paleta de ventilador de plÃ¡stico con chapa de 9 palas, 6 agujeros, diÃ¡metro 515mm para motores Mercedes Benz OM366. Fabricada en material plÃ¡stico de alta resistencia con refuerzo metÃ¡lico central. DiseÃ±ada para optimizar el flujo de aire y la refrigeraciÃ³n del motor."
+    },
+    {
+        id: "P112",
+        name: "POLEA B/AGUA 3 CANALES 209MM/149MM OM366 1215",
+        brand: "Mercedes Benz",
+        code: "3662020810",
+        image: "img/products/om366/polea-bomba-agua-om366-3-canales.jpg",
+        description: "Polea de bomba de agua de 3 canales, medidas 209mm/149mm para motores Mercedes Benz OM366 en modelo 1215. Fabricada en fundiciÃ³n de alta resistencia. DiseÃ±ada para el accionamiento Ã³ptimo de la bomba de agua y otros accesorios del motor mediante correas trapezoidales."
+    },
+    {
+        id: "P113",
+        name: "BOMBA ACEITE OM366A",
+        brand: "Mercedes Benz",
+        code: "3661800301",
+        image: "img/products/om366/bomba-aceite-om366a.jpg",
+        description: "Bomba de aceite para motores Mercedes Benz OM366A. Fabricada con engranajes de alta precisiÃ³n y carcasa de fundiciÃ³n resistente. Componente esencial del sistema de lubricaciÃ³n que garantiza la presiÃ³n y circulaciÃ³n adecuada del aceite en todo el motor."
+    },
+    {
+        id: "P114",
+        name: "VASO FILTRO ACEITE OM366",
+        brand: "Mercedes Benz",
+        code: "3661800311",
+        image: "img/products/om366/vaso-filtro-aceite-om366.jpg",
+        description: "Vaso para filtro de aceite para motores Mercedes Benz OM366. Fabricado en aluminio de alta calidad con acabado resistente a la corrosiÃ³n. DiseÃ±ado para alojar el elemento filtrante de aceite, garantizando un ajuste perfecto y durabilidad en el sistema de lubricaciÃ³n."
+    },
+    {
+        id: "P115",
+        name: "REFRIGERADOR ACEITE OM366A",
+        brand: "Mercedes Benz",
+        code: "3661803865",
+        originalCode: "3661800865",
+        image: "img/products/om366/refrigerador-aceite-om366a.jpg",
+        description: "Refrigerador de aceite para motores Mercedes Benz OM366A. Fabricado en aluminio de alta conductividad tÃ©rmica. Componente esencial del sistema de lubricaciÃ³n que mantiene la temperatura Ã³ptima del aceite, prolongando la vida Ãºtil del motor y mejorando su rendimiento."
+    },
+    {
+        id: "P116",
+        name: "JUNTA FILTRO RADIADOR ACEITE OM366 (ORING)",
+        brand: "Mercedes Benz",
+        code: "0059976948",
+        image: "img/products/om366/junta-filtro-radiador-aceite-om366.jpg",
+        description: "Junta (O-ring) para filtro intermedio de radiador de aceite, compatible con motores Mercedes Benz OM366. Fabricada en material de goma resistente al aceite y altas temperaturas. Garantiza un sellado estanco en la conexiÃ³n del intercambiador de calor."
+    },
+    {
+        id: "P117",
+        name: "PALETA PLASTICO L1620/1218 8 PALAS 592mm",
+        brand: "Mercedes Benz",
+        code: "3762007123",
+        image: "img/products/om366/paleta-plastico-8-palas-om366.jpg",
+        description: "Paleta de ventilador de plÃ¡stico de 8 palas, diÃ¡metro 592mm. Compatible con Mercedes Benz L1620, 1218 y motores OM366/904. DiseÃ±o aerodinÃ¡mico de alta eficiencia para optimizar el flujo de aire a travÃ©s del radiador y mejorar la refrigeraciÃ³n del motor."
+    },
+    {
+        id: "P118",
+        name: "BULON MULTIPLE 10X60 OM366",
+        brand: "Mercedes Benz",
+        code: "000933010347",
+        originalCode: "910105010003",
+        image: "img/products/om366/bulon-multiple-10x60-om366.jpg",
+        description: "BulÃ³n para mÃºltiple de medida 10x60mm. Compatible con motores Mercedes Benz OM366. Fabricado en acero de alta resistencia para soportar las variaciones tÃ©rmicas y la tensiÃ³n mecÃ¡nica en la fijaciÃ³n de los mÃºltiples de admisiÃ³n o escape."
+    },
+    {
+        id: "P119",
+        name: "VALVULA BOMBA ACEITE OM366",
+        brand: "Mercedes Benz",
+        code: "3661800315",
+        image: "img/products/om366/valvula-bomba-aceite-om366.jpg",
+        description: "VÃ¡lvula para bomba de aceite compatible con motores Mercedes Benz OM366. Componente de precisiÃ³n diseÃ±ado para regular y asegurar el correcto flujo y presiÃ³n de aceite en el sistema de lubricaciÃ³n del motor."
+    },
+    {
+        id: "P120",
+        name: "TAPA REFRIGERADORA M/N OM366",
+        brand: "Mercedes Benz",
+        code: "3661803665",
+        image: "img/products/om366/tapa-refrigeradora-om366.jpg",
+        description: "Tapa refrigeradora (modelo nuevo) para motores Mercedes Benz OM366. Fabricada en fundiciÃ³n de alta calidad. DiseÃ±ada para sellar y proteger el intercambiador de calor/refrigerador de aceite, asegurando la eficiencia del sistema de enfriamiento del lubricante."
+    },
+    {
+        id: "P121",
+        name: "TAPA COMPRESOR TRAS. OH1420/OM366",
+        brand: "Mercedes Benz",
+        code: "0001311142",
+        originalCode: "4110426004",
+        image: "img/products/om366/tapa-compresor-trasera-om366.jpg",
+        description: "Tapa trasera de compresor para Mercedes Benz OH1420 con motor OM366. Fabricada en acero de alta resistencia. Componente fundamental para el sellado y cierre de la carcasa del compresor de aire."
+    },
+    {
+        id: "P122",
+        name: "CIGUEÃ‘AL COMPRESOR KNORR 88 OM366",
+        brand: "Mercedes Benz",
+        code: "0001314216",
+        image: "img/products/om366/ciguenal-compresor-knorr-om366.jpg",
+        description: "CigÃ¼eÃ±al para compresor tipo Knorr de 88mm, compatible con motores Mercedes Benz OM366. Fabricado en acero forjado de alta resistencia y rectificado de precisiÃ³n. Pieza central del compresor que convierte el movimiento rotativo en lineal para la compresiÃ³n de aire."
+    },
+    {
+        id: "P123",
+        name: "CODO BAJADA TURBO S/FREN.IMP. OM366A",
+        brand: "Mercedes Benz",
+        code: "3761440112",
+        image: "img/products/om366/codo-bajada-turbo-om366a.jpg",
+        description: "Codo de bajada de turbo sin freno (importado) para motores Mercedes Benz OM366A. Fabricado en fundiciÃ³n de alta resistencia tÃ©rmica. Pieza clave del sistema de escape que conecta la salida del turbocompresor con el resto de la lÃnea de escape."
+    },
+    {
+        id: "P124",
+        name: "TURBO IMPORTADO OM366 (SIN VALVULA)",
+        brand: "Mercedes Benz",
+        code: "3760968799",
+        originalCode: "3660961899",
+        image: "img/products/om366/turbo-importado-om366-sin-valvula.jpg",
+        description: "Turbocompresor importado sin vÃ¡lvula para motores Mercedes Benz OM366. DiseÃ±ado para aumentar la potencia y eficiencia del motor mediante la compresiÃ³n del aire de admisiÃ³n. Fabricado con materiales de alta calidad para soportar altas temperaturas y velocidades de rotaciÃ³n."
+    },
+    {
+        id: "P125",
+        name: "KIT TURBO LATERAL S/ESCAPE OM366",
+        brand: "Mercedes Benz",
+        code: ">00935/1",
+        image: "img/products/om366/kit-turbo-lateral-sin-escape-om366.jpg",
+        description: "Kit de turbo lateral sin escape para motores Mercedes Benz OM366. Incluye mÃºltiples de admisiÃ³n y escape, codos, abrazaderas, juntas, bulonerÃa y tuberÃas de aceite necesarias para la instalaciÃ³n o reparaciÃ³n del sistema de turbocompresor. Conjunto completo para una instalaciÃ³n precisa."
+    },
+    {
+        id: "P126",
+        name: "TURBO SCHWITZER OM366/366LA",
+        brand: "Mercedes Benz",
+        code: "3660963899",
+        image: "img/products/om366/turbo-schwitzer-om366.jpg",
+        description: "Turbocompresor marca Schwitzer compatible con motores Mercedes Benz OM366 y OM366LA. DiseÃ±ado para optimizar la entrada de aire y potenciar el rendimiento del motor bajo condiciones exigentes de trabajo. ConstrucciÃ³n robusta para mÃ¡xima durabilidad."
+    },
+    {
+        id: "P127",
+        name: "CODO BAJADA TURBO OM366A C/FRENO MOTOR",
+        brand: "Mercedes Benz",
+        code: "3761400553",
+        image: "img/products/om366/codo-bajada-turbo-con-freno-motor-om366a.jpg",
+        description: "Codo de bajada de turbo con freno motor para Mercedes Benz OM366A. Fabricado en fundiciÃ³n de alta resistencia. Incluye el mecanismo de mariposa para el accionamiento del freno motor, esencial para la seguridad y control del vehÃculo en pendientes."
+    },
+    {
+        id: "P128",
+        name: "CODO BAJADA TURBO OM366 ECOLOGICO C/FRENO",
+        brand: "Mercedes Benz",
+        code: "3760900428",
+        image: "img/products/om366/codo-bajada-turbo-ecologico-con-freno-om366.jpg",
+        description: "Codo de bajada de turbo ecolÃ³gico con freno motor para Mercedes Benz OM366. DiseÃ±o optimizado para reducir emisiones y mejorar el rendimiento. Incluye sistema de mariposa para freno motor, fabricado en fundiciÃ³n de alta calidad para soportar altas temperaturas."
+    },
+    {
+        id: "P129",
+        name: "CODO BAJADA TURBO OM366A",
+        brand: "Mercedes Benz",
+        code: "3761440112",
+        image: "img/products/om366/codo-bajada-turbo-om366a-std.jpg",
+        description: "Codo de bajada de turbo estÃ¡ndar para motores Mercedes Benz OM366A. Fabricado en fundiciÃ³n de hierro resistente a ciclos tÃ©rmicos. Conecta la salida del turbo con el sistema de escape, asegurando un flujo de gases eficiente."
+    },
+    {
+        id: "P130",
+        name: "KIT TURBO S/ESCAPE OM366 1215",
+        brand: "Mercedes Benz",
+        code: ">00935",
+        image: "img/products/om366/kit-turbo-sin-escape-om366-1215.jpg",
+        description: "Kit de turbo sin escape para Mercedes Benz 1215 con motor OM366. Conjunto completo de componentes para la instalaciÃ³n del sistema de turbocompresor, incluyendo mÃºltiples, abrazaderas, juntas y tuberÃas necesarias, pero sin incluir el turbocompresor ni la bajada de escape."
+    },
+    {
+        id: "P131",
+        name: "CODO BAJADA TURBO OM366A P/FRENO MOTOR",
+        brand: "Mercedes Benz",
+        code: "3761400553",
+        image: "img/products/om366/codo-bajada-turbo-om366a-para-freno-motor.jpg",
+        description: "Codo de bajada de turbo preparado para freno motor, compatible con Mercedes Benz OM366A. Fabricado en fundiciÃ³n resistente. DiseÃ±o especÃfico para alojar el sistema de mariposa de freno motor (no incluido), asegurando un ajuste perfecto y duradero."
+    },
+    {
+        id: "P132",
+        name: "CODO BAJADA TURBO OM366 ECOLOGICO P/FRENO",
+        brand: "Mercedes Benz",
+        code: "3760900428",
+        image: "img/products/om366/codo-bajada-turbo-ecologico-para-freno-om366.jpg",
+        description: "Codo de bajada de turbo ecolÃ³gico preparado para freno motor, compatible con motores Mercedes Benz OM366. DiseÃ±ado para alojar el mecanismo de freno motor (no incluido). Fabricado en fundiciÃ³n de alta calidad, optimizado para sistemas de escape ecolÃ³gicos."
+    },
+    {
+        id: "P133",
+        name: "CODO BAJADA TURBO OM366 ECOLOGICO",
+        brand: "Mercedes Benz",
+        code: "3660987315",
+        image: "img/products/om366/codo-bajada-turbo-ecologico-om366.jpg",
+        description: "Codo de bajada de turbo ecolÃ³gico para motores Mercedes Benz OM366. Componente del sistema de escape diseÃ±ado para mejorar el flujo de gases y reducir la contrapresiÃ³n, contribuyendo a una mayor eficiencia y menores emisiones."
+    },
+    {
+        id: "P134",
+        name: "SOPORTE F/GAS OIL COMPRESOR OM366LA OHL1621/L1620",
+        brand: "Mercedes Benz",
+        code: "3760920140",
+        image: "img/products/om366/soporte-filtro-gasoil-compresor-om366la.jpg",
+        description: "Soporte de filtro de gasoil y compresor para Mercedes Benz OM366LA, modelos OHL1621 y L1620. Fabricado en fundiciÃ³n de alta resistencia. DiseÃ±ado para soportar y fijar firmemente el filtro de combustible y el compresor al bloque del motor."
+    },
+    {
+        id: "P135",
+        name: "ORING ACOP.BOMBA INY OM366",
+        brand: "Mercedes Benz",
+        code: ">72023",
+        image: "img/products/om366/oring-acople-bomba-inyectora-om366.jpg",
+        description: "O-ring para acople de bomba inyectora, compatible con motores Mercedes Benz OM366. Fabricado en material de goma resistente al combustible y aceites. Garantiza un sellado hermÃ©tico en la conexiÃ³n de la bomba inyectora, preveniendo fugas."
+    },
+    {
+        id: "P136",
+        name: "JGO.CAÃ‘OS INYECTOR OM366",
+        brand: "Mercedes Benz",
+        code: ">77020",
+        image: "img/products/om366/juego-canos-inyector-om366.jpg",
+        description: "Juego de caÃ±os de inyector para motores Mercedes Benz OM366. Incluye la tuberÃa de alta presiÃ³n completa para el sistema de inyecciÃ³n. Fabricados en acero de alta resistencia para soportar las elevadas presiones de inyecciÃ³n y vibraciones del motor."
+    },
+    {
+        id: "P137",
+        name: "SOPORTE BOMBA INYECTORA OM366",
+        brand: "Mercedes Benz",
+        code: "3640760035",
+        image: "img/products/om366/soporte-bomba-inyectora-om366.jpg",
+        description: "Soporte de bomba inyectora para motores Mercedes Benz OM366. Fabricado en fundiciÃ³n de alta calidad. Garantiza la correcta fijaciÃ³n y alineaciÃ³n de la bomba de inyecciÃ³n al bloque del motor, asegurando el funcionamiento preciso del sistema de combustible."
+    },
+    {
+        id: "P138",
+        name: "ENGRANAJE FIJO BOMBA INYECT. EURO1/OM366",
+        brand: "Mercedes Benz",
+        code: "3760770112",
+        image: "img/products/om366/engranaje-fijo-bomba-inyectora-euro1-om366.jpg",
+        description: "Engranaje fijo de bomba inyectora para motores Mercedes Benz OM366 (Euro 1). Fabricado en acero de alta resistencia y endurecido para soportar el desgaste. Componente crucial para la sincronizaciÃ³n precisa de la inyecciÃ³n de combustible."
+    },
+    {
+        id: "P139",
+        name: "BULON PUNTA ARBOL LEVAS OM366/352A",
+        brand: "Mercedes Benz",
+        code: "3520750071",
+        image: "img/products/om366/bulon-punta-arbol-levas-om366.jpg",
+        description: "BulÃ³n de punta de Ã¡rbol de levas para motores Mercedes Benz OM366 y OM352A. Fabricado en acero de alta resistencia para garantizar un apriete seguro y duradero del engranaje del Ã¡rbol de levas, soportando las exigencias del sistema de distribuciÃ³n."
+    },
+    {
+        id: "P140",
+        name: "ENGRANAJE FIJO BOMBA INYECT. EURO2/OM366",
+        brand: "Mercedes Benz",
+        code: "3760777112",
+        image: "img/products/om366/engranaje-fijo-bomba-inyectora-euro2-om366.jpg",
+        description: "Engranaje fijo de bomba inyectora para motores Mercedes Benz OM366 (Euro 2). DiseÃ±ado con especificaciones precisas para la sincronizaciÃ³n del sistema de inyecciÃ³n en motores de normativa Euro 2. Fabricado en acero tratado para mÃ¡xima durabilidad."
+    },
+    {
+        id: "P141",
+        name: "AVANCE ARBOL LEVAS /EURO II/ OM366LA",
+        brand: "Mercedes Benz",
+        code: "3760707445",
+        image: "img/products/om366/avance-arbol-levas-euro2-om366la.jpg",
+        description: "Variador de avance de Ã¡rbol de levas para motores Mercedes Benz OM366LA (Euro II). Mecanismo de precisiÃ³n que optimiza los tiempos de la distribuciÃ³n, mejorando el rendimiento del motor y reduciendo emisiones. Fabricado con materiales de alta durabilidad."
+    },
+    {
+        id: "P142",
+        name: "BIELA MOTOR ECOLOGICO OM366LA",
+        brand: "Mercedes Benz",
+        code: "3760307320",
+        image: "img/products/om366/biela-motor-ecologico-om366la.jpg",
+        description: "Biela de motor ecolÃ³gico para Mercedes Benz OM366LA. Fabricada en acero forjado de alta resistencia para soportar las mayores presiones de combustiÃ³n de los motores ecolÃ³gicos. DiseÃ±o reforzado para garantizar durabilidad y rendimiento Ã³ptimo."
+    },
+    {
+        id: "P143",
+        name: "TAPA SUPERIOR VALVULA C/VENTEO Y ENTRADA DE ACEITE OM366",
+        brand: "Mercedes Benz",
+        code: "3660161505",
+        image: "img/products/om366/tapa-valvulas-con-venteo-om366.jpg",
+        description: "Tapa superior de vÃ¡lvulas con venteo y entrada de aceite para motores Mercedes Benz OM366. Fabricada en aluminio fundido de alta calidad. Incluye orificios para el sistema de ventilaciÃ³n del cÃ¡rter y el llenado de aceite, asegurando un sellado perfecto y protecciÃ³n del tren de vÃ¡lvulas."
+    },
+    {
+        id: "P144",
+        name: "BIELA MOTOR MODELO VIEJO OM366",
+        brand: "Mercedes Benz",
+        code: "3760307120",
+        image: "img/products/om366/biela-motor-modelo-viejo-om366.jpg",
+        description: "Biela de motor (modelo viejo) para Mercedes Benz OM366. Fabricada en acero forjado de alta resistencia. Componente esencial que conecta el pistÃ³n con el cigÃ¼eÃ±al, transmitiendo la fuerza de la combustiÃ³n para generar el movimiento rotativo."
+    },
+    {
+        id: "P145",
+        name: "ANILLO CENTRAJE POLEA CIGUENAL OM366",
+        brand: "Mercedes Benz",
+        code: "3220350018",
+        image: "img/products/om366/anillo-centraje-polea-ciguenal-om366.jpg",
+        description: "Anillo de centraje para polea de cigÃ¼eÃ±al de motores Mercedes Benz OM366. Fabricado en acero de alta precisiÃ³n. Asegura la correcta alineaciÃ³n y balanceo de la polea, evitando vibraciones y desgastes prematuros."
+    },
+    {
+        id: "P146",
+        name: "BULON VOLANTE MOTOR 12x45 OM366LA OHL1420",
+        brand: "Mercedes Benz",
+        code: "00341",
+        originalCode: "3669900701",
+        image: "img/products/om366/bulon-volante-motor-12x45-om366la.jpg",
+        description: "BulÃ³n de volante de motor medida 12x45, compatible con Mercedes Benz OM366LA y OHL1420. Fabricado en acero de alta resistencia (grado 10.9 o superior) para soportar el torque y la vibraciÃ³n del volante de inercia."
+    },
+    {
+        id: "P147",
+        name: "BULON BIELA MOTOR 12x56 OM366/904/906",
+        brand: "Mercedes Benz",
+        code: "9060380171",
+        image: "img/products/om366/bulon-biela-motor-12x56-om366.jpg",
+        description: "BulÃ³n de biela de motor medida 12x56, compatible con motores Mercedes Benz OM366, OM904 y OM906. Fabricado en acero de alta resistencia y elasticidad controlada para garantizar la uniÃ³n segura de la biela al cigÃ¼eÃ±al bajo condiciones extremas de funcionamiento."
+    },
+    {
+        id: "P148",
+        name: "ANILLO CENTRAJE POLEA CIGUENAL OM366LA",
+        brand: "Mercedes Benz",
+        code: "3520310064",
+        image: "img/products/om366/anillo-centraje-polea-ciguenal-om366la.jpg",
+        description: "Anillo de centraje para polea de cigÃ¼eÃ±al de motores Mercedes Benz OM366LA. Componente de precisiÃ³n diseÃ±ado para asegurar el correcto posicionamiento y balance de la polea amortiguadora, evitando vibraciones perjudiciales para el motor."
+    },
+    {
+        id: "P149",
+        name: "BULON PUNTA CIGÃœEÃ‘AL CORTO 24x75 OM366",
+        brand: "Mercedes Benz",
+        code: "3669901501",
+        image: "img/products/om366/bulon-punta-ciguenal-corto-om366.jpg",
+        description: "BulÃ³n de punta de cigÃ¼eÃ±al corto, medida 24x75, para motores Mercedes Benz OM366. Fabricado en acero de alta resistencia para soportar el torque de apriete y asegurar la polea del cigÃ¼eÃ±al."
+    },
+    {
+        id: "P150",
+        name: "POLEA ADICIONAL 2 CANALES OM366/OHL",
+        brand: "Mercedes Benz",
+        code: ">00339",
+        image: "img/products/om366/polea-adicional-2-canales-om366.jpg",
+        description: "Polea adicional de 2 canales para motores Mercedes Benz OM366 y OHL. Fabricada en fundiciÃ³n de alta resistencia. DiseÃ±ada para accionar accesorios adicionales mediante correas trapezoidales, asegurando una transmisiÃ³n de potencia eficiente."
+    },

@@ -1,0 +1,401 @@
+    {
+        id: "P051",
+        name: "PISTA DISTRIBUCION C/CHAV. IMP OM352/366",
+        brand: "Mercedes Benz",
+        code: "3140350214 / 3220350014",
+        image: "img/products/om352/pista-distribucion-om352.jpg",
+        description: "PISTA DE DISTRIBUCION C/CHAVETERA INTEGRADA. CALIDAD IMPORTADA (IMP) PARA MOTORES MERCEDES BENZ OM352 Y OM366. COMPONENTE ESENCIAL PARA EL CORRECTO POSICIONAMIENTO DEL RETEN DE DISTRIBUCION."
+    },
+    {
+        id: "P052",
+        name: "BULON TAPA CILINDRO 12X111 12.9 (x25) OM352/366",
+        brand: "Mercedes Benz",
+        code: "3669900301",
+        image: "img/products/om352/bulon-tapa-cilindro-om352-12x111.jpg",
+        description: "BulÃ³n de tapa de cilindro de alta resistencia (grado 12.9), medida 12x111mm. Compatible with motores Mercedes Benz OM352 and OM366. Se comercializa por juego de 25 unidades para asegurar la sustituciÃ³n completa."
+    },
+    {
+        id: "P053",
+        name: "BULON PUNTA CIGÃœEÃ‘AL LARGO 24x55 OM352",
+        brand: "Mercedes Benz",
+        code: "3149901001",
+        image: "img/products/om352/bulon-punta-ciguenal-om352.jpg",
+        description: "BulÃ³n de punta de cigÃ¼eÃ±al modelo largo, medida 24x55mm. Compatible with motores Mercedes Benz OM352. Fabricado with acero de alta resistencia para un anclaje seguro de la polea and engranajes."
+    },
+    {
+        id: "P054",
+        name: "ENGRANAJE CIGÃœEÃ‘AL (-0.05) STD OM352/366",
+        brand: "Mercedes Benz",
+        code: "3520520003",
+        image: "img/products/om352/engranaje-ciguenal-om352-005.jpg",
+        description: "Engranaje de cigÃ¼eÃ±al medida estÃ¡ndar con tolerancia -0.05. Compatible with motores Mercedes Benz OM352 and OM366. Componente de precisiÃ³n para la cadena cinemÃ¡tica del motor."
+    },
+    {
+        id: "P055",
+        name: "CORONA ARRANQUE ANGOSTA 125 D. OM352/366",
+        brand: "Mercedes Benz",
+        code: "3520321105",
+        image: "img/products/om352/corona-arranque-om352-angosta.jpg",
+        description: "Corona de arranque modelo angosta con 125 dientes. Compatible con motores Mercedes Benz OM352 y OM366. Fabricada en acero de alta resistencia para un arranque confiable."
+    },
+    {
+        id: "P056",
+        name: "ESPIGA BIELA MOTOR S/MEDIDA OM352",
+        brand: "Mercedes Benz",
+        code: "000007006100",
+        image: "img/products/om352/espiga-biela-om352-smedida.jpg",
+        description: "Espiga de biela de motor, versiÃ³n sin medida (S/Medida) para ajuste. Compatible con motores Mercedes Benz OM352. Ideal para trabajos de rectificaciÃ³n que requieren un ajuste personalizado."
+    },
+    {
+        id: "P057",
+        name: "DEFLECTOR ACEITE CIGÃœEÃ‘AL OM352",
+        brand: "Mercedes Benz",
+        code: "00324",
+        image: "img/products/om352/deflector-aceite-ciguenal-om352.jpg",
+        description: "Deflector de aceite para cigÃ¼eÃ±al, compatible con motores Mercedes Benz OM352. Pieza fundamental para el control del flujo de aceite y protecciÃ³n del sistema de lubricaciÃ³n."
+    },
+    {
+        id: "P058",
+        name: "BIELA MOTOR OM352",
+        brand: "Mercedes Benz",
+        code: "3410307220",
+        image: "img/products/om352/biela-motor-om352.jpg",
+        description: "Biela de motor para Mercedes Benz OM352. Fabricada con acero forjado de alta resistencia para soportar las exigencias de la combustiÃ³n diÃ©sel. Calidad original garantizada."
+    },
+    {
+        id: "P059",
+        name: "BULON CONTRAPESO CIGÃœEÃ‘AL CORTO 12x45 OM352",
+        brand: "Mercedes Benz",
+        code: "3520310071",
+        image: "img/products/om352/bulon-contrapeso-ciguenal-corto-om352.jpg",
+        description: "BulÃ³n corto para contrapeso de cigÃ¼eÃ±al, medida 12x45mm. Compatible con motores Mercedes Benz OM352. Pieza de alta resistencia esencial para el equilibrado dinÃ¡mico del conjunto motor."
+    },
+    {
+        id: "P060",
+        name: "BULON BIELA MOTOR PASANTE 14x81 OM352",
+        brand: "Mercedes Benz",
+        code: "3520382271",
+        image: "img/products/om352/bulon-biela-pasante-om352.jpg",
+        description: "BulÃ³n pasante de biela de motor, medida 14x81mm. Compatible con motores Mercedes Benz OM352. Fabricado con acero de alta resistencia para garantizar la integridad mecÃ¡nica de la biela."
+    },
+    {
+        id: "P061",
+        name: "RETEN BANCADA (JUEGO EMPAQUETADURA) OM352 (SABO) 1114",
+        brand: "Mercedes Benz",
+        code: "0009979641 / 0019973141",
+        image: "img/products/om352/reten-bancada-om352-sabo.jpg",
+        description: "Juego de empaquetadura (retÃ©n de bancada) marca SABO para motores Mercedes Benz OM352, especialmente para camiones 1114. Calidad reconocida para un sellado duradero del motor."
+    },
+    {
+        id: "P062",
+        name: "PORTA RULEMAN CIGÃœEÃ‘AL OM352",
+        brand: "Mercedes Benz",
+        code: "3120310533",
+        image: "img/products/om352/porta-ruleman-ciguenal-om352.jpg",
+        description: "Porta ruleman de cigÃ¼eÃ±al para motores Mercedes Benz OM352. Pieza de precisiÃ³n fabricada para alojar el rodamiento del cigÃ¼eÃ±al and asegurar su correcta alineaciÃ³n."
+    },
+    {
+        id: "P063",
+        name: "BULON BIELA MOTOR PRISIONERO 15x60 OM352",
+        brand: "Mercedes Benz",
+        code: "3520382771",
+        image: "img/products/om352/bulon-biela-prisionero-om352.jpg",
+        description: "BulÃ³n prisionero de biela de motor, medida 15x60mm. Compatible with motores Mercedes Benz OM352. Fabricado con acero de alta resistencia para un ajuste seguro and duradero."
+    },
+    {
+        id: "P064",
+        name: "TUERCA BULON BIELA OM352",
+        brand: "Mercedes Benz",
+        code: "3520380572",
+        image: "img/products/om352/tuerca-bulon-biela-om352.jpg",
+        description: "Tuerca de seguridad para bulÃ³n de biela, compatible con motores Mercedes Benz OM352. DiseÃ±ada para soportar altas tensiones and asegurar el correcto cierre de la biela."
+    },
+    {
+        id: "P065",
+        name: "ORING CAMISA PORTA INYECTOR (30.8x3.7) OM352/366",
+        brand: "Mercedes Benz",
+        code: "0169978248",
+        image: "img/products/om352/oring-camisa-inyector-om352.jpg",
+        description: "O-ring para camisa porta inyector, medida 30.8x3.7mm. Compatible con motores Mercedes Benz OM352 y OM366. Fabricado en material resistente a altas temperaturas and combustibles para un sellado estanco."
+    },
+    {
+        id: "P066",
+        name: "CARCAZA DISTRIBUCION ORIGINAL OM352/366",
+        brand: "Mercedes Benz",
+        code: "00334",
+        image: "img/products/om352/carcaza-distribucion-om352.jpg",
+        description: "Carcaza de distribuciÃ³n original para motores Mercedes Benz OM352 y OM366. Pieza estructural de alta calidad que aloja and protege los engranajes de la distribuciÃ³n."
+    },
+    {
+        id: "P067",
+        name: "TAPON TAPA CILINDRO (C/HEMBRA) OM352",
+        brand: "Mercedes Benz",
+        code: "3120160061",
+        image: "img/products/om352/tapon-tapa-cilindro-om352-hembra.jpg",
+        description: "TapÃ³n para tapa de cilindro con encastre hembra, compatible con motores Mercedes Benz OM352. Fabricado con materiales resistentes a la presiÃ³n and temperatura del sistema de refrigeraciÃ³n/aceite."
+    },
+    {
+        id: "P068",
+        name: "BULON TAPA VALVULAS 8X45 (CORTO) OM352",
+        brand: "Mercedes Benz",
+        code: "3529900619 / 3229900019 / 3449907019",
+        image: "img/products/om352/bulon-tapa-valvulas-om352-corto.jpg",
+        description: "BulÃ³n corto para tapa de vÃ¡lvulas, medida 8x45mm. Compatible with motores Mercedes Benz OM352. Incluye arandela integrada para un sellado Ã³ptimo and distribuciÃ³n de la presiÃ³n."
+    },
+    {
+        id: "P069",
+        name: "BULON TAPA VALVULAS 8X105 (LARGO) (x2) OM352",
+        brand: "Mercedes Benz",
+        code: "914008008002",
+        image: "img/products/om352/bulon-tapa-valvulas-om352-largo.jpg",
+        description: "BulÃ³n largo para tapa de vÃ¡lvulas, medida 8x105mm. Compatible with motores Mercedes Benz OM352. Se comercializa por par (2 unidades) para fijaciÃ³n de las zonas que requieren mayor longitud."
+    },
+    {
+        id: "P070",
+        name: "TAPA DISTRIBUCION ALUMINIO OM352",
+        brand: "Mercedes Benz",
+        code: "3520150201",
+        image: "img/products/om352/tapa-distribucion-aluminio-om352.jpg",
+        description: "Tapa de distribuciÃ³n fabricada en aluminio de alta calidad para motores Mercedes Benz OM352. DiseÃ±ada para un ajuste perfecto and excelente disipaciÃ³n de calor, protegiendo los componentes internos."
+    },
+    {
+        id: "P071",
+        name: "CAMISA PORTA INYECTOR OM352/366",
+        brand: "Mercedes Benz",
+        code: "3520170053",
+        image: "img/products/om352/camisa-porta-inyector-om352.jpg",
+        description: "Camisa porta inyector para motores Mercedes Benz OM352 y OM366. Fabricada con materiales de alta precisiÃ³n para asegurar el correcto alojamiento and refrigeraciÃ³n del inyector en la tapa de cilindro."
+    },
+    {
+        id: "P072",
+        name: "TAPON BLOCK CANAL ACEITE OM352",
+        brand: "Mercedes Benz",
+        code: "3520110335",
+        image: "img/products/om352/tapon-block-aceite-om352.jpg",
+        description: "TapÃ³n para block de motor, especÃfico para el canal de aceite. Compatible with motores Mercedes Benz OM352. Pieza fundamental para el sellado hermÃ©tico del circuito de lubricaciÃ³n principal."
+    },
+    {
+        id: "P073",
+        name: "TAPA SUPERIOR VALVULA (OM352) OH1314",
+        brand: "Mercedes Benz",
+        code: "3440108030",
+        image: "img/products/om352/tapa-valvulas-om352-oh1314.jpg",
+        description: "Tapa superior de vÃ¡lvulas para motores Mercedes Benz OM352, compatible with el modelo OH1314. Fabricada con materiales resistentes para un sellado perfecto de la parte superior del motor."
+    },
+    {
+        id: "P074",
+        name: "CARCAZA DISTRIBUCION ORIGINAL OM352/366",
+        brand: "Mercedes Benz",
+        code: "3520102033",
+        image: "img/products/om352/carcaza-distribucion-om352-v2.jpg",
+        description: "Carcaza de distribuciÃ³n original para motores Mercedes Benz OM352 y OM366. VersiÃ³n reforzada para un montaje preciso de los engranajes and bomba inyectora."
+    },
+    {
+        id: "P075",
+        name: "BULON CARTER LEGITIMO 8X20 OM352/366 (x2)",
+        brand: "Mercedes Benz",
+        code: "0039905801",
+        image: "img/products/om352/bulon-carter-om352.jpg",
+        description: "BulÃ³n legÃtimo para cÃ¡rter, medida 8x20mm. Compatible con motores Mercedes Benz OM352 y OM366. Se comercializa por par (2 unidades). Incluye arandela de presiÃ³n para un ajuste seguro y evitar filtraciones."
+    },
+    {
+        id: "P076",
+        name: "ESPARRAGO CARTER 8X20 OM352/366",
+        brand: "Mercedes Benz",
+        code: "000939008083",
+        image: "img/products/om352/esparrago-carter-om352.jpg",
+        description: "EspÃ¡rrago para cÃ¡rter medida 8x20mm. Compatible con motores Mercedes Benz OM352 y OM366. Pieza de sujeciÃ³n de alta resistencia fabricada en acero endurecido para un montaje seguro del cÃ¡rter."
+    },
+    {
+        id: "P077",
+        name: "PERNO GUIA TAPA BANCADA 8.00 OM352",
+        brand: "Mercedes Benz",
+        code: "000007008101",
+        image: "img/products/om352/perno-guia-tapa-bancada-om352.jpg",
+        description: "Perno guÃa para tapa de bancada, medida 8.00mm. Compatible con motores Mercedes Benz OM352. Esencial para asegurar la alineaciÃ³n perfecta de las tapas de bancada durante el armado del motor."
+    },
+    {
+        id: "P078",
+        name: "VALVULA VENTEO ROSCADA ALTA 1518 OM352/366/447/457",
+        brand: "Mercedes Benz",
+        code: "0000185835 / 0000182935 / 0000183535",
+        image: "img/products/om352/valvula-venteo-om352-alta.jpg",
+        description: "VÃ¡lvula de venteo modelo roscada alta, compatible con motores Mercedes Benz 1518, OM352, OM366, OM447 y OM457. Pieza clave para la correcta ventilaciÃ³n del carter y control de presiÃ³n interna."
+    },
+    {
+        id: "P079",
+        name: "BULON TAPA DISTRIBUCION LEG.6X70 (x5) OM352/366",
+        brand: "Mercedes Benz",
+        code: "0039906301",
+        image: "img/products/om352/bulon-tapa-distribucion-om352-6x70.jpg",
+        description: "BulÃ³n legÃtimo para tapa de distribuciÃ³n, medida 6x70mm. Compatible con motores Mercedes Benz OM352 y OM366. Se comercializa por juego de 5 unidades. Incluye arandela para un sellado y sujeciÃ³n profesional."
+    },
+    {
+        id: "P080",
+        name: "BULON BANCADA BLOCK 15X121 OM352/366",
+        brand: "Mercedes Benz",
+        code: "3669900304",
+        image: "img/products/om352/bulon-bancada-om352.jpg",
+        description: "BulÃ³n de bancada para block, medida 15x121mm. Compatible con motores Mercedes Benz OM352 y OM366. Fabricado con acero de mÃ¡xima resistencia para asegurar la fijaciÃ³n crÃtica de las tapas de bancada del cigÃ¼eÃ±al."
+    },
+    {
+        id: "P081",
+        name: "TAPA BANCADA CENTRAL SEMITERM. OM352/366",
+        brand: "Mercedes Benz",
+        code: "3660100123",
+        image: "img/products/om352/tapa-bancada-central-om352.jpg",
+        description: "Tapa de bancada central en estado semi-terminado para un ajuste preciso. Compatible con motores Mercedes Benz OM352 y OM366. Pieza de fundiciÃ³n de alta calidad lista para el proceso final de rectificado."
+    },
+    {
+        id: "P082",
+        name: "BULON CARTER LEGITIMO 6X16 (x18) OM352/366",
+        brand: "Mercedes Benz",
+        code: "0039906001",
+        image: "img/products/om352/bulon-carter-om352-6x16.jpg",
+        description: "BulÃ³n legÃtimo para cÃ¡rter, medida 6x16mm. Compatible with motores Mercedes Benz OM352 and OM366. Se comercializa por juego de 18 unidades. Incluye arandela integrada para una fijaciÃ³n estanca and segura del cÃ¡rter."
+    },
+    {
+        id: "P083",
+        name: "CODO DESCARGA TURBO AL CARTER OM352A CHAPA",
+        brand: "Mercedes Benz",
+        code: "4961340022",
+        image: "img/products/om352/codo-descarga-turbo-om352-chapa.jpg",
+        description: "Codo de descarga de aceite de turbo hacia el cÃ¡rter, fabricado en chapa de alta resistencia. Compatible con motores Mercedes Benz OM352A. Pieza fundamental para el retorno eficiente del lubricante del turbo."
+    },
+    {
+        id: "P084",
+        name: "CODO DESCARGA TURBO AL CARTER OM352A",
+        brand: "Mercedes Benz",
+        code: "4961340022",
+        image: "img/products/om352/codo-descarga-turbo-om352-v2.jpg",
+        description: "Codo de descarga de aceite de turbo hacia el cÃ¡rter, compatible with motores Mercedes Benz OM352A. Pieza de alta durabilidad diseÃ±ada para asegurar el flujo constante de retorno de aceite al cÃ¡rter."
+    },
+    {
+        id: "P085",
+        name: "BULON TAPA DISTRIBUCION LEG.6X22 (x8) OM352/366",
+        brand: "Mercedes Benz",
+        code: "0039906501",
+        image: "img/products/om352/bulon-tapa-distribucion-om352-6x22.jpg",
+        description: "BulÃ³n legÃtimo para tapa de distribuciÃ³n, medida 6x22mm. Compatible with motores Mercedes Benz OM352 and OM366. Se comercializa por juego de 8 unidades. Incluye arandela para un sellado and sujeciÃ³n profesional."
+    },
+    {
+        id: "P086",
+        name: "CAÃ‘O SALIDA BOMBA D/H 1218/OM366/A/LA",
+        brand: "Mercedes Benz",
+        code: "3884608188",
+        image: "img/products/om366/cano-salida-bomba-om366.jpg",
+        description: "CaÃ±o de salida de bomba de direcciÃ³n hidrÃ¡ulica para Mercedes Benz 1218 con motor OM366/A/LA. Fabricado en acero de alta resistencia con acabado anticorrosivo para garantizar durabilidad en el sistema hidrÃ¡ulico."
+    },
+    {
+        id: "P087",
+        name: "COMPRESOR T/WABCO 75mm OM366",
+        brand: "Mercedes Benz",
+        code: "0031316301 / 0041315801 / 0031314801 / 4111418180 / 42338404850",
+        image: "img/products/om366/compresor-wabco-om366.jpg",
+        description: "Compresor de aire tipo WABCO de 75mm para motores Mercedes Benz OM366. Compatible con mÃºltiples modelos. Componente esencial del sistema de frenos neumÃ¡ticos, fabricado con estÃ¡ndares de alta calidad para garantizar presiÃ³n constante y seguridad en el frenado."
+    },
+    {
+        id: "P088",
+        name: "ELEM.H947/1 ACEITE OM366",
+        brand: "Mercedes Benz",
+        code: "3661800009",
+        image: "img/products/om366/elemento-aceite-om366.jpg",
+        description: "Elemento de filtro de aceite H947/1 para motores Mercedes Benz OM366. Filtro de alta eficiencia que garantiza la limpieza del aceite lubricante, protegiendo los componentes internos del motor contra el desgaste y prolongando su vida Ãºtil."
+    },
+    {
+        id: "P089",
+        name: "JUNTA T/CIL.OM366/6A I.A",
+        brand: "Mercedes Benz",
+        code: "3660160020",
+        image: "img/products/om366/junta-tapa-cilindro-om366.jpg",
+        description: "Junta de tapa de cilindro para motores Mercedes Benz OM366/6A. Fabricada con materiales de alta calidad resistentes a altas temperaturas y presiones. Garantiza un sellado hermÃ©tico perfecto entre la tapa de cilindros y el block del motor."
+    },
+    {
+        id: "P090",
+        name: "FILTRO ACEITE W1168/5 OM366 MANN (01835/1)",
+        brand: "Mercedes Benz",
+        code: "0031843301",
+        image: "img/products/om366/filtro-aceite-mann-om366.jpg",
+        description: "Filtro de aceite MANN W1168/5 (referencia 01835/1) para motores Mercedes Benz OM366. Filtro de rosca de alta eficiencia que garantiza la mÃ¡xima protecciÃ³n del motor. Calidad alemana MANN-FILTER para un rendimiento Ã³ptimo y durabilidad superior."
+    },
+    {
+        id: "P091",
+        name: "CONEXION DE REFRIGERACION 1621/OM366/366LA",
+        brand: "Mercedes Benz",
+        code: "3762007852 / 3762008352",
+        image: "img/products/om366/conexion-refrigeracion-om366.jpg",
+        description: "ConexiÃ³n de refrigeraciÃ³n para Mercedes Benz 1621 con motores OM366 y OM366LA. Pieza fundamental del sistema de enfriamiento que conecta las mangueras de refrigerante. Fabricada en material resistente a altas temperaturas y presiÃ³n del sistema."
+    },
+    {
+        id: "P092",
+        name: "TAPA SUPERIOR VALVULA C/VENTEO Y SIN ENTRADA DE ACEITE OM366",
+        brand: "Mercedes Benz",
+        code: "3660160605",
+        image: "img/products/om366/tapa-valvulas-om366.jpg",
+        description: "Tapa superior de vÃ¡lvulas con venteo y sin entrada de aceite para motores Mercedes Benz OM366. Fabricada en aluminio de alta calidad con acabado resistente. Incluye sistema de ventilaciÃ³n integrado para el control de gases del cÃ¡rter."
+    },
+    {
+        id: "P093",
+        name: "POLEA B/AGUA 3 CANALES REFORMA 196MM/152MM OM366 1215 ALUMINIO",
+        brand: "Mercedes Benz",
+        code: "3662020810",
+        image: "img/products/om366/polea-bomba-agua-om366.jpg",
+        description: "Polea de bomba de agua de 3 canales, versiÃ³n reforma, medidas 196mm/152mm. Fabricada en aluminio de alta resistencia para motores Mercedes Benz OM366 en modelo 1215. DiseÃ±o optimizado para el sistema de refrigeraciÃ³n y accesorios del motor."
+    },
+    {
+        id: "P094",
+        name: "JUNTA TAPA TERMOSTATO OM366",
+        brand: "Mercedes Benz",
+        code: "3662030280",
+        image: "img/products/om366/junta-tapa-termostato-om366.jpg",
+        description: "Junta de tapa de termostato para motores Mercedes Benz OM366. Fabricada en material resistente a altas temperaturas y refrigerante. Garantiza un sellado hermÃ©tico perfecto en la carcasa del termostato del sistema de refrigeraciÃ³n."
+    },
+    {
+        id: "P095",
+        name: "JGO.JUNTA T/REFRI.M/N. OM366",
+        brand: "Mercedes Benz",
+        code: "3661803765",
+        image: "img/products/om366/juego-juntas-tapa-refrigeracion-om366.jpg",
+        description: "Juego de juntas de tapa de refrigeraciÃ³n mÃºltiple/nueva para motores Mercedes Benz OM366. Incluye todas las juntas necesarias para el sistema de refrigeraciÃ³n. Fabricadas con materiales de alta calidad resistentes a altas temperaturas y refrigerante."
+    },
+    {
+        id: "P096",
+        name: "JTA.PALIER OM366/1517",
+        brand: "Mercedes Benz",
+        code: "3273560180",
+        image: "img/products/om366/junta-palier-om366.jpg",
+        description: "Junta de palier para motores Mercedes Benz OM366 y modelo 1517. Fabricada en material resistente al aceite de transmisiÃ³n. Garantiza un sellado perfecto en el conjunto del palier, evitando pÃ©rdidas de lubricante."
+    },
+    {
+        id: "P097",
+        name: "JGO.JUNTA CARTER OM366",
+        brand: "Mercedes Benz",
+        code: ">71184",
+        originalCode: "3660100580 3660100680",
+        image: "img/products/om366/juego-junta-carter-om366.jpg",
+        description: "Juego de juntas de cÃ¡rter para motores Mercedes Benz OM366. Incluye todas las juntas necesarias para el sellado perfecto del cÃ¡rter. Fabricadas con materiales de alta calidad resistentes al aceite y a las altas temperaturas, garantizando un sellado hermÃ©tico duradero."
+    },
+    {
+        id: "P098",
+        name: "JUNTA TAPA DISTRIBUCION CORCHO/GOMA/TELA OM366",
+        brand: "Mercedes Benz",
+        code: "3520150520",
+        image: "img/products/om366/junta-tapa-distribucion-om366.jpg",
+        description: "Junta de tapa de distribuciÃ³n fabricada en material compuesto de corcho/goma/tela para motores Mercedes Benz OM366. DiseÃ±ada para soportar altas temperaturas y presiÃ³n del aceite, garantizando un sellado hermÃ©tico perfecto entre la tapa y la carcasa de distribuciÃ³n."
+    },
+    {
+        id: "P099",
+        name: "JUNTA LATERAL BOT. T/VALV GOMA OM366",
+        brand: "Mercedes Benz",
+        code: "3520150160",
+        image: "img/products/om366/junta-lateral-tapa-valvulas-om366.jpg",
+        description: "Junta lateral de botador para tapa de vÃ¡lvulas fabricada en goma de alta calidad para motores Mercedes Benz OM366. DiseÃ±ada para sellar perfectamente el lateral de la tapa de vÃ¡lvulas, resistente al aceite y a las altas temperaturas del motor."
+    },
+    {
+        id: "P100",
+        name: "JUNTA TAPA VALV.SUPERIOR OM366",
+        brand: "Mercedes Benz",
+        code: "3660160321",
+        image: "img/products/om366/junta-tapa-valvulas-superior-om366.jpg",
+        description: "Junta de tapa de vÃ¡lvulas superior para motores Mercedes Benz OM366. Fabricada con materiales de alta calidad resistentes al aceite y a las altas temperaturas. Garantiza un sellado hermÃ©tico perfecto en la parte superior de la tapa de vÃ¡lvulas."
+    },
