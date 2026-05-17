@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="es">
 
 <head>
@@ -7,6 +7,7 @@
   <title>Zaleasy | Simplifica tu Gesti&oacute;n de Ventas Diarias</title>
   <meta name="description"
     content="Zaleasy es el software moderno y sencillo para llevar el control de tus ventas, gastos y cierres de caja. Todo en la nube. 100% Gratis." />
+  <meta name="theme-color" content="#0a0b10" />
 
   <!-- Open Graph / Facebook / WhatsApp -->
   <meta property="og:type" content="website" />
@@ -25,6 +26,8 @@
   <meta name="twitter:image" content="https://zaleasy.com/assets/logo.png" />
 
   <link rel="canonical" href="https://zaleasy.com/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="landing.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet" />
@@ -32,6 +35,21 @@
   <!-- Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6041920422141090"
     crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Zaleasy",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "description": "Software gratuito para registrar ventas, controlar gastos y hacer cierres de caja diarios.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+  </script>
 </head>
 
 <body>
@@ -82,6 +100,11 @@
           <a href="app.html" class="btn btn-primary btn-lg">Crear Cuenta Gratis <i
               class="fa-solid fa-arrow-right"></i></a>
           <a href="#features" class="btn btn-outline btn-lg">Ver Funciones</a>
+        </div>
+        <div class="hero-trust-row" aria-label="Beneficios clave">
+          <span><i class="fa-solid fa-credit-card"></i> Sin tarjeta</span>
+          <span><i class="fa-solid fa-download"></i> Sin instalaci&oacute;n</span>
+          <span><i class="fa-solid fa-file-export"></i> Exporta a CSV</span>
         </div>
         <div class="hero-stats">
           <div class="stat">
@@ -147,6 +170,23 @@
           <div class="stat-number" id="stat-cloud">0%</div>
           <div class="stat-label">En la Nube</div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="conversion-strip" aria-label="Resumen de valor">
+    <div class="container conversion-strip-grid">
+      <div>
+        <strong>Hecho para la caja real de cada d&iacute;a</strong>
+        <span>Ventas, gastos, efectivo, transferencias y cierres en una sola vista.</span>
+      </div>
+      <div>
+        <strong>Empieza en minutos</strong>
+        <span>No necesitas capacitaci&oacute;n, instalaciones ni planillas previas.</span>
+      </div>
+      <div>
+        <strong>Gratis de verdad</strong>
+        <span>La plataforma se sostiene con anuncios discretos, sin suscripciones obligatorias.</span>
       </div>
     </div>
   </section>
@@ -282,10 +322,10 @@
           <i class="fa-solid fa-briefcase"></i> Casos de Uso
         </span>
         <h2 style="font-size: 2.5rem; color: var(--text-main); margin-bottom: 1rem;">
-          Diseñado para tu industria
+          Dise&ntilde;ado para tu industria
         </h2>
         <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto; font-size: 1.05rem;">
-          Zaleasy es tan flexible que se adapta a cualquier negocio que necesite un control rápido y sin estrés.
+          Zaleasy es tan flexible que se adapta a cualquier negocio que necesite un control r&aacute;pido y sin estr&eacute;s.
         </p>
       </div>
 
@@ -296,8 +336,8 @@
           <div style="width: 60px; height: 60px; border-radius: 50%; background: rgba(255, 71, 87, 0.1); color: #ff4757; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 1.5rem;">
             <i class="fa-solid fa-utensils"></i>
           </div>
-          <h3 style="font-size: 1.2rem; color: var(--text-main); margin-bottom: 0.8rem;">Gastronomía y Foodtrucks</h3>
-          <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">Calcula el vuelto al instante, registra combos múltiples y fecha el cierre de caja rápido en la madrugada sin que falten billetes.</p>
+          <h3 style="font-size: 1.2rem; color: var(--text-main); margin-bottom: 0.8rem;">Gastronom&iacute;a y Foodtrucks</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">Calcula el vuelto al instante, registra combos m&uacute;ltiples y cierra caja r&aacute;pido al final del turno sin que falten billetes.</p>
         </div>
 
         <!-- Case 2 -->
@@ -305,8 +345,8 @@
           <div style="width: 60px; height: 60px; border-radius: 50%; background: rgba(0, 184, 212, 0.1); color: #00d2d3; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 1.5rem;">
             <i class="fa-solid fa-scissors"></i>
           </div>
-          <h3 style="font-size: 1.2rem; color: var(--text-main); margin-bottom: 0.8rem;">Barberías y Estéticas</h3>
-          <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">Lleva un registro de los clientes que más te compran, anota tus servicios y mira tu gráfica de los días más rentables de la semana.</p>
+          <h3 style="font-size: 1.2rem; color: var(--text-main); margin-bottom: 0.8rem;">Barber&iacute;as y Est&eacute;ticas</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">Lleva un registro de los clientes que m&aacute;s te compran, anota tus servicios y mira tus d&iacute;as m&aacute;s rentables de la semana.</p>
         </div>
 
         <!-- Case 3 -->
@@ -315,7 +355,7 @@
             <i class="fa-solid fa-shirt"></i>
           </div>
           <h3 style="font-size: 1.2rem; color: var(--text-main); margin-bottom: 0.8rem;">Tiendas de Ropa</h3>
-          <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">Genera recibos consolidados de varias prendas. Ingresa el nombre del cliente y sabe exactamente cuándo y qué vendiste cada temporada.</p>
+          <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">Genera recibos consolidados de varias prendas. Ingresa el nombre del cliente y sabe exactamente cu&aacute;ndo y qu&eacute; vendiste cada temporada.</p>
         </div>
 
         <!-- Case 4 -->
@@ -894,10 +934,10 @@
           <i class="fa-solid fa-scale-balanced"></i> Comparativa
         </span>
         <h2 style="font-size: 2.8rem; color: var(--text-main); margin-bottom: 1rem; font-weight: 800; line-height: 1.2;">
-          Deja atrás el <span style="color: #ff4757;">pasado</span>
+          Deja atr&aacute;s el <span style="color: #ff4757;">pasado</span>
         </h2>
         <p style="color: var(--text-muted); font-size: 1.1rem; margin: 0 auto; line-height: 1.6;">
-          Mira por qué miles de emprendedores están abandonando las libretas y las hojas de cálculo confusas.
+          Mira por qu&eacute; miles de emprendedores est&aacute;n abandonando las libretas y las hojas de c&aacute;lculo confusas.
         </p>
       </div>
 
@@ -905,7 +945,7 @@
         <table style="width: 100%; min-width: 700px; border-collapse: separate; border-spacing: 0; border-radius: 16px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.2);">
           <thead>
             <tr>
-              <th style="padding: 1.5rem; text-align: left; background: var(--bg-main); border-bottom: 2px solid var(--border-color); color: var(--text-muted); font-size: 1.1rem; width: 40%;">Característica</th>
+              <th style="padding: 1.5rem; text-align: left; background: var(--bg-main); border-bottom: 2px solid var(--border-color); color: var(--text-muted); font-size: 1.1rem; width: 40%;">Caracter&iacute;stica</th>
               <th style="padding: 1.5rem; text-align: center; background: rgba(255, 71, 87, 0.05); border-bottom: 2px solid var(--border-color); color: var(--text-main); font-size: 1.1rem; width: 20%;"><i class="fa-solid fa-book-open" style="color: #ff4757; margin-bottom: 6px; display: block; font-size: 1.5rem;"></i> Cuaderno</th>
               <th style="padding: 1.5rem; text-align: center; background: rgba(46, 213, 115, 0.05); border-bottom: 2px solid var(--border-color); color: var(--text-main); font-size: 1.1rem; width: 20%;"><i class="fa-solid fa-file-excel" style="color: #2ed573; margin-bottom: 6px; display: block; font-size: 1.5rem;"></i> Excel</th>
               <th style="padding: 1.5rem; text-align: center; background: rgba(108, 92, 231, 0.1); border-bottom: 2px solid var(--primary); border-top: 2px solid var(--primary); color: #fff; font-size: 1.3rem; width: 20%; position: relative;"><div style="position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--primary);"></div><img src="assets/logo.png" alt="Zaleasy" style="width: 30px; height: 30px; border-radius: 50%; display: block; margin: 0 auto 6px;"> Zaleasy</th>
@@ -915,20 +955,20 @@
             <tr>
               <td style="padding: 1.2rem 1.5rem; background: var(--bg-main); border-bottom: 1px solid var(--border-color); color: var(--text-main); font-weight: 500;">Registro desde el Celular</td>
               <td style="padding: 1.2rem; text-align: center; background: rgba(255, 71, 87, 0.02); border-bottom: 1px solid var(--border-color); color: var(--text-muted);"><i class="fa-solid fa-xmark" style="color: #ff4757;"></i> Impersonal</td>
-              <td style="padding: 1.2rem; text-align: center; background: rgba(46, 213, 115, 0.02); border-bottom: 1px solid var(--border-color); color: var(--text-muted);"><i class="fa-solid fa-triangle-exclamation" style="color: #ffa502;"></i> Difícil de leer</td>
+              <td style="padding: 1.2rem; text-align: center; background: rgba(46, 213, 115, 0.02); border-bottom: 1px solid var(--border-color); color: var(--text-muted);"><i class="fa-solid fa-triangle-exclamation" style="color: #ffa502;"></i> Dif&iacute;cil de leer</td>
               <td style="padding: 1.2rem; text-align: center; background: rgba(108, 92, 231, 0.05); border-bottom: 1px solid var(--border-color); border-left: 2px solid var(--primary); border-right: 2px solid var(--primary); font-weight: 700; color: #fff;"><i class="fa-solid fa-check" style="color: var(--success); margin-right: 6px;"></i> 100% Nativo</td>
             </tr>
             <tr>
-              <td style="padding: 1.2rem 1.5rem; background: var(--bg-main); border-bottom: 1px solid var(--border-color); color: var(--text-main); font-weight: 500;">Cálculo de balances/vueltos</td>
+              <td style="padding: 1.2rem 1.5rem; background: var(--bg-main); border-bottom: 1px solid var(--border-color); color: var(--text-main); font-weight: 500;">C&aacute;lculo de balances/vueltos</td>
               <td style="padding: 1.2rem; text-align: center; background: rgba(255, 71, 87, 0.02); border-bottom: 1px solid var(--border-color); color: var(--text-muted);"><i class="fa-solid fa-xmark" style="color: #ff4757;"></i> Calculadora manual</td>
-              <td style="padding: 1.2rem; text-align: center; background: rgba(46, 213, 115, 0.02); border-bottom: 1px solid var(--border-color); color: var(--text-muted);"><i class="fa-solid fa-triangle-exclamation" style="color: #ffa502;"></i> Requiere fórmulas</td>
-              <td style="padding: 1.2rem; text-align: center; background: rgba(108, 92, 231, 0.05); border-bottom: 1px solid var(--border-color); border-left: 2px solid var(--primary); border-right: 2px solid var(--primary); font-weight: 700; color: #fff;"><i class="fa-solid fa-bolt" style="color: #ffa502; margin-right: 6px;"></i> Instantáneo</td>
+              <td style="padding: 1.2rem; text-align: center; background: rgba(46, 213, 115, 0.02); border-bottom: 1px solid var(--border-color); color: var(--text-muted);"><i class="fa-solid fa-triangle-exclamation" style="color: #ffa502;"></i> Requiere f&oacute;rmulas</td>
+              <td style="padding: 1.2rem; text-align: center; background: rgba(108, 92, 231, 0.05); border-bottom: 1px solid var(--border-color); border-left: 2px solid var(--primary); border-right: 2px solid var(--primary); font-weight: 700; color: #fff;"><i class="fa-solid fa-bolt" style="color: #ffa502; margin-right: 6px;"></i> Instant&aacute;neo</td>
             </tr>
             <tr>
-              <td style="padding: 1.2rem 1.5rem; background: var(--bg-main); border-bottom: 1px solid var(--border-color); color: var(--text-main); font-weight: 500;">Gráficas de Venta Diarias</td>
+              <td style="padding: 1.2rem 1.5rem; background: var(--bg-main); border-bottom: 1px solid var(--border-color); color: var(--text-main); font-weight: 500;">Gr&aacute;ficas de Venta Diarias</td>
               <td style="padding: 1.2rem; text-align: center; background: rgba(255, 71, 87, 0.02); border-bottom: 1px solid var(--border-color); color: var(--text-muted);"><i class="fa-solid fa-xmark" style="color: #ff4757;"></i> Imposible</td>
               <td style="padding: 1.2rem; text-align: center; background: rgba(46, 213, 115, 0.02); border-bottom: 1px solid var(--border-color); color: var(--text-muted);"><i class="fa-solid fa-triangle-exclamation" style="color: #ffa502;"></i> Deben configurarse</td>
-              <td style="padding: 1.2rem; text-align: center; background: rgba(108, 92, 231, 0.05); border-bottom: 1px solid var(--border-color); border-left: 2px solid var(--primary); border-right: 2px solid var(--primary); font-weight: 700; color: #fff;"><i class="fa-solid fa-chart-column" style="color: #00d2d3; margin-right: 6px;"></i> Automáticas</td>
+              <td style="padding: 1.2rem; text-align: center; background: rgba(108, 92, 231, 0.05); border-bottom: 1px solid var(--border-color); border-left: 2px solid var(--primary); border-right: 2px solid var(--primary); font-weight: 700; color: #fff;"><i class="fa-solid fa-chart-column" style="color: #00d2d3; margin-right: 6px;"></i> Autom&aacute;ticas</td>
             </tr>
             <tr>
               <td style="padding: 1.2rem 1.5rem; background: var(--bg-main); border-bottom: 1px solid var(--border-color); color: var(--text-main); font-weight: 500;">Seguridad y Respaldo de datos</td>
@@ -938,7 +978,7 @@
             </tr>
             <tr>
               <td style="padding: 1.2rem 1.5rem; background: var(--bg-main); border-bottom: 1px solid var(--border-color); color: var(--text-main); font-weight: 500; border-bottom-left-radius: 16px;">Precio</td>
-              <td style="padding: 1.2rem; text-align: center; background: rgba(255, 71, 87, 0.02); border-bottom: 1px solid var(--border-color); color: var(--text-muted);">$ 2 USD (Físico)</td>
+              <td style="padding: 1.2rem; text-align: center; background: rgba(255, 71, 87, 0.02); border-bottom: 1px solid var(--border-color); color: var(--text-muted);">$ 2 USD (F&iacute;sico)</td>
               <td style="padding: 1.2rem; text-align: center; background: rgba(46, 213, 115, 0.02); border-bottom: 1px solid var(--border-color); color: var(--text-muted);">$ 6 USD / mes</td>
               <td style="padding: 1.2rem; text-align: center; background: rgba(108, 92, 231, 0.1); border-bottom: 2px solid var(--primary); border-left: 2px solid var(--primary); border-right: 2px solid var(--primary); border-bottom-right-radius: 16px; font-weight: 800; color: var(--success); font-size: 1.2rem;">GRATIS 100%</td>
             </tr>
@@ -956,10 +996,10 @@
           <i class="fa-solid fa-tag"></i> Planes y Precios
         </span>
         <h2 style="font-size: 2.8rem; color: var(--text-main); margin-bottom: 1rem; font-weight: 800; line-height: 1.2;">
-          El software de ventas <br/><span class="highlight">más accesible del mercado</span>
+          El software de ventas <br/><span class="highlight">m&aacute;s accesible del mercado</span>
         </h2>
         <p style="color: var(--text-muted); font-size: 1.1rem; margin: 0 auto; line-height: 1.6;">
-          Sin tarjetas de crédito. Sin pruebas de 14 días. Sin complicaciones.
+          Sin tarjetas de cr&eacute;dito. Sin pruebas de 14 d&iacute;as. Sin complicaciones.
         </p>
       </div>
 
@@ -968,7 +1008,7 @@
           
           <!-- Ribbon -->
           <div style="position: absolute; top: 20px; right: -40px; background: var(--success); color: white; padding: 0.5rem 4rem; transform: rotate(45deg); font-weight: 800; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; box-shadow: 0 5px 15px rgba(46, 213, 115, 0.3);">
-            Mejor Opción
+            Mejor Opci&oacute;n
           </div>
 
           <h3 style="font-size: 1.8rem; color: var(--text-main); margin-bottom: 0.5rem; font-weight: 700;">Plan "Emprendedor"</h3>
@@ -1050,7 +1090,7 @@
               padding: 1.2rem 2.5rem;
             ">
           <i class="fa-solid fa-rocket" style="margin-right: 0.5rem"></i>
-          �snete a la Revoluci&oacute;n Gratis
+          &Uacute;nete a la Revoluci&oacute;n Gratis
         </a>
       </div>
     </div>
@@ -1075,40 +1115,40 @@
 
       <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
         
-        <!-- Post 1: Embudos de Venta -->
-        <a href="Blog htmls/embudos-de-venta.html" style="text-decoration: none;">
+        <!-- Post 1: CAC -->
+        <a href="Blog htmls/costo-adquisicion-clientes.html" style="text-decoration: none;">
           <article style="background: var(--bg-card); border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); overflow: hidden; transition: transform 0.3s, box-shadow 0.3s;" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 15px 30px rgba(0,0,0,0.4)'; this.style.borderColor='rgba(108,92,231,0.3)';" onmouseout="this.style.transform=''; this.style.boxShadow=''; this.style.borderColor='rgba(255,255,255,0.05)';">
-            <div style="height: 200px; background: url('assets/Blog imagenes/Embudos de Venta.jpeg') center/cover;"></div>
+            <div style="height: 200px; background: url('assets/Blog imagenes/costo-adquisicion-clientes.png') center/cover;"></div>
             <div style="padding: 1.6rem;">
-              <span style="background: var(--primary-light); color: #a29bfe; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Automatizaci&oacute;n</span>
-              <h3 style="font-size: 1.15rem; font-weight: 700; margin: 0.9rem 0 0.5rem; line-height: 1.4; color: var(--text-main);">Embudos de Venta: C&oacute;mo Automatizar tus Ventas y Generar Ingresos Mientras Duermes</h3>
-              <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem;">El sistema m&aacute;s poderoso que puede tener un negocio digital. Descubre sus 4 etapas clave.</p>
+              <span style="background: var(--primary-light); color: #a29bfe; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Finanzas</span>
+              <h3 style="font-size: 1.15rem; font-weight: 700; margin: 0.9rem 0 0.5rem; line-height: 1.4; color: var(--text-main);">Costo de Adquisici&oacute;n de Clientes: Cu&aacute;nto te Cuesta Vender</h3>
+              <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem;">Calcula cu&aacute;nto inviertes para conseguir cada cliente y si tus ventas nuevas realmente dejan margen.</p>
               <span style="color: var(--primary); font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.4rem;">Leer art&iacute;culo <i class="fa-solid fa-arrow-right" style="font-size: 0.8rem;"></i></span>
             </div>
           </article>
         </a>
 
-        <!-- Post 2: Email Marketing -->
-        <a href="Blog htmls/email-marketing-para-ventas.html" style="text-decoration: none;">
+        <!-- Post 2: Cotizaciones Abandonadas -->
+        <a href="Blog htmls/recuperar-cotizaciones-abandonadas.html" style="text-decoration: none;">
           <article style="background: var(--bg-card); border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); overflow: hidden; transition: transform 0.3s, box-shadow 0.3s;" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 15px 30px rgba(0,0,0,0.4)'; this.style.borderColor='rgba(108,92,231,0.3)';" onmouseout="this.style.transform=''; this.style.boxShadow=''; this.style.borderColor='rgba(255,255,255,0.05)';">
-            <div style="height: 200px; background: url('assets/Blog imagenes/Email Marketing para Ventas.jpeg') center/cover;"></div>
+            <div style="height: 200px; background: url('assets/Blog imagenes/recuperar-cotizaciones-abandonadas.png') center/cover;"></div>
             <div style="padding: 1.6rem;">
-              <span style="background: var(--primary-light); color: #a29bfe; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Email Marketing</span>
-              <h3 style="font-size: 1.15rem; font-weight: 700; margin: 0.9rem 0 0.5rem; line-height: 1.4; color: var(--text-main);">Email Marketing para Ventas: C&oacute;mo Convertir tu Lista en una M&aacute;quina de Ingresos</h3>
-              <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem;">El email sigue siendo el canal con mayor retorno. Aprende a usarlo correctamente.</p>
+              <span style="background: var(--primary-light); color: #a29bfe; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Seguimiento</span>
+              <h3 style="font-size: 1.15rem; font-weight: 700; margin: 0.9rem 0 0.5rem; line-height: 1.4; color: var(--text-main);">Cotizaciones Abandonadas: C&oacute;mo Recuperar Ventas que Quedaron a Medio Camino</h3>
+              <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem;">Recupera oportunidades pendientes con una rutina simple de seguimiento sin sonar insistente.</p>
               <span style="color: var(--primary); font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.4rem;">Leer art&iacute;culo <i class="fa-solid fa-arrow-right" style="font-size: 0.8rem;"></i></span>
             </div>
           </article>
         </a>
 
-        <!-- Post 3: Copywriting -->
-        <a href="Blog htmls/copywriting-para-ventas.html" style="text-decoration: none;">
+        <!-- Post 3: Paquetes de Precios -->
+        <a href="Blog htmls/paquetes-de-precios-rentables.html" style="text-decoration: none;">
           <article style="background: var(--bg-card); border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); overflow: hidden; transition: transform 0.3s, box-shadow 0.3s;" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 15px 30px rgba(0,0,0,0.4)'; this.style.borderColor='rgba(108,92,231,0.3)';" onmouseout="this.style.transform=''; this.style.boxShadow=''; this.style.borderColor='rgba(255,255,255,0.05)';">
-            <div style="height: 200px; background: url('assets/Blog imagenes/copywriting-para-ventas.jpg') center/cover;"></div>
+            <div style="height: 200px; background: url('assets/Blog imagenes/paquetes-de-precios-rentables.png') center/cover;"></div>
             <div style="padding: 1.6rem;">
-              <span style="background: var(--primary-light); color: #a29bfe; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Copywriting</span>
-              <h3 style="font-size: 1.15rem; font-weight: 700; margin: 0.9rem 0 0.5rem; line-height: 1.4; color: var(--text-main);">Copywriting para Ventas: C&oacute;mo Escribir Palabras que Convierten Lectores en Compradores</h3>
-              <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem;">Las palabras correctas venden. Descubre c&oacute;mo elegirlas para aumentar tus conversiones.</p>
+              <span style="background: var(--primary-light); color: #a29bfe; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Precios</span>
+              <h3 style="font-size: 1.15rem; font-weight: 700; margin: 0.9rem 0 0.5rem; line-height: 1.4; color: var(--text-main);">Paquetes de Precios Rentables: C&oacute;mo Armar Ofertas que Venden Mejor</h3>
+              <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem;">Dise&ntilde;a paquetes claros para facilitar la compra, aumentar valor percibido y proteger tu rentabilidad.</p>
               <span style="color: var(--primary); font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.4rem;">Leer art&iacute;culo <i class="fa-solid fa-arrow-right" style="font-size: 0.8rem;"></i></span>
             </div>
           </article>
@@ -1141,7 +1181,7 @@
         </p>
       </div>
       <div class="footer-links">
-        <h4>Enlaces �stiles</h4>
+        <h4>Enlaces &Uacute;tiles</h4>
         <a href="app.html">Iniciar Sesi&oacute;n</a>
         <a href="blog.html">Blog</a>
         <a href="index.html#features">Caracter&iacute;sticas</a>
@@ -1232,3 +1272,5 @@
 </body>
 
 </html>
+
+
