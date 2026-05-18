@@ -116,6 +116,133 @@
       transform: translateY(-3px);
     }
 
+    .filter-count {
+      margin-left: 0.45rem;
+      padding: 0.08rem 0.45rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      color: inherit;
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    .blog-search-meta {
+      margin-top: 0.9rem;
+      color: rgba(255,255,255,0.62);
+      font-size: 0.9rem;
+      min-height: 1.3rem;
+    }
+
+    .blog-quick-nav {
+      padding: 2.8rem 0 0;
+    }
+
+    .quick-nav-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.4rem;
+      flex-wrap: wrap;
+    }
+
+    .quick-nav-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      background: rgba(0, 210, 211, 0.12);
+      color: #00d2d3;
+      border: 1px solid rgba(0, 210, 211, 0.24);
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.7rem;
+    }
+
+    .quick-nav-title {
+      margin: 0;
+      color: var(--text-main);
+      font-size: 1.8rem;
+      line-height: 1.2;
+      font-weight: 800;
+    }
+
+    .quick-nav-subtitle {
+      max-width: 430px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin: 0;
+      text-align: right;
+    }
+
+    .quick-nav-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .quick-nav-card {
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(25,23,45,0.58);
+      border-radius: 16px;
+      padding: 1.2rem;
+      min-height: 152px;
+      text-align: left;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+    }
+
+    .quick-nav-card:hover,
+    .quick-nav-card:focus-visible {
+      transform: translateY(-4px);
+      border-color: rgba(162,155,254,0.45);
+      background: rgba(35,32,62,0.78);
+      outline: none;
+    }
+
+    .quick-nav-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+
+    .quick-nav-card strong {
+      display: block;
+      color: var(--text-main);
+      font-size: 1rem;
+      line-height: 1.35;
+      margin-bottom: 0.45rem;
+    }
+
+    .quick-nav-card span {
+      color: var(--text-muted);
+      font-size: 0.86rem;
+      line-height: 1.5;
+    }
+
+    .quick-nav-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      color: #a29bfe;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-top: 1rem;
+    }
+
     /* Specific Blog Styles */
     .blog-header {
       padding: 6rem 0 3rem;
@@ -741,6 +868,18 @@
         flex-shrink: 0;
         scroll-snap-align: start;
       }
+      .quick-nav-header {
+        align-items: flex-start;
+      }
+      .quick-nav-subtitle {
+        text-align: left;
+      }
+      .quick-nav-grid {
+        grid-template-columns: 1fr;
+      }
+      .quick-nav-card {
+        min-height: auto;
+      }
       .blog-stats-strip {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -837,7 +976,7 @@
     <div class="container">
       <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 0.5rem;">
         <span class="article-count-badge" id="articleCountBadge" style="animation: pulse-badge 2s infinite; margin-bottom: 1rem;">
-          <i class="fa-solid fa-newspaper"></i> <span id="articleCountNum">27</span> art&iacute;culos publicados
+          <i class="fa-solid fa-newspaper"></i> <span id="articleCountNum">97</span> art&iacute;culos publicados
         </span>
         <h1 class="animated-gradient-text" style="display: inline-block; font-size: 4rem; letter-spacing: -1px; margin: 0;">Blog de Zaleasy</h1>
       </div>
@@ -848,61 +987,68 @@
       
       <!-- Search Bar -->
       <div style="margin-top: 2rem; max-width: 500px; margin-left: auto; margin-right: auto; position: relative;">
-        <input type="text" id="blogSearch" placeholder="Buscar art&iacute;culos, palabras clave..." class="glass-search-input" onkeyup="searchBlog()">
+        <input type="search" id="blogSearch" placeholder="Buscar art&iacute;culos, palabras clave..." class="glass-search-input" oninput="searchBlog()" autocomplete="off" aria-label="Buscar art&iacute;culos del blog">
         <i class="fa-solid fa-magnifying-glass search-icon"></i>
       </div>
+      <div class="blog-search-meta" id="blogSearchMeta" aria-live="polite"></div>
 
       <!-- Category Filters -->
       <div class="blog-filters-container" style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-        <button class="glass-filter-btn active" onclick="filterBlog('all', this)">Todos</button>
-        <button class="glass-filter-btn" onclick="filterBlog('ventas', this)">Ventas</button>
-        <button class="glass-filter-btn" onclick="filterBlog('marketing', this)">Marketing</button>
-        <button class="glass-filter-btn" onclick="filterBlog('finanzas', this)">Finanzas</button>
-        <button class="glass-filter-btn" onclick="filterBlog('tecnologia', this)">Tecnolog&iacute;a</button>
-        <button class="glass-filter-btn" onclick="filterBlog('motivacion', this)">Motivaci&oacute;n</button>
+        <button class="glass-filter-btn active" data-filter="all" onclick="filterBlog('all', this)">Todos <span class="filter-count">0</span></button>
+        <button class="glass-filter-btn" data-filter="ventas" onclick="filterBlog('ventas', this)">Ventas <span class="filter-count">0</span></button>
+        <button class="glass-filter-btn" data-filter="marketing" onclick="filterBlog('marketing', this)">Marketing <span class="filter-count">0</span></button>
+        <button class="glass-filter-btn" data-filter="finanzas" onclick="filterBlog('finanzas', this)">Finanzas <span class="filter-count">0</span></button>
+        <button class="glass-filter-btn" data-filter="productividad" onclick="filterBlog('productividad', this)">Productividad <span class="filter-count">0</span></button>
+        <button class="glass-filter-btn" data-filter="tecnologia" onclick="filterBlog('tecnologia', this)">Tecnolog&iacute;a <span class="filter-count">0</span></button>
+        <button class="glass-filter-btn" data-filter="motivacion" onclick="filterBlog('motivacion', this)">Motivaci&oacute;n <span class="filter-count">0</span></button>
       </div>
     </div>
   </header>
 
   <script>
+    let activeBlogCategory = 'all';
+    const normalizeBlogText = value => (value || '')
+      .toString()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase();
+
     function filterBlog(category, btnElement) {
-      document.getElementById('blogSearch').value = "";
+      activeBlogCategory = category;
+      const search = document.getElementById('blogSearch');
+      if (search) search.value = "";
 
       const buttons = document.querySelectorAll('header.blog-header button');
       buttons.forEach(btn => btn.classList.remove('active'));
-      btnElement.classList.add('active');
+      if (btnElement) btnElement.classList.add('active');
 
-      const cards = document.querySelectorAll('.blog-card:not(.coming-soon)');
-      let visibleCount = 0;
-      cards.forEach(card => {
-        const cats = card.dataset.category || '';
-        const matches = category === 'all' || cats.includes(category);
-        if (matches) {
-          card.style.display = 'flex';
-          card.classList.remove('fadeInScale');
-          void card.offsetWidth;
-          card.classList.add('fadeInScale');
-          visibleCount++;
-        } else {
-          card.style.display = 'none';
-        }
-      });
-      updateCount(visibleCount);
-      const noResults = document.getElementById('noResults');
-      if (noResults) noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+      applyBlogFilters();
     }
 
     function searchBlog() {
+      activeBlogCategory = 'all';
       const buttons = document.querySelectorAll('header.blog-header button');
-      buttons.forEach(btn => btn.classList.remove('active'));
-      buttons[0].classList.add('active');
+      buttons.forEach(btn => btn.classList.toggle('active', btn.dataset.filter === 'all'));
 
-      const input = document.getElementById('blogSearch').value.toLowerCase();
+      applyBlogFilters();
+    }
+
+    function applyBlogFilters() {
+      const input = normalizeBlogText(document.getElementById('blogSearch')?.value || '');
       const cards = document.querySelectorAll('.blog-card:not(.coming-soon)');
       let visibleCount = 0;
+
       cards.forEach(card => {
-        const text = card.innerText.toLowerCase();
-        if (text.includes(input)) {
+        const cats = normalizeBlogText(card.dataset.category || '');
+        const title = card.querySelector('h3')?.textContent || '';
+        const excerpt = card.querySelector('p')?.textContent || '';
+        const categoryLabel = card.querySelector('.blog-category')?.textContent || '';
+        const href = card.querySelector('a[href]')?.getAttribute('href') || '';
+        const searchableText = normalizeBlogText([title, excerpt, categoryLabel, cats, href].join(' '));
+        const categoryMatches = activeBlogCategory === 'all' || cats.split(/\s+/).includes(activeBlogCategory);
+        const searchMatches = !input || searchableText.includes(input);
+
+        if (categoryMatches && searchMatches) {
           card.style.display = 'flex';
           card.classList.remove('fadeInScale');
           void card.offsetWidth;
@@ -912,9 +1058,11 @@
           card.style.display = 'none';
         }
       });
+
       updateCount(visibleCount);
       const noResults = document.getElementById('noResults');
       if (noResults) noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+      updateSearchMeta(visibleCount, cards.length, input);
     }
 
     function updateCount(n) {
@@ -922,10 +1070,44 @@
       if (el) el.textContent = n;
     }
 
+    function updateSearchMeta(visible, total, input) {
+      const meta = document.getElementById('blogSearchMeta');
+      if (!meta) return;
+      if (input) {
+        meta.textContent = `${visible} resultado${visible === 1 ? '' : 's'} para tu busqueda`;
+      } else if (activeBlogCategory !== 'all') {
+        meta.textContent = `${visible} articulo${visible === 1 ? '' : 's'} en esta categoria`;
+      } else {
+        meta.textContent = `${total} articulos listos para leer`;
+      }
+    }
+
+    function updateFilterCounts() {
+      const cards = Array.from(document.querySelectorAll('.blog-card:not(.coming-soon)'));
+      document.querySelectorAll('.glass-filter-btn[data-filter]').forEach(btn => {
+        const filter = btn.dataset.filter;
+        const countEl = btn.querySelector('.filter-count');
+        const count = filter === 'all'
+          ? cards.length
+          : cards.filter(card => normalizeBlogText(card.dataset.category || '').split(/\s+/).includes(filter)).length;
+        if (countEl) countEl.textContent = count;
+      });
+    }
+
+    function jumpToBlogCategory(category) {
+      const btn = document.querySelector(`.glass-filter-btn[data-filter="${category}"]`) || document.querySelector('.glass-filter-btn[data-filter="all"]');
+      filterBlog(category, btn);
+      document.getElementById('blogArticles')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
     // Init count on load
     window.addEventListener('DOMContentLoaded', () => {
       const total = document.querySelectorAll('.blog-card:not(.coming-soon)').length;
       updateCount(total);
+      const totalStat = document.getElementById('articleTotalStat');
+      if (totalStat) totalStat.textContent = total;
+      updateFilterCounts();
+      updateSearchMeta(total, total, '');
 
       // ── Scroll-reveal with IntersectionObserver ──
       const observer = new IntersectionObserver((entries) => {
@@ -957,7 +1139,7 @@
         <i class="fa-solid fa-newspaper"></i>
       </div>
       <div class="blog-stat-text">
-        <strong>37</strong>
+        <strong id="articleTotalStat">97</strong>
         <span>Art&iacute;culos en total</span>
       </div>
     </div>
@@ -966,7 +1148,7 @@
         <i class="fa-regular fa-clock"></i>
       </div>
       <div class="blog-stat-text">
-        <strong>~60</strong>
+        <strong id="readingMinutesStat">690+</strong>
         <span>Minutos de lectura</span>
       </div>
     </div>
@@ -989,6 +1171,54 @@
       </div>
     </div>
   </div>
+
+  <section class="container blog-quick-nav" aria-labelledby="quickNavTitle">
+    <div class="quick-nav-header">
+      <div>
+        <span class="quick-nav-eyebrow"><i class="fa-solid fa-compass"></i> Guia de lectura</span>
+        <h2 class="quick-nav-title" id="quickNavTitle">Encuentra el articulo que necesitas hoy</h2>
+      </div>
+      <p class="quick-nav-subtitle">Elige por objetivo y salta directo a una seleccion mas precisa de contenidos.</p>
+    </div>
+
+    <div class="quick-nav-grid">
+      <button class="quick-nav-card" type="button" onclick="jumpToBlogCategory('ventas')">
+        <span>
+          <span class="quick-nav-icon" style="background:rgba(108,92,231,0.16);color:#a29bfe;"><i class="fa-solid fa-handshake"></i></span>
+          <strong>Quiero vender mas</strong>
+          <span>Cierres, objeciones, seguimiento, WhatsApp y tecnicas para convertir mejor.</span>
+        </span>
+        <span class="quick-nav-link">Ver ventas <i class="fa-solid fa-arrow-right"></i></span>
+      </button>
+
+      <button class="quick-nav-card" type="button" onclick="jumpToBlogCategory('finanzas')">
+        <span>
+          <span class="quick-nav-icon" style="background:rgba(46,213,115,0.14);color:#2ed573;"><i class="fa-solid fa-chart-line"></i></span>
+          <strong>Quiero ordenar mis numeros</strong>
+          <span>Margen, caja, presupuesto, costos y decisiones rentables para el negocio.</span>
+        </span>
+        <span class="quick-nav-link">Ver finanzas <i class="fa-solid fa-arrow-right"></i></span>
+      </button>
+
+      <button class="quick-nav-card" type="button" onclick="jumpToBlogCategory('marketing')">
+        <span>
+          <span class="quick-nav-icon" style="background:rgba(0,184,212,0.14);color:#00d2d3;"><i class="fa-solid fa-bullhorn"></i></span>
+          <strong>Quiero atraer mejores clientes</strong>
+          <span>Copywriting, contenido, embudos, oferta, marca personal y prueba social.</span>
+        </span>
+        <span class="quick-nav-link">Ver marketing <i class="fa-solid fa-arrow-right"></i></span>
+      </button>
+
+      <button class="quick-nav-card" type="button" onclick="jumpToBlogCategory('productividad')">
+        <span>
+          <span class="quick-nav-icon" style="background:rgba(255,165,2,0.14);color:#ffa502;"><i class="fa-solid fa-list-check"></i></span>
+          <strong>Quiero trabajar con mas foco</strong>
+          <span>Rutinas, metas, seguimiento comercial, inventario y gestion diaria sin caos.</span>
+        </span>
+        <span class="quick-nav-link">Ver productividad <i class="fa-solid fa-arrow-right"></i></span>
+      </button>
+    </div>
+  </section>
 
   <!-- Ad Banner -->
   <div class="ad-banner" aria-label="Publicidad">
@@ -1412,7 +1642,7 @@
 
   <!-- Blog Articles Grid -->
 
-  <section class="container">
+  <section class="container" id="blogArticles">
     <div class="blog-grid">
       
       <!-- Empty State for Search -->
@@ -1422,6 +1652,168 @@
         <p style="color: var(--text-muted); font-size: 1.05rem;">Intenta buscando con otras palabras clave o explora todas las categor&iacute;as.</p>
         <button onclick="filterBlog('all', document.querySelectorAll('header.blog-header button')[0])" class="btn btn-primary" style="margin-top: 1.5rem; padding: 0.6rem 1.5rem; border-radius: 20px;">Ver todos los art&iacute;culos</button>
       </div>
+
+      <!-- Article Estrategias de Ventas Efectivas -->
+      <article class="blog-card" data-category="ventas marketing productividad">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/estrategias-ventas-efectivas-aumentar-ingresos.png') center/cover; height: 220px;">
+          <span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span>
+        </div>
+        <div class="blog-card-content">
+          <span class="blog-category">Estrategias de Ventas</span>
+          <h3>Estrategias de Ventas Efectivas para Aumentar los Ingresos de un Negocio</h3>
+          <p>
+            Aprende a entender mejor al cliente, mejorar tu propuesta de valor, combinar t&eacute;cnicas modernas y tradicionales, y cerrar m&aacute;s ventas.
+          </p>
+          <div class="blog-footer-meta" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+            <a href="Blog htmls/estrategias-de-ventas-efectivas-aumentar-ingresos.html" class="btn-read-more" style="color: var(--primary); font-weight: 600; text-decoration: none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a>
+            <span style="font-size: 0.85rem; color: var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article Psicologia del Consumidor -->
+      <article class="blog-card" data-category="ventas marketing motivacion">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/psicologia-consumidor-vender-mas.png') center/cover; height: 220px;">
+          <span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span>
+        </div>
+        <div class="blog-card-content">
+          <span class="blog-category">Psicolog&iacute;a</span>
+          <h3>C&oacute;mo Vender M&aacute;s Usando Psicolog&iacute;a del Consumidor</h3>
+          <p>
+            Descubre c&oacute;mo aplicar urgencia, escasez, prueba social, autoridad, confianza y deseo para facilitar decisiones de compra.
+          </p>
+          <div class="blog-footer-meta" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+            <a href="Blog htmls/como-vender-mas-usando-psicologia-del-consumidor.html" class="btn-read-more" style="color: var(--primary); font-weight: 600; text-decoration: none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a>
+            <span style="font-size: 0.85rem; color: var(--text-muted);"><i class="fa-regular fa-clock"></i> 10 min</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article Errores Comunes en Ventas -->
+      <article class="blog-card" data-category="ventas productividad">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/errores-comunes-ventas-perder-clientes.png') center/cover; height: 220px;">
+          <span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span>
+        </div>
+        <div class="blog-card-content">
+          <span class="blog-category">Errores de Ventas</span>
+          <h3>Errores Comunes en Ventas que Hacen Perder Clientes y C&oacute;mo Evitarlos</h3>
+          <p>
+            Identifica fallas frecuentes como no escuchar, hablar demasiado, no hacer seguimiento, vender solo por precio y descuidar la confianza.
+          </p>
+          <div class="blog-footer-meta" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+            <a href="Blog htmls/errores-comunes-en-ventas-que-hacen-perder-clientes.html" class="btn-read-more" style="color: var(--primary); font-weight: 600; text-decoration: none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a>
+            <span style="font-size: 0.85rem; color: var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article Separar Dinero Personal del Negocio -->
+      <article class="blog-card" data-category="finanzas productividad">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/separar-finanzas-personales-negocio.png') center/cover; height: 220px;">
+          <span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span>
+        </div>
+        <div class="blog-card-content">
+          <span class="blog-category">Finanzas</span>
+          <h3>C&oacute;mo Separar el Dinero Personal del Dinero del Negocio</h3>
+          <p>
+            Ordena ingresos, gastos, retiros personales, reinversi&oacute;n, caja diaria y ganancias reales para saber si tu negocio realmente crece.
+          </p>
+          <div class="blog-footer-meta" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+            <a href="Blog htmls/separar-dinero-personal-del-negocio.html" class="btn-read-more" style="color: var(--primary); font-weight: 600; text-decoration: none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a>
+            <span style="font-size: 0.85rem; color: var(--text-muted);"><i class="fa-regular fa-clock"></i> 10 min</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article Productos o Servicios que Conviene Vender -->
+      <article class="blog-card" data-category="finanzas ventas productividad">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/rentabilidad-por-producto.png') center/cover; height: 220px;">
+          <span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span>
+        </div>
+        <div class="blog-card-content">
+          <span class="blog-category">Rentabilidad</span>
+          <h3>C&oacute;mo Saber Qu&eacute; Productos o Servicios Realmente te Conviene Vender</h3>
+          <p>
+            Analiza margen, rotaci&oacute;n, demanda, esfuerzo, costos ocultos y frecuencia para decidir qu&eacute; impulsar, mejorar, pausar o eliminar.
+          </p>
+          <div class="blog-footer-meta" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+            <a href="Blog htmls/productos-servicios-que-conviene-vender.html" class="btn-read-more" style="color: var(--primary); font-weight: 600; text-decoration: none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a>
+            <span style="font-size: 0.85rem; color: var(--text-muted);"><i class="fa-regular fa-clock"></i> 10 min</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article Preparar Negocio para Fechas Especiales -->
+      <article class="blog-card" data-category="ventas marketing finanzas productividad">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/estacionalidad-en-ventas.png') center/cover; height: 220px;">
+          <span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span>
+        </div>
+        <div class="blog-card-content">
+          <span class="blog-category">Campañas</span>
+          <h3>C&oacute;mo Preparar tu Negocio para Vender M&aacute;s en Fechas Especiales</h3>
+          <p>
+            Planifica stock, metas, promociones, caja, horarios pico, m&eacute;todos de pago y atenci&oacute;n para campa&ntilde;as de alta demanda.
+          </p>
+          <div class="blog-footer-meta" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+            <a href="Blog htmls/preparar-negocio-fechas-especiales.html" class="btn-read-more" style="color: var(--primary); font-weight: 600; text-decoration: none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a>
+            <span style="font-size: 0.85rem; color: var(--text-muted);"><i class="fa-regular fa-clock"></i> 10 min</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article Organizar Catalogo de Productos -->
+      <article class="blog-card" data-category="ventas productividad finanzas">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/inventario-y-ventas.png') center/cover; height: 220px;">
+          <span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span>
+        </div>
+        <div class="blog-card-content">
+          <span class="blog-category">Cat&aacute;logo</span>
+          <h3>C&oacute;mo Organizar un Cat&aacute;logo de Productos para Vender Mejor</h3>
+          <p>
+            Ordena categor&iacute;as, fichas, prioridades y canales para que tu cat&aacute;logo ayude al cliente a decidir y al negocio a medir mejor.
+          </p>
+          <div class="blog-footer-meta" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+            <a href="Blog htmls/organizar-catalogo-productos-para-vender-mejor.html" class="btn-read-more" style="color: var(--primary); font-weight: 600; text-decoration: none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a>
+            <span style="font-size: 0.85rem; color: var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article Rutina Diaria de Gestion de Ventas -->
+      <article class="blog-card" data-category="ventas productividad finanzas">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/tablero-control-diario.png') center/cover; height: 220px;">
+          <span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span>
+        </div>
+        <div class="blog-card-content">
+          <span class="blog-category">Gesti&oacute;n Diaria</span>
+          <h3>Rutina Diaria de Gesti&oacute;n de Ventas para Negocios Peque&ntilde;os</h3>
+          <p>
+            Crea una rutina simple para abrir el d&iacute;a, registrar ventas y gastos, ordenar pedidos y cerrar caja con menos confusi&oacute;n.
+          </p>
+          <div class="blog-footer-meta" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+            <a href="Blog htmls/rutina-diaria-gestion-ventas.html" class="btn-read-more" style="color: var(--primary); font-weight: 600; text-decoration: none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a>
+            <span style="font-size: 0.85rem; color: var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article Controlar Pedidos Pendientes y Entregas -->
+      <article class="blog-card" data-category="ventas productividad finanzas">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/ventas-perdidas.png') center/cover; height: 220px;">
+          <span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span>
+        </div>
+        <div class="blog-card-content">
+          <span class="blog-category">Pedidos</span>
+          <h3>C&oacute;mo Controlar Pedidos Pendientes y Entregas sin Perder Dinero</h3>
+          <p>
+            Usa estados, datos m&iacute;nimos, control de pagos y revisi&oacute;n diaria para evitar reclamos, saldos olvidados y entregas equivocadas.
+          </p>
+          <div class="blog-footer-meta" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+            <a href="Blog htmls/controlar-pedidos-pendientes-y-entregas.html" class="btn-read-more" style="color: var(--primary); font-weight: 600; text-decoration: none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a>
+            <span style="font-size: 0.85rem; color: var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span>
+          </div>
+        </div>
+      </article>
 
       <!-- Article Costo de Adquisicion de Clientes -->
       <article class="blog-card" data-category="finanzas ventas marketing">
