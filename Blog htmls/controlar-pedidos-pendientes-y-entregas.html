@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cómo Controlar Pedidos Pendientes y Entregas sin Perder Dinero | Zaleasy Blog</title>
+  <meta name="description" content="Aprende a controlar pedidos pendientes, entregas, pagos, reservas y estados de venta para evitar pérdidas, reclamos y confusiones en tu negocio." />
+  <meta name="keywords" content="pedidos pendientes, control de entregas, gestión de pedidos, ventas pendientes, organizar pedidos" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Cómo Controlar Pedidos Pendientes y Entregas sin Perder Dinero" />
+  <meta property="og:description" content="Una guía práctica para negocios que venden hoy y entregan después." />
+  <meta property="og:image" content="https://zaleasy.com/assets/Blog%20imagenes/ventas-perdidas.png" />
+  <meta property="og:url" content="https://zaleasy.com/Blog%20htmls/controlar-pedidos-pendientes-y-entregas.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="canonical" href="https://zaleasy.com/Blog%20htmls/controlar-pedidos-pendientes-y-entregas.html" />
+  <link rel="stylesheet" href="../landing.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    .article-hero{padding:4rem 0 2rem;text-align:center;background:linear-gradient(180deg,rgba(255,71,87,.09),transparent)}
+    .article-kicker{display:inline-flex;gap:.45rem;align-items:center;background:rgba(255,71,87,.13);color:#ff6b81;border:1px solid rgba(255,71,87,.28);padding:.4rem 1rem;border-radius:999px;font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:1.2rem}
+    .article-title{font-size:clamp(2.1rem,5vw,3.45rem);line-height:1.12;max-width:980px;margin:0 auto 1rem;font-weight:800;color:var(--text-main)}
+    .article-subtitle{max-width:780px;margin:0 auto 1.6rem;color:var(--text-muted);font-size:1.13rem;line-height:1.7}.article-meta{display:flex;justify-content:center;gap:1.2rem;flex-wrap:wrap;color:var(--text-muted);font-size:.92rem}
+    .article-cover{max-width:1080px;height:clamp(260px,42vw,480px);margin:2.5rem auto 4rem;border-radius:22px;background:url('../assets/Blog imagenes/ventas-perdidas.png') center/cover;border:1px solid rgba(255,255,255,.08);box-shadow:0 24px 60px rgba(0,0,0,.38)}
+    .article-layout{display:grid;grid-template-columns:minmax(0,760px) 260px;gap:3rem;align-items:start;max-width:1120px;margin:0 auto 5rem;padding:0 1.5rem}.article-content{font-size:1.08rem;line-height:1.85;color:rgba(255,255,255,.86)}
+    .article-content h2{font-size:2rem;line-height:1.25;color:var(--text-main);margin:2.7rem 0 1rem}.article-content h3{font-size:1.45rem;color:#ff6b81;margin:2rem 0 .8rem}.article-content h4{font-size:1.12rem;color:var(--text-main);margin:1.4rem 0 .6rem}
+    .article-content p,.article-content ul,.article-content ol{margin-bottom:1.35rem}.article-content li{margin-bottom:.65rem}.article-content strong{color:#fff;font-weight:800}
+    .article-box{background:var(--bg-card);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:1.5rem;margin:1.7rem 0}.article-box.accent{border-color:rgba(255,71,87,.35);background:linear-gradient(135deg,rgba(255,71,87,.12),rgba(255,165,2,.06))}
+    .toc{position:sticky;top:92px;background:rgba(25,23,45,.72);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:1.2rem}.toc strong{display:block;color:var(--text-main);margin-bottom:.8rem}.toc a{display:block;color:var(--text-muted);text-decoration:none;font-size:.9rem;line-height:1.45;padding:.45rem 0}.toc a:hover{color:#ff6b81}
+    .keywords{display:flex;gap:.55rem;flex-wrap:wrap;margin:1rem 0 2rem}.keywords span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);padding:.35rem .7rem;border-radius:999px;color:var(--text-muted);font-size:.85rem}.cta-panel{text-align:center;background:var(--bg-card);border:1px solid rgba(255,71,87,.28);border-radius:20px;padding:2rem;margin-top:3rem}
+    @media(max-width:900px){.article-layout{grid-template-columns:1fr}.toc{position:static;order:-1}.article-cover{border-radius:16px}}
+  </style>
+</head>
+
+<body>
+  <nav class="navbar"><div class="container nav-container"><div class="brand"><img src="../assets/logo.png" alt="Zaleasy Logo" style="height:45px;border-radius:50%;box-shadow:0 4px 15px rgba(108,92,231,.4)" /><h2>Zaleasy</h2></div><button class="mobile-menu-btn" aria-label="Abrir menú" onclick="document.querySelector('.nav-links').classList.toggle('active')"><i class="fa-solid fa-bars"></i></button><div class="nav-links"><a href="../blog.html">Blog</a><a href="../index.html#features">Características</a><a href="../index.html#how-it-works">¿Cómo funciona?</a><a href="../app.html" class="btn btn-primary">Iniciar Sesión</a></div></div></nav>
+  <header class="article-hero"><div class="container"><span class="article-kicker"><i class="fa-solid fa-truck-fast"></i> Pedidos y entregas</span><h1 class="article-title">Cómo Controlar Pedidos Pendientes y Entregas sin Perder Dinero</h1><p class="article-subtitle">Cuando vendes hoy y entregas después, el orden deja de ser opcional. Un pedido mal anotado puede convertirse en pérdida, reclamo o doble trabajo.</p><div class="article-meta"><span><i class="fa-regular fa-clock"></i> 9 min de lectura</span><span><i class="fa-solid fa-user-pen"></i> Equipo Zaleasy</span><span><i class="fa-solid fa-tags"></i> Pedidos, entregas, pagos</span></div></div></header>
+  <div class="article-cover" role="img" aria-label="Controlar pedidos pendientes y entregas"></div>
+
+  <main class="article-layout">
+    <article class="article-content">
+      <div class="article-box accent"><p><strong>Meta título SEO:</strong> Cómo Controlar Pedidos Pendientes y Entregas sin Perder Dinero | Zaleasy Blog</p><p><strong>Meta descripción SEO:</strong> Aprende a controlar pedidos pendientes, entregas, pagos, reservas y estados de venta para evitar pérdidas, reclamos y confusiones en tu negocio.</p><p><strong>Palabras clave principales:</strong></p><div class="keywords"><span>pedidos pendientes</span><span>control de entregas</span><span>gestión de pedidos</span><span>ventas pendientes</span><span>organizar pedidos</span></div></div>
+
+      <h2 id="introduccion">Introducción: la venta no termina cuando el cliente dice que sí</h2>
+      <p>En muchos negocios, la venta ocurre en un momento y la entrega en otro. Una tienda toma pedidos por WhatsApp y entrega al día siguiente. Un emprendimiento de comida recibe reservas para el fin de semana. Un comercio separa mercadería para retirar. Un freelancer cobra una seña y entrega un trabajo días después. En todos esos casos, existe una etapa crítica: el pedido pendiente.</p>
+      <p>El pedido pendiente es una promesa. Si no se controla, puede generar errores de stock, pagos incompletos, entregas duplicadas, clientes molestos o dinero que nunca se cobra. <strong>Controlar pedidos pendientes no es solo una tarea operativa; es proteger la rentabilidad y la confianza del negocio</strong>.</p>
+      <p>Este artículo te muestra cómo ordenar pedidos, entregas, pagos y estados de venta con criterios simples y aplicables desde hoy.</p>
+
+      <h2 id="riesgo">Por qué los pedidos pendientes son una zona de riesgo</h2>
+      <p>Un pedido pendiente tiene varias partes móviles: cliente, producto o servicio, cantidad, precio, pago, fecha, forma de entrega, responsable y estado. Si una sola parte queda confusa, el negocio puede perder dinero o tiempo.</p>
+      <p>El riesgo crece cuando los pedidos llegan por muchos canales: WhatsApp, Instagram, local, teléfono, formularios o recomendaciones. Si cada canal se controla de manera distinta, la información queda dispersa.</p>
+
+      <h3>Problemas típicos</h3>
+      <ul>
+        <li>Separar producto sin cobrar seña y luego perder la venta.</li>
+        <li>Recibir pago y olvidar entregar.</li>
+        <li>Entregar un pedido equivocado por falta de detalle.</li>
+        <li>No saber qué pedidos están listos y cuáles faltan preparar.</li>
+        <li>Confundir ventas cobradas con ventas prometidas.</li>
+      </ul>
+
+      <h2 id="estados">Define estados claros para cada pedido</h2>
+      <p>La forma más simple de ordenar pedidos es usar estados. Un estado muestra dónde está cada venta en el proceso. No necesitas un sistema complejo; necesitas categorías consistentes.</p>
+
+      <h3>Estados recomendados</h3>
+      <ul>
+        <li><strong>Consultado:</strong> el cliente preguntó, pero no confirmó.</li>
+        <li><strong>Reservado:</strong> el cliente pidió separar, pero falta pago total o seña.</li>
+        <li><strong>Pagado:</strong> el dinero ya ingresó.</li>
+        <li><strong>En preparación:</strong> el producto o servicio se está armando.</li>
+        <li><strong>Listo para entregar:</strong> falta retiro, envío o entrega final.</li>
+        <li><strong>Entregado:</strong> la operación terminó.</li>
+        <li><strong>Cancelado:</strong> no se concretó.</li>
+      </ul>
+
+      <div class="article-box"><p><strong>Ejemplo:</strong> una pastelería recibe un pedido de torta para sábado. El estado inicial es reservado con seña. El viernes pasa a en preparación. El sábado por la mañana queda listo para entregar. Cuando el cliente retira y paga saldo, se marca como entregado. Cada cambio evita dudas.</p></div>
+
+      <h2 id="datos">Qué datos debe tener cada pedido</h2>
+      <p>Un pedido bien registrado evita conversaciones repetidas y errores. La información mínima debe permitir que cualquier persona del negocio entienda qué hacer sin preguntarle todo al dueño.</p>
+
+      <h3>Datos esenciales</h3>
+      <ul>
+        <li>Nombre y contacto del cliente.</li>
+        <li>Producto o servicio solicitado.</li>
+        <li>Cantidad, variante, talle, sabor, color o detalle especial.</li>
+        <li>Monto total, seña, saldo pendiente y método de pago.</li>
+        <li>Fecha y horario de entrega o retiro.</li>
+        <li>Dirección o canal de entrega si corresponde.</li>
+        <li>Observaciones importantes.</li>
+      </ul>
+
+      <h4>Ejemplo para tienda de ropa</h4>
+      <p>“Camisa lino blanca talle M, cliente: Paula R., total $38, pagado $20 por transferencia, saldo al retirar, retiro viernes 18:00”. Esa línea evita separar el talle equivocado, cobrar mal o entregar sin completar el saldo.</p>
+
+      <h2 id="pagos">Separa pedidos cobrados, señados y pendientes de pago</h2>
+      <p>Uno de los errores más peligrosos es contar como venta algo que todavía no está cobrado. Una reserva no es lo mismo que una venta pagada. Una seña no es lo mismo que el total. Y un pedido prometido no debería confundirse con dinero disponible.</p>
+      <p><strong>La caja debe reflejar dinero real, no intención de compra</strong>. Si mezclas pedidos pendientes con ventas cobradas, puedes creer que tienes más liquidez de la que realmente existe.</p>
+
+      <h3>Regla práctica</h3>
+      <p>Marca cada pedido con tres datos financieros: total, pagado y saldo. Así sabes qué falta cobrar y evitas entregar sin completar pago cuando esa no era la condición.</p>
+
+      <h2 id="entregas">Organiza entregas por fecha y prioridad</h2>
+      <p>La entrega es el momento donde se confirma la experiencia del cliente. Puedes haber vendido muy bien, pero si entregas tarde o equivocado, la percepción cambia. Por eso conviene organizar pedidos por fecha, zona, horario y estado.</p>
+
+      <h3>Para entregas a domicilio</h3>
+      <p>Agrupa por zonas, confirma direcciones y define ventanas horarias realistas. Si prometes horarios imposibles, el problema llega después. También registra costo de envío si lo cobra el negocio o si lo paga el cliente.</p>
+
+      <h3>Para retiros en local</h3>
+      <p>Ten una zona de pedidos listos con identificación clara. En fechas de alta demanda, esto evita buscar productos frente al cliente o entregar algo incorrecto.</p>
+
+      <h2 id="servicios">Pedidos pendientes en servicios y trabajos por encargo</h2>
+      <p>No solo los productos tienen pendientes. Los servicios también. Un diseñador, contador, asesor, fotógrafo o técnico puede tener trabajos en proceso con pagos parciales y entregas futuras.</p>
+      <p>En servicios, conviene registrar alcance, entregables, fecha de entrega, pagos realizados y próximos pasos. Si el alcance no está claro, el pendiente se puede convertir en trabajo extra no cobrado.</p>
+
+      <div class="article-box"><p><strong>Ejemplo:</strong> un community manager vende un paquete de 12 piezas. Debe registrar fecha de pago, fecha de entrega, cantidad incluida, revisiones pactadas y piezas aprobadas. Si no lo hace, puede terminar entregando más de lo acordado sin cobrarlo.</p></div>
+
+      <h2 id="errores">Errores comunes que debes evitar</h2>
+      <ul>
+        <li><strong>No diferenciar reservado de pagado.</strong> Puede hacerte contar dinero que todavía no existe.</li>
+        <li><strong>No anotar variantes.</strong> Talle, color, sabor o detalle equivocado generan reclamos.</li>
+        <li><strong>No registrar saldos pendientes.</strong> Entregar sin cobrar el saldo afecta caja.</li>
+        <li><strong>Prometer fechas sin revisar capacidad.</strong> La sobrepromesa daña confianza.</li>
+        <li><strong>Controlar pedidos solo en chats.</strong> Los chats se pierden, se mezclan y no resumen el negocio.</li>
+      </ul>
+
+      <h2 id="consejos">Consejos accionables para aplicar hoy</h2>
+      <ol>
+        <li>Define estados simples para tus pedidos.</li>
+        <li>Registra total, pagado y saldo en cada venta pendiente.</li>
+        <li>Usa una lista diaria de entregas y retiros.</li>
+        <li>Confirma detalles importantes antes de preparar.</li>
+        <li>Marca como entregado solo cuando la operación esté cerrada.</li>
+        <li>Revisa al final del día qué pedidos siguen pendientes.</li>
+      </ol>
+
+      <h2 id="conclusion">Conclusión profesional</h2>
+      <p>Controlar pedidos pendientes y entregas es fundamental para cualquier negocio que vende con anticipación, trabaja por encargo o entrega después del cobro. No hacerlo puede generar pérdidas invisibles: productos separados sin pago, saldos olvidados, entregas equivocadas y tiempo desperdiciado.</p>
+      <p>Un sistema simple de estados, datos mínimos y revisión diaria permite vender con más tranquilidad. El cliente recibe mejor atención y el negocio mantiene control sobre dinero, stock y compromisos.</p>
+
+      <div class="cta-panel"><h2>Llamada a la acción</h2><p>Con Zaleasy puedes registrar ventas, clientes, métodos de pago y reportes para ordenar mejor tus pedidos y entender qué operaciones siguen pendientes de cobrar o entregar.</p><a href="../app.html" class="btn btn-primary" style="padding:1rem 2rem;border-radius:12px">Controlar mis ventas con Zaleasy</a></div>
+    </article>
+    <aside class="toc" aria-label="Índice del artículo"><strong>Índice</strong><a href="#introduccion">Introducción</a><a href="#riesgo">Riesgos</a><a href="#estados">Estados</a><a href="#datos">Datos del pedido</a><a href="#pagos">Pagos</a><a href="#entregas">Entregas</a><a href="#errores">Errores</a></aside>
+  </main>
+  <footer class="footer"><div class="container footer-content"><div class="footer-brand"><img src="../assets/logo.png" alt="Zaleasy Logo" style="height:35px;border-radius:50%;margin-bottom:.5rem;display:block" /><h3>Zaleasy</h3><p>Haciendo la gestión financiera fácil y accesible para todos los emprendedores.</p></div><div class="footer-links"><h4>Enlaces Útiles</h4><a href="../app.html">Iniciar Sesión</a><a href="../blog.html">Blog</a><a href="../index.html#features">Características</a><a href="../index.html#creator">Nuestra Misión</a></div></div><div class="footer-bottom"><p>&copy; 2026 Zaleasy. Todos los derechos reservados.</p></div></footer>
+</body>
+</html>
