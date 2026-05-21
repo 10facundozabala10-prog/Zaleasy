@@ -70,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeRegisterModal = document.getElementById('close-modal');
     const closeSummaryGrid = document.getElementById('close-summary-grid');
     const closeTotalDay = document.getElementById('close-total-day');
+    const closeReadinessPanel = document.getElementById('close-readiness-panel');
     const btnConfirmClose = document.getElementById('confirm-close');
 
     // Calculator Elements
@@ -2792,7 +2793,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const incomeMap = { 'Efectivo': 0, 'Tarjeta': 0, 'Transferencia': 0, 'Cripto': 0 };
+        const incomeMap = {};
         let totalIncome = 0;
         let totalExpense = 0;
 
@@ -2800,6 +2801,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (s.type === 'expense') {
                 totalExpense += s.amount;
             } else {
+                if (!incomeMap[s.method]) incomeMap[s.method] = 0;
                 incomeMap[s.method] += s.amount;
                 totalIncome += s.amount;
             }
@@ -2807,7 +2809,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Calculate total cash expenses to show final cash
         const cashExpenses = sales.filter(s => s.type === 'expense' && s.method === 'Efectivo').reduce((sum, s) => sum + s.amount, 0);
-        const cashFinal = cashBase + incomeMap['Efectivo'] - cashExpenses;
+        const cashFinal = cashBase + (incomeMap['Efectivo'] || 0) - cashExpenses;
 
         let summaryHtml = Object.entries(incomeMap)
             .map(([method, amount]) => `
@@ -2834,9 +2836,69 @@ document.addEventListener('DOMContentLoaded', () => {
 
         closeSummaryGrid.innerHTML = summaryHtml;
         closeTotalDay.textContent = formatCurrency(totalIncome - totalExpense);
+        renderCloseReadiness({ totalIncome, totalExpense, cashFinal });
 
         closeRegisterModal.classList.add('active');
     });
+
+    const renderCloseReadiness = ({ totalIncome, totalExpense, cashFinal }) => {
+        if (!closeReadinessPanel) return;
+
+        const pendingCredit = sales.filter(s => s.type !== 'expense' && s.method === 'A Cobrar');
+        const expensesWithoutNotes = sales.filter(s => s.type === 'expense' && (!s.notes || !s.notes.trim()));
+        const lowStock = productCatalog.filter(p => p.stock !== undefined && p.stock !== null && Number(p.stock) <= 5);
+        const todayNotes = localStorage.getItem(`dayNotes_${new Date().toISOString().split('T')[0]}`) || '';
+
+        const checks = [
+            {
+                ok: totalIncome > 0,
+                label: totalIncome > 0 ? 'Ingresos registrados' : 'Sin ingresos en el cierre',
+                detail: totalIncome > 0 ? `${formatCurrency(totalIncome)} en ingresos.` : 'Revisa si corresponde cerrar un dia sin ventas.'
+            },
+            {
+                ok: pendingCredit.length === 0,
+                label: pendingCredit.length === 0 ? 'Sin fiados pendientes de hoy' : `${pendingCredit.length} fiado${pendingCredit.length === 1 ? '' : 's'} pendiente${pendingCredit.length === 1 ? '' : 's'}`,
+                detail: pendingCredit.length === 0 ? 'No hay ventas marcadas como Por Cobrar.' : 'Conviene revisar clientes antes de archivar el dia.'
+            },
+            {
+                ok: expensesWithoutNotes.length === 0,
+                label: expensesWithoutNotes.length === 0 ? 'Gastos documentados' : `${expensesWithoutNotes.length} gasto${expensesWithoutNotes.length === 1 ? '' : 's'} sin nota`,
+                detail: expensesWithoutNotes.length === 0 ? 'Los gastos tienen mejor trazabilidad.' : 'Agrega una nota si necesitas recordar el motivo.'
+            },
+            {
+                ok: lowStock.length === 0,
+                label: lowStock.length === 0 ? 'Stock sin alertas criticas' : `${lowStock.length} producto${lowStock.length === 1 ? '' : 's'} con stock bajo`,
+                detail: lowStock.length === 0 ? 'No hay productos cargados con 5 unidades o menos.' : 'Revisa inventario para evitar ventas sin disponibilidad.'
+            },
+            {
+                ok: todayNotes.trim().length > 0 || totalExpense === 0,
+                label: todayNotes.trim().length > 0 ? 'Notas del dia guardadas' : 'Sin notas del dia',
+                detail: todayNotes.trim().length > 0 ? 'Hay contexto guardado para revisar manana.' : 'Si hubo incidencias, anotalas antes de cerrar.'
+            }
+        ];
+
+        const okCount = checks.filter(c => c.ok).length;
+        closeReadinessPanel.innerHTML = `
+            <div class="close-readiness-head">
+                <div>
+                    <h3><i class="fa-solid fa-clipboard-check"></i> Revisi&oacute;n antes de cerrar</h3>
+                    <p>${okCount}/${checks.length} puntos listos. Efectivo final estimado: <strong>${formatCurrency(cashFinal)}</strong></p>
+                </div>
+                <span class="badge">${okCount === checks.length ? 'Listo' : 'Revisar'}</span>
+            </div>
+            <div class="close-readiness-list">
+                ${checks.map(check => `
+                    <div class="close-readiness-item ${check.ok ? 'ok' : 'warn'}">
+                        <i class="fa-solid ${check.ok ? 'fa-circle-check' : 'fa-triangle-exclamation'}"></i>
+                        <div>
+                            <strong>${check.label}</strong>
+                            <span>${check.detail}</span>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    };
 
     btnConfirmClose.addEventListener('click', () => {
         // Guardar las ventas de "hoy" dentro del historial completo hist\u00f3rico antes de borrarlas

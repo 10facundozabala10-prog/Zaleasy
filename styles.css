@@ -2851,6 +2851,240 @@ select:focus {
 }
 
 /* ============================================
+   CLOSE READINESS PANEL
+   ============================================ */
+.close-readiness-panel {
+    margin: 1.2rem 0;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.035);
+}
+
+.close-readiness-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.9rem;
+}
+
+.close-readiness-head h3 {
+    color: var(--text-main);
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.close-readiness-head h3 i {
+    color: var(--primary);
+    margin-right: 0.45rem;
+}
+
+.close-readiness-head p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.close-readiness-head p strong {
+    color: var(--text-main);
+}
+
+.close-readiness-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.7rem;
+}
+
+.close-readiness-item {
+    display: flex;
+    gap: 0.65rem;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.close-readiness-item i {
+    margin-top: 0.15rem;
+}
+
+.close-readiness-item.ok i {
+    color: var(--success);
+}
+
+.close-readiness-item.warn i {
+    color: var(--warning);
+}
+
+.close-readiness-item strong,
+.close-readiness-item span {
+    display: block;
+}
+
+.close-readiness-item strong {
+    color: var(--text-main);
+    font-size: 0.88rem;
+    margin-bottom: 0.15rem;
+}
+
+.close-readiness-item span {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    line-height: 1.45;
+}
+
+@media (max-width: 680px) {
+    .close-readiness-list {
+        grid-template-columns: 1fr;
+    }
+
+    .close-readiness-head {
+        flex-direction: column;
+    }
+}
+
+/* ============================================
+   DASHBOARD INFORMATION ARCHITECTURE
+   ============================================ */
+#view-dashboard .dashboard-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    align-items: start;
+    gap: 1.25rem;
+}
+
+#view-dashboard .kpi-cards {
+    order: 1;
+    grid-column: 1 / -1;
+}
+
+#view-dashboard .daily-pulse-card {
+    order: 2;
+    grid-column: 1 / -1;
+}
+
+#view-dashboard .form-section {
+    order: 3;
+    grid-column: 1 / span 5;
+    position: sticky;
+    top: calc(var(--header-height) + 1rem);
+    align-self: start;
+}
+
+#view-dashboard .list-section {
+    order: 4;
+    grid-column: 6 / -1;
+    min-height: 620px;
+}
+
+#view-dashboard .list-section .table-container {
+    max-height: 520px;
+}
+
+#view-dashboard .secondary-metrics-strip {
+    order: 5;
+    grid-column: 1 / -1;
+}
+
+#view-dashboard .setup-checklist-card {
+    order: 6;
+    grid-column: 1 / span 4;
+    height: 100%;
+}
+
+#view-dashboard .receivables-card {
+    order: 7;
+    grid-column: 5 / span 4;
+    height: 100%;
+}
+
+#view-dashboard .stock-alert-card {
+    order: 8;
+    grid-column: 9 / -1;
+    height: 100%;
+}
+
+#view-dashboard .setup-checklist-card,
+#view-dashboard .receivables-card,
+#view-dashboard .stock-alert-card {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+}
+
+#view-dashboard .setup-checklist-grid {
+    grid-template-columns: 1fr;
+}
+
+#view-dashboard .receivables-actions,
+#view-dashboard .stock-alert-actions {
+    width: 100%;
+    margin-top: auto;
+}
+
+#view-dashboard .receivables-action,
+#view-dashboard .stock-alert-action {
+    flex: 1;
+}
+
+#view-dashboard .charts-row {
+    order: 20;
+    grid-column: 1 / -1;
+}
+
+#view-dashboard #week-vs-lastweek-card {
+    order: 30;
+    grid-column: 1 / -1 !important;
+}
+
+#view-dashboard .notepad-card {
+    order: 40;
+    grid-column: 1 / -1 !important;
+}
+
+#view-dashboard .kpi-card,
+#view-dashboard .daily-pulse-card,
+#view-dashboard .form-section,
+#view-dashboard .list-section {
+    border-color: rgba(124, 111, 240, 0.12);
+}
+
+@media (max-width: 1180px) {
+    #view-dashboard .form-section {
+        grid-column: 1 / -1;
+        position: static;
+    }
+
+    #view-dashboard .list-section {
+        grid-column: 1 / -1;
+        min-height: auto;
+    }
+
+    #view-dashboard .setup-checklist-card {
+        grid-column: 1 / span 6;
+    }
+
+    #view-dashboard .receivables-card {
+        grid-column: 7 / -1;
+    }
+
+    #view-dashboard .stock-alert-card {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 760px) {
+    #view-dashboard .dashboard-grid {
+        gap: 1rem;
+    }
+
+    #view-dashboard .setup-checklist-card,
+    #view-dashboard .receivables-card,
+    #view-dashboard .stock-alert-card {
+        grid-column: 1 / -1;
+    }
+}
+
+/* ============================================
    LIVE ACTIVITY FEED WIDGET
    ============================================ */
 .activity-feed-card {
