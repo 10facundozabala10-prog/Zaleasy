@@ -304,6 +304,117 @@
                         </div>
                     </div>
 
+                    <!-- Setup Checklist -->
+                    <div class="card setup-checklist-card" id="setup-checklist-card">
+                        <div class="setup-checklist-head">
+                            <div>
+                                <div class="card-header setup-checklist-title">
+                                    <h2><i class="fa-solid fa-list-check"></i> Primeros pasos</h2>
+                                    <span class="badge" id="setup-checklist-badge">0/5 listo</span>
+                                </div>
+                                <p id="setup-checklist-subtitle">Completa lo esencial para que Zaleasy trabaje mejor con tus datos.</p>
+                            </div>
+                            <button type="button" class="setup-checklist-toggle" id="setup-checklist-toggle">
+                                <i class="fa-solid fa-chevron-up"></i>
+                            </button>
+                        </div>
+                        <div class="setup-progress-track" aria-hidden="true">
+                            <div class="setup-progress-fill" id="setup-progress-fill"></div>
+                        </div>
+                        <div class="setup-checklist-grid" id="setup-checklist-grid">
+                            <button type="button" class="setup-step" data-step="store">
+                                <i class="fa-solid fa-store"></i>
+                                <span>Nombre del negocio</span>
+                            </button>
+                            <button type="button" class="setup-step" data-step="goal">
+                                <i class="fa-solid fa-bullseye"></i>
+                                <span>Meta diaria real</span>
+                            </button>
+                            <button type="button" class="setup-step" data-step="catalog">
+                                <i class="fa-solid fa-boxes-stacked"></i>
+                                <span>Cat&aacute;logo inicial</span>
+                            </button>
+                            <button type="button" class="setup-step" data-step="cash">
+                                <i class="fa-solid fa-cash-register"></i>
+                                <span>Base de caja</span>
+                            </button>
+                            <button type="button" class="setup-step" data-step="sale">
+                                <i class="fa-solid fa-receipt"></i>
+                                <span>Primera venta</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Daily Pulse Insight -->
+                    <div class="card daily-pulse-card" id="daily-pulse-card">
+                        <div class="daily-pulse-main">
+                            <div class="daily-pulse-icon" id="daily-pulse-icon">
+                                <i class="fa-solid fa-compass"></i>
+                            </div>
+                            <div class="daily-pulse-copy">
+                                <div class="card-header daily-pulse-header">
+                                    <h2>Pulso del D&iacute;a</h2>
+                                    <span class="badge" id="daily-pulse-badge">Listo para empezar</span>
+                                </div>
+                                <p id="daily-pulse-text">Registra tu primera venta o gasto para recibir una recomendaci&oacute;n concreta.</p>
+                            </div>
+                        </div>
+                        <div class="daily-pulse-actions" aria-label="Acciones sugeridas">
+                            <button type="button" class="daily-pulse-action" id="pulse-action-primary">
+                                <i class="fa-solid fa-plus"></i>
+                                <span>Registrar venta</span>
+                            </button>
+                            <button type="button" class="daily-pulse-action" id="pulse-action-secondary">
+                                <i class="fa-solid fa-pen-clip"></i>
+                                <span>Anotar pendiente</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Accounts Receivable Snapshot -->
+                    <div class="card receivables-card" id="receivables-card">
+                        <div class="receivables-copy">
+                            <div class="card-header receivables-header">
+                                <h2><i class="fa-solid fa-hand-holding-dollar"></i> Cuentas por Cobrar</h2>
+                                <span class="badge" id="receivables-count">0 clientes</span>
+                            </div>
+                            <p class="receivables-amount" id="receivables-total">$0.00</p>
+                            <p class="receivables-detail" id="receivables-detail">Sin saldos pendientes registrados.</p>
+                        </div>
+                        <div class="receivables-actions">
+                            <button type="button" class="receivables-action primary" id="receivables-open-clients">
+                                <i class="fa-solid fa-address-book"></i>
+                                <span>Ver clientes</span>
+                            </button>
+                            <button type="button" class="receivables-action" id="receivables-register-payment">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span>Registrar cobro</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Low Stock Snapshot -->
+                    <div class="card stock-alert-card" id="stock-alert-card">
+                        <div class="stock-alert-copy">
+                            <div class="card-header stock-alert-header">
+                                <h2><i class="fa-solid fa-box-open"></i> Alerta de Stock</h2>
+                                <span class="badge" id="stock-alert-badge">Sin stock cargado</span>
+                            </div>
+                            <p id="stock-alert-text">Carga productos con stock para recibir alertas autom&aacute;ticas.</p>
+                            <div class="stock-alert-list" id="stock-alert-list"></div>
+                        </div>
+                        <div class="stock-alert-actions">
+                            <button type="button" class="stock-alert-action primary" id="stock-alert-open-inventory">
+                                <i class="fa-solid fa-boxes-stacked"></i>
+                                <span>Ver inventario</span>
+                            </button>
+                            <button type="button" class="stock-alert-action" id="stock-alert-add-product">
+                                <i class="fa-solid fa-plus"></i>
+                                <span>Nuevo producto</span>
+                            </button>
+                        </div>
+                    </div>
+
                     <!-- Goal & Chart (new row) -->
                     <div class="charts-row" style="grid-template-columns: 1fr 1fr 1fr 1fr 1fr;">
                         <div class="card goal-card">
@@ -982,6 +1093,39 @@
                                 </div>
                             </div>
                             <button class="btn btn-outline" id="btn-save-alert-threshold">Guardar Alerta</button>
+                        </div>
+
+                        <!-- Data Health -->
+                        <div class="data-health-panel">
+                            <div class="data-health-header">
+                                <div>
+                                    <h3><i class="fa-solid fa-database"></i> Estado de Datos</h3>
+                                    <p>Resumen r&aacute;pido de tu informaci&oacute;n local y respaldo.</p>
+                                </div>
+                                <span class="badge" id="data-health-status">Calculando...</span>
+                            </div>
+                            <div class="data-health-grid">
+                                <div class="data-health-item">
+                                    <span>Movimientos de hoy</span>
+                                    <strong id="data-health-sales">0</strong>
+                                </div>
+                                <div class="data-health-item">
+                                    <span>Hist&oacute;ricos</span>
+                                    <strong id="data-health-history">0</strong>
+                                </div>
+                                <div class="data-health-item">
+                                    <span>Clientes</span>
+                                    <strong id="data-health-clients">0</strong>
+                                </div>
+                                <div class="data-health-item">
+                                    <span>Cat&aacute;logo</span>
+                                    <strong id="data-health-products">0</strong>
+                                </div>
+                            </div>
+                            <div class="data-health-footer">
+                                <span id="data-health-storage"><i class="fa-solid fa-hard-drive"></i> Uso local: 0 KB</span>
+                                <span id="data-health-backup"><i class="fa-solid fa-clock-rotate-left"></i> Sin copias registradas</span>
+                            </div>
                         </div>
 
                         <!-- Security and Data -->

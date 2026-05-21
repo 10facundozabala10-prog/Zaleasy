@@ -32,6 +32,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const kpiSalesCount = document.getElementById('kpi-sales-count');
     const kpiExpenses = document.getElementById('kpi-expenses');
     const kpiBalance = document.getElementById('kpi-balance');
+    const dailyPulseCard = document.getElementById('daily-pulse-card');
+    const dailyPulseIcon = document.getElementById('daily-pulse-icon');
+    const dailyPulseBadge = document.getElementById('daily-pulse-badge');
+    const dailyPulseText = document.getElementById('daily-pulse-text');
+    const pulseActionPrimary = document.getElementById('pulse-action-primary');
+    const pulseActionSecondary = document.getElementById('pulse-action-secondary');
+    const receivablesCard = document.getElementById('receivables-card');
+    const receivablesCount = document.getElementById('receivables-count');
+    const receivablesTotal = document.getElementById('receivables-total');
+    const receivablesDetail = document.getElementById('receivables-detail');
+    const receivablesOpenClients = document.getElementById('receivables-open-clients');
+    const receivablesRegisterPayment = document.getElementById('receivables-register-payment');
+    const setupChecklistCard = document.getElementById('setup-checklist-card');
+    const setupChecklistBadge = document.getElementById('setup-checklist-badge');
+    const setupChecklistSubtitle = document.getElementById('setup-checklist-subtitle');
+    const setupProgressFill = document.getElementById('setup-progress-fill');
+    const setupChecklistToggle = document.getElementById('setup-checklist-toggle');
+    const setupChecklistGrid = document.getElementById('setup-checklist-grid');
+    const stockAlertCard = document.getElementById('stock-alert-card');
+    const stockAlertBadge = document.getElementById('stock-alert-badge');
+    const stockAlertText = document.getElementById('stock-alert-text');
+    const stockAlertList = document.getElementById('stock-alert-list');
+    const stockAlertOpenInventory = document.getElementById('stock-alert-open-inventory');
+    const stockAlertAddProduct = document.getElementById('stock-alert-add-product');
 
     // List Elements
     const salesBody = document.getElementById('sales-body');
@@ -207,35 +231,54 @@ document.addEventListener('DOMContentLoaded', () => {
     navConfig.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-config', 'Configuraci\u00f3n de Empresa'); });
 
     // --- Clientes CRM ---
+    const buildClientSummary = () => {
+        const allTx = [...historyData, ...sales];
+        const clientMap = {};
+
+        allTx.forEach(tx => {
+            if (!tx.customerName || tx.customerName.trim() === '') return;
+
+            const name = tx.customerName.trim();
+            if (!clientMap[name]) {
+                clientMap[name] = { totalCompras: 0, totalGastado: 0, totalDeuda: 0, ultimaCompra: 0 };
+            }
+
+            clientMap[name].totalCompras++;
+            if (tx.type !== 'expense') {
+                if (tx.method === 'A Cobrar') {
+                    clientMap[name].totalDeuda += tx.amount;
+                } else if (tx.method === 'Pago de Deuda') {
+                    clientMap[name].totalDeuda -= tx.amount;
+                    clientMap[name].totalGastado += tx.amount;
+                } else {
+                    clientMap[name].totalGastado += tx.amount;
+                }
+            }
+
+            if (tx.timestamp > clientMap[name].ultimaCompra) {
+                clientMap[name].ultimaCompra = tx.timestamp;
+            }
+        });
+
+        Object.keys(clientMap).forEach(name => {
+            clientMap[name].totalDeuda = Math.max(clientMap[name].totalDeuda, 0);
+        });
+
+        const clients = Object.keys(clientMap);
+        const debtClients = clients.filter(name => clientMap[name].totalDeuda > 0);
+        const totalDebt = debtClients.reduce((sum, name) => sum + clientMap[name].totalDeuda, 0);
+        const topDebtor = debtClients.sort((a, b) => clientMap[b].totalDeuda - clientMap[a].totalDeuda)[0] || null;
+
+        return { clientMap, clients, debtClients, totalDebt, topDebtor };
+    };
+
     const renderClientes = () => {
         const clientesBody = document.getElementById('clientes-body');
         const emptyState = document.getElementById('clientes-empty-state');
         const tableContainer = document.getElementById('clientes-table-container');
         if(!clientesBody) return;
         clientesBody.innerHTML = '';
-        const allTx = [...historyData, ...sales];
-        const clientMap = {};
-        
-        allTx.forEach(tx => {
-            if (tx.customerName && tx.customerName.trim() !== '') {
-                const name = tx.customerName.trim();
-                // We use standard titlecase or exactly as inputted, maybe just uppercase first
-                if (!clientMap[name]) {
-                    clientMap[name] = { totalCompras: 0, totalGastado: 0, totalDeuda: 0, ultimaCompra: 0 };
-                }
-                clientMap[name].totalCompras++;
-                if (tx.type !== 'expense') {
-                    if (tx.method === 'A Cobrar') {
-                        clientMap[name].totalDeuda += tx.amount;
-                    } else {
-                        clientMap[name].totalGastado += tx.amount;
-                    }
-                }
-                if (tx.timestamp > clientMap[name].ultimaCompra) {
-                    clientMap[name].ultimaCompra = tx.timestamp;
-                }
-            }
-        });
+        const { clientMap } = buildClientSummary();
 
         const sortedClients = Object.keys(clientMap).sort((a,b) => clientMap[b].totalGastado - clientMap[a].totalGastado);
 
@@ -280,6 +323,74 @@ document.addEventListener('DOMContentLoaded', () => {
     if (searchClientesInput) {
         searchClientesInput.addEventListener('input', renderClientes);
     }
+
+    if (receivablesOpenClients) {
+        receivablesOpenClients.addEventListener('click', () => switchView('nav-clientes'));
+    }
+
+    if (receivablesRegisterPayment) {
+        receivablesRegisterPayment.addEventListener('click', () => {
+            switchView('nav-dashboard');
+            btnTypeIncome.click();
+            if (methodSelect) methodSelect.value = 'Pago de Deuda';
+            if (customerNameInput) {
+                customerNameInput.focus();
+                customerNameInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            showToast('Selecciona el cliente y registra el cobro de deuda.');
+        });
+    }
+
+    if (setupChecklistToggle && setupChecklistCard) {
+        setupChecklistToggle.addEventListener('click', () => {
+            const collapsed = setupChecklistCard.classList.toggle('collapsed');
+            localStorage.setItem('setupChecklistCollapsed', collapsed ? '1' : '0');
+            setupChecklistToggle.innerHTML = `<i class="fa-solid ${collapsed ? 'fa-chevron-down' : 'fa-chevron-up'}"></i>`;
+        });
+    }
+
+    if (setupChecklistGrid) {
+        setupChecklistGrid.addEventListener('click', (e) => {
+            const step = e.target.closest('.setup-step');
+            if (!step) return;
+            const stepName = step.dataset.step;
+            if (stepName === 'store' || stepName === 'goal') {
+                switchView('nav-config', 'Configuraci\u00f3n de Empresa');
+                const target = stepName === 'store' ? document.getElementById('config-store-name') : document.getElementById('config-daily-goal');
+                if (target) {
+                    target.focus();
+                    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            } else if (stepName === 'catalog') {
+                switchView('nav-inventario');
+                const newProductBtn = document.getElementById('btn-new-product');
+                if (newProductBtn) newProductBtn.click();
+            } else if (stepName === 'cash') {
+                if (editCashBaseBtn) editCashBaseBtn.click();
+            } else if (stepName === 'sale') {
+                focusTransactionForm('income');
+            }
+        });
+    }
+
+    const openInventoryForm = () => {
+        switchView('nav-inventario');
+        const newProductBtn = document.getElementById('btn-new-product');
+        const nameInput = document.getElementById('inv-name');
+        if (newProductBtn) newProductBtn.click();
+        if (nameInput) {
+            nameInput.focus();
+            nameInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    };
+
+    if (stockAlertOpenInventory) {
+        stockAlertOpenInventory.addEventListener('click', () => switchView('nav-inventario'));
+    }
+
+    if (stockAlertAddProduct) {
+        stockAlertAddProduct.addEventListener('click', openInventoryForm);
+    }
     
     document.addEventListener('click', (e) => {
         if (e.target.closest('.btn-wsp-debt')) {
@@ -291,20 +402,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (e.target.closest('#export-clientes-csv')) {
-            const allTx = [...historyData, ...sales];
-            const clientMap = {};
-            allTx.forEach(tx => {
-                if (tx.customerName && tx.customerName.trim() !== '') {
-                    const name = tx.customerName.trim();
-                    if (!clientMap[name]) clientMap[name] = { totalCompras: 0, totalGastado: 0, totalDeuda: 0, ultimaCompra: 0 };
-                    clientMap[name].totalCompras++;
-                    if (tx.type !== 'expense') {
-                        if (tx.method === 'A Cobrar') clientMap[name].totalDeuda += tx.amount;
-                        else clientMap[name].totalGastado += tx.amount;
-                    }
-                    if (tx.timestamp > clientMap[name].ultimaCompra) clientMap[name].ultimaCompra = tx.timestamp;
-                }
-            });
+            const { clientMap } = buildClientSummary();
             let csvContent = "data:text/csv;charset=utf-8,Cliente,Total de Transacciones,Total Invertido,Deuda Pendiente,Ultima Compra\n";
             Object.keys(clientMap).sort((a,b) => clientMap[b].totalGastado - clientMap[a].totalGastado).forEach(name => {
                 const c = clientMap[name];
@@ -556,6 +654,7 @@ document.addEventListener('DOMContentLoaded', () => {
             storeName = val;
             localStorage.setItem('storeName', storeName);
             document.getElementById('sidebar-brand-name').innerText = storeName;
+            updateSetupChecklist();
             showToast('Nombre del negocio actualizado');
         }
     });
@@ -582,6 +681,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('storeName', storeName);
                 document.getElementById('sidebar-brand-name').innerText = storeName;
                 configStoreNameInput.value = storeName;
+                updateSetupChecklist();
                 showToast('Nombre del negocio actualizado');
             }
         });
@@ -593,6 +693,7 @@ document.addEventListener('DOMContentLoaded', () => {
             dailyGoal = val;
             localStorage.setItem('dailyGoal', dailyGoal);
             updateKPIs();
+            updateSetupChecklist();
             showToast('Meta por defecto actualizada');
         }
     });
@@ -618,10 +719,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('btn-backup-data').addEventListener('click', () => {
         const backupData = {
+            version: 2,
             sales,
             historyData,
+            productCatalog,
             storeName,
+            brandColor,
             dailyGoal,
+            alertThreshold,
+            cashBase,
             recentProducts,
             exportDate: new Date().toISOString()
         };
@@ -632,12 +738,50 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        localStorage.setItem('lastBackupDate', backupData.exportDate);
+        updateDataHealthPanel();
         showToast('Copia de seguridad descargada (JSON)');
     });
+
+    const updateDataHealthPanel = () => {
+        const statusEl = document.getElementById('data-health-status');
+        if (!statusEl) return;
+
+        const setText = (id, value) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value;
+        };
+
+        const { clients } = buildClientSummary();
+        let storageBytes = 0;
+        Object.keys(localStorage).forEach(key => {
+            storageBytes += key.length + (localStorage.getItem(key) || '').length;
+        });
+
+        const lastBackupDate = localStorage.getItem('lastBackupDate');
+        const lastBackupText = lastBackupDate
+            ? `Ultima copia: ${new Date(lastBackupDate).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}`
+            : 'Sin copias registradas';
+
+        setText('data-health-sales', sales.length);
+        setText('data-health-history', historyData.length);
+        setText('data-health-clients', clients.length);
+        setText('data-health-products', productCatalog.length);
+        setText('data-health-storage', `Uso local: ${(storageBytes / 1024).toFixed(1)} KB`);
+        setText('data-health-backup', lastBackupText);
+
+        statusEl.textContent = lastBackupDate ? 'Respaldado' : 'Backup recomendado';
+        statusEl.style.background = lastBackupDate ? 'var(--success-light)' : 'var(--warning-light)';
+        statusEl.style.color = lastBackupDate ? 'var(--success)' : 'var(--warning)';
+    };
 
     // --- Application Initialization ---
     const init = () => {
         document.getElementById('sidebar-brand-name').innerText = storeName;
+        if (setupChecklistCard && localStorage.getItem('setupChecklistCollapsed') === '1') {
+            setupChecklistCard.classList.add('collapsed');
+            if (setupChecklistToggle) setupChecklistToggle.innerHTML = '<i class="fa-solid fa-chevron-down"></i>';
+        }
         setupDate();
         setupLiveClock();
         setupTheme();
@@ -663,6 +807,9 @@ document.addEventListener('DOMContentLoaded', () => {
         updateSecondaryMetrics();
         updateActivityFeed();
         updateWeekVsLastWeek();
+        updateDataHealthPanel();
+        updateSetupChecklist();
+        updateStockAlertSnapshot();
         initMilestoneCelebrations();
     };
 
@@ -714,6 +861,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     savedIndicator.style.opacity = '1';
                     setTimeout(() => { savedIndicator.style.opacity = '0'; }, 1800);
                 }
+                updateSetupChecklist();
             }, 700);
         });
 
@@ -1441,12 +1589,228 @@ document.addEventListener('DOMContentLoaded', () => {
         updateTopProduct();
         updateSecondaryMetrics();
         updateActivityFeed();
+        updateDailyPulse(totalRevenue, totalExpenses, totalSalesCount, netBalance);
+        updateReceivablesSnapshot();
+        updateDataHealthPanel();
+        updateSetupChecklist();
+        updateStockAlertSnapshot();
 
         // Animated counter for KPI numbers
         animateKPICounter(kpiRevenue, totalRevenue, true);
         animateKPICounter(kpiSalesCount, totalSalesCount, false);
         animateKPICounter(kpiExpenses, totalExpenses, true);
         animateKPICounter(kpiBalance, netBalance, true);
+    };
+
+    const updateStockAlertSnapshot = () => {
+        if (!stockAlertCard || !stockAlertBadge || !stockAlertText || !stockAlertList) return;
+
+        const tracked = productCatalog.filter(p => p.stock !== undefined && p.stock !== null);
+        const outOfStock = tracked.filter(p => Number(p.stock) <= 0);
+        const lowStock = tracked.filter(p => Number(p.stock) > 0 && Number(p.stock) <= 5);
+        const attention = [...outOfStock, ...lowStock].sort((a, b) => Number(a.stock) - Number(b.stock));
+
+        stockAlertList.innerHTML = '';
+
+        if (tracked.length === 0) {
+            stockAlertCard.dataset.state = 'empty';
+            stockAlertBadge.textContent = 'Sin stock cargado';
+            stockAlertText.textContent = 'Carga productos con stock para recibir alertas autom\u00e1ticas cuando vendes.';
+            return;
+        }
+
+        if (attention.length === 0) {
+            stockAlertCard.dataset.state = 'ok';
+            stockAlertBadge.textContent = 'Stock saludable';
+            stockAlertText.textContent = `${tracked.length} productos con stock monitoreado. No hay urgencias por ahora.`;
+            return;
+        }
+
+        stockAlertCard.dataset.state = outOfStock.length > 0 ? 'danger' : 'warning';
+        stockAlertBadge.textContent = `${attention.length} ${attention.length === 1 ? 'alerta' : 'alertas'}`;
+        stockAlertText.textContent = outOfStock.length > 0
+            ? `${outOfStock.length} producto${outOfStock.length === 1 ? '' : 's'} sin stock. Revisa antes de seguir vendiendo.`
+            : `${lowStock.length} producto${lowStock.length === 1 ? '' : 's'} con 5 unidades o menos.`;
+
+        attention.slice(0, 4).forEach(product => {
+            const chip = document.createElement('span');
+            chip.className = 'stock-alert-chip';
+            chip.innerHTML = `<strong>${product.name}</strong><em>${Number(product.stock)} u.</em>`;
+            stockAlertList.appendChild(chip);
+        });
+    };
+
+    const updateSetupChecklist = () => {
+        if (!setupChecklistCard || !setupChecklistBadge || !setupProgressFill || !setupChecklistSubtitle) return;
+
+        const todayNote = localStorage.getItem(`notepad_${new Date().toISOString().split('T')[0]}`) || '';
+        const steps = {
+            store: storeName && storeName !== 'Zaleasy',
+            goal: dailyGoal && dailyGoal !== 100,
+            catalog: productCatalog.length > 0,
+            cash: cashBase > 0 || todayNote.trim().length > 0,
+            sale: sales.length > 0 || historyData.length > 0
+        };
+
+        const completed = Object.values(steps).filter(Boolean).length;
+        const total = Object.keys(steps).length;
+        setupChecklistBadge.textContent = `${completed}/${total} listo`;
+        setupProgressFill.style.width = `${(completed / total) * 100}%`;
+        setupChecklistCard.dataset.complete = completed === total ? 'true' : 'false';
+        setupChecklistSubtitle.textContent = completed === total
+            ? 'Configuraci\u00f3n base completa. Ya puedes usar el dashboard como tablero operativo diario.'
+            : 'Completa lo esencial para que Zaleasy trabaje mejor con tus datos.';
+
+        Object.entries(steps).forEach(([key, done]) => {
+            const el = setupChecklistCard.querySelector(`.setup-step[data-step="${key}"]`);
+            if (!el) return;
+            el.classList.toggle('done', done);
+            const icon = el.querySelector('i');
+            if (icon) icon.className = `fa-solid ${done ? 'fa-circle-check' : setupStepIcon(key)}`;
+        });
+    };
+
+    const setupStepIcon = (key) => ({
+        store: 'fa-store',
+        goal: 'fa-bullseye',
+        catalog: 'fa-boxes-stacked',
+        cash: 'fa-cash-register',
+        sale: 'fa-receipt'
+    }[key] || 'fa-circle');
+
+    const updateReceivablesSnapshot = () => {
+        if (!receivablesCard || !receivablesCount || !receivablesTotal || !receivablesDetail) return;
+
+        const { clientMap, debtClients, totalDebt, topDebtor } = buildClientSummary();
+        receivablesCard.dataset.state = totalDebt > 0 ? 'pending' : 'clear';
+        receivablesTotal.textContent = formatCurrency(totalDebt);
+        receivablesCount.textContent = `${debtClients.length} ${debtClients.length === 1 ? 'cliente' : 'clientes'}`;
+
+        if (totalDebt <= 0) {
+            receivablesDetail.textContent = 'Sin saldos pendientes registrados. Si vendes fiado, usa el m\u00e9todo "Fiado / Por Cobrar".';
+            return;
+        }
+
+        const topDebt = clientMap[topDebtor]?.totalDeuda || 0;
+        receivablesDetail.innerHTML = `<strong>${topDebtor}</strong> concentra ${formatCurrency(topDebt)} pendientes. Revisa el directorio para enviar recordatorios por WhatsApp.`;
+    };
+
+    const setPulseAction = (button, icon, label, handler) => {
+        if (!button) return;
+        button.innerHTML = `<i class="fa-solid ${icon}"></i><span>${label}</span>`;
+        button.onclick = handler;
+    };
+
+    const focusTransactionForm = (type = 'income') => {
+        switchView('nav-dashboard');
+        if (type === 'expense') {
+            btnTypeExpense.click();
+        } else {
+            btnTypeIncome.click();
+        }
+        const firstItemInput = document.querySelector('.item-product-input');
+        if (firstItemInput) {
+            firstItemInput.focus();
+            firstItemInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    };
+
+    const updateDailyPulse = (totalRevenue, totalExpenses, totalSalesCount, netBalance) => {
+        if (!dailyPulseCard || !dailyPulseBadge || !dailyPulseText || !dailyPulseIcon) return;
+
+        const progress = dailyGoal > 0 ? (totalRevenue / dailyGoal) * 100 : 0;
+        const expenseRatio = totalRevenue > 0 ? (totalExpenses / totalRevenue) * 100 : 0;
+        const hour = new Date().getHours();
+        const cashSales = sales
+            .filter(s => s.type !== 'expense' && s.method === 'Efectivo')
+            .reduce((sum, s) => sum + s.amount, 0);
+        const cashExpenses = sales
+            .filter(s => s.type === 'expense' && s.method === 'Efectivo')
+            .reduce((sum, s) => sum + s.amount, 0);
+        const cashInRegister = cashBase + cashSales - cashExpenses;
+
+        let state = {
+            tone: 'neutral',
+            icon: 'fa-compass',
+            badge: 'Listo para empezar',
+            text: 'Registra tu primera venta o gasto para recibir una recomendaci&oacute;n concreta.'
+        };
+
+        if (totalSalesCount === 0 && totalExpenses === 0) {
+            state = {
+                tone: 'neutral',
+                icon: 'fa-seedling',
+                badge: 'D&iacute;a sin movimientos',
+                text: 'Empieza registrando la primera operaci&oacute;n. Si ya tuviste gastos de apertura, cargarlos ahora te evita un cierre confuso.'
+            };
+        } else if (netBalance < 0) {
+            state = {
+                tone: 'danger',
+                icon: 'fa-triangle-exclamation',
+                badge: 'Balance negativo',
+                text: `Los gastos superan a los ingresos por ${formatCurrency(Math.abs(netBalance))}. Revisa salidas grandes antes de seguir vendiendo sin margen claro.`
+            };
+        } else if (expenseRatio >= 45) {
+            state = {
+                tone: 'warning',
+                icon: 'fa-scale-balanced',
+                badge: 'Gastos altos',
+                text: `Tus gastos equivalen al ${expenseRatio.toFixed(0)}% de los ingresos de hoy. Conviene pausar compras no urgentes o revisar precios.`
+            };
+        } else if (progress >= 100) {
+            state = {
+                tone: 'success',
+                icon: 'fa-trophy',
+                badge: 'Meta alcanzada',
+                text: `Ya superaste la meta diaria. Buen momento para registrar notas del d&iacute;a y preparar el cierre con caja ordenada.`
+            };
+        } else if (progress >= 70) {
+            state = {
+                tone: 'success',
+                icon: 'fa-bullseye',
+                badge: 'Cerca de la meta',
+                text: `Vas por el ${progress.toFixed(0)}% de la meta. Una venta de ${formatCurrency(Math.max(dailyGoal - totalRevenue, 0))} te deja en objetivo.`
+            };
+        } else if (hour >= 17 && progress < 50 && totalSalesCount > 0) {
+            state = {
+                tone: 'warning',
+                icon: 'fa-clock',
+                badge: 'Tarde con margen',
+                text: `A esta hora llevas ${progress.toFixed(0)}% de la meta. Prueba contactar clientes pendientes o destacar tu producto m&aacute;s vendido.`
+            };
+        } else if (cashInRegister < 0) {
+            state = {
+                tone: 'danger',
+                icon: 'fa-money-bill-wave',
+                badge: 'Revisar efectivo',
+                text: 'El efectivo calculado qued&oacute; por debajo de cero. Revisa base de caja, gastos en efectivo o movimientos cargados por error.'
+            };
+        } else {
+            state = {
+                tone: 'neutral',
+                icon: 'fa-chart-line',
+                badge: 'Ritmo saludable',
+                text: `Llevas ${totalSalesCount} ${totalSalesCount === 1 ? 'venta' : 'ventas'} y un balance de ${formatCurrency(netBalance)}. Mant&eacute;n actualizado el registro para cerrar sin sorpresas.`
+            };
+        }
+
+        dailyPulseCard.dataset.tone = state.tone;
+        dailyPulseIcon.innerHTML = `<i class="fa-solid ${state.icon}"></i>`;
+        dailyPulseBadge.textContent = state.badge;
+        dailyPulseText.innerHTML = state.text;
+
+        setPulseAction(pulseActionPrimary, 'fa-plus', 'Registrar venta', () => focusTransactionForm('income'));
+        setPulseAction(pulseActionSecondary, state.tone === 'danger' ? 'fa-arrow-trend-down' : 'fa-pen-clip', state.tone === 'danger' ? 'Cargar gasto' : 'Anotar pendiente', () => {
+            if (state.tone === 'danger') {
+                focusTransactionForm('expense');
+                return;
+            }
+            const notepad = document.getElementById('day-notepad');
+            if (notepad) {
+                notepad.focus();
+                notepad.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
     };
 
     // --- Animated KPI Counter ---
@@ -1824,6 +2188,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (document.getElementById('view-inventario').style.display === 'block') {
                         renderInventario();
                     }
+                    updateStockAlertSnapshot();
                 }
             }
 
@@ -1899,6 +2264,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     cashBase = parsed;
                     localStorage.setItem('cashBase', cashBase);
                     updateSecondaryMetrics();
+                    updateKPIs();
+                    updateSetupChecklist();
                     showToast('Base de caja actualizada');
                 } else {
                     alert('Por favor, ingresa un monto num\u00e9rico v\u00e1lido.');
@@ -2618,6 +2985,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         productCatalog = productCatalog.filter(p => p.id !== idToRemove);
                         localStorage.setItem('productCatalog', JSON.stringify(productCatalog));
                         renderInventario();
+                        updateStockAlertSnapshot();
+                        updateDataHealthPanel();
+                        updateSetupChecklist();
                         setupAutocomplete(); // Update datalist and Autofill potential
                     }
                 });
@@ -2671,6 +3041,9 @@ document.addEventListener('DOMContentLoaded', () => {
             newProductForm.style.display = 'none';
             
             renderInventario();
+            updateStockAlertSnapshot();
+            updateDataHealthPanel();
+            updateSetupChecklist();
             setupAutocomplete(); // refresh autofill globally
             showToast('Producto agregado al catálogo!');
         });
@@ -2721,15 +3094,37 @@ document.addEventListener('DOMContentLoaded', () => {
                             dailyGoal = data.dailyGoal;
                             localStorage.setItem('dailyGoal', dailyGoal);
                         }
+                        if (data.brandColor) {
+                            brandColor = data.brandColor;
+                            localStorage.setItem('brandColor', brandColor);
+                            applyBrandColor(brandColor);
+                        }
+                        if (data.alertThreshold !== undefined) {
+                            alertThreshold = parseFloat(data.alertThreshold) || 0;
+                            localStorage.setItem('alertThreshold', alertThreshold);
+                        }
+                        if (data.cashBase !== undefined) {
+                            cashBase = parseFloat(data.cashBase) || 0;
+                            localStorage.setItem('cashBase', cashBase);
+                        }
                         if (data.recentProducts) {
                             recentProducts = data.recentProducts;
                             localStorage.setItem('recentProducts', JSON.stringify(recentProducts));
+                            setupAutocomplete();
+                        }
+                        if (data.productCatalog) {
+                            const currentProductNames = new Set(productCatalog.map(p => (p.name || '').toLowerCase()));
+                            const newProducts = data.productCatalog.filter(p => p && p.name && !currentProductNames.has(p.name.toLowerCase()));
+                            productCatalog = [...productCatalog, ...newProducts];
+                            localStorage.setItem('productCatalog', JSON.stringify(productCatalog));
+                            renderInventario();
                             setupAutocomplete();
                         }
 
                         renderSales();
                         updateKPIs();
                         setupStreakWidget();
+                        updateDataHealthPanel();
                         showToast(`✅ Importaci\u00f3n exitosa: +${newSales.length} ventas, +${newHistory.length} hist\u00f3ricos.`);
                     }
                 } catch (err) {
