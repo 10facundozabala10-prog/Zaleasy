@@ -714,78 +714,7 @@
         justify-content: center;
       }
     }
-
-    /* â”€â”€ Ticker Strip â”€â”€ */
-    .tips-ticker {
-      background: linear-gradient(90deg, rgba(108,92,231,0.18) 0%, rgba(0,210,211,0.10) 100%);
-      border-top: 1px solid rgba(108,92,231,0.25);
-      border-bottom: 1px solid rgba(108,92,231,0.25);
-      padding: 0;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      height: 44px;
-      position: relative;
-    }
-
-    .ticker-label {
-      flex-shrink: 0;
-      background: var(--primary);
-      color: white;
-      font-size: 0.72rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      padding: 0 1.2rem;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      white-space: nowrap;
-      z-index: 2;
-    }
-
-    .ticker-track-wrapper {
-      flex: 1;
-      overflow: hidden;
-      height: 100%;
-      display: flex;
-      align-items: center;
-    }
-
-    .ticker-track {
-      display: flex;
-      gap: 0;
-      white-space: nowrap;
-      animation: ticker-scroll 40s linear infinite;
-    }
-
-    .ticker-track:hover {
-      animation-play-state: paused;
-    }
-
-    .ticker-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.88rem;
-      color: rgba(255,255,255,0.8);
-      padding: 0 2.5rem;
-      border-right: 1px solid rgba(255,255,255,0.08);
-      white-space: nowrap;
-    }
-
-    .ticker-item i {
-      color: #a29bfe;
-      font-size: 0.82rem;
-    }
-
-    @keyframes ticker-scroll {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-
-    /* â”€â”€ Hot / Trending badge on cards â”€â”€ */
+    /* Hot / Trending badge on cards */
     .badge-hot {
       position: absolute;
       top: 12px;
@@ -811,7 +740,7 @@
       50%       { box-shadow: 0 4px 22px rgba(255,71,87,0.75); }
     }
 
-    /* â”€â”€ Gradient card hover overlay â”€â”€ */
+    /* ── Gradient card hover overlay ── */
     .blog-card .blog-img {
       position: relative;
     }
@@ -829,7 +758,7 @@
       opacity: 1;
     }
 
-    /* â”€â”€ Animated number counters in stats â”€â”€ */
+    /* ── Animated number counters in stats ── */
     @keyframes count-up {
       from { opacity: 0; transform: translateY(8px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -838,7 +767,7 @@
       animation: count-up 0.6s ease both;
     }
 
-    /* â”€â”€ Mobile Optimizations â”€â”€ */
+    /* ── Mobile Optimizations ── */
     @media (max-width: 768px) {
       .blog-header {
         padding: 3rem 0 1.5rem;
@@ -926,18 +855,6 @@
       .article-count-badge {
         font-size: 0.75rem;
         padding: 0.3rem 0.8rem;
-      }
-      .tips-ticker {
-        height: auto;
-        min-height: 44px;
-        padding: 0.5rem 0;
-      }
-      .ticker-label {
-        font-size: 0.65rem;
-        padding: 0 0.8rem;
-      }
-      .ticker-item {
-        font-size: 0.8rem;
       }
     }
   </style>
@@ -1109,7 +1026,7 @@
       updateFilterCounts();
       updateSearchMeta(total, total, '');
 
-      // â”€â”€ Scroll-reveal with IntersectionObserver â”€â”€
+      // ── Scroll-reveal with IntersectionObserver ──
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry, i) => {
           if (entry.isIntersecting) {
@@ -1227,36 +1144,6 @@
       data-ad-format="auto" data-full-width-responsive="true"></ins>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
-
-  <!-- â”€â”€ Animated Tips Ticker â”€â”€ -->
-  <div class="tips-ticker" aria-label="Consejos r&aacute;pidos de ventas" role="marquee">
-    <div class="ticker-label">
-      <i class="fa-solid fa-bolt"></i> Tip R&aacute;pido
-    </div>
-    <div class="ticker-track-wrapper">
-      <div class="ticker-track" id="tickerTrack">
-        <!-- Set A -->
-        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> El 80% de las ventas se cierran en el 5&ordm; contacto o despu&eacute;s &mdash; nunca abandones en el primero.</span>
-        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> Escucha el doble de lo que hablas: tienes dos o&iacute;dos y una boca por algo.</span>
-        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> El precio nunca es el verdadero problema; la falta de valor percibido s&iacute; lo es.</span>
-        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> Vende resultados, no caracter&iacute;sticas. Tu cliente compra c&oacute;mo mejorar&aacute; su vida.</span>
-        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> Una propuesta de valor clara vale m&aacute;s que mil argumentos de venta.</span>
-        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> La urgencia real cierra m&aacute;s ventas que cualquier descuento. Ofrece fechas l&iacute;mite genuinas.</span>
-        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> El mejor momento para pedir una referencia es justo despu&eacute;s de cerrar una venta.</span>
-        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> Registra cada venta del d&iacute;a en Zaleasy &mdash; los n&uacute;meros que no ves, no los puedes mejorar.</span>
-        <!-- Set B (duplicate for seamless loop) -->
-        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> El 80% de las ventas se cierran en el 5&ordm; contacto o despu&eacute;s &mdash; nunca abandones en el primero.</span>
-        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> Escucha el doble de lo que hablas: tienes dos o&iacute;dos y una boca por algo.</span>
-        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> El precio nunca es el verdadero problema; la falta de valor percibido s&iacute; lo es.</span>
-        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> Vende resultados, no caracter&iacute;sticas. Tu cliente compra c&oacute;mo mejorar&aacute; su vida.</span>
-        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> Una propuesta de valor clara vale m&aacute;s que mil argumentos de venta.</span>
-        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> La urgencia real cierra m&aacute;s ventas que cualquier descuento. Ofrece fechas l&iacute;mite genuinas.</span>
-        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> El mejor momento para pedir una referencia es justo despu&eacute;s de cerrar una venta.</span>
-        <span class="ticker-item"><i class="fa-solid fa-circle-check"></i> Registra cada venta del d&iacute;a en Zaleasy &mdash; los n&uacute;meros que no ves, no los puedes mejorar.</span>
-      </div>
-    </div>
-  </div>
-
   <!-- Featured Article Banner -->
   <section class="container" style="padding-top: 3rem;">
     <div style="
@@ -1314,10 +1201,10 @@
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
         <div>
           <span style="background: rgba(0, 210, 211, 0.15); color: #00d2d3; padding: 0.35rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; display: inline-block; margin-bottom: 0.8rem; border: 1px solid rgba(0, 210, 211, 0.3);">
-            <i class="fa-solid fa-map-location-dot" style="margin-right: 6px;"></i> Â¿Nuevo en el blog?
+            <i class="fa-solid fa-map-location-dot" style="margin-right: 6px;"></i> ¿Nuevo en el blog?
           </span>
           <h2 style="font-size: 1.8rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.5rem;">Tu Ruta de Aprendizaje Inicial</h2>
-          <p style="color: var(--text-muted); font-size: 1rem;">Te sugerimos leer estos 3 artÃ­culos clave en orden para construir una base sÃ³lida.</p>
+          <p style="color: var(--text-muted); font-size: 1rem;">Te sugerimos leer estos 3 artículos clave en orden para construir una base sólida.</p>
         </div>
       </div>
 
@@ -1330,7 +1217,7 @@
           <div style="background: rgba(25,23,45,0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 2rem 1.5rem; text-align: center; height: 100%; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.4s, box-shadow 0.4s;" onmouseover="this.style.transform='translateY(-8px) scale(1.02)'; this.style.borderColor='var(--primary)'; this.style.boxShadow='0 15px 30px rgba(108, 92, 231, 0.2)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.08)'; this.style.boxShadow='none';">
             <div style="width: 55px; height: 55px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), #a29bfe); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: bold; margin: 0 auto 1.2rem; box-shadow: 0 0 0 6px rgba(108, 92, 231, 0.2); position: relative;">1</div>
             <h4 style="color: var(--text-main); font-size: 1.2rem; margin-bottom: 0.5rem; font-weight: 700;">Domina tu Mente</h4>
-            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">El primer artÃ­culo: Mentalidad de Ventas y creencias limitantes.</p>
+            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">El primer artículo: Mentalidad de Ventas y creencias limitantes.</p>
           </div>
         </a>
 
@@ -1339,7 +1226,7 @@
           <div style="background: rgba(25,23,45,0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 2rem 1.5rem; text-align: center; height: 100%; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.4s, box-shadow 0.4s;" onmouseover="this.style.transform='translateY(-8px) scale(1.02)'; this.style.borderColor='var(--success)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.08)'; this.style.boxShadow='none';">
             <div style="width: 55px; height: 55px; border-radius: 50%; background: linear-gradient(135deg, var(--success), #2ed573); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: bold; margin: 0 auto 1.2rem; box-shadow: 0 0 0 6px rgba(46, 213, 115, 0.2); position: relative;">2</div>
             <h4 style="color: var(--text-main); font-size: 1.2rem; margin-bottom: 0.5rem; font-weight: 700;">Crea tu Mensaje</h4>
-            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">Segundo artÃ­culo: Storytelling para conectar y no parecer vendedor.</p>
+            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">Segundo artículo: Storytelling para conectar y no parecer vendedor.</p>
           </div>
         </a>
 
@@ -1348,7 +1235,7 @@
           <div style="background: rgba(25,23,45,0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 2rem 1.5rem; text-align: center; height: 100%; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.4s, box-shadow 0.4s;" onmouseover="this.style.transform='translateY(-8px) scale(1.02)'; this.style.borderColor='#ffa502';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.08)'; this.style.boxShadow='none';">
             <div style="width: 55px; height: 55px; border-radius: 50%; background: linear-gradient(135deg, #ffa502, #ff7f50); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: bold; margin: 0 auto 1.2rem; box-shadow: 0 0 0 6px rgba(255, 165, 2, 0.2); position: relative;">3</div>
             <h4 style="color: var(--text-main); font-size: 1.2rem; margin-bottom: 0.5rem; font-weight: 700;">Cierra Tratos</h4>
-            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">Tercer artÃ­culo: Las 5 tÃ©cnicas de cierre que multiplican tus ingresos.</p>
+            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">Tercer artículo: Las 5 técnicas de cierre que multiplican tus ingresos.</p>
           </div>
         </a>
 
@@ -1361,179 +1248,7 @@
       .learning-path-line { display: none !important; }
     }
   </style>
-
-  <!-- â”€â”€ Random Tip Generator â”€â”€ -->
-  <section class="container" style="padding: 2rem 0 0;" id="generador">
-
-    <!-- Header row -->
-    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.4rem;">
-      <div>
-        <span style="background:rgba(255,165,2,0.14);color:#ffa502;padding:0.28rem 0.9rem;border-radius:20px;font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;border:1px solid rgba(255,165,2,0.3);display:inline-block;margin-bottom:0.5rem;">
-          <i class="fa-solid fa-dice" style="margin-right:5px;"></i> Generador de Tips
-        </span>
-        <h2 style="font-size:1.7rem;font-weight:800;color:var(--text-main);margin:0;">Consejo de ventas aleatorio</h2>
-      </div>
-      <div style="text-align:right;">
-        <span style="font-size:2rem;font-weight:800;color:var(--primary);" id="tipCount">0</span>
-        <span style="display:block;font-size:0.72rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;">tips generados</span>
-      </div>
-    </div>
-
-    <!-- Card flip scene -->
-    <div style="perspective:1000px;" id="tipScene">
-      <div id="tipCard" style="
-        position:relative; min-height:240px;
-        transform-style:preserve-3d;
-        transition:transform 0.6s cubic-bezier(0.4,0,0.2,1);
-        border-radius:20px;
-      ">
-        <!-- Front (placeholder, replaced by JS) -->
-        <div class="tip-face tip-front" id="tipFront" style="
-          position:absolute;inset:0;backface-visibility:hidden;
-          background:var(--bg-card);border:1px solid rgba(108,92,231,0.22);
-          border-radius:20px;padding:2.2rem 2.5rem;display:flex;flex-direction:column;justify-content:space-between;
-          box-shadow:0 15px 40px rgba(0,0,0,0.25);
-        ">
-          <div>
-            <span id="tipCategoryBadge" style="font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;padding:0.28rem 0.8rem;border-radius:20px;display:inline-block;margin-bottom:1.2rem;"></span>
-            <p id="tipNumber" style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.5rem;"></p>
-            <p id="tipText" style="font-size:1.2rem;font-weight:600;color:var(--text-main);line-height:1.7;margin:0;"></p>
-          </div>
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.8rem;margin-top:1.5rem;">
-            <a id="tipArticleLink" href="#" style="color:#a29bfe;font-size:0.88rem;font-weight:600;text-decoration:none;display:flex;align-items:center;gap:0.4rem;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#a29bfe'">
-              <i class="fa-solid fa-book-open" style="font-size:0.78rem;"></i>
-              <span id="tipArticleLabel">Leer art&iacute;culo completo</span>
-            </a>
-            <div style="display:flex;gap:0.5rem;">
-              <button id="tipShareWA" title="Compartir" style="background:#25d366;border:none;color:white;width:34px;height:34px;border-radius:50%;font-size:0.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform=''"><i class="fa-brands fa-whatsapp"></i></button>
-              <button id="tipCopyBtn" title="Copiar tip" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:var(--text-muted);width:34px;height:34px;border-radius:50%;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'"><i class="fa-regular fa-copy"></i></button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Back (spins to this on click) -->
-        <div class="tip-face" id="tipBack" style="
-          position:absolute;inset:0;backface-visibility:hidden;transform:rotateY(180deg);
-          background:linear-gradient(135deg,rgba(108,92,231,0.18),rgba(0,210,211,0.1));
-          border:1px solid rgba(108,92,231,0.3);
-          border-radius:20px;display:flex;align-items:center;justify-content:center;
-          box-shadow:0 15px 40px rgba(0,0,0,0.25);
-        ">
-          <div style="text-align:center;">
-            <div style="font-size:3rem;margin-bottom:0.5rem;">ðŸŽ²</div>
-            <p style="color:var(--text-muted);font-size:0.9rem;">Generando nuevo tip...</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- CTA button -->
-    <div style="text-align:center;margin-top:1.5rem;">
-      <button id="tipGenBtn" onclick="generateTip()" style="
-        background:linear-gradient(135deg,var(--primary),#a29bfe);
-        border:none;color:white;padding:1rem 2.8rem;border-radius:40px;
-        font-size:1.05rem;font-weight:700;cursor:pointer;font-family:inherit;
-        box-shadow:0 8px 24px rgba(108,92,231,0.4);
-        transition:transform 0.2s,box-shadow 0.2s;
-        display:inline-flex;align-items:center;gap:0.7rem;
-      " onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 30px rgba(108,92,231,0.55)'" onmouseout="this.style.transform='';this.style.boxShadow='0 8px 24px rgba(108,92,231,0.4)'">
-        <i class="fa-solid fa-dice-d6"></i> Generar otro tip
-      </button>
-    </div>
-  </section>
-
-  <script>
-  (function(){
-    const tips = [
-      { cat:'Cierre',       catColor:'rgba(255,71,87,0.15)',   catText:'#ff6b81',  text:'Cuando un cliente dice "lo pienso", no lo dejes ir sin preguntarle: "Â¿QuÃ© es lo que necesitarÃ­as ver para tomar la decisiÃ³n hoy?". La respuesta te dirÃ¡ exactamente quÃ© objeciÃ³n real falta resolver.',    article:'Blog htmls/tecnicas-de-cierre-sin-suplicar.html', articleLabel:'TÃ©cnicas de Cierre Sin Suplicar' },
-      { cat:'PsicologÃ­a',   catColor:'rgba(108,92,231,0.15)',  catText:'#a29bfe',  text:'La gente no compra lÃ³gica, compra emociÃ³n y justifica con lÃ³gica despuÃ©s. Primero crea la emociÃ³n (el resultado deseado) y luego dale los argumentos racionales para que se sienta bien con la decisiÃ³n.',     article:'Blog htmls/psicologia-de-ventas.html',             articleLabel:'PsicologÃ­a de Ventas' },
-      { cat:'Precios',      catColor:'rgba(255,165,2,0.15)',   catText:'#ffa502',  text:'Nunca presentes el precio solo. Siempre anÃºncialo entre dos capas de valor: primero lo que van a ganar, luego el precio, luego recuÃ©rdales lo que van a ganar. AsÃ­ el precio se encoge perceptivamente.',          article:'Blog htmls/estrategias-de-precios-que-venden.html', articleLabel:'Estrategias de Precios' },
-      { cat:'Seguimiento',  catColor:'rgba(0,210,211,0.15)',   catText:'#00d2d3',  text:'El 80% de los vendedores se rinden tras el primer contacto. El 80% de las ventas se cierran entre el 5Â° y el 12Â° contacto. La persistencia educada es tu ventaja competitiva mÃ¡s barata.',                         article:'Blog htmls/el-poder-del-seguimiento.html',          articleLabel:'El Poder del Seguimiento' },
-      { cat:'Copywriting',  catColor:'rgba(46,213,115,0.15)',  catText:'#2ed573',  text:'La fÃ³rmula de ventas mÃ¡s poderosa tiene 3 partes: (1) Nombra el dolor especÃ­fico, (2) Amplifica las consecuencias de no resolverlo, (3) Presenta tu soluciÃ³n como el camino mÃ¡s directo. PAS: Problema-AgitaciÃ³n-SoluciÃ³n.',  article:'Blog htmls/copywriting-para-ventas.html',           articleLabel:'Copywriting para Ventas' },
-      { cat:'Mentalidad',   catColor:'rgba(253,121,168,0.15)', catText:'#fd79a8',  text:'Tu tasa de cierre nunca va a superar el nivel de confianza que tienes en tu propio producto. Antes de tu prÃ³xima llamada de ventas, pregÃºntate: "Â¿Lo comprarÃ­a yo al precio que lo ofrezco?" Si dudas, el cliente lo siente.',   article:'Blog htmls/mentalidad-de-ventas.html',             articleLabel:'Mentalidad de Ventas' },
-      { cat:'WhatsApp',     catColor:'rgba(37,211,102,0.15)',  catText:'#25d366',  text:'El primer mensaje de un prospecto define el 70% de la venta. Si tu primera respuesta es un catÃ¡logo de PDF, perdiste. En su lugar, pregunta primero: "Â¿Para quiÃ©n es el producto? Â¿QuÃ© estÃ¡s buscando exactamente?" Califica antes de cotizar.',  article:'Blog htmls/ventas-por-whatsapp.html',              articleLabel:'Ventas por WhatsApp' },
-      { cat:'Objeciones',   catColor:'rgba(255,165,2,0.15)',   catText:'#ffa502',  text:'Las objeciones son preguntas disfrazadas. "Es muy caro" significa "no veo suficiente valor". "Lo tengo que pensar" significa "me falta informaciÃ³n o confianza". Aprende a traducirlas en lugar de combatirlas.',    article:'Blog htmls/manejo-de-objeciones-de-ventas.html',   articleLabel:'Manejo de Objeciones' },
-      { cat:'Pitch',        catColor:'rgba(108,92,231,0.15)',  catText:'#a29bfe',  text:'El mejor elevator pitch tiene esta estructura: "Ayudo a [cliente especÃ­fico] a [resultado deseado] sin [obstÃ¡culo que temen]." Ejemplo: "Ayudo a freelancers a conseguir 3 clientes nuevos al mes sin perseguir a nadie."', article:'Blog htmls/elevator-pitch.html',                    articleLabel:'El Pitch Perfecto' },
-      { cat:'Networking',   catColor:'rgba(0,210,211,0.15)',   catText:'#00d2d3',  text:'En networking, el error mÃ¡s costoso es intentar venderle a todos. En cambio, enfÃ³cate en ser Ãºtil: conecta personas, comparte informaciÃ³n valiosa. Cuando llegue el momento de que necesiten lo que ofreces, serÃ¡s el primero en quien piensen.',  article:'Blog htmls/networking-estrategico.html',           articleLabel:'Networking EstratÃ©gico' },
-      { cat:'Precios',      catColor:'rgba(255,165,2,0.15)',   catText:'#ffa502',  text:'Cada vez que bajas tu precio sin razÃ³n, estÃ¡s enviando un mensaje inconsciente: "yo mismo no creo que valga lo que pedÃ­a antes." El descuento mata la confianza mÃ¡s rÃ¡pido que cualquier competidor.', article:'Blog htmls/la-trampa-de-los-descuentos.html',       articleLabel:'La Trampa de los Descuentos' },
-      { cat:'Cierre',       catColor:'rgba(255,71,87,0.15)',   catText:'#ff6b81',  text:'El cierre mÃ¡s poderoso es el cierre de asunciÃ³n: actÃºa como si la venta ya estuviera hecha. "Â¿CÃ³mo prefieres pagar, en efectivo o transferencia?" En lugar de "Â¿Te interesa?" Das por hecho que sÃ­, y la gente raramente te corrige.',  article:'Blog htmls/tecnicas-de-cierre-sin-suplicar.html',  articleLabel:'TÃ©cnicas de Cierre' },
-      { cat:'Marketing',    catColor:'rgba(46,213,115,0.15)',  catText:'#2ed573',  text:'El contenido gratuito de valor es el activo de ventas mÃ¡s poderoso a largo plazo. Cada artÃ­culo Ãºtil que publicas trabaja 24/7 para pre-calificar prospectos y construir confianza antes de que te contacten.',  article:'Blog htmls/como-vender-sin-vender.html',           articleLabel:'CÃ³mo Vender Sin Vender' },
-      { cat:'Finanzas',     catColor:'rgba(253,121,168,0.15)', catText:'#fd79a8',  text:'El vendedor inteligente no mide solo cuÃ¡nto vendiÃ³. Mide cuÃ¡nto le costÃ³ vender eso. Si gastaste 3 horas para cerrar un cliente de $1,000, tu hora valiÃ³ $333. Registra y analiza para optimizar.',                 article:'Blog htmls/gastos-hormiga-en-tu-negocio.html',     articleLabel:'Gastos Hormiga en tu Negocio' },
-      { cat:'Social',       catColor:'rgba(108,92,231,0.15)',  catText:'#a29bfe',  text:'La prueba social funciona porque reduce el riesgo percibido. Un testimonio especÃ­fico vale 100 veces mÃ¡s que uno genÃ©rico. "Me ayudÃ³ mucho" no vende. "CerrÃ© 3 clientes nuevos en la primera semana" sÃ­ vende.',        article:'Blog htmls/prueba-social-en-ventas.html',          articleLabel:'Prueba Social en Ventas' },
-      { cat:'B2B',          catColor:'rgba(0,184,148,0.15)',   catText:'#00b894',  text:'En ventas B2B, nunca vendas a quien no tiene poder de decisiÃ³n. Identifica al tomador de decisiÃ³n y al influenciador interno. Tu trabajo es convertir al influenciador en tu vendedor interno dentro de la empresa.',     article:'Blog htmls/ventas-b2b-2026.html',                  articleLabel:'Ventas B2B en 2026' },
-      { cat:'Mentalidad',   catColor:'rgba(253,121,168,0.15)', catText:'#fd79a8',  text:'El mejor ejercicio de mentalidad antes de una negociaciÃ³n: recuerda que el cliente necesita una soluciÃ³n tanto como tÃº necesitas venderla. No eres un suplicante, eres un mÃ©dico con la cura. Entra desde ese lugar.',   article:'Blog htmls/miedo-a-vender.html',                   articleLabel:'CÃ³mo Superar el Miedo a Vender' },
-      { cat:'Embudos',      catColor:'rgba(0,210,211,0.15)',   catText:'#00d2d3',  text:'El mayor error en un embudo de ventas es ir demasiado rÃ¡pido a la venta. Si alguien acaba de conocerte, pedirle que compre es como pedirle matrimonio en la primera cita. Construye confianza en etapas.',               article:'Blog htmls/embudos-de-venta.html',                 articleLabel:'Embudos de Venta' },
-      { cat:'NegociaciÃ³n',  catColor:'rgba(255,165,2,0.15)',   catText:'#ffa502',  text:'En cualquier negociaciÃ³n, quien habla el precio primero pierde terreno. Si el cliente te pregunta cuÃ¡nto cuesta antes de que hayas mostrado todo el valor, responde: "Depende de lo que necesites. CuÃ©ntame mÃ¡s sobre tu situaciÃ³n."', article:'Blog htmls/tecnicas-de-negociacion.html',          articleLabel:'TÃ©cnicas de NegociaciÃ³n' },
-      { cat:'Productividad',catColor:'rgba(46,213,115,0.15)',  catText:'#2ed573',  text:'Los vendedores de alto rendimiento dedican el 80% de su tiempo a prospectos que tienen alta probabilidad de cierre, no a intentar convencer a quien claramente no quiere comprar. Califica rÃ¡pido, descarta sin culpa.',   article:'Blog htmls/productividad-para-vendedores.html',    articleLabel:'Productividad para Vendedores' },
-    ];
-
-    let shown = 0;
-    let totalGenerated = 0;
-    let isFlipped = false;
-    let currentTip = null;
-
-    function pickTip(){
-      // Avoid repeating
-      let idx;
-      do { idx = Math.floor(Math.random()*tips.length); } while(tips[idx]===currentTip && tips.length>1);
-      currentTip = tips[idx];
-      shown++;
-      return currentTip;
-    }
-
-    function renderTip(tip){
-      document.getElementById('tipCategoryBadge').textContent = tip.cat;
-      document.getElementById('tipCategoryBadge').style.background = tip.catColor;
-      document.getElementById('tipCategoryBadge').style.color = tip.catText;
-      document.getElementById('tipCategoryBadge').style.border = '1px solid '+tip.catText.replace(')',',0.3)').replace('rgb','rgba');
-      document.getElementById('tipNumber').textContent = 'Tip #'+shown+' de 20';
-      document.getElementById('tipText').textContent = tip.text;
-      document.getElementById('tipArticleLink').href = tip.article;
-      document.getElementById('tipArticleLabel').textContent = tip.articleLabel;
-      // Share
-      document.getElementById('tipShareWA').onclick = ()=> window.open('https://wa.me/?text='+encodeURIComponent('ðŸ’¡ Tip de ventas:\n\n"'+tip.text+'"\n\nVÃ­a Zaleasy: https://zaleasy.com/blog.html'),'_blank');
-      document.getElementById('tipCopyBtn').onclick = ()=>{
-        navigator.clipboard.writeText('"'+tip.text+'" â€” Blog Zaleasy');
-        const btn=document.getElementById('tipCopyBtn');
-        btn.innerHTML='<i class="fa-solid fa-check"></i>';
-        setTimeout(()=>{btn.innerHTML='<i class="fa-regular fa-copy"></i>';},2000);
-      };
-    }
-
-    window.generateTip = function(){
-      totalGenerated++;
-      document.getElementById('tipCount').textContent = totalGenerated;
-      const card = document.getElementById('tipCard');
-
-      if(!isFlipped){
-        // Flip to back
-        card.style.transform='rotateY(180deg)';
-        isFlipped=true;
-        setTimeout(()=>{
-          const tip=pickTip();
-          renderTip(tip);
-          card.style.transform='rotateY(360deg)';
-          isFlipped=false;
-        }, 320);
-      } else {
-        card.style.transform='rotateY(360deg)';
-        isFlipped=false;
-        setTimeout(()=>{
-          const tip=pickTip();
-          renderTip(tip);
-        }, 320);
-      }
-    };
-
-    // Show first tip immediately
-    const first=pickTip();
-    renderTip(first);
-    totalGenerated=1;
-    document.getElementById('tipCount').textContent='1';
-  })();
-  </script>
-
-  <!-- â”€â”€ Quote of the Day â”€â”€ -->
+  <!-- Quote of the Day -->
 
   <section class="container" style="padding: 2rem 0 1rem;">
     <div id="qotdCard" style="background:linear-gradient(135deg,rgba(108,92,231,0.12),rgba(0,210,211,0.06));border:1px solid rgba(108,92,231,0.22);border-radius:20px;padding:2.2rem 2.5rem;display:flex;align-items:center;gap:2rem;position:relative;overflow:hidden;">
@@ -1566,13 +1281,13 @@
 
   <script>
     const quotes = [
-      { text: "No le vendas a la gente lo que necesitan. VÃ©ndeles lo que quieren y dales lo que necesitan.", author: "â€” Seth Godin" },
-      { text: "La diferencia entre un vendedor mediocre y uno extraordinario no es el talento. Es el nÃºmero de 'no' que estÃ¡n dispuestos a escuchar.", author: "â€” Facundo Zabala, Zaleasy" },
-      { text: "Tu trabajo no es convencer a la gente de comprar. Tu trabajo es encontrar a las personas que ya quieren lo que tienes.", author: "â€” Zig Ziglar" },
-      { text: "El precio que cobras es una declaraciÃ³n del valor que tÃº mismo te das. Si bajas tus precios sin razÃ³n, estÃ¡s diciÃ©ndole al mundo que no eres tan bueno.", author: "â€” Facundo Zabala, Zaleasy" },
-      { text: "Las ventas son la consecuencia de una relaciÃ³n bien construida, no la razÃ³n por la que la construiste.", author: "â€” Jeffrey Gitomer" },
-      { text: "Todo el mundo vive vendiendo algo. El que no lo acepta, simplemente lo hace mal.", author: "â€” Robert Louis Stevenson" },
-      { text: "La confianza se construye con consistencia. Aparece cuando prometiste, entrega mÃ¡s de lo que prometiste.", author: "â€” Facundo Zabala, Zaleasy" },
+      { text: "No le vendas a la gente lo que necesitan. Véndeles lo que quieren y dales lo que necesitan.", author: "— Seth Godin" },
+      { text: "La diferencia entre un vendedor mediocre y uno extraordinario no es el talento. Es el número de 'no' que están dispuestos a escuchar.", author: "— Facundo Zabala, Zaleasy" },
+      { text: "Tu trabajo no es convencer a la gente de comprar. Tu trabajo es encontrar a las personas que ya quieren lo que tienes.", author: "— Zig Ziglar" },
+      { text: "El precio que cobras es una declaración del valor que tú mismo te das. Si bajas tus precios sin razón, estás diciéndole al mundo que no eres tan bueno.", author: "— Facundo Zabala, Zaleasy" },
+      { text: "Las ventas son la consecuencia de una relación bien construida, no la razón por la que la construiste.", author: "— Jeffrey Gitomer" },
+      { text: "Todo el mundo vive vendiendo algo. El que no lo acepta, simplemente lo hace mal.", author: "— Robert Louis Stevenson" },
+      { text: "La confianza se construye con consistencia. Aparece cuando prometiste, entrega más de lo que prometiste.", author: "— Facundo Zabala, Zaleasy" },
     ];
     let qIdx = new Date().getDay(); // starts at today's weekday
     function renderQotd(){
@@ -1582,14 +1297,14 @@
       if(el && au){ el.textContent = q.text; au.textContent = q.author; }
       const wa = document.getElementById('qotdShareWA');
       const x  = document.getElementById('qotdShareX');
-      if(wa) wa.onclick = ()=> window.open('https://wa.me/?text='+encodeURIComponent('"'+q.text+'" '+q.author+' â€” Blog Zaleasy: https://zaleasy.com/blog.html'),'_blank');
+      if(wa) wa.onclick = ()=> window.open('https://wa.me/?text='+encodeURIComponent('"'+q.text+'" '+q.author+' — Blog Zaleasy: https://zaleasy.com/blog.html'),'_blank');
       if(x)  x.onclick  = ()=> window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent('"'+q.text+'" '+q.author)+'&url=https://zaleasy.com/blog.html','_blank');
     }
     window.nextQotd = function(){ qIdx++; renderQotd(); };
     document.addEventListener('DOMContentLoaded', renderQotd);
   </script>
 
-  <!-- â”€â”€ Glosario RÃ¡pido de Ventas â”€â”€ -->
+  <!-- ── Glosario Rápido de Ventas ── -->
   <section class="container" style="padding: 2.5rem 0 2rem;">
     <div style="display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
       <div>
@@ -2211,7 +1926,7 @@
           
         </div>
         <div class="blog-card-content">
-          <span class="blog-category">CampaÃ±as</span>
+          <span class="blog-category">Campañas</span>
           <h3>C&oacute;mo Preparar tu Negocio para Vender M&aacute;s en Fechas Especiales</h3>
           <p>
             Planifica stock, metas, promociones, caja, horarios pico, m&eacute;todos de pago y atenci&oacute;n para campa&ntilde;as de alta demanda.
@@ -2943,15 +2658,15 @@
         </div>
       </article>
 
-      <!-- Article AutomatizaciÃ³n de Ventas -->
+      <!-- Article Automatización de Ventas -->
       <article class="blog-card" data-category="automatizacion ventas productividad">
         <div class="blog-img" style="background: url('assets/Blog imagenes/automatizacion-de-ventas.png') center/cover; height: 220px;">
         </div>
         <div class="blog-card-content">
-          <span class="blog-category">AutomatizaciÃ³n</span>
-          <h3>AutomatizaciÃ³n de Ventas: CÃ³mo Escalar tus Ingresos sin Trabajar mÃ¡s Horas</h3>
+          <span class="blog-category">Automatización</span>
+          <h3>Automatización de Ventas: Cómo Escalar tus Ingresos sin Trabajar más Horas</h3>
           <p>
-            Descubre cÃ³mo automatizar tareas repetitivas para ahorrar tiempo, reducir errores y cerrar mÃ¡s tratos.
+            Descubre cómo automatizar tareas repetitivas para ahorrar tiempo, reducir errores y cerrar más tratos.
           </p>
           <div class="blog-footer-meta" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
             <a href="Blog htmls/automatizacion-de-ventas.html" class="btn-read-more" style="color: var(--primary); font-weight: 600; text-decoration: none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a>
@@ -2960,15 +2675,15 @@
         </div>
       </article>
 
-      <!-- Article Llamadas en FrÃ­o -->
+      <!-- Article Llamadas en Frío -->
       <article class="blog-card" data-category="marketing ventas">
         <div class="blog-img" style="background: url('assets/Blog imagenes/llamadas-en-frio.png') center/cover; height: 220px;">
         </div>
         <div class="blog-card-content">
           <span class="blog-category">Marketing</span>
-          <h3>Llamadas en FrÃ­o que SÃ­ Funcionan: CÃ³mo Superar el Rechazo</h3>
+          <h3>Llamadas en Frío que Sí Funcionan: Cómo Superar el Rechazo</h3>
           <p>
-            Descubre cÃ³mo dejar de odiar las llamadas en frÃ­o con este mÃ©todo comprobado para agendar mÃ¡s reuniones.
+            Descubre cómo dejar de odiar las llamadas en frío con este método comprobado para agendar más reuniones.
           </p>
           <div class="blog-footer-meta" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
             <a href="Blog htmls/llamadas-en-frio.html" class="btn-read-more" style="color: var(--primary); font-weight: 600; text-decoration: none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a>
@@ -2977,15 +2692,15 @@
         </div>
       </article>
 
-      <!-- Article GestiÃ³n del Tiempo para Vendedores -->
+      <!-- Article Gestión del Tiempo para Vendedores -->
       <article class="blog-card" data-category="productividad ventas">
         <div class="blog-img" style="background: url('assets/Blog imagenes/gestion-tiempo-vendedores.png') center/cover; height: 220px;">
         </div>
         <div class="blog-card-content">
           <span class="blog-category">Productividad</span>
-          <h3>GestiÃ³n del Tiempo para Vendedores: CÃ³mo Multiplicar tus Resultados</h3>
+          <h3>Gestión del Tiempo para Vendedores: Cómo Multiplicar tus Resultados</h3>
           <p>
-            Descubre cÃ³mo los vendedores de alto rendimiento gestionan su tiempo para cerrar mÃ¡s ventas sin agotar su energÃ­a.
+            Descubre cómo los vendedores de alto rendimiento gestionan su tiempo para cerrar más ventas sin agotar su energía.
           </p>
           <div class="blog-footer-meta" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
             <a href="Blog htmls/gestion-tiempo-vendedores.html" class="btn-read-more" style="color: var(--primary); font-weight: 600; text-decoration: none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a>
@@ -3425,7 +3140,7 @@
         </div>
         <div class="blog-card-content">
           <span class="blog-category" style="background: rgba(255, 107, 129, 0.15); color: #ff6b81;">Estrategia</span>
-          <h3>La Trampa de los Descuentos: Por QuÃ© Bajar tus Precios Destruye tu Negocio</h3>
+          <h3>La Trampa de los Descuentos: Por Qué Bajar tus Precios Destruye tu Negocio</h3>
           <p>
             Hacer descuentos constantes para competir es el camino m&aacute;s r&aacute;pido a la quiebra. Aprende a salir de la guerra de precios y cobrar tu verdadero valor.
           </p>
@@ -3442,7 +3157,7 @@
         </div>
         <div class="blog-card-content">
           <span class="blog-category" style="background: rgba(255, 71, 87, 0.15); color: #ff4757;">Finanzas</span>
-          <h3>Gastos Hormiga en tu Negocio: Por quÃ© sientes que vendes mucho pero no ganas nada</h3>
+          <h3>Gastos Hormiga en tu Negocio: Por qué sientes que vendes mucho pero no ganas nada</h3>
           <p>
             Descubre c&oacute;mo los peque&ntilde;os gastos diarios no registrados est&aacute;n devorando silenciosamente la rentabilidad de tu negocio.
           </p>
@@ -3490,7 +3205,7 @@
 
       <!-- Article WhatsApp -->
       <article class="blog-card" data-category="ventas marketing">
-        <div class="blog-img" style="background: url('assets/Blog imagenes/CÃ³mo Convertir Conversaciones en Clientes sin Parecer Desesperado.jpeg') center/cover; height: 220px;">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/Cómo Convertir Conversaciones en Clientes sin Parecer Desesperado.jpeg') center/cover; height: 220px;">
         </div>
         <div class="blog-card-content">
           <span class="blog-category">Ventas y WhatsApp</span>
@@ -3558,7 +3273,7 @@
 
       <!-- Article Social Selling -->
       <article class="blog-card" data-category="ventas marketing">
-        <div class="blog-img" style="background: url('assets/Blog imagenes/CÃ³mo Vender en Redes Sociales sin Parecer un Vendedor Desesperado.jpeg') center/cover; height: 220px;">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/Cómo Vender en Redes Sociales sin Parecer un Vendedor Desesperado.jpeg') center/cover; height: 220px;">
         </div>
         <div class="blog-card-content">
           <span class="blog-category">Social Selling</span>
@@ -3592,13 +3307,13 @@
 
       <!-- Article Manejo de Objeciones -->
       <article class="blog-card" data-category="ventas">
-        <div class="blog-img" style="background: url('assets/Blog imagenes/CÃ³mo Manejar Objeciones de Ventas y Convertir el No en una Oportunidad.jpeg') center/cover; height: 220px;">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/Cómo Manejar Objeciones de Ventas y Convertir el No en una Oportunidad.jpeg') center/cover; height: 220px;">
         </div>
         <div class="blog-card-content">
           <span class="blog-category">T&eacute;cnicas de Ventas</span>
           <h3>C&oacute;mo Manejar Objeciones de Ventas y Convertir el &ldquo;No&rdquo; en una Oportunidad</h3>
           <p>
-            Cada objeciÃ³n que escuchas no es un rechazo. Es una pregunta disfrazada. Aprende las 5 objeciones mÃ¡s comunes y el proceso de 4 pasos para convertirlas en cierres.
+            Cada objeción que escuchas no es un rechazo. Es una pregunta disfrazada. Aprende las 5 objeciones más comunes y el proceso de 4 pasos para convertirlas en cierres.
           </p>
           <div class="blog-footer-meta">
             <span><i class="fa-regular fa-clock"></i> 7 min lectura</span>
@@ -3762,7 +3477,7 @@
 
       <!-- Article Retencion de Clientes -->
       <article class="blog-card" data-category="ventas marketing">
-        <div class="blog-img" style="background: url('assets/Blog imagenes/RetenciÃ³n de Clientes.jpeg') center/cover; height: 220px;">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/Retención de Clientes.jpeg') center/cover; height: 220px;">
         </div>
         <div class="blog-card-content">
           <span class="blog-category">Retenci&oacute;n de Clientes</span>
@@ -3884,65 +3599,7 @@
 
     </div>
   </section>
-
-  <!-- â”€â”€ Interactive Extras: Tip Generator â”€â”€ -->
-  <section class="container" style="margin: 3rem auto; max-width: 600px;">
-      <!-- Tip Generator -->
-      <div style="background: rgba(25, 23, 45, 0.65); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 2.5rem; position: relative; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.2); text-align: center;">
-        <div style="position: absolute; top: -50px; right: -50px; width: 180px; height: 180px; background: radial-gradient(circle, rgba(108,92,231,0.2) 0%, transparent 70%); border-radius: 50%; pointer-events: none;"></div>
-        
-        <span style="background:rgba(108,92,231,0.15);color:#a29bfe;padding:0.3rem 1rem;border-radius:20px;font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;border:1px solid rgba(108,92,231,0.3);display:inline-block;margin-bottom:1rem;">
-          <i class="fa-solid fa-lightbulb" style="margin-right:6px;"></i> Tip Aleatorio
-        </span>
-        <h3 style="font-size:1.6rem;font-weight:800;color:var(--text-main);margin-bottom:1rem;line-height:1.2;">Generador de Ventas</h3>
-        
-        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 1.5rem; min-height: 140px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; position: relative; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);">
-          <p id="tipText" style="font-size: 1.05rem; color: rgba(255,255,255,0.9); line-height: 1.6; margin: 0; text-align: center; font-style: italic; transition: opacity 0.3s;">
-            "El precio solo es un problema en ausencia de valor. ConcÃ©ntrate en el problema que resuelves."
-          </p>
-        </div>
-        
-        <button onclick="generateTip()" id="btnGenerateTip" style="width: 100%; background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: white; border: none; padding: 1rem; border-radius: 14px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 4px 15px rgba(108,92,231,0.4);" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 25px rgba(108,92,231,0.5)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 15px rgba(108,92,231,0.4)';">
-          <i class="fa-solid fa-dice" id="tipIcon" style="transition: transform 0.5s;"></i> Generar Nuevo Tip
-        </button>
-      </div>
-  </section>
-
-  <script>
-    const salesTips = [
-      "El precio solo es un problema en ausencia de valor. ConcÃ©ntrate en el problema que resuelves.",
-      "El 80% de las ventas se cierran entre el 5to y 12vo contacto. Â¡Haz seguimiento!",
-      "No vendas caracterÃ­sticas, vende la transformaciÃ³n que tu cliente obtendrÃ¡.",
-      "Si el cliente te dice 'estÃ¡ muy caro', pregÃºntale: 'Â¿Caro comparado con quÃ©?'",
-      "Habla un 20% del tiempo y escucha un 80%. Las mejores ventas se hacen escuchando.",
-      "Una objeciÃ³n no es un 'no', es una peticiÃ³n de mÃ¡s informaciÃ³n.",
-      "Las personas compran por emociones y lo justifican con la lÃ³gica.",
-      "Conseguir un cliente nuevo cuesta 5 veces mÃ¡s que retener a uno actual.",
-      "Tu energÃ­a vende mÃ¡s que tu discurso. MantÃ©n una postura de abundancia.",
-      "Nunca asumas el presupuesto de tu cliente. OfrÃ©cele siempre la mejor opciÃ³n primero."
-    ];
-
-    function generateTip() {
-      const tipText = document.getElementById('tipText');
-      const tipIcon = document.getElementById('tipIcon');
-      
-      tipIcon.style.transform = 'rotate(360deg)';
-      setTimeout(() => tipIcon.style.transform = 'rotate(0deg)', 500);
-
-      tipText.style.opacity = '0';
-      
-      setTimeout(() => {
-        let randomTip = salesTips[Math.floor(Math.random() * salesTips.length)];
-        while (randomTip === tipText.innerText && salesTips.length > 1) {
-          randomTip = salesTips[Math.floor(Math.random() * salesTips.length)];
-        }
-        tipText.innerText = randomTip;
-        tipText.style.opacity = '1';
-      }, 300);
-    }
-  </script>
-
-  <!-- â”€â”€ Live Poll â”€â”€ -->
+  <!-- Live Poll -->
   <section class="container" style="margin: 2rem auto;" id="encuesta">
     <div style="background:var(--bg-card);border:1px solid rgba(255,255,255,0.07);border-radius:24px;overflow:hidden;box-shadow:0 15px 40px rgba(0,0,0,0.25);">
 
@@ -4009,13 +3666,13 @@
 
   <script>
   (function(){
-    // Seed data â€” realistic base counts
+    // Seed data — realistic base counts
     const options = [
-      { id:'miedo',      icon:'ðŸ˜°', label:'Miedo o vergÃ¼enza al vender',         base:312, color:'linear-gradient(90deg,#6c5ce7,#a29bfe)',   articles:['Blog htmls/miedo-a-vender.html|CÃ³mo Superar el Miedo a Vender','Blog htmls/mentalidad-de-ventas.html|Mentalidad de Ventas','Blog htmls/psicologia-de-ventas.html|PsicologÃ­a de Ventas'] },
-      { id:'objeciones', icon:'ðŸ’¬', label:'Manejar el "estÃ¡ muy caro" y objeciones', base:489, color:'linear-gradient(90deg,#00b894,#00d2d3)',   articles:['Blog htmls/manejo-de-objeciones-de-ventas.html|CÃ³mo Manejar Objeciones','Blog htmls/como-responder-a-esta-muy-caro.html|CÃ³mo Responder "EstÃ¡ Muy Caro"','Blog htmls/la-trampa-de-los-descuentos.html|La Trampa de los Descuentos'] },
-      { id:'prospectos', icon:'ðŸ”', label:'Conseguir clientes potenciales',        base:278, color:'linear-gradient(90deg,#ffa502,#ffcc02)',   articles:['Blog htmls/social-selling.html|Social Selling en Redes','Blog htmls/networking-estrategico.html|Networking EstratÃ©gico','Blog htmls/ventas-por-whatsapp.html|Ventas por WhatsApp'] },
-      { id:'cierre',     icon:'ðŸŽ¯', label:'Cerrar la venta y que no "se lo piensen"', base:401, color:'linear-gradient(90deg,#ff4757,#ff6b81)', articles:['Blog htmls/tecnicas-de-cierre-sin-suplicar.html|TÃ©cnicas de Cierre Sin Suplicar','Blog htmls/el-poder-del-seguimiento.html|El Poder del Seguimiento','Blog htmls/elevator-pitch.html|El Pitch Perfecto'] },
-      { id:'precio',     icon:'ðŸ’Ž', label:'Cobrar lo que realmente vale mi trabajo',base:355, color:'linear-gradient(90deg,#a29bfe,#6c5ce7)',  articles:['Blog htmls/estrategias-de-precios-que-venden.html|Estrategias de Precios','Blog htmls/vender-servicios-intangibles.html|Vender Servicios Intangibles','Blog htmls/el-mito-del-precio-al-privado.html|El Mito del Precio al Privado'] },
+      { id:'miedo',      icon:'😰', label:'Miedo o vergüenza al vender',         base:312, color:'linear-gradient(90deg,#6c5ce7,#a29bfe)',   articles:['Blog htmls/miedo-a-vender.html|Cómo Superar el Miedo a Vender','Blog htmls/mentalidad-de-ventas.html|Mentalidad de Ventas','Blog htmls/psicologia-de-ventas.html|Psicología de Ventas'] },
+      { id:'objeciones', icon:'💬', label:'Manejar el "está muy caro" y objeciones', base:489, color:'linear-gradient(90deg,#00b894,#00d2d3)',   articles:['Blog htmls/manejo-de-objeciones-de-ventas.html|Cómo Manejar Objeciones','Blog htmls/como-responder-a-esta-muy-caro.html|Cómo Responder "Está Muy Caro"','Blog htmls/la-trampa-de-los-descuentos.html|La Trampa de los Descuentos'] },
+      { id:'prospectos', icon:'🔍', label:'Conseguir clientes potenciales',        base:278, color:'linear-gradient(90deg,#ffa502,#ffcc02)',   articles:['Blog htmls/social-selling.html|Social Selling en Redes','Blog htmls/networking-estrategico.html|Networking Estratégico','Blog htmls/ventas-por-whatsapp.html|Ventas por WhatsApp'] },
+      { id:'cierre',     icon:'🎯', label:'Cerrar la venta y que no "se lo piensen"', base:401, color:'linear-gradient(90deg,#ff4757,#ff6b81)', articles:['Blog htmls/tecnicas-de-cierre-sin-suplicar.html|Técnicas de Cierre Sin Suplicar','Blog htmls/el-poder-del-seguimiento.html|El Poder del Seguimiento','Blog htmls/elevator-pitch.html|El Pitch Perfecto'] },
+      { id:'precio',     icon:'💎', label:'Cobrar lo que realmente vale mi trabajo',base:355, color:'linear-gradient(90deg,#a29bfe,#6c5ce7)',  articles:['Blog htmls/estrategias-de-precios-que-venden.html|Estrategias de Precios','Blog htmls/vender-servicios-intangibles.html|Vender Servicios Intangibles','Blog htmls/el-mito-del-precio-al-privado.html|El Mito del Precio al Privado'] },
     ];
 
     const LS_KEY = 'zaleasy_poll_v1';
@@ -4055,7 +3712,7 @@
         div.className='poll-bar-wrap';
         div.innerHTML=`
           <div class="poll-bar-label">
-            <span>${o.icon} ${o.label}${isMine?'<span class="poll-my-vote">â† tu voto</span>':''}</span>
+            <span>${o.icon} ${o.label}${isMine?'<span class="poll-my-vote">← tu voto</span>':''}</span>
             <span style="color:${isMine?'#a29bfe':'var(--text-muted)'}">${pct}%</span>
           </div>
           <div class="poll-bar-track">
@@ -4082,7 +3739,7 @@
         return `<a href="${href}" class="quiz-result-link" style="display:flex;align-items:center;gap:0.6rem;color:#a29bfe;text-decoration:none;font-size:0.93rem;padding:0.3rem 0;transition:color 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#a29bfe'"><i class="fa-solid fa-arrow-right" style="font-size:0.75rem;color:var(--primary);flex-shrink:0;"></i>${label}</a>`;
       }).join('');
       el.innerHTML=`
-        <p style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--primary);margin-bottom:0.7rem;"><i class="fa-solid fa-bookmark" style="margin-right:5px;"></i>ArtÃ­culos recomendados para ti</p>
+        <p style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--primary);margin-bottom:0.7rem;"><i class="fa-solid fa-bookmark" style="margin-right:5px;"></i>Artículos recomendados para ti</p>
         ${links}`;
     }
 
@@ -4260,29 +3917,29 @@
     const quizAnswers = {};
     const profiles = {
       closer: {
-        emoji: 'ðŸŽ¯',
+        emoji: '🎯',
         title: 'El Cerrador Nato',
-        desc: 'TenÃ©s instinto comercial y confianza. Sos directo, vas al cierre y no le tenÃ©s miedo al "no". Tu desafÃ­o es aprender a escuchar mÃ¡s y no apresurarte. Cuando combines tu fuerza de cierre con empatÃ­a, serÃ¡s imparable.',
+        desc: 'Tenés instinto comercial y confianza. Sos directo, vas al cierre y no le tenés miedo al "no". Tu desafío es aprender a escuchar más y no apresurarte. Cuando combines tu fuerza de cierre con empatía, serás imparable.',
         articles: [
-          { text: 'TÃ©cnicas de Cierre Sin Suplicar', href: 'Blog htmls/tecnicas-de-cierre-sin-suplicar.html' },
-          { text: 'CÃ³mo Manejar Objeciones de Ventas', href: 'Blog htmls/manejo-de-objeciones-de-ventas.html' },
+          { text: 'Técnicas de Cierre Sin Suplicar', href: 'Blog htmls/tecnicas-de-cierre-sin-suplicar.html' },
+          { text: 'Cómo Manejar Objeciones de Ventas', href: 'Blog htmls/manejo-de-objeciones-de-ventas.html' },
           { text: 'El Pitch Perfecto: Vende en 60 Segundos', href: 'Blog htmls/elevator-pitch.html' },
         ]
       },
       consultant: {
-        emoji: 'ðŸ§ ',
-        title: 'El Consultor EmpÃ¡tico',
-        desc: 'Eres el vendedor que los clientes aman. Escuchas, preguntas y entiendes. Tu riesgo es no cerrar por miedo a incomodar. Aprende a hacer el cierre como un paso natural y tu potencial de ingresos se dispararÃ¡.',
+        emoji: '🧠',
+        title: 'El Consultor Empático',
+        desc: 'Eres el vendedor que los clientes aman. Escuchas, preguntas y entiendes. Tu riesgo es no cerrar por miedo a incomodar. Aprende a hacer el cierre como un paso natural y tu potencial de ingresos se disparará.',
         articles: [
-          { text: 'CÃ³mo Vender Sin Vender: La Venta Consultiva', href: 'Blog htmls/como-vender-sin-vender.html' },
-          { text: 'CÃ³mo Superar el Miedo a Vender', href: 'Blog htmls/miedo-a-vender.html' },
-          { text: 'PsicologÃ­a de Ventas', href: 'Blog htmls/psicologia-de-ventas.html' },
+          { text: 'Cómo Vender Sin Vender: La Venta Consultiva', href: 'Blog htmls/como-vender-sin-vender.html' },
+          { text: 'Cómo Superar el Miedo a Vender', href: 'Blog htmls/miedo-a-vender.html' },
+          { text: 'Psicología de Ventas', href: 'Blog htmls/psicologia-de-ventas.html' },
         ]
       },
       strategist: {
-        emoji: 'ðŸ“Š',
-        title: 'El Estratega SistemÃ¡tico',
-        desc: 'Piensas en procesos, en datos y en el largo plazo. Eso es una enorme ventaja. Tu desafÃ­o es aÃ±adir mÃ¡s calidez humana a tus interacciones y aprender a adaptar tu mensaje de forma mÃ¡s emocional.',
+        emoji: '📊',
+        title: 'El Estratega Sistemático',
+        desc: 'Piensas en procesos, en datos y en el largo plazo. Eso es una enorme ventaja. Tu desafío es añadir más calidez humana a tus interacciones y aprender a adaptar tu mensaje de forma más emocional.',
         articles: [
           { text: 'El Poder del Seguimiento en Ventas', href: 'Blog htmls/el-poder-del-seguimiento.html' },
           { text: 'Embudos de Venta: Automatiza tus Ventas', href: 'Blog htmls/embudos-de-venta.html' },
@@ -4290,11 +3947,11 @@
         ]
       },
       connector: {
-        emoji: 'ðŸ¤',
+        emoji: '🤝',
         title: 'El Conector Relacional',
-        desc: 'Construyes confianza como nadie. La gente te compra por quiÃ©n eres. Tu gran desafÃ­o es acelerar el proceso: no toda relaciÃ³n necesita 6 meses para convertirse en cliente. Aprende a crear urgencia genuina.',
+        desc: 'Construyes confianza como nadie. La gente te compra por quién eres. Tu gran desafío es acelerar el proceso: no toda relación necesita 6 meses para convertirse en cliente. Aprende a crear urgencia genuina.',
         articles: [
-          { text: 'Networking EstratÃ©gico para Ventas', href: 'Blog htmls/networking-estrategico.html' },
+          { text: 'Networking Estratégico para Ventas', href: 'Blog htmls/networking-estrategico.html' },
           { text: 'Marca Personal y Ventas', href: 'Blog htmls/marca-personal-y-ventas.html' },
           { text: 'Social Selling: Vende en Redes Sociales', href: 'Blog htmls/social-selling.html' },
         ]
@@ -4364,7 +4021,7 @@
     }
   </script>
 
-  <!-- â”€â”€ Testimonials Carousel â”€â”€ -->
+  <!-- ── Testimonials Carousel ── -->
   <section class="container" style="margin: 3rem auto;">
     <div style="text-align:center; margin-bottom:2rem;">
       <span style="background:rgba(46,213,115,0.12);color:#2ed573;padding:0.3rem 1rem;border-radius:20px;font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;border:1px solid rgba(46,213,115,0.25);display:inline-block;margin-bottom:1rem;">
@@ -4381,78 +4038,78 @@
 
         <!-- T1 -->
         <div class="t-slide">
-          <div class="t-stars">â˜…â˜…â˜…â˜…â˜…</div>
-          <p class="t-quote">"LeÃ­ el artÃ­culo de objeciones de ventas y lo apliquÃ© esa misma tarde. CerrÃ© 3 ventas que tenÃ­a estancadas hace semanas. IncreÃ­ble lo simple y directo que estÃ¡ explicado."</p>
+          <div class="t-stars">★★★★★</div>
+          <p class="t-quote">"Leí el artículo de objeciones de ventas y lo apliqué esa misma tarde. Cerré 3 ventas que tenía estancadas hace semanas. Increíble lo simple y directo que está explicado."</p>
           <div class="t-author">
             <div class="t-avatar" style="background:linear-gradient(135deg,#6c5ce7,#a29bfe);">MR</div>
             <div>
-              <strong>MartÃ­n R.</strong>
-              <span>Consultor de Marketing Â· CÃ³rdoba, AR</span>
+              <strong>Martín R.</strong>
+              <span>Consultor de Marketing · Córdoba, AR</span>
             </div>
           </div>
         </div>
 
         <!-- T2 -->
         <div class="t-slide">
-          <div class="t-stars">â˜…â˜…â˜…â˜…â˜…</div>
-          <p class="t-quote">"JamÃ¡s pensÃ© que el cierre de caja diario pudiera cambiar tanto mi perspectiva. Ahora sÃ© exactamente cuÃ¡nto gano cada dÃ­a y dejÃ© de sentir que el dinero 'desaparece'. Gracias Zaleasy."</p>
+          <div class="t-stars">★★★★★</div>
+          <p class="t-quote">"Jamás pensé que el cierre de caja diario pudiera cambiar tanto mi perspectiva. Ahora sé exactamente cuánto gano cada día y dejé de sentir que el dinero 'desaparece'. Gracias Zaleasy."</p>
           <div class="t-author">
             <div class="t-avatar" style="background:linear-gradient(135deg,#00b894,#00d2d3);">CL</div>
             <div>
               <strong>Carolina L.</strong>
-              <span>DueÃ±a de boutique Â· Lima, PE</span>
+              <span>Dueña de boutique · Lima, PE</span>
             </div>
           </div>
         </div>
 
         <!-- T3 -->
         <div class="t-slide">
-          <div class="t-stars">â˜…â˜…â˜…â˜…â˜…</div>
-          <p class="t-quote">"El artÃ­culo de Copywriting me abriÃ³ los ojos. ReescribÃ­ los textos de mi Instagram y en 10 dÃ­as pasÃ© de 2-3 consultas por semana a mÃ¡s de 15. El contenido de este blog es oro puro."</p>
+          <div class="t-stars">★★★★★</div>
+          <p class="t-quote">"El artículo de Copywriting me abrió los ojos. Reescribí los textos de mi Instagram y en 10 días pasé de 2-3 consultas por semana a más de 15. El contenido de este blog es oro puro."</p>
           <div class="t-author">
             <div class="t-avatar" style="background:linear-gradient(135deg,#fd79a8,#e84393);">SV</div>
             <div>
-              <strong>SofÃ­a V.</strong>
-              <span>FotÃ³grafa freelance Â· Santiago, CL</span>
+              <strong>Sofía V.</strong>
+              <span>Fotógrafa freelance · Santiago, CL</span>
             </div>
           </div>
         </div>
 
         <!-- T4 -->
         <div class="t-slide">
-          <div class="t-stars">â˜…â˜…â˜…â˜…â˜…</div>
-          <p class="t-quote">"Llevaba 2 aÃ±os con miedo de cobrar lo que vale mi trabajo. El artÃ­culo de mentalidad de ventas me dio el golpe de realidad que necesitaba. SubÃ­ mis precios un 40% y no perdÃ­ ni un cliente."</p>
+          <div class="t-stars">★★★★★</div>
+          <p class="t-quote">"Llevaba 2 años con miedo de cobrar lo que vale mi trabajo. El artículo de mentalidad de ventas me dio el golpe de realidad que necesitaba. Subí mis precios un 40% y no perdí ni un cliente."</p>
           <div class="t-author">
             <div class="t-avatar" style="background:linear-gradient(135deg,#ffa502,#ff6348);">JP</div>
             <div>
               <strong>Javier P.</strong>
-              <span>DiseÃ±ador grÃ¡fico Â· BogotÃ¡, CO</span>
+              <span>Diseñador gráfico · Bogotá, CO</span>
             </div>
           </div>
         </div>
 
         <!-- T5 -->
         <div class="t-slide">
-          <div class="t-stars">â˜…â˜…â˜…â˜…â˜…</div>
-          <p class="t-quote">"La guÃ­a de Ventas por WhatsApp la compartÃ­ con todo mi equipo de 6 vendedores. En el primer mes aplicÃ¡ndola nuestra tasa de cierre pasÃ³ del 18% al 31%. No exagero."</p>
+          <div class="t-stars">★★★★★</div>
+          <p class="t-quote">"La guía de Ventas por WhatsApp la compartí con todo mi equipo de 6 vendedores. En el primer mes aplicándola nuestra tasa de cierre pasó del 18% al 31%. No exagero."</p>
           <div class="t-author">
             <div class="t-avatar" style="background:linear-gradient(135deg,#6c5ce7,#00d2d3);">RM</div>
             <div>
               <strong>Ricardo M.</strong>
-              <span>Director Comercial Â· Monterrey, MX</span>
+              <span>Director Comercial · Monterrey, MX</span>
             </div>
           </div>
         </div>
 
         <!-- T6 -->
         <div class="t-slide">
-          <div class="t-stars">â˜…â˜…â˜…â˜…â˜…</div>
-          <p class="t-quote">"ApliquÃ© la estrategia de upselling que explican en el blog. Mis clientes actuales ahora me compran en promedio un 60% mÃ¡s que antes. Y lo mejor es que no lo siento como una venta forzada."</p>
+          <div class="t-stars">★★★★★</div>
+          <p class="t-quote">"Apliqué la estrategia de upselling que explican en el blog. Mis clientes actuales ahora me compran en promedio un 60% más que antes. Y lo mejor es que no lo siento como una venta forzada."</p>
           <div class="t-author">
             <div class="t-avatar" style="background:linear-gradient(135deg,#2ed573,#00b894);">AG</div>
             <div>
               <strong>Andrea G.</strong>
-              <span>Nutricionista Â· Buenos Aires, AR</span>
+              <span>Nutricionista · Buenos Aires, AR</span>
             </div>
           </div>
         </div>
@@ -4605,7 +4262,7 @@
     })();
   </script>
 
-  <!-- â”€â”€ Sales Revenue Calculator â”€â”€ -->
+  <!-- ── Sales Revenue Calculator ── -->
   <section class="container" style="margin: 3rem auto;" id="calculadora">
     <div style="background: var(--bg-card); border: 1px solid rgba(108,92,231,0.25); border-radius: 24px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
 
@@ -4763,7 +4420,7 @@
       const diff3 = mes3 - ingresoMes;
 
       document.getElementById('rActual').textContent   = fmt(ingresoMes);
-      document.getElementById('rActualSub').textContent = Math.round(ventasSem*4.33)+' ventas/mes Â· '+fmt(ingresoSem)+'/sem';
+      document.getElementById('rActualSub').textContent = Math.round(ventasSem*4.33)+' ventas/mes · '+fmt(ingresoSem)+'/sem';
       document.getElementById('rCierre10').textContent   = fmt(mes2);
       document.getElementById('rCierre10Sub').textContent = '+'+fmt(diff2)+' extra al mes';
       document.getElementById('rTicket20').textContent    = fmt(mes3);
@@ -4774,20 +4431,20 @@
       const tipText = document.getElementById('calcTipText');
       tipEl.style.display='block';
       if(c < 20){
-        tipText.innerHTML = 'Tu tasa de cierre tiene mucho margen de mejora. Lee <a href="Blog htmls/manejo-de-objeciones-de-ventas.html" style="color:#ffa502;font-weight:600;">CÃ³mo Manejar Objeciones</a> y <a href="Blog htmls/tecnicas-de-cierre-sin-suplicar.html" style="color:#ffa502;font-weight:600;">TÃ©cnicas de Cierre</a> para duplicarla.';
+        tipText.innerHTML = 'Tu tasa de cierre tiene mucho margen de mejora. Lee <a href="Blog htmls/manejo-de-objeciones-de-ventas.html" style="color:#ffa502;font-weight:600;">Cómo Manejar Objeciones</a> y <a href="Blog htmls/tecnicas-de-cierre-sin-suplicar.html" style="color:#ffa502;font-weight:600;">Técnicas de Cierre</a> para duplicarla.';
       } else if(t < 3000){
         tipText.innerHTML = 'Tu ticket promedio es bajo. Aprende a subirlo con <a href="Blog htmls/upselling-y-cross-selling.html" style="color:#ffa502;font-weight:600;">Upselling y Cross-Selling</a> y <a href="Blog htmls/estrategias-de-precios-que-venden.html" style="color:#ffa502;font-weight:600;">Estrategias de Precios</a>.';
       } else if(p < 10){
-        tipText.innerHTML = 'Contactas pocos prospectos. AmplÃ­a tu red con <a href="Blog htmls/networking-estrategico.html" style="color:#ffa502;font-weight:600;">Networking EstratÃ©gico</a> y <a href="Blog htmls/social-selling.html" style="color:#ffa502;font-weight:600;">Social Selling</a>.';
+        tipText.innerHTML = 'Contactas pocos prospectos. Amplía tu red con <a href="Blog htmls/networking-estrategico.html" style="color:#ffa502;font-weight:600;">Networking Estratégico</a> y <a href="Blog htmls/social-selling.html" style="color:#ffa502;font-weight:600;">Social Selling</a>.';
       } else {
-        tipText.innerHTML = 'Â¡Vas bien! El siguiente nivel es el seguimiento. El 80% de las ventas se cierran despuÃ©s del 5Â° contacto. Lee <a href="Blog htmls/el-poder-del-seguimiento.html" style="color:#ffa502;font-weight:600;">El Poder del Seguimiento</a>.';
+        tipText.innerHTML = '¡Vas bien! El siguiente nivel es el seguimiento. El 80% de las ventas se cierran después del 5° contacto. Lee <a href="Blog htmls/el-poder-del-seguimiento.html" style="color:#ffa502;font-weight:600;">El Poder del Seguimiento</a>.';
       }
     }
     // Init on load
     document.addEventListener('DOMContentLoaded', calcUpdate);
   </script>
 
-  <!-- â”€â”€ Interactive Glossary â”€â”€ -->
+  <!-- ── Interactive Glossary ── -->
   <section class="container" style="margin: 4rem auto;">
     <div style="background: rgba(25, 23, 45, 0.4); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 3rem 2.5rem; position: relative; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.2);">
       
@@ -5014,7 +4671,7 @@
             <i class="fa-solid fa-list-check"></i>
           </div>
           <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.8rem;">Checklist de Cierre Diario</h3>
-          <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.8rem; line-height: 1.6;">Una lista de verificaciÃ³n paso a paso para asegurarte de que tus finanzas diarias cuadren a la perfecciÃ³n.</p>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.8rem; line-height: 1.6;">Una lista de verificación paso a paso para asegurarte de que tus finanzas diarias cuadren a la perfección.</p>
           <a href="assets/recursos/checklist-cierre.txt" download="Checklist_Cierre_Diario.txt" class="resource-btn"><i class="fa-solid fa-download" style="margin-right: 6px;"></i> Descargar Checklist</a>
         </div>
 
@@ -5034,7 +4691,7 @@
             <i class="fa-solid fa-book-open"></i>
           </div>
           <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.8rem;">Manual de Objeciones</h3>
-          <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.8rem; line-height: 1.6;">GuÃ­a rÃ¡pida con las objeciones mÃ¡s comunes y las estructuras psicolÃ³gicas exactas para rebatirlas.</p>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.8rem; line-height: 1.6;">Guía rápida con las objeciones más comunes y las estructuras psicológicas exactas para rebatirlas.</p>
           <a href="assets/recursos/manual-objeciones.txt" download="Manual_Objeciones_Zaleasy.txt" class="resource-btn"><i class="fa-solid fa-download" style="margin-right: 6px;"></i> Descargar Manual</a>
         </div>
 
@@ -5064,7 +4721,7 @@
         <span class="author-role"><i class="fa-solid fa-pen-nib" style="margin-right: 6px;"></i> Autor y Experto en Ventas</span>
         <h3>Facundo Luis Zabala</h3>
         <p>
-          Emprendedor, desarrollador corporativo y creador de Zaleasy. Mi misiÃ³n con este blog es entregarte en tus manos las estrategias y tÃ¡cticas mÃ¡s efectivas del mundo de las ventas para que puedas escalar la rentabilidad de tu negocio mÃ¡s rÃ¡pido y sin cometer los errores tÃ­picos que me costaron tiempo y dinero.
+          Emprendedor, desarrollador corporativo y creador de Zaleasy. Mi misión con este blog es entregarte en tus manos las estrategias y tácticas más efectivas del mundo de las ventas para que puedas escalar la rentabilidad de tu negocio más rápido y sin cometer los errores típicos que me costaron tiempo y dinero.
         </p>
         <div class="author-socials">
           <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
@@ -5153,7 +4810,7 @@
     });
   </script>
 
-  <!-- â”€â”€ Live Social Proof Notification â”€â”€ -->
+  <!-- ── Live Social Proof Notification ── -->
   <div id="liveNotif" style="
     position:fixed; bottom:90px; left:20px; z-index:9998;
     background:rgba(26, 26, 46, 0.75); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
@@ -5167,7 +4824,7 @@
     <div id="lnAvatar" style="width:46px;height:46px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:800;color:white;box-shadow:0 4px 10px rgba(0,0,0,0.3);"></div>
     <div style="flex:1;min-width:0;">
       <p id="lnText" style="font-size:0.82rem;color:rgba(255,255,255,0.85);margin:0;line-height:1.4;"></p>
-      <p style="font-size:0.72rem;color:rgba(255,255,255,0.4);margin:0.2rem 0 0;">hace un momento Â· blog.zaleasy.com</p>
+      <p style="font-size:0.72rem;color:rgba(255,255,255,0.4);margin:0.2rem 0 0;">hace un momento · blog.zaleasy.com</p>
     </div>
     <button onclick="event.stopPropagation();document.getElementById('liveNotif').style.transform='translateX(-120%)'" style="background:none;border:none;color:rgba(255,255,255,0.3);font-size:0.9rem;cursor:pointer;padding:0;flex-shrink:0;">&times;</button>
   </div>
@@ -5181,14 +4838,14 @@
   <script>
     (function(){
       const notifications = [
-        { name:"SofÃ­a G.",  city:"Santiago, CL",  color:"linear-gradient(135deg,#fd79a8,#e84393)", initials:"SG", msg:"estÃ¡ aplicando el artÃ­culo de Copywriting en su negocio ðŸ“" },
-        { name:"MartÃ­n R.", city:"CÃ³rdoba, AR",    color:"linear-gradient(135deg,#6c5ce7,#a29bfe)", initials:"MR", msg:"acaba de leer sobre manejo de objeciones ðŸŽ¯" },
-        { name:"Diego L.",  city:"BogotÃ¡, CO",     color:"linear-gradient(135deg,#ffa502,#ff6348)", initials:"DL", msg:"cerrÃ³ una venta usando el Elevator Pitch ðŸš€" },
-        { name:"Ana P.",    city:"Lima, PE",        color:"linear-gradient(135deg,#00b894,#00d2d3)", initials:"AP", msg:"estÃ¡ leyendo sobre gastos hormiga en su tienda ðŸ’°" },
-        { name:"Camila T.", city:"Montevideo, UY",  color:"linear-gradient(135deg,#2ed573,#00b894)", initials:"CT", msg:"terminÃ³ el quiz y descubriÃ³ su perfil de ventas ðŸ§ " },
-        { name:"Ricardo M.","city":"Monterrey, MX", color:"linear-gradient(135deg,#0984e3,#74b9ff)", initials:"RM", msg:"subiÃ³ sus precios tras leer el artÃ­culo de valor percibido ðŸ’Ž" },
-        { name:"Valeria F.", city:"AsunciÃ³n, PY",   color:"linear-gradient(135deg,#6c5ce7,#00d2d3)", initials:"VF", msg:"estÃ¡ probando la calculadora de ventas ðŸ“Š" },
-        { name:"Jorge S.",  city:"Santiago, DO",    color:"linear-gradient(135deg,#e17055,#d63031)", initials:"JS", msg:"aprendiÃ³ a cerrar sin suplicar âœ…" },
+        { name:"Sofía G.",  city:"Santiago, CL",  color:"linear-gradient(135deg,#fd79a8,#e84393)", initials:"SG", msg:"está aplicando el artículo de Copywriting en su negocio 📝" },
+        { name:"Martín R.", city:"Córdoba, AR",    color:"linear-gradient(135deg,#6c5ce7,#a29bfe)", initials:"MR", msg:"acaba de leer sobre manejo de objeciones 🎯" },
+        { name:"Diego L.",  city:"Bogotá, CO",     color:"linear-gradient(135deg,#ffa502,#ff6348)", initials:"DL", msg:"cerró una venta usando el Elevator Pitch 🚀" },
+        { name:"Ana P.",    city:"Lima, PE",        color:"linear-gradient(135deg,#00b894,#00d2d3)", initials:"AP", msg:"está leyendo sobre gastos hormiga en su tienda 💰" },
+        { name:"Camila T.", city:"Montevideo, UY",  color:"linear-gradient(135deg,#2ed573,#00b894)", initials:"CT", msg:"terminó el quiz y descubrió su perfil de ventas 🧠" },
+        { name:"Ricardo M.","city":"Monterrey, MX", color:"linear-gradient(135deg,#0984e3,#74b9ff)", initials:"RM", msg:"subió sus precios tras leer el artículo de valor percibido 💎" },
+        { name:"Valeria F.", city:"Asunción, PY",   color:"linear-gradient(135deg,#6c5ce7,#00d2d3)", initials:"VF", msg:"está probando la calculadora de ventas 📊" },
+        { name:"Jorge S.",  city:"Santiago, DO",    color:"linear-gradient(135deg,#e17055,#d63031)", initials:"JS", msg:"aprendió a cerrar sin suplicar ✅" },
       ];
       let shown = 0;
       function showNotif(){
@@ -5209,6 +4866,8 @@
   </script>
 </body>
 </html>
+
+
 
 
 
