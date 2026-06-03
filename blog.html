@@ -857,6 +857,274 @@
         padding: 0.3rem 0.8rem;
       }
     }
+
+    /* Design refinement: clearer reading hierarchy and calmer blog browsing */
+    .blog-header {
+      padding: 5rem 0 2.4rem;
+      background:
+        linear-gradient(180deg, rgba(108, 92, 231, 0.12) 0%, rgba(10, 11, 16, 0) 78%),
+        radial-gradient(circle at 50% 0%, rgba(0, 210, 211, 0.08), transparent 34%);
+    }
+
+    .blog-header h1 {
+      font-size: clamp(2.45rem, 7vw, 4.5rem) !important;
+      line-height: 1.04;
+      letter-spacing: 0 !important;
+    }
+
+    .blog-header p {
+      max-width: 720px;
+    }
+
+    .blog-search-shell {
+      width: min(760px, 100%);
+      margin: 2rem auto 0;
+      padding: 0.75rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 28px;
+      background: rgba(12, 13, 20, 0.52);
+      box-shadow: 0 18px 45px rgba(0,0,0,0.24);
+    }
+
+    .blog-search-shell .glass-search-input {
+      border-radius: 18px;
+      box-shadow: none;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .blog-filters-container {
+      max-width: 920px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .glass-filter-btn {
+      border-radius: 10px;
+      padding: 0.72rem 1rem;
+      box-shadow: none;
+    }
+
+    .glass-filter-btn.active,
+    .glass-filter-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .blog-stats-strip {
+      background: rgba(18, 19, 29, 0.82);
+    }
+
+    .blog-stat-item {
+      max-width: 260px;
+      padding: 1.25rem 1.4rem;
+    }
+
+    .blog-quick-nav {
+      padding-top: 2.4rem;
+    }
+
+    .quick-nav-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .quick-nav-card {
+      border-radius: 8px;
+      min-height: 168px;
+      background: rgba(28, 29, 41, 0.78);
+    }
+
+    .quick-nav-card strong {
+      font-size: 1rem;
+      line-height: 1.28;
+    }
+
+    .quick-nav-card span span:not(.quick-nav-icon) {
+      font-size: 0.88rem;
+    }
+
+    .featured-article {
+      border-radius: 8px !important;
+      min-height: 370px !important;
+    }
+
+    .featured-article-content {
+      padding: clamp(1.4rem, 4vw, 2.6rem) !important;
+    }
+
+    .featured-article-content h2 {
+      max-width: 760px;
+      font-size: clamp(1.55rem, 3vw, 2.15rem) !important;
+    }
+
+    .section-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.35rem 0.8rem;
+      border-radius: 999px;
+      background: rgba(162,155,254,0.12);
+      color: #a29bfe;
+      border: 1px solid rgba(162,155,254,0.24);
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.7rem;
+    }
+
+    .blog-list-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1.5rem;
+      padding-top: 3.5rem;
+      margin-bottom: -0.8rem;
+    }
+
+    .blog-list-header h2 {
+      margin: 0;
+      font-size: clamp(1.65rem, 3vw, 2.2rem);
+      line-height: 1.18;
+    }
+
+    .blog-list-header p {
+      max-width: 440px;
+      margin: 0;
+      color: var(--text-muted);
+      text-align: right;
+    }
+
+    .blog-grid {
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+      gap: 1.35rem;
+      padding-top: 2rem;
+    }
+
+    .blog-card {
+      border-radius: 8px;
+      background: rgba(28, 29, 41, 0.88);
+      box-shadow: none;
+      transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 34px rgba(0,0,0,0.22);
+      border-color: rgba(162,155,254,0.34);
+    }
+
+    .blog-img {
+      height: 184px !important;
+      transition: none;
+    }
+
+    .blog-card:hover .blog-img {
+      transform: none;
+    }
+
+    .blog-card-content {
+      padding: 1.25rem;
+    }
+
+    .blog-card h3 {
+      font-size: 1.08rem;
+      line-height: 1.34;
+    }
+
+    .blog-card p {
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    .blog-footer-meta {
+      gap: 1rem;
+    }
+
+    .badge-hot {
+      border-radius: 8px;
+      animation: none;
+    }
+
+    #noResults {
+      border-radius: 8px !important;
+      background: rgba(28,29,41,0.8) !important;
+    }
+
+    #liveNotif {
+      display: none !important;
+    }
+
+    @media (max-width: 900px) {
+      .quick-nav-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .blog-list-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .blog-list-header p {
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .blog-header {
+        padding-top: 3.2rem;
+      }
+
+      .blog-search-shell {
+        padding: 0.45rem;
+        border-radius: 18px;
+      }
+
+      .glass-search-input {
+        font-size: 0.95rem;
+        padding: 1rem 1rem 1rem 3rem;
+      }
+
+      .blog-filters-container {
+        justify-content: flex-start !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto;
+        padding: 0 1rem 0.6rem;
+        scroll-snap-type: x proximity;
+      }
+
+      .glass-filter-btn {
+        white-space: nowrap;
+        scroll-snap-align: start;
+      }
+
+      .blog-stats-strip {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .blog-stat-item {
+        min-width: 0;
+        max-width: none;
+        justify-content: flex-start;
+        padding: 1rem;
+      }
+
+      .quick-nav-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quick-nav-subtitle {
+        text-align: left;
+      }
+
+      .featured-article {
+        min-height: 430px !important;
+      }
+
+      .blog-grid {
+        gap: 1rem;
+        padding-bottom: 3rem;
+      }
+    }
   </style>
 </head>
 
@@ -893,17 +1161,16 @@
     <div class="container">
       <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 0.5rem;">
         <span class="article-count-badge" id="articleCountBadge" style="animation: pulse-badge 2s infinite; margin-bottom: 1rem;">
-          <i class="fa-solid fa-newspaper"></i> <span id="articleCountNum">139</span> art&iacute;culos publicados
+          <i class="fa-solid fa-newspaper"></i> <span id="articleCountNum">214</span> art&iacute;culos publicados
         </span>
-        <h1 class="animated-gradient-text" style="display: inline-block; font-size: 4rem; letter-spacing: -1px; margin: 0;">Blog de Zaleasy</h1>
+        <h1 class="animated-gradient-text" style="display: inline-block; font-size: 4rem; letter-spacing: -1px; margin: 0;">Aprende a vender y ordenar tu negocio</h1>
       </div>
       <p style="font-size: 1.2rem; line-height: 1.6; margin-top: 0.5rem; color: rgba(255,255,255,0.85);">
-        Consejos, estrategias y herramientas para aprender a gestionar tus ventas, 
-        controlar tus finanzas y hacer crecer tu emprendimiento.
+        Guias practicas de ventas, caja, precios, clientes y gestion diaria para tomar mejores decisiones sin perderte entre planillas.
       </p>
       
       <!-- Search Bar -->
-      <div style="margin-top: 2rem; max-width: 500px; margin-left: auto; margin-right: auto; position: relative;">
+      <div class="blog-search-shell" style="margin-top: 2rem; max-width: 760px; margin-left: auto; margin-right: auto; position: relative;">
         <input type="search" id="blogSearch" placeholder="Buscar art&iacute;culos, palabras clave..." class="glass-search-input" oninput="searchBlog()" autocomplete="off" aria-label="Buscar art&iacute;culos del blog">
         <i class="fa-solid fa-magnifying-glass search-icon"></i>
       </div>
@@ -967,6 +1234,7 @@
 
         if (categoryMatches && searchMatches) {
           card.style.display = 'flex';
+          card.classList.add('revealed');
           card.classList.remove('fadeInScale');
           void card.offsetWidth;
           card.classList.add('fadeInScale');
@@ -995,7 +1263,7 @@
       } else if (activeBlogCategory !== 'all') {
         meta.textContent = `${visible} articulo${visible === 1 ? '' : 's'} en esta categoria`;
       } else {
-        meta.textContent = `${total} articulos listos para leer`;
+        meta.textContent = `${total} articulos listos para leer. Usa la guia o busca por tema.`;
       }
     }
 
@@ -1056,7 +1324,7 @@
         <i class="fa-solid fa-newspaper"></i>
       </div>
       <div class="blog-stat-text">
-        <strong id="articleTotalStat">139</strong>
+        <strong id="articleTotalStat">214</strong>
         <span>Art&iacute;culos en total</span>
       </div>
     </div>
@@ -1065,7 +1333,7 @@
         <i class="fa-regular fa-clock"></i>
       </div>
       <div class="blog-stat-text">
-        <strong id="readingMinutesStat">720+</strong>
+        <strong id="readingMinutesStat">2.100+</strong>
         <span>Minutos de lectura</span>
       </div>
     </div>
@@ -1146,7 +1414,7 @@
   </div>
   <!-- Featured Article Banner -->
   <section class="container" style="padding-top: 3rem;">
-    <div style="
+    <div class="featured-article" style="
       background: url('assets/Blog imagenes/Embudos de Venta.jpeg') center/cover;
       border-radius: 24px;
       overflow: hidden;
@@ -1164,7 +1432,7 @@
         background: linear-gradient(to top, rgba(15,13,35,0.95) 0%, rgba(15,13,35,0.7) 40%, transparent 100%);
       "></div>
       <!-- Content -->
-      <div style="position: relative; padding: 2.5rem; max-width: 700px;">
+      <div class="featured-article-content" style="position: relative; padding: 2.5rem; max-width: 700px;">
         <span style="
           background: var(--primary); color: white;
           padding: 0.35rem 1rem; border-radius: 20px;
@@ -1358,6 +1626,13 @@
   <!-- Blog Articles Grid -->
 
   <section class="container" id="blogArticles">
+    <div class="blog-list-header">
+      <div>
+        <span class="section-kicker"><i class="fa-solid fa-layer-group"></i> Biblioteca</span>
+        <h2>Todos los articulos</h2>
+      </div>
+      <p>Contenido accionable para consultar por problema: vender mejor, cuidar margen, ordenar caja y seguir clientes.</p>
+    </div>
     <div class="blog-grid">
       
       <!-- Empty State for Search -->
@@ -1367,6 +1642,42 @@
         <p style="color: var(--text-muted); font-size: 1.05rem;">Intenta buscando con otras palabras clave o explora todas las categor&iacute;as.</p>
         <button onclick="filterBlog('all', document.querySelectorAll('header.blog-header button')[0])" class="btn btn-primary" style="margin-top: 1.5rem; padding: 0.6rem 1.5rem; border-radius: 20px;">Ver todos los art&iacute;culos</button>
       </div>
+
+      <!-- Article Costos Metodo Pago -->
+      <article class="blog-card" data-category="finanzas ventas productividad">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/costos-por-metodo-pago.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
+        <div class="blog-card-content"><span class="blog-category">Finanzas</span><h3>Costos por M&eacute;todo de Pago: C&oacute;mo Cobrar sin Perder Margen</h3><p>Compara comisiones, plazos y costos para que cada forma de cobro tenga un resultado visible.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/costos-por-metodo-pago.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 10 min</span></div></div>
+      </article>
+
+      <!-- Article Quiebres Stock -->
+      <article class="blog-card" data-category="ventas productividad finanzas">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/quiebres-stock-ventas-perdidas.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
+        <div class="blog-card-content"><span class="blog-category">Inventario</span><h3>Quiebres de Stock: C&oacute;mo Medir Ventas Perdidas y Reponer Mejor</h3><p>Registra faltantes y demanda no atendida para ajustar reposici&oacute;n antes de perder clientes.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/quiebres-stock-ventas-perdidas.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 11 min</span></div></div>
+      </article>
+
+      <!-- Article Clientes Inactivos -->
+      <article class="blog-card" data-category="ventas marketing productividad">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/clientes-inactivos-recuperacion.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
+        <div class="blog-card-content"><span class="blog-category">Clientes</span><h3>Clientes Inactivos: C&oacute;mo Recuperar Ventas sin Enviar Mensajes Masivos</h3><p>Detecta ausencias, segmenta contactos y ofrece motivos relevantes para volver a conversar.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/clientes-inactivos-recuperacion.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 10 min</span></div></div>
+      </article>
+
+      <!-- Article Gastos Hormiga -->
+      <article class="blog-card" data-category="finanzas productividad">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/control-gastos-hormiga.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
+        <div class="blog-card-content"><span class="blog-category">Finanzas</span><h3>Gastos Hormiga del Negocio: C&oacute;mo Detectarlos antes de que Afecten la Caja</h3><p>Agrupa peque&ntilde;as salidas de dinero para corregir fugas sin frenar la operaci&oacute;n diaria.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/control-gastos-hormiga.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 10 min</span></div></div>
+      </article>
+
+      <!-- Article Rentabilidad Vendedor -->
+      <article class="blog-card" data-category="ventas productividad finanzas">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/rentabilidad-por-vendedor.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
+        <div class="blog-card-content"><span class="blog-category">Equipo</span><h3>Rentabilidad por Vendedor: C&oacute;mo Medir Resultados sin Mirar Solo Ventas</h3><p>Combina margen, ticket y descuentos para acompa&ntilde;ar al equipo con mejores indicadores.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/rentabilidad-por-vendedor.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 11 min</span></div></div>
+      </article>
+
+      <!-- Article Calendario Pagos Proveedores -->
+      <article class="blog-card" data-category="finanzas productividad ventas">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/calendario-pagos-proveedores.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
+        <div class="blog-card-content"><span class="blog-category">Proveedores</span><h3>Calendario de Pagos a Proveedores: C&oacute;mo Evitar Vencimientos y Tensiones de Caja</h3><p>Centraliza compromisos y anticipa semanas exigentes para pagar con mayor previsibilidad.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/calendario-pagos-proveedores.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 10 min</span></div></div>
+      </article>
 
       <!-- Article Rentabilidad por Franja Horaria -->
       <article class="blog-card" data-category="finanzas ventas productividad">
@@ -5274,8 +5585,7 @@
         el.style.transform = 'translateX(0)';
         setTimeout(()=>{ el.style.transform='translateX(-120%)'; }, 5000);
       }
-      // First show after 8s, then every 14s
-      setTimeout(()=>{ showNotif(); setInterval(showNotif, 14000); }, 8000);
+      // Automatic social-proof popups were disabled to keep the reading experience calm.
     })();
   </script>
 </body>
