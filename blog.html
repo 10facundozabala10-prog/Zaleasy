@@ -434,6 +434,25 @@
       opacity: 0.6;
     }
 
+    .blog-load-more-wrap {
+      display: flex;
+      justify-content: center;
+      margin: 2.5rem 0 0;
+    }
+
+    .blog-load-more-wrap[hidden] {
+      display: none;
+    }
+
+    .blog-load-more-btn {
+      min-width: 210px;
+      justify-content: center;
+      padding: 0.9rem 2rem;
+      border-radius: 12px;
+      border: 1px solid rgba(162, 155, 254, 0.35);
+      box-shadow: 0 12px 28px rgba(108, 92, 231, 0.18);
+    }
+
     /* Blog Stats Strip */
     .blog-stats-strip {
       display: flex;
@@ -1578,11 +1597,17 @@
 
   <script>
     let activeBlogCategory = 'all';
+    const BLOG_PAGE_SIZE = 21;
+    let blogVisibleLimit = BLOG_PAGE_SIZE;
     const normalizeBlogText = value => (value || '')
       .toString()
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
       .toLowerCase();
+
+    function resetBlogPagination() {
+      blogVisibleLimit = BLOG_PAGE_SIZE;
+    }
 
     function filterBlog(category, btnElement) {
       activeBlogCategory = category;
@@ -1593,6 +1618,7 @@
       buttons.forEach(btn => btn.classList.remove('active'));
       if (btnElement) btnElement.classList.add('active');
 
+      resetBlogPagination();
       applyBlogFilters();
     }
 
@@ -1601,40 +1627,48 @@
       const buttons = document.querySelectorAll('header.blog-header button');
       buttons.forEach(btn => btn.classList.toggle('active', btn.dataset.filter === 'all'));
 
+      resetBlogPagination();
       applyBlogFilters();
+    }
+
+    function getBlogMatch(card, input) {
+      const cats = normalizeBlogText(card.dataset.category || '');
+      const title = card.querySelector('h3')?.textContent || '';
+      const excerpt = card.querySelector('p')?.textContent || '';
+      const categoryLabel = card.querySelector('.blog-category')?.textContent || '';
+      const href = card.querySelector('a[href]')?.getAttribute('href') || '';
+      const searchableText = normalizeBlogText([title, excerpt, categoryLabel, cats, href].join(' '));
+      const categoryMatches = activeBlogCategory === 'all' || cats.split(/\s+/).includes(activeBlogCategory);
+      const searchMatches = !input || searchableText.includes(input);
+
+      return categoryMatches && searchMatches;
     }
 
     function applyBlogFilters() {
       const input = normalizeBlogText(document.getElementById('blogSearch')?.value || '');
-      const cards = document.querySelectorAll('.blog-card:not(.coming-soon)');
-      let visibleCount = 0;
+      const allCards = Array.from(document.querySelectorAll('.blog-card'));
+      const cards = allCards.filter(card => !card.classList.contains('coming-soon'));
+      const matchingCards = cards.filter(card => getBlogMatch(card, input));
+      const cardsToShow = matchingCards.slice(0, blogVisibleLimit);
+      const visibleCount = cardsToShow.length;
 
-      cards.forEach(card => {
-        const cats = normalizeBlogText(card.dataset.category || '');
-        const title = card.querySelector('h3')?.textContent || '';
-        const excerpt = card.querySelector('p')?.textContent || '';
-        const categoryLabel = card.querySelector('.blog-category')?.textContent || '';
-        const href = card.querySelector('a[href]')?.getAttribute('href') || '';
-        const searchableText = normalizeBlogText([title, excerpt, categoryLabel, cats, href].join(' '));
-        const categoryMatches = activeBlogCategory === 'all' || cats.split(/\s+/).includes(activeBlogCategory);
-        const searchMatches = !input || searchableText.includes(input);
-
-        if (categoryMatches && searchMatches) {
+      allCards.forEach(card => {
+        if (cardsToShow.includes(card)) {
           card.style.display = 'flex';
           card.classList.add('revealed');
           card.classList.remove('fadeInScale');
           void card.offsetWidth;
           card.classList.add('fadeInScale');
-          visibleCount++;
         } else {
           card.style.display = 'none';
         }
       });
 
-      updateCount(visibleCount);
+      updateCount(matchingCards.length);
       const noResults = document.getElementById('noResults');
-      if (noResults) noResults.style.display = visibleCount === 0 ? 'block' : 'none';
-      updateSearchMeta(visibleCount, cards.length, input);
+      if (noResults) noResults.style.display = matchingCards.length === 0 ? 'block' : 'none';
+      updateSearchMeta(visibleCount, matchingCards.length, cards.length, input);
+      updateLoadMoreButton(visibleCount, matchingCards.length);
     }
 
     function updateCount(n) {
@@ -1642,16 +1676,33 @@
       if (el) el.textContent = n;
     }
 
-    function updateSearchMeta(visible, total, input) {
+    function updateSearchMeta(visible, matched, total, input) {
       const meta = document.getElementById('blogSearchMeta');
       if (!meta) return;
       if (input) {
-        meta.textContent = `${visible} resultado${visible === 1 ? '' : 's'} para tu busqueda`;
+        meta.textContent = `Mostrando ${visible} de ${matched} resultado${matched === 1 ? '' : 's'} para tu busqueda`;
       } else if (activeBlogCategory !== 'all') {
-        meta.textContent = `${visible} articulo${visible === 1 ? '' : 's'} en esta categoria`;
+        meta.textContent = `Mostrando ${visible} de ${matched} articulo${matched === 1 ? '' : 's'} en esta categoria`;
       } else {
-        meta.textContent = `${total} articulos listos para leer. Usa la guia o busca por tema.`;
+        meta.textContent = `Mostrando ${visible} de ${total} articulos listos para leer. Usa la guia o busca por tema.`;
       }
+    }
+
+    function updateLoadMoreButton(visible, matched) {
+      const wrap = document.getElementById('blogLoadMoreWrap');
+      const btn = document.getElementById('blogLoadMoreBtn');
+      const count = document.getElementById('blogLoadMoreCount');
+      if (!wrap || !btn) return;
+
+      const remaining = Math.max(matched - visible, 0);
+      wrap.hidden = remaining === 0;
+      btn.disabled = remaining === 0;
+      if (count) count.textContent = remaining > BLOG_PAGE_SIZE ? BLOG_PAGE_SIZE : remaining;
+    }
+
+    function loadMoreBlogArticles() {
+      blogVisibleLimit += BLOG_PAGE_SIZE;
+      applyBlogFilters();
     }
 
     function updateFilterCounts() {
@@ -1679,7 +1730,7 @@
       const totalStat = document.getElementById('articleTotalStat');
       if (totalStat) totalStat.textContent = total;
       updateFilterCounts();
-      updateSearchMeta(total, total, '');
+      applyBlogFilters();
 
       // ── Scroll-reveal with IntersectionObserver ──
       const observer = new IntersectionObserver((entries) => {
@@ -4709,6 +4760,12 @@
         </div>
       </article>
 
+    </div>
+    <div class="blog-load-more-wrap" id="blogLoadMoreWrap" hidden>
+      <button class="btn btn-primary blog-load-more-btn" id="blogLoadMoreBtn" type="button" onclick="loadMoreBlogArticles()">
+        Ver m&aacute;s <span id="blogLoadMoreCount">21</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </button>
     </div>
   </section>
   <!-- Live Poll -->
