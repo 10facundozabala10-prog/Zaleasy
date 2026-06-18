@@ -26,6 +26,7 @@
   <meta name="twitter:image" content="https://zaleasy.com/assets/logo.png" />
 
   <link rel="canonical" href="https://zaleasy.com/" />
+  <link rel="icon" type="image/png" href="assets/logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="landing.css" />
@@ -53,6 +54,7 @@
 </head>
 
 <body>
+  <a class="skip-link" href="#main-content">Saltar al contenido</a>
   <!-- Background Animation -->
   <div class="bg-animated"></div>
 
@@ -60,17 +62,17 @@
   <nav class="navbar">
     <div class="container nav-container">
       <div class="brand">
-        <img src="assets/logo.png" alt="Zaleasy Logo" style="
+        <img src="assets/logo.png" alt="Zaleasy Logo" loading="eager" decoding="async" style="
               height: 45px;
               border-radius: 50%;
               box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
             " />
         <h2>Zaleasy</h2>
       </div>
-      <button class="mobile-menu-btn" aria-label="Abrir men&uacute;" onclick="document.querySelector('.nav-links').classList.toggle('active')">
+      <button class="mobile-menu-btn" aria-label="Abrir men&uacute;" aria-expanded="false" aria-controls="site-navigation">
         <i class="fa-solid fa-bars"></i>
       </button>
-      <div class="nav-links">
+      <div class="nav-links" id="site-navigation">
         <a href="blog.html">Blog</a>
         <a href="index.html#features">Funciones</a>
         <a href="index.html#daily-flow">Flujo diario</a>
@@ -82,6 +84,7 @@
   </nav>
 
   <!-- Hero Section -->
+  <main id="main-content">
   <header class="hero">
     <div class="container hero-container">
       <div class="hero-content">
@@ -104,6 +107,7 @@
           <span><i class="fa-solid fa-credit-card"></i> Sin tarjeta</span>
           <span><i class="fa-solid fa-download"></i> Sin instalaci&oacute;n</span>
           <span><i class="fa-solid fa-file-export"></i> Exporta a CSV</span>
+          <span><i class="fa-solid fa-mobile-screen"></i> Funciona en celular</span>
         </div>
         <div class="hero-stats">
           <div class="stat">
@@ -212,6 +216,45 @@
       <div>
         <strong>Datos listos para decidir</strong>
         <span>Historial, reportes y CSV para compartir con tu equipo o contador.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="decision-panel" aria-labelledby="decision-panel-title">
+    <div class="container decision-panel-layout">
+      <div class="decision-copy">
+        <span class="section-kicker"><i class="fa-solid fa-clipboard-check"></i> Cierre claro</span>
+        <h2 id="decision-panel-title">Al terminar el d&iacute;a sabes qu&eacute; pas&oacute; y qu&eacute; hacer ma&ntilde;ana</h2>
+        <p>
+          La p&aacute;gina ahora muestra mejor el beneficio central de Zaleasy: convertir ventas sueltas,
+          gastos y medios de pago en una lectura simple para decidir sin adivinar.
+        </p>
+      </div>
+      <div class="decision-grid" aria-label="Indicadores destacados de Zaleasy">
+        <article class="decision-card">
+          <i class="fa-solid fa-cash-register"></i>
+          <span>Caja esperada</span>
+          <strong>$109.550</strong>
+          <small>Separada por efectivo, tarjeta y transferencia</small>
+        </article>
+        <article class="decision-card accent">
+          <i class="fa-solid fa-arrow-trend-up"></i>
+          <span>Margen del d&iacute;a</span>
+          <strong>85%</strong>
+          <small>Ventas menos gastos visibles en segundos</small>
+        </article>
+        <article class="decision-card">
+          <i class="fa-solid fa-user-check"></i>
+          <span>Cliente frecuente</span>
+          <strong>12 compras</strong>
+          <small>Historial listo para vender mejor</small>
+        </article>
+        <article class="decision-card">
+          <i class="fa-solid fa-file-export"></i>
+          <span>Reporte listo</span>
+          <strong>CSV</strong>
+          <small>Datos ordenados para Excel o contador</small>
+        </article>
       </div>
     </div>
   </section>
@@ -912,7 +955,7 @@
 
       <div class="faq-list" style="display: flex; flex-direction: column; gap: 1rem">
         <!-- QA 1 -->
-        <div class="faq-accordion" onclick="toggleFaq(this)">
+        <div class="faq-accordion" tabindex="0" role="button" aria-expanded="false">
           <div class="faq-question">
             <h4>&iquest;Realmente es gratis? &iquest;C&oacute;mo se financia?</h4>
             <i class="fa-solid fa-chevron-down faq-icon"></i>
@@ -927,7 +970,7 @@
           </div>
         </div>
         <!-- QA 2 -->
-        <div class="faq-accordion" onclick="toggleFaq(this)">
+        <div class="faq-accordion" tabindex="0" role="button" aria-expanded="false">
           <div class="faq-question">
             <h4>&iquest;Mis datos son privados? &iquest;Ustedes los ven?</h4>
             <i class="fa-solid fa-chevron-down faq-icon"></i>
@@ -943,7 +986,7 @@
           </div>
         </div>
         <!-- QA 3 -->
-        <div class="faq-accordion" onclick="toggleFaq(this)">
+        <div class="faq-accordion" tabindex="0" role="button" aria-expanded="false">
           <div class="faq-question">
             <h4>
               &iquest;Puedo usarlo desde mi celular y mi computadora al mismo tiempo?
@@ -961,7 +1004,7 @@
           </div>
         </div>
         <!-- QA 4 (NEW) -->
-        <div class="faq-accordion" onclick="toggleFaq(this)">
+        <div class="faq-accordion" tabindex="0" role="button" aria-expanded="false">
           <div class="faq-question">
             <h4>&iquest;Puedo exportar mis ventas a Excel o CSV?</h4>
             <i class="fa-solid fa-chevron-down faq-icon"></i>
@@ -977,7 +1020,7 @@
           </div>
         </div>
         <!-- QA 5 (NEW) -->
-        <div class="faq-accordion" onclick="toggleFaq(this)">
+        <div class="faq-accordion" tabindex="0" role="button" aria-expanded="false">
           <div class="faq-question">
             <h4>&iquest;Tengo que pagar por nuevas actualizaciones?</h4>
             <i class="fa-solid fa-chevron-down faq-icon"></i>
@@ -1131,7 +1174,7 @@
             max-width: 800px;
             margin: 0 auto;
           ">
-        <img src="assets/facundo.jpg" alt="Facundo Luis Zabala" style="
+        <img src="assets/facundo.jpg" alt="Facundo Luis Zabala" loading="lazy" decoding="async" style="
               width: 150px;
               height: 150px;
               border-radius: 50%;
@@ -1237,7 +1280,7 @@
   <footer class="footer">
     <div class="container footer-content">
       <div class="footer-brand">
-        <img src="assets/logo.png" alt="Zaleasy Logo" style="
+        <img src="assets/logo.png" alt="Zaleasy Logo" loading="lazy" decoding="async" style="
               height: 35px;
               border-radius: 50%;
               margin-bottom: 0.5rem;
@@ -1261,17 +1304,52 @@
       <p>&copy; 2026 Zaleasy. Todos los derechos reservados.</p>
     </div>
   </footer>
+  </main>
 
   <!-- Footer Script -->
   <script>
+    // --- Mobile navigation ---
+    const mobileMenuButton = document.querySelector(".mobile-menu-btn");
+    const siteNavigation = document.querySelector(".nav-links");
+
+    if (mobileMenuButton && siteNavigation) {
+      mobileMenuButton.addEventListener("click", () => {
+        const isOpen = siteNavigation.classList.toggle("active");
+        mobileMenuButton.setAttribute("aria-expanded", String(isOpen));
+      });
+
+      siteNavigation.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => {
+          siteNavigation.classList.remove("active");
+          mobileMenuButton.setAttribute("aria-expanded", "false");
+        });
+      });
+    }
+
     // --- FAQ Accordion ---
     function toggleFaq(el) {
       const isOpen = el.classList.contains("open");
       document
         .querySelectorAll(".faq-accordion.open")
-        .forEach((a) => a.classList.remove("open"));
-      if (!isOpen) el.classList.add("open");
+        .forEach((a) => {
+          a.classList.remove("open");
+          a.setAttribute("aria-expanded", "false");
+        });
+      if (!isOpen) {
+        el.classList.add("open");
+        el.setAttribute("aria-expanded", "true");
+      }
     }
+
+    document.querySelectorAll(".faq-accordion").forEach((item) => {
+      item.addEventListener("click", () => toggleFaq(item));
+      item.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          toggleFaq(item);
+        }
+      });
+    });
 
     // --- Animated Stats Counter ---
     const animateStat = (el, target, suffix, duration) => {
@@ -1320,9 +1398,14 @@
 
   <!-- WhatsApp Floating Button -->
   <a href="https://wa.me/5492645859764?text=Hola,%20tengo%20una%20duda%20sobre%20Zaleasy" target="_blank"
-    class="whatsapp-float">
+    rel="noopener" class="whatsapp-float" aria-label="Consultar por WhatsApp">
     <i class="fa-brands fa-whatsapp"></i>
   </a>
+
+  <div class="mobile-cta-bar" aria-label="Acceso r&aacute;pido">
+    <span>Controla tu caja hoy</span>
+    <a href="app.html" class="btn btn-primary">Empezar gratis</a>
+  </div>
 
   <!-- Back to Top Button -->
   <button id="back-to-top" aria-label="Volver arriba" onclick="window.scrollTo({top:0,behavior:'smooth'})">
