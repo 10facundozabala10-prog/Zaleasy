@@ -1458,6 +1458,55 @@
       line-height: 1.32;
     }
 
+    .blog-card .blog-content {
+      padding: 1.35rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .blog-card .blog-content h2 {
+      margin: 0 0 0.8rem;
+      font-size: 1.14rem;
+      line-height: 1.32;
+      font-weight: 800;
+    }
+
+    .blog-card .blog-content h2 a {
+      color: var(--text-main);
+      text-decoration: none;
+    }
+
+    .blog-card .blog-content h2 a:hover {
+      color: #ffffff;
+    }
+
+    .blog-card .blog-content .blog-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-top: auto;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 1rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .blog-card .blog-content .read-more {
+      color: #00d2d3;
+      text-decoration: none;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      white-space: nowrap;
+    }
+
+    .blog-card .blog-content .read-more:hover {
+      color: #55efc4;
+    }
+
     .btn-read-more {
       color: #00d2d3 !important;
     }
@@ -2087,48 +2136,49 @@
       <!-- Article Reservas de Equipos Compartidos -->
       <article class="blog-card" data-category="operaciones">
         <div class="blog-img" style="background: url('assets/Blog imagenes/reservas-equipos-compartidos.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
-        <div class="blog-content"><span class="blog-category"><i class="fa-solid fa-calendar-check"></i> Operaciones</span><h2><a href="Blog htmls/reservas-equipos-compartidos.html">Reservas de Equipos Compartidos: Como Evitar Doble Uso y Reclamos</a></h2><p>Ordena turnos, responsables y disponibilidad para que cada equipo se use sin choques ni discusiones.</p><div class="blog-footer"><a href="Blog htmls/reservas-equipos-compartidos.html" class="read-more">Leer Mas <i class="fas fa-arrow-right"></i></a><span><i class="far fa-clock"></i> 9 min</span></div></div>
+        <div class="blog-card-content"><span class="blog-category">Operaciones</span><h3>Reservas de Equipos Compartidos: Como Evitar Doble Uso y Reclamos</h3><p>Ordena turnos, responsables y disponibilidad para que cada equipo se use sin choques ni discusiones.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/reservas-equipos-compartidos.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span></div></div>
       </article>
       <!-- Article Control de Gastos Menores -->
       <article class="blog-card" data-category="finanzas">
         <div class="blog-img" style="background: url('assets/Blog imagenes/control-gastos-menores-recibos.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
-        <div class="blog-content"><span class="blog-category"><i class="fa-solid fa-receipt"></i> Finanzas</span><h2><a href="Blog htmls/control-gastos-menores-recibos.html">Control de Gastos Menores: Como Registrar Recibos sin Perder Caja</a></h2><p>Define reglas simples para compras chicas, rendiciones y comprobantes antes de que la caja diaria se desordene.</p><div class="blog-footer"><a href="Blog htmls/control-gastos-menores-recibos.html" class="read-more">Leer Mas <i class="fas fa-arrow-right"></i></a><span><i class="far fa-clock"></i> 8 min</span></div></div>
+        <div class="blog-card-content"><span class="blog-category">Finanzas</span><h3>Control de Gastos Menores: Como Registrar Recibos sin Perder Caja</h3><p>Define reglas simples para compras chicas, rendiciones y comprobantes antes de que la caja diaria se desordene.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/control-gastos-menores-recibos.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 8 min</span></div></div>
       </article>
       <!-- Article Devoluciones de Ecommerce -->
       <article class="blog-card" data-category="ventas">
         <div class="blog-img" style="background: url('assets/Blog imagenes/devoluciones-ecommerce-margen.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
-        <div class="blog-content"><span class="blog-category"><i class="fa-solid fa-rotate-left"></i> Ventas</span><h2><a href="Blog htmls/devoluciones-ecommerce-margen.html">Devoluciones de Ecommerce: Como Cuidar el Margen sin Molestar al Cliente</a></h2><p>Organiza inspeccion, motivos y reintegros para que cada devolucion tenga trazabilidad y decision clara.</p><div class="blog-footer"><a href="Blog htmls/devoluciones-ecommerce-margen.html" class="read-more">Leer Mas <i class="fas fa-arrow-right"></i></a><span><i class="far fa-clock"></i> 9 min</span></div></div>
+        <div class="blog-card-content"><span class="blog-category">Ventas</span><h3>Devoluciones de Ecommerce: Como Cuidar el Margen sin Molestar al Cliente</h3><p>Organiza inspeccion, motivos y reintegros para que cada devolucion tenga trazabilidad y decision clara.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/devoluciones-ecommerce-margen.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span></div></div>
       </article>
       <!-- Article Rutas de Servicio Tecnico -->
       <article class="blog-card" data-category="operaciones">
         <div class="blog-img" style="background: url('assets/Blog imagenes/rutas-servicio-tecnico.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
-        <div class="blog-content"><span class="blog-category"><i class="fa-solid fa-route"></i> Servicios</span><h2><a href="Blog htmls/rutas-servicio-tecnico.html">Rutas de Servicio Tecnico: Como Reducir Viajes y Llegar a Tiempo</a></h2><p>Planifica visitas, zonas y prioridades para que los tecnicos trabajen con menos traslados y mas claridad.</p><div class="blog-footer"><a href="Blog htmls/rutas-servicio-tecnico.html" class="read-more">Leer Mas <i class="fas fa-arrow-right"></i></a><span><i class="far fa-clock"></i> 8 min</span></div></div>
+        <div class="blog-card-content"><span class="blog-category">Servicios</span><h3>Rutas de Servicio Tecnico: Como Reducir Viajes y Llegar a Tiempo</h3><p>Planifica visitas, zonas y prioridades para que los tecnicos trabajen con menos traslados y mas claridad.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/rutas-servicio-tecnico.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 8 min</span></div></div>
       </article>
       <!-- Article Cambios de Precios de Proveedores -->
       <article class="blog-card" data-category="compras">
         <div class="blog-img" style="background: url('assets/Blog imagenes/cambios-precios-proveedores.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
-        <div class="blog-content"><span class="blog-category"><i class="fa-solid fa-tags"></i> Compras</span><h2><a href="Blog htmls/cambios-precios-proveedores.html">Cambios de Precios de Proveedores: Como Actualizar sin Perder Rentabilidad</a></h2><p>Detecta aumentos, revisa margenes y actualiza listas antes de vender productos por debajo de lo necesario.</p><div class="blog-footer"><a href="Blog htmls/cambios-precios-proveedores.html" class="read-more">Leer Mas <i class="fas fa-arrow-right"></i></a><span><i class="far fa-clock"></i> 9 min</span></div></div>
+        <div class="blog-card-content"><span class="blog-category">Compras</span><h3>Cambios de Precios de Proveedores: Como Actualizar sin Perder Rentabilidad</h3><p>Detecta aumentos, revisa margenes y actualiza listas antes de vender productos por debajo de lo necesario.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/cambios-precios-proveedores.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span></div></div>
       </article>
       <!-- Article Cambios de Turno del Equipo -->
       <article class="blog-card" data-category="operaciones">
         <div class="blog-img" style="background: url('assets/Blog imagenes/cambios-turno-empleados.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
-        <div class="blog-content"><span class="blog-category"><i class="fa-solid fa-user-clock"></i> Equipo</span><h2><a href="Blog htmls/cambios-turno-empleados.html">Cambios de Turno del Equipo: Como Aprobar Reemplazos sin Confusion</a></h2><p>Gestiona solicitudes de cambio, aprobaciones y cobertura para que el local no quede desatendido.</p><div class="blog-footer"><a href="Blog htmls/cambios-turno-empleados.html" class="read-more">Leer Mas <i class="fas fa-arrow-right"></i></a><span><i class="far fa-clock"></i> 8 min</span></div></div>
+        <div class="blog-card-content"><span class="blog-category">Equipo</span><h3>Cambios de Turno del Equipo: Como Aprobar Reemplazos sin Confusion</h3><p>Gestiona solicitudes de cambio, aprobaciones y cobertura para que el local no quede desatendido.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/cambios-turno-empleados.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 8 min</span></div></div>
       </article>
       <!-- Article Renovaciones de Contratos de Mantenimiento -->
       <article class="blog-card" data-category="servicios">
         <div class="blog-img" style="background: url('assets/Blog imagenes/renovaciones-contratos-mantenimiento.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
-        <div class="blog-content"><span class="blog-category"><i class="fa-solid fa-file-signature"></i> Servicios</span><h2><a href="Blog htmls/renovaciones-contratos-mantenimiento.html">Renovaciones de Contratos de Mantenimiento: Como No Perder Clientes por Olvido</a></h2><p>Controla vencimientos, visitas incluidas y proximos contactos para sostener ingresos recurrentes.</p><div class="blog-footer"><a href="Blog htmls/renovaciones-contratos-mantenimiento.html" class="read-more">Leer Mas <i class="fas fa-arrow-right"></i></a><span><i class="far fa-clock"></i> 9 min</span></div></div>
+        <div class="blog-card-content"><span class="blog-category">Servicios</span><h3>Renovaciones de Contratos de Mantenimiento: Como No Perder Clientes por Olvido</h3><p>Controla vencimientos, visitas incluidas y proximos contactos para sostener ingresos recurrentes.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/renovaciones-contratos-mantenimiento.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span></div></div>
       </article>
       <!-- Article Senas para Eventos -->
       <article class="blog-card" data-category="ventas">
         <div class="blog-img" style="background: url('assets/Blog imagenes/senas-eventos-saldos.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
-        <div class="blog-content"><span class="blog-category"><i class="fa-solid fa-champagne-glasses"></i> Clientes</span><h2><a href="Blog htmls/senas-eventos-saldos.html">Senas para Eventos: Como Controlar Saldos, Fechas y Confirmaciones</a></h2><p>Organiza anticipos, pagos pendientes y condiciones para evitar malentendidos antes del evento.</p><div class="blog-footer"><a href="Blog htmls/senas-eventos-saldos.html" class="read-more">Leer Mas <i class="fas fa-arrow-right"></i></a><span><i class="far fa-clock"></i> 8 min</span></div></div>
+        <div class="blog-card-content"><span class="blog-category">Clientes</span><h3>Senas para Eventos: Como Controlar Saldos, Fechas y Confirmaciones</h3><p>Organiza anticipos, pagos pendientes y condiciones para evitar malentendidos antes del evento.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/senas-eventos-saldos.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 8 min</span></div></div>
       </article>
       <!-- Article Inventario Lento -->
       <article class="blog-card" data-category="inventario">
         <div class="blog-img" style="background: url('assets/Blog imagenes/inventario-lento-capital.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
-        <div class="blog-content"><span class="blog-category"><i class="fa-solid fa-boxes-stacked"></i> Inventario</span><h2><a href="Blog htmls/inventario-lento-capital.html">Inventario Lento: Como Detectar Productos que Tienen Capital Dormido</a></h2><p>Identifica productos con baja rotacion y decide descuentos, combos o compras futuras con datos reales.</p><div class="blog-footer"><a href="Blog htmls/inventario-lento-capital.html" class="read-more">Leer Mas <i class="fas fa-arrow-right"></i></a><span><i class="far fa-clock"></i> 9 min</span></div></div>
+        <div class="blog-card-content"><span class="blog-category">Inventario</span><h3>Inventario Lento: Como Detectar Productos que Tienen Capital Dormido</h3><p>Identifica productos con baja rotacion y decide descuentos, combos o compras futuras con datos reales.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/inventario-lento-capital.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span></div></div>
       </article>
+
 
 
 
