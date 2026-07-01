@@ -56,6 +56,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const stockAlertList = document.getElementById('stock-alert-list');
     const stockAlertOpenInventory = document.getElementById('stock-alert-open-inventory');
     const stockAlertAddProduct = document.getElementById('stock-alert-add-product');
+    const actionCenterCard = document.getElementById('action-center-card');
+    const actionCenterList = document.getElementById('action-center-list');
+    const actionCenterBadge = document.getElementById('action-center-badge');
+    const actionCenterSubtitle = document.getElementById('action-center-subtitle');
 
     // List Elements
     const salesBody = document.getElementById('sales-body');
@@ -120,6 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const historyBody = document.getElementById('history-body');
     const historySearch = document.getElementById('history-search');
     const historyDateFilter = document.getElementById('history-date-filter');
+    const historyTypeFilter = document.getElementById('history-type-filter');
+    const historyQuickFilters = document.getElementById('history-quick-filters');
     const historyEmptyState = document.getElementById('history-empty-state');
     const historyExportCsv = document.getElementById('history-export-csv');
     const historyClearAll = document.getElementById('history-clear-all');
@@ -1595,6 +1601,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateDataHealthPanel();
         updateSetupChecklist();
         updateStockAlertSnapshot();
+        updateActionCenter(totalRevenue, totalExpenses, totalSalesCount, netBalance);
 
         // Animated counter for KPI numbers
         animateKPICounter(kpiRevenue, totalRevenue, true);
@@ -1602,6 +1609,129 @@ document.addEventListener('DOMContentLoaded', () => {
         animateKPICounter(kpiExpenses, totalExpenses, true);
         animateKPICounter(kpiBalance, netBalance, true);
     };
+
+    const createActionItem = ({ tone = 'neutral', icon = 'fa-circle-info', title, detail, label, action }) => `
+        <button type="button" class="action-center-item" data-action="${action}" data-tone="${tone}">
+            <span class="action-center-icon"><i class="fa-solid ${icon}"></i></span>
+            <span class="action-center-copy">
+                <strong>${title}</strong>
+                <small>${detail}</small>
+            </span>
+            <span class="action-center-cta">${label}<i class="fa-solid fa-arrow-right"></i></span>
+        </button>
+    `;
+
+    const updateActionCenter = (totalRevenue = 0, totalExpenses = 0, totalSalesCount = 0, netBalance = 0) => {
+        if (!actionCenterCard || !actionCenterList || !actionCenterBadge || !actionCenterSubtitle) return;
+
+        const actions = [];
+        const { debtClients, totalDebt, topDebtor } = buildClientSummary();
+        const trackedStock = productCatalog.filter(p => p.stock !== undefined && p.stock !== null);
+        const stockIssues = trackedStock.filter(p => Number(p.stock) <= 5);
+        const lastBackupDate = localStorage.getItem('lastBackupDate');
+        const daysSinceBackup = lastBackupDate
+            ? Math.floor((Date.now() - new Date(lastBackupDate).getTime()) / 86400000)
+            : Infinity;
+        const progress = dailyGoal > 0 ? (totalRevenue / dailyGoal) * 100 : 0;
+
+        if (netBalance < 0) {
+            actions.push({
+                tone: 'danger',
+                icon: 'fa-triangle-exclamation',
+                title: 'Caja en negativo',
+                detail: `El balance va en ${formatCurrency(netBalance)}. Revisa gastos o base de caja antes del cierre.`,
+                label: 'Revisar caja',
+                action: 'close'
+            });
+        }
+
+        if (totalDebt > 0) {
+            actions.push({
+                tone: 'warning',
+                icon: 'fa-hand-holding-dollar',
+                title: 'Cobros pendientes',
+                detail: `${debtClients.length} cliente${debtClients.length === 1 ? '' : 's'} deben ${formatCurrency(totalDebt)}${topDebtor ? `; prioridad: ${topDebtor}` : ''}.`,
+                label: 'Ver clientes',
+                action: 'clients'
+            });
+        }
+
+        if (stockIssues.length > 0) {
+            actions.push({
+                tone: 'warning',
+                icon: 'fa-box-open',
+                title: 'Stock para revisar',
+                detail: `${stockIssues.length} producto${stockIssues.length === 1 ? '' : 's'} con 5 unidades o menos.`,
+                label: 'Ver stock',
+                action: 'inventory'
+            });
+        }
+
+        if (daysSinceBackup >= 7) {
+            actions.push({
+                tone: 'neutral',
+                icon: 'fa-cloud-arrow-down',
+                title: 'Backup recomendado',
+                detail: lastBackupDate ? `Ultima copia hace ${daysSinceBackup} dias.` : 'Todavia no hay una copia de seguridad registrada.',
+                label: 'Ir a backup',
+                action: 'config'
+            });
+        }
+
+        if (totalSalesCount === 0) {
+            actions.push({
+                tone: 'neutral',
+                icon: 'fa-receipt',
+                title: 'Primera venta pendiente',
+                detail: 'Registra la primera venta para activar metricas, hora pico y productos rapidos.',
+                label: 'Cargar venta',
+                action: 'sale'
+            });
+        } else if (progress < 70) {
+            actions.push({
+                tone: 'neutral',
+                icon: 'fa-bullseye',
+                title: 'Meta aun lejos',
+                detail: `Faltan ${formatCurrency(Math.max(dailyGoal - totalRevenue, 0))} para llegar a la meta diaria.`,
+                label: 'Impulsar ventas',
+                action: 'sale'
+            });
+        }
+
+        if (actions.length === 0) {
+            actionCenterCard.dataset.state = 'ok';
+            actionCenterBadge.textContent = 'Todo al dia';
+            actionCenterSubtitle.textContent = 'No hay alertas criticas. Mantente registrando operaciones para cerrar con datos claros.';
+            actionCenterList.innerHTML = createActionItem({
+                tone: 'success',
+                icon: 'fa-circle-check',
+                title: 'Operacion bajo control',
+                detail: 'Caja, cobros, stock y respaldo no muestran urgencias en este momento.',
+                label: 'Ver reportes',
+                action: 'reports'
+            });
+            return;
+        }
+
+        actionCenterCard.dataset.state = actions.some(a => a.tone === 'danger') ? 'danger' : 'active';
+        actionCenterBadge.textContent = `${actions.length} ${actions.length === 1 ? 'accion' : 'acciones'}`;
+        actionCenterSubtitle.textContent = 'Prioriza lo que puede afectar caja, ventas o atencion antes del cierre.';
+        actionCenterList.innerHTML = actions.slice(0, 5).map(createActionItem).join('');
+    };
+
+    if (actionCenterList) {
+        actionCenterList.addEventListener('click', (e) => {
+            const item = e.target.closest('.action-center-item');
+            if (!item) return;
+            const action = item.dataset.action;
+            if (action === 'clients') switchView('nav-clientes');
+            if (action === 'inventory') switchView('nav-inventario');
+            if (action === 'reports') switchView('nav-reportes');
+            if (action === 'config') switchView('nav-config', 'Configuracion de Empresa');
+            if (action === 'close' && btnCloseRegister) btnCloseRegister.click();
+            if (action === 'sale') focusTransactionForm('income');
+        });
+    }
 
     const updateStockAlertSnapshot = () => {
         if (!stockAlertCard || !stockAlertBadge || !stockAlertText || !stockAlertList) return;
@@ -1943,6 +2073,20 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        const rangeFrom = historySearch.dataset.rangeFrom ? parseInt(historySearch.dataset.rangeFrom, 10) : 0;
+        if (!dateQuery && rangeFrom) {
+            filteredHistory = filteredHistory.filter(s => Number(s.timestamp) >= rangeFrom);
+        }
+
+        const typeQuery = historyTypeFilter ? historyTypeFilter.value : '';
+        if (typeQuery === 'income') {
+            filteredHistory = filteredHistory.filter(s => s.type !== 'expense');
+        } else if (typeQuery === 'expense') {
+            filteredHistory = filteredHistory.filter(s => s.type === 'expense');
+        } else if (typeQuery === 'pending') {
+            filteredHistory = filteredHistory.filter(s => s.method === 'A Cobrar');
+        }
+
         const textQuery = historySearch.value.toLowerCase().trim();
         if (textQuery) {
             filteredHistory = filteredHistory.filter(s =>
@@ -2016,7 +2160,46 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     historySearch.addEventListener('input', renderHistory);
-    historyDateFilter.addEventListener('change', renderHistory);
+    historyDateFilter.addEventListener('change', () => {
+        delete historySearch.dataset.rangeFrom;
+        if (historyQuickFilters) historyQuickFilters.querySelectorAll('.history-filter-chip').forEach(chip => chip.classList.remove('active'));
+        renderHistory();
+    });
+    if (historyTypeFilter) historyTypeFilter.addEventListener('change', renderHistory);
+    if (historyQuickFilters) {
+        historyQuickFilters.addEventListener('click', (e) => {
+            const btn = e.target.closest('.history-filter-chip');
+            if (!btn) return;
+            const range = btn.dataset.range;
+            historyQuickFilters.querySelectorAll('.history-filter-chip').forEach(chip => chip.classList.remove('active'));
+            btn.classList.add('active');
+
+            if (range === 'clear') {
+                historyDateFilter.value = '';
+                if (historyTypeFilter) historyTypeFilter.value = '';
+                historySearch.value = '';
+                delete historySearch.dataset.rangeFrom;
+                btn.classList.remove('active');
+                renderHistory();
+                return;
+            }
+
+            const now = new Date();
+            const cutoff = new Date(now);
+            if (range === 'today') {
+                historyDateFilter.value = now.toISOString().split('T')[0];
+            } else {
+                cutoff.setDate(now.getDate() - (parseInt(range, 10) - 1));
+                historyDateFilter.value = '';
+                historySearch.dataset.rangeFrom = cutoff.getTime().toString();
+            }
+
+            if (range === 'today') {
+                delete historySearch.dataset.rangeFrom;
+            }
+            renderHistory();
+        });
+    }
 
     historyClearAll.addEventListener('click', () => {
         if (historyData.length === 0) return;
@@ -3031,12 +3214,31 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td style="color:var(--success); font-weight:bold;">${prod.price > 0 ? formatCurrency(prod.price) : '<span style="color:var(--text-muted); font-size:0.85rem; font-weight:normal;">Sin precio fijo</span>'}</td>
                     <td>${stockHtml}</td>
                     <td style="text-align:right;">
+                        <button class="btn-icon btn-edit-inv" data-id="${prod.id}" title="Editar producto" style="color: var(--warning); opacity: 0.9; margin-right:4px;">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
                         <button class="btn-icon btn-delete-inv" data-id="${prod.id}" title="Eliminar del Catálogo" style="color: var(--danger); opacity: 0.8;">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>
                 `;
                 tbody.appendChild(tr);
+            });
+
+            document.querySelectorAll('.btn-edit-inv').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const idToEdit = parseInt(e.currentTarget.getAttribute('data-id'));
+                    const prod = productCatalog.find(p => p.id === idToEdit);
+                    if (!prod || !newProductForm) return;
+                    editingProductId = idToEdit;
+                    newProductForm.style.display = 'block';
+                    document.getElementById('inv-name').value = prod.name || '';
+                    document.getElementById('inv-price').value = prod.price || '';
+                    document.getElementById('inv-stock').value = prod.stock !== undefined && prod.stock !== null ? prod.stock : '';
+                    if (btnSaveInvProd) btnSaveInvProd.innerHTML = '<i class="fa-solid fa-check"></i> Guardar Cambios';
+                    document.getElementById('inv-name').focus();
+                    newProductForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
             });
             
             // Delete bindings
@@ -3050,6 +3252,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         updateStockAlertSnapshot();
                         updateDataHealthPanel();
                         updateSetupChecklist();
+                        updateKPIs();
                         setupAutocomplete(); // Update datalist and Autofill potential
                     }
                 });
@@ -3062,15 +3265,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnCancelInvProd = document.getElementById('btn-cancel-inv-product');
     const btnSaveInvProd = document.getElementById('btn-save-inv-product');
     const searchInventario = document.getElementById('search-inventario');
+    let editingProductId = null;
     
     if (btnNewProduct && newProductForm) {
         btnNewProduct.addEventListener('click', () => {
+            editingProductId = null;
             newProductForm.style.display = 'block';
+            document.getElementById('inv-name').value = '';
+            document.getElementById('inv-price').value = '';
+            document.getElementById('inv-stock').value = '';
+            if (btnSaveInvProd) btnSaveInvProd.innerHTML = '<i class="fa-solid fa-check"></i> Guardar Producto';
             document.getElementById('inv-name').focus();
         });
         
         btnCancelInvProd.addEventListener('click', () => {
+            editingProductId = null;
             newProductForm.style.display = 'none';
+            if (btnSaveInvProd) btnSaveInvProd.innerHTML = '<i class="fa-solid fa-check"></i> Guardar Producto';
         });
         
         btnSaveInvProd.addEventListener('click', () => {
@@ -3086,28 +3297,46 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             nameEl.style.borderColor = '';
+
+            const duplicate = productCatalog.find(p =>
+                p.id !== editingProductId &&
+                (p.name || '').toLowerCase() === name.toLowerCase()
+            );
+            if (duplicate) {
+                showToast('Ya existe un producto con ese nombre.');
+                return;
+            }
             
-            const newProd = {
-                id: Date.now(),
-                name: name,
-                price: price,
-                stock: stockVal
-            };
-            
-            productCatalog.push(newProd);
+            const wasEditing = Boolean(editingProductId);
+            if (wasEditing) {
+                productCatalog = productCatalog.map(p => p.id === editingProductId
+                    ? { ...p, name, price, stock: stockVal }
+                    : p
+                );
+            } else {
+                productCatalog.push({
+                    id: Date.now(),
+                    name: name,
+                    price: price,
+                    stock: stockVal
+                });
+            }
             localStorage.setItem('productCatalog', JSON.stringify(productCatalog));
             
             nameEl.value = '';
             priceEl.value = '';
             if (stockEl) stockEl.value = '';
+            editingProductId = null;
             newProductForm.style.display = 'none';
+            if (btnSaveInvProd) btnSaveInvProd.innerHTML = '<i class="fa-solid fa-check"></i> Guardar Producto';
             
             renderInventario();
             updateStockAlertSnapshot();
             updateDataHealthPanel();
             updateSetupChecklist();
+            updateKPIs();
             setupAutocomplete(); // refresh autofill globally
-            showToast('Producto agregado al catálogo!');
+            showToast(wasEditing ? 'Producto actualizado.' : 'Producto agregado al catálogo!');
         });
         
         if (searchInventario) {

@@ -419,6 +419,18 @@
                         </div>
                     </div>
 
+                    <!-- Action Center -->
+                    <div class="card action-center-card" id="action-center-card">
+                        <div class="card-header action-center-header">
+                            <div>
+                                <h2><i class="fa-solid fa-wand-magic-sparkles"></i> Centro de Acciones</h2>
+                                <p id="action-center-subtitle">Prioridades generadas con tus ventas, caja, clientes e inventario.</p>
+                            </div>
+                            <span class="badge" id="action-center-badge">0 acciones</span>
+                        </div>
+                        <div class="action-center-list" id="action-center-list"></div>
+                    </div>
+
                     <!-- Goal & Chart (new row) -->
                     <div class="charts-row" style="grid-template-columns: 1fr 1fr 1fr 1fr 1fr;">
                         <div class="card goal-card">
@@ -739,6 +751,13 @@
                     <div class="card-header">
                         <h2>Historial Completo</h2>
                         <div class="header-actions">
+                            <select id="history-type-filter" class="form-control"
+                                style="background: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius-sm); padding: 0.5rem; display: inline-block; width: auto; margin-right: 0.5rem;">
+                                <option value="">Todos</option>
+                                <option value="income">Ingresos</option>
+                                <option value="expense">Gastos</option>
+                                <option value="pending">Por cobrar</option>
+                            </select>
                             <input type="date" id="history-date-filter" class="form-control"
                                 style="background: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius-sm); padding: 0.5rem; display: inline-block; width: auto; margin-right: 1rem;">
                             <button class="btn-icon" id="history-export-csv" title="Exportar CSV">
@@ -753,6 +772,12 @@
                         <i class="fa-solid fa-magnifying-glass"></i>
                         <input type="text" id="history-search"
                             placeholder="Buscar por producto, m&eacute;todo o tipo...">
+                    </div>
+                    <div class="history-quick-filters" id="history-quick-filters">
+                        <button type="button" class="history-filter-chip" data-range="today">Hoy</button>
+                        <button type="button" class="history-filter-chip" data-range="7">7 d&iacute;as</button>
+                        <button type="button" class="history-filter-chip" data-range="30">30 d&iacute;as</button>
+                        <button type="button" class="history-filter-chip" data-range="clear">Limpiar filtros</button>
                     </div>
                     <div class="table-container">
                         <table class="sales-table">
