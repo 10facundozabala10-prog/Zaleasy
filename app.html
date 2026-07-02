@@ -601,6 +601,71 @@
                             style="width:100%; resize:vertical; background:var(--bg-hover); border:1px solid var(--border-color); border-radius:var(--radius-sm); color:var(--text-main); font-family:inherit; font-size:.92rem; padding:.8rem 1rem; outline:none; line-height:1.6; transition:border-color .2s;"></textarea>
                     </div>
 
+                    <!-- Follow-up Agenda -->
+                    <div class="card followups-card" id="followups-card">
+                        <div class="card-header">
+                            <div>
+                                <h2><i class="fa-solid fa-calendar-check"></i> Seguimientos</h2>
+                                <p id="followups-summary">Organiza cobros, reposiciones, llamadas y tareas del negocio.</p>
+                            </div>
+                            <span class="badge" id="followups-badge">0 pendientes</span>
+                        </div>
+                        <form id="followup-form" class="followup-form">
+                            <div class="input-wrapper followup-title-wrap">
+                                <i class="fa-solid fa-list-check"></i>
+                                <input type="text" id="followup-title" placeholder="Ej: llamar a cliente, reponer stock, revisar gasto..." required>
+                            </div>
+                            <select id="followup-type">
+                                <option value="general">General</option>
+                                <option value="cobro">Cobro</option>
+                                <option value="stock">Stock</option>
+                                <option value="cliente">Cliente</option>
+                                <option value="caja">Caja</option>
+                            </select>
+                            <input type="date" id="followup-date">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa-solid fa-plus"></i> Agregar
+                            </button>
+                        </form>
+                        <div class="followup-list" id="followup-list"></div>
+                        <div class="followup-empty" id="followup-empty">
+                            <i class="fa-regular fa-circle-check"></i>
+                            <p>Sin pendientes activos.</p>
+                        </div>
+                    </div>
+
+                    <!-- Recurring Expenses -->
+                    <div class="card recurring-card" id="recurring-card">
+                        <div class="card-header">
+                            <div>
+                                <h2><i class="fa-solid fa-repeat"></i> Gastos Recurrentes</h2>
+                                <p id="recurring-summary">Controla alquiler, servicios, sueldos, suscripciones o proveedores fijos.</p>
+                            </div>
+                            <span class="badge" id="recurring-badge">0 activos</span>
+                        </div>
+                        <form id="recurring-form" class="recurring-form">
+                            <div class="input-wrapper recurring-title-wrap">
+                                <i class="fa-solid fa-receipt"></i>
+                                <input type="text" id="recurring-name" placeholder="Ej: alquiler, internet, proveedor mensual..." required>
+                            </div>
+                            <input type="number" id="recurring-amount" min="0" step="0.01" placeholder="Monto" required>
+                            <select id="recurring-frequency">
+                                <option value="monthly">Mensual</option>
+                                <option value="weekly">Semanal</option>
+                                <option value="daily">Diario</option>
+                            </select>
+                            <input type="date" id="recurring-next-date">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa-solid fa-plus"></i> Agregar
+                            </button>
+                        </form>
+                        <div class="recurring-list" id="recurring-list"></div>
+                        <div class="recurring-empty" id="recurring-empty">
+                            <i class="fa-regular fa-calendar"></i>
+                            <p>Sin gastos recurrentes cargados.</p>
+                        </div>
+                    </div>
+
                     <!-- Add Sale Form -->
                     <div class="card form-section">
                         <div class="card-header">
@@ -844,6 +909,37 @@
                     </div>
                 </div>
 
+                <div class="card executive-summary-card" id="executive-summary-card">
+                    <div class="card-header">
+                        <div>
+                            <h2><i class="fa-solid fa-clipboard-list"></i> Resumen Ejecutivo</h2>
+                            <p id="executive-summary-period">Lectura automatica del rendimiento general.</p>
+                        </div>
+                        <button class="btn btn-outline" id="copy-executive-summary">
+                            <i class="fa-solid fa-copy"></i> Copiar resumen
+                        </button>
+                    </div>
+                    <div class="executive-summary-grid" id="executive-summary-grid">
+                        <div class="executive-summary-item">
+                            <span>Balance neto</span>
+                            <strong id="exec-net-balance">$0.00</strong>
+                        </div>
+                        <div class="executive-summary-item">
+                            <span>Metodo principal</span>
+                            <strong id="exec-top-method">Sin datos</strong>
+                        </div>
+                        <div class="executive-summary-item">
+                            <span>Cliente clave</span>
+                            <strong id="exec-top-client">Sin datos</strong>
+                        </div>
+                        <div class="executive-summary-item">
+                            <span>Riesgo operativo</span>
+                            <strong id="exec-risk-level">Bajo</strong>
+                        </div>
+                    </div>
+                    <p class="executive-summary-text" id="executive-summary-text">Registra ventas, clientes e inventario para generar recomendaciones ejecutivas.</p>
+                </div>
+
                 <!-- Charts Row -->
                 <div class="charts-row" style="margin-bottom: 1.5rem;">
                     <div class="card chart-card" style="flex: 2;">
@@ -984,6 +1080,9 @@
                     <div class="card-header">
                         <h2><i class="fa-solid fa-boxes-stacked" style="color: var(--primary); margin-right: .5rem;"></i>Cat&aacute;logo de Productos</h2>
                         <div class="header-actions">
+                            <button class="btn btn-outline" id="export-inventario-csv">
+                                <i class="fa-solid fa-download"></i> Exportar
+                            </button>
                             <button class="btn btn-primary" id="btn-new-product">
                                 <i class="fa-solid fa-plus"></i> Nuevo Producto
                             </button>
@@ -1246,6 +1345,30 @@
                 </div>
                 <div class="close-readiness-panel" id="close-readiness-panel">
                     <!-- Populated via JS -->
+                </div>
+                <div class="cash-reconciliation-panel" id="cash-reconciliation-panel">
+                    <div class="cash-reconciliation-head">
+                        <div>
+                            <h3><i class="fa-solid fa-scale-balanced"></i> Conciliaci&oacute;n de efectivo</h3>
+                            <p>Compara el efectivo esperado con el dinero contado antes de cerrar.</p>
+                        </div>
+                        <span class="badge" id="cash-reconciliation-status">Sin contar</span>
+                    </div>
+                    <div class="cash-reconciliation-grid">
+                        <div class="cash-reconciliation-field">
+                            <span>Esperado en caja</span>
+                            <strong id="cash-expected-display">$0.00</strong>
+                        </div>
+                        <label class="cash-reconciliation-field">
+                            <span>Efectivo contado</span>
+                            <input type="number" id="cash-counted-input" min="0" step="0.01" placeholder="0.00">
+                        </label>
+                        <div class="cash-reconciliation-field">
+                            <span>Diferencia</span>
+                            <strong id="cash-difference-display">$0.00</strong>
+                        </div>
+                    </div>
+                    <p class="cash-reconciliation-note" id="cash-reconciliation-note">Ingresa el efectivo contado para detectar sobrantes o faltantes.</p>
                 </div>
                 <div class="total-highlight">
                     <span>Total del D&iacute;a:</span>

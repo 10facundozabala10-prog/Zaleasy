@@ -75,6 +75,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeSummaryGrid = document.getElementById('close-summary-grid');
     const closeTotalDay = document.getElementById('close-total-day');
     const closeReadinessPanel = document.getElementById('close-readiness-panel');
+    const cashExpectedDisplay = document.getElementById('cash-expected-display');
+    const cashCountedInput = document.getElementById('cash-counted-input');
+    const cashDifferenceDisplay = document.getElementById('cash-difference-display');
+    const cashReconciliationStatus = document.getElementById('cash-reconciliation-status');
+    const cashReconciliationNote = document.getElementById('cash-reconciliation-note');
     const btnConfirmClose = document.getElementById('confirm-close');
 
     // Calculator Elements
@@ -129,6 +134,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const historyEmptyState = document.getElementById('history-empty-state');
     const historyExportCsv = document.getElementById('history-export-csv');
     const historyClearAll = document.getElementById('history-clear-all');
+    const copyExecutiveSummaryBtn = document.getElementById('copy-executive-summary');
+    const exportInventarioCsvBtn = document.getElementById('export-inventario-csv');
+    const followupForm = document.getElementById('followup-form');
+    const followupTitleInput = document.getElementById('followup-title');
+    const followupTypeSelect = document.getElementById('followup-type');
+    const followupDateInput = document.getElementById('followup-date');
+    const followupList = document.getElementById('followup-list');
+    const followupEmpty = document.getElementById('followup-empty');
+    const followupsBadge = document.getElementById('followups-badge');
+    const followupsSummary = document.getElementById('followups-summary');
+    const recurringForm = document.getElementById('recurring-form');
+    const recurringNameInput = document.getElementById('recurring-name');
+    const recurringAmountInput = document.getElementById('recurring-amount');
+    const recurringFrequencySelect = document.getElementById('recurring-frequency');
+    const recurringNextDateInput = document.getElementById('recurring-next-date');
+    const recurringList = document.getElementById('recurring-list');
+    const recurringEmpty = document.getElementById('recurring-empty');
+    const recurringBadge = document.getElementById('recurring-badge');
+    const recurringSummary = document.getElementById('recurring-summary');
 
     // Navigation Links
     const navDashboard = document.getElementById('nav-dashboard');
@@ -155,6 +179,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let alertThreshold = parseFloat(localStorage.getItem('alertThreshold')) || 0;
     let sessionStartTime = localStorage.getItem('sessionStartTime') || Date.now();
     let cashBase = parseFloat(localStorage.getItem('cashBase')) || 0;
+    let followUps = JSON.parse(localStorage.getItem('followUps')) || [];
+    let recurringExpenses = JSON.parse(localStorage.getItem('recurringExpenses')) || [];
 
     // Type Toggle Elements
     const btnTypeIncome = document.getElementById('btn-type-income');
@@ -304,6 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const c = clientMap[clientName];
                 const tr = document.createElement('tr');
                 const lastDate = new Date(c.ultimaCompra).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' });
+                const segment = getClientSegment(c);
                 
                 const debtHtml = c.totalDeuda > 0 
                     ? `<span style="color:var(--danger); font-weight:bold;">${formatCurrency(c.totalDeuda)}</span>` 
@@ -314,7 +341,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     : `<span style="color:var(--text-muted); font-size: 0.8rem;">—</span>`;
 
                 tr.innerHTML = `
-                    <td><i class="fa-solid fa-user-circle" style="color:var(--text-muted); margin-right:6px;"></i><strong>${clientName}</strong></td>
+                    <td><i class="fa-solid fa-user-circle" style="color:var(--text-muted); margin-right:6px;"></i><strong>${clientName}</strong><br><span class="client-segment-badge" data-tone="${segment.tone}">${segment.label}</span></td>
                     <td><span class="badge">${c.totalCompras} transacciones</span></td>
                     <td style="color:var(--success); font-weight:bold;">${formatCurrency(c.totalGastado)}</td>
                     <td>${debtHtml}</td>
@@ -324,6 +351,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 clientesBody.appendChild(tr);
             });
         }
+    };
+
+    const getClientSegment = (client) => {
+        const daysSinceLast = client.ultimaCompra
+            ? Math.floor((Date.now() - Number(client.ultimaCompra)) / 86400000)
+            : Infinity;
+        if (client.totalDeuda > 0) return { label: 'Con saldo pendiente', tone: 'danger' };
+        if (client.totalGastado >= dailyGoal * 3 || client.totalCompras >= 5) return { label: 'Cliente clave', tone: 'success' };
+        if (daysSinceLast > 45) return { label: 'Reactivar', tone: 'warning' };
+        return { label: 'Activo', tone: 'neutral' };
     };
     
     const searchClientesInput = document.getElementById('search-clientes');
@@ -456,6 +493,54 @@ document.addEventListener('DOMContentLoaded', () => {
     let repWeeklyChartInstance = null;
     let repMethodsChartInstance = null;
 
+    const updateExecutiveSummary = ({ allData, incomes, expenses, totalRevenue, totalExpenses, methodMap }) => {
+        const net = totalRevenue - totalExpenses;
+        const productMap = {};
+        incomes.forEach(s => {
+            if (!productMap[s.product]) productMap[s.product] = { count: 0, total: 0 };
+            productMap[s.product].count++;
+            productMap[s.product].total += s.amount;
+        });
+
+        const topProduct = Object.entries(productMap).sort((a, b) => b[1].total - a[1].total)[0];
+        const topMethod = Object.entries(methodMap).sort((a, b) => b[1] - a[1])[0];
+        const { clientMap, clients, totalDebt } = buildClientSummary();
+        const topClient = clients
+            .sort((a, b) => clientMap[b].totalGastado - clientMap[a].totalGastado)[0];
+        const lowStock = productCatalog.filter(p => p.stock !== undefined && p.stock !== null && Number(p.stock) <= 5);
+        const expenseRatio = totalRevenue > 0 ? (totalExpenses / totalRevenue) * 100 : 0;
+        const risks = [
+            net < 0,
+            totalDebt > 0,
+            lowStock.length > 0,
+            expenseRatio >= 45
+        ].filter(Boolean).length;
+        const riskLabel = risks >= 3 ? 'Alto' : risks >= 1 ? 'Medio' : 'Bajo';
+
+        const setText = (id, value) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value;
+        };
+
+        setText('exec-net-balance', formatCurrency(net));
+        setText('exec-top-method', topMethod ? `${topMethod[0]} (${formatCurrency(topMethod[1])})` : 'Sin datos');
+        setText('exec-top-client', topClient ? `${topClient} (${formatCurrency(clientMap[topClient].totalGastado)})` : 'Sin datos');
+        setText('exec-risk-level', riskLabel);
+
+        const period = document.getElementById('executive-summary-period');
+        if (period) period.textContent = `${allData.length} movimientos analizados entre ventas de hoy e historial.`;
+
+        const insights = [];
+        if (topProduct) insights.push(`Producto fuerte: ${topProduct[0]} genero ${formatCurrency(topProduct[1].total)}.`);
+        if (expenseRatio >= 45) insights.push(`Los gastos representan el ${expenseRatio.toFixed(0)}% de los ingresos; conviene revisar compras y precios.`);
+        if (totalDebt > 0) insights.push(`Hay ${formatCurrency(totalDebt)} pendiente de cobro en clientes.`);
+        if (lowStock.length > 0) insights.push(`${lowStock.length} producto${lowStock.length === 1 ? '' : 's'} requieren reposicion o revision de stock.`);
+        if (insights.length === 0) insights.push('El negocio no muestra alertas criticas con los datos actuales.');
+
+        const text = document.getElementById('executive-summary-text');
+        if (text) text.textContent = insights.join(' ');
+    };
+
     const renderReports = () => {
         const allData = [...historyData, ...sales]; // Include today's sales too
         const incomes = allData.filter(s => s.type !== 'expense');
@@ -520,6 +605,7 @@ document.addEventListener('DOMContentLoaded', () => {
         incomes.forEach(s => { methodMap[s.method] = (methodMap[s.method] || 0) + s.amount; });
         const methodLabels = Object.keys(methodMap);
         const methodValues = Object.values(methodMap);
+        updateExecutiveSummary({ allData, incomes, expenses, totalRevenue, totalExpenses, methodMap });
 
         if (repMethodsChartInstance) repMethodsChartInstance.destroy();
         const ctxMethods = document.getElementById('rep-methods-chart').getContext('2d');
@@ -736,6 +822,8 @@ document.addEventListener('DOMContentLoaded', () => {
             alertThreshold,
             cashBase,
             recentProducts,
+            followUps,
+            recurringExpenses,
             exportDate: new Date().toISOString()
         };
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
@@ -810,6 +898,8 @@ document.addEventListener('DOMContentLoaded', () => {
         setupMultiItems();
         setupWeeklySummary();
         setupQuickProducts();
+        setupFollowUps();
+        setupRecurringExpenses();
         updateMonthlyProjection();
         updateSecondaryMetrics();
         updateActivityFeed();
@@ -879,6 +969,135 @@ document.addEventListener('DOMContentLoaded', () => {
         notepad.addEventListener('blur', () => {
             notepad.style.borderColor = 'var(--border-color)';
             notepad.style.boxShadow = 'none';
+        });
+    };
+
+    // --- Follow-up Agenda ---
+    const saveFollowUps = () => {
+        localStorage.setItem('followUps', JSON.stringify(followUps));
+    };
+
+    const normalizeDateKey = (value) => value || new Date().toISOString().split('T')[0];
+
+    const getFollowUpStats = () => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const active = followUps.filter(item => !item.done);
+        const overdue = active.filter(item => {
+            if (!item.dueDate) return false;
+            const due = new Date(item.dueDate + 'T00:00:00');
+            return due < today;
+        });
+        const dueToday = active.filter(item => item.dueDate === today.toISOString().split('T')[0]);
+        return { active, overdue, dueToday };
+    };
+
+    const followUpTypeLabel = (type) => ({
+        cobro: 'Cobro',
+        stock: 'Stock',
+        cliente: 'Cliente',
+        caja: 'Caja',
+        general: 'General'
+    }[type] || 'General');
+
+    const followUpTypeIcon = (type) => ({
+        cobro: 'fa-hand-holding-dollar',
+        stock: 'fa-box-open',
+        cliente: 'fa-user',
+        caja: 'fa-cash-register',
+        general: 'fa-list-check'
+    }[type] || 'fa-list-check');
+
+    const renderFollowUps = () => {
+        if (!followupList || !followupEmpty || !followupsBadge || !followupsSummary) return;
+
+        const { active, overdue, dueToday } = getFollowUpStats();
+        followupsBadge.textContent = `${active.length} ${active.length === 1 ? 'pendiente' : 'pendientes'}`;
+        followupsSummary.textContent = overdue.length > 0
+            ? `${overdue.length} seguimiento${overdue.length === 1 ? '' : 's'} vencido${overdue.length === 1 ? '' : 's'} requieren atencion.`
+            : dueToday.length > 0
+                ? `${dueToday.length} seguimiento${dueToday.length === 1 ? '' : 's'} para hoy.`
+                : 'Organiza cobros, reposiciones, llamadas y tareas del negocio.';
+
+        followupList.innerHTML = '';
+        if (active.length === 0) {
+            followupEmpty.style.display = 'flex';
+            followupList.style.display = 'none';
+            return;
+        }
+
+        followupEmpty.style.display = 'none';
+        followupList.style.display = 'grid';
+        active
+            .slice()
+            .sort((a, b) => (a.dueDate || '9999-12-31').localeCompare(b.dueDate || '9999-12-31'))
+            .forEach(item => {
+                const dueDate = item.dueDate ? new Date(item.dueDate + 'T00:00:00') : null;
+                const todayKey = new Date().toISOString().split('T')[0];
+                const tone = item.dueDate && item.dueDate < todayKey ? 'danger' : item.dueDate === todayKey ? 'warning' : 'neutral';
+                const dueLabel = dueDate
+                    ? dueDate.toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })
+                    : 'Sin fecha';
+                const row = document.createElement('div');
+                row.className = 'followup-item';
+                row.dataset.tone = tone;
+                row.innerHTML = `
+                    <span class="followup-icon"><i class="fa-solid ${followUpTypeIcon(item.type)}"></i></span>
+                    <span class="followup-copy">
+                        <strong>${item.title}</strong>
+                        <small>${followUpTypeLabel(item.type)} · ${dueLabel}</small>
+                    </span>
+                    <span class="followup-actions">
+                        <button type="button" class="btn-icon btn-followup-done" data-id="${item.id}" title="Marcar listo"><i class="fa-solid fa-check"></i></button>
+                        <button type="button" class="btn-icon btn-followup-delete" data-id="${item.id}" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                    </span>
+                `;
+                followupList.appendChild(row);
+            });
+    };
+
+    const setupFollowUps = () => {
+        if (!followupForm) return;
+        renderFollowUps();
+
+        followupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = (followupTitleInput?.value || '').trim();
+            if (!title) return;
+            followUps.push({
+                id: Date.now(),
+                title,
+                type: followupTypeSelect?.value || 'general',
+                dueDate: normalizeDateKey(followupDateInput?.value || ''),
+                done: false,
+                createdAt: Date.now()
+            });
+            saveFollowUps();
+            followupForm.reset();
+            renderFollowUps();
+            updateKPIs();
+            updateDataHealthPanel();
+            showToast('Seguimiento agregado');
+        });
+
+        followupList?.addEventListener('click', (e) => {
+            const doneBtn = e.target.closest('.btn-followup-done');
+            const deleteBtn = e.target.closest('.btn-followup-delete');
+            const id = parseInt((doneBtn || deleteBtn)?.getAttribute('data-id') || '0');
+            if (!id) return;
+
+            if (doneBtn) {
+                followUps = followUps.map(item => item.id === id ? { ...item, done: true, completedAt: Date.now() } : item);
+                showToast('Seguimiento completado');
+            }
+            if (deleteBtn) {
+                followUps = followUps.filter(item => item.id !== id);
+                showToast('Seguimiento eliminado');
+            }
+            saveFollowUps();
+            renderFollowUps();
+            updateKPIs();
+            updateDataHealthPanel();
         });
     };
 
@@ -1126,6 +1345,172 @@ document.addEventListener('DOMContentLoaded', () => {
             // Bounce animation on the button
             addBtn.style.transform = 'scale(0.9)';
             setTimeout(() => addBtn.style.transform = 'scale(1)', 150);
+        });
+    };
+
+    // --- Recurring Expenses ---
+    const saveRecurringExpenses = () => {
+        localStorage.setItem('recurringExpenses', JSON.stringify(recurringExpenses));
+    };
+
+    const addDays = (date, days) => {
+        const next = new Date(date);
+        next.setDate(next.getDate() + days);
+        return next.toISOString().split('T')[0];
+    };
+
+    const addMonths = (date, months) => {
+        const next = new Date(date);
+        next.setMonth(next.getMonth() + months);
+        return next.toISOString().split('T')[0];
+    };
+
+    const nextRecurringDate = (dateKey, frequency) => {
+        const base = new Date((dateKey || new Date().toISOString().split('T')[0]) + 'T00:00:00');
+        if (frequency === 'daily') return addDays(base, 1);
+        if (frequency === 'weekly') return addDays(base, 7);
+        return addMonths(base, 1);
+    };
+
+    const getRecurringDueStats = () => {
+        const todayKey = new Date().toISOString().split('T')[0];
+        const active = recurringExpenses.filter(item => !item.archived);
+        const due = active.filter(item => (item.nextDate || todayKey) <= todayKey);
+        const upcoming = active.filter(item => {
+            if (!item.nextDate || item.nextDate <= todayKey) return false;
+            const days = Math.ceil((new Date(item.nextDate + 'T00:00:00') - new Date(todayKey + 'T00:00:00')) / 86400000);
+            return days <= 7;
+        });
+        return { active, due, upcoming };
+    };
+
+    const recurringFrequencyLabel = (frequency) => ({
+        daily: 'Diario',
+        weekly: 'Semanal',
+        monthly: 'Mensual'
+    }[frequency] || 'Mensual');
+
+    const renderRecurringExpenses = () => {
+        if (!recurringList || !recurringEmpty || !recurringBadge || !recurringSummary) return;
+
+        const { active, due, upcoming } = getRecurringDueStats();
+        recurringBadge.textContent = `${active.length} ${active.length === 1 ? 'activo' : 'activos'}`;
+        recurringSummary.textContent = due.length > 0
+            ? `${due.length} gasto${due.length === 1 ? '' : 's'} recurrente${due.length === 1 ? '' : 's'} para registrar.`
+            : upcoming.length > 0
+                ? `${upcoming.length} vencimiento${upcoming.length === 1 ? '' : 's'} en los proximos 7 dias.`
+                : 'Controla alquiler, servicios, sueldos, suscripciones o proveedores fijos.';
+
+        recurringList.innerHTML = '';
+        if (active.length === 0) {
+            recurringEmpty.style.display = 'flex';
+            recurringList.style.display = 'none';
+            return;
+        }
+
+        recurringEmpty.style.display = 'none';
+        recurringList.style.display = 'grid';
+        active
+            .slice()
+            .sort((a, b) => (a.nextDate || '9999-12-31').localeCompare(b.nextDate || '9999-12-31'))
+            .forEach(item => {
+                const todayKey = new Date().toISOString().split('T')[0];
+                const tone = (item.nextDate || todayKey) <= todayKey ? 'warning' : 'neutral';
+                const dueDate = item.nextDate ? new Date(item.nextDate + 'T00:00:00') : null;
+                const dueLabel = dueDate
+                    ? dueDate.toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })
+                    : 'Sin fecha';
+                const row = document.createElement('div');
+                row.className = 'recurring-item';
+                row.dataset.tone = tone;
+                row.innerHTML = `
+                    <span class="recurring-icon"><i class="fa-solid fa-repeat"></i></span>
+                    <span class="recurring-copy">
+                        <strong>${item.name}</strong>
+                        <small>${formatCurrency(item.amount)} · ${recurringFrequencyLabel(item.frequency)} · vence ${dueLabel}</small>
+                    </span>
+                    <span class="recurring-actions">
+                        <button type="button" class="btn-icon btn-recurring-pay" data-id="${item.id}" title="Cargar gasto"><i class="fa-solid fa-cash-register"></i></button>
+                        <button type="button" class="btn-icon btn-recurring-delete" data-id="${item.id}" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                    </span>
+                `;
+                recurringList.appendChild(row);
+            });
+    };
+
+    const registerRecurringExpense = (item) => {
+        if (!confirm(`Registrar gasto recurrente "${item.name}" por ${formatCurrency(item.amount)}?`)) return false;
+        const timestamp = Date.now();
+        sales.push({
+            id: timestamp,
+            timestamp,
+            product: item.name,
+            amount: Number(item.amount || 0),
+            method: 'Efectivo',
+            type: 'expense',
+            notes: `Gasto recurrente ${recurringFrequencyLabel(item.frequency).toLowerCase()}`,
+            category: 'Otros',
+            customerName: '',
+            groupId: timestamp
+        });
+        localStorage.setItem('dailySales', JSON.stringify(sales));
+        renderSales();
+        updateKPIs();
+        updateActivityFeed();
+        showToast(`Gasto recurrente registrado: ${formatCurrency(item.amount)}`);
+        return true;
+    };
+
+    const setupRecurringExpenses = () => {
+        if (!recurringForm) return;
+        renderRecurringExpenses();
+
+        recurringForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = (recurringNameInput?.value || '').trim();
+            const amount = parseFloat(recurringAmountInput?.value || '0');
+            if (!name || !amount || amount <= 0) {
+                showToast('Completa nombre y monto del gasto recurrente.');
+                return;
+            }
+            recurringExpenses.push({
+                id: Date.now(),
+                name,
+                amount,
+                frequency: recurringFrequencySelect?.value || 'monthly',
+                nextDate: recurringNextDateInput?.value || new Date().toISOString().split('T')[0],
+                createdAt: Date.now()
+            });
+            saveRecurringExpenses();
+            recurringForm.reset();
+            renderRecurringExpenses();
+            updateKPIs();
+            showToast('Gasto recurrente agregado');
+        });
+
+        recurringList?.addEventListener('click', (e) => {
+            const payBtn = e.target.closest('.btn-recurring-pay');
+            const deleteBtn = e.target.closest('.btn-recurring-delete');
+            const id = parseInt((payBtn || deleteBtn)?.getAttribute('data-id') || '0');
+            if (!id) return;
+            const item = recurringExpenses.find(expense => expense.id === id);
+            if (!item) return;
+
+            if (payBtn) {
+                const registered = registerRecurringExpense(item);
+                if (!registered) return;
+                recurringExpenses = recurringExpenses.map(expense => expense.id === id
+                    ? { ...expense, nextDate: nextRecurringDate(expense.nextDate, expense.frequency), lastPreparedAt: Date.now() }
+                    : expense
+                );
+            }
+            if (deleteBtn) {
+                recurringExpenses = recurringExpenses.filter(expense => expense.id !== id);
+                showToast('Gasto recurrente eliminado');
+            }
+            saveRecurringExpenses();
+            renderRecurringExpenses();
+            updateKPIs();
         });
     };
 
@@ -1633,6 +2018,8 @@ document.addEventListener('DOMContentLoaded', () => {
             ? Math.floor((Date.now() - new Date(lastBackupDate).getTime()) / 86400000)
             : Infinity;
         const progress = dailyGoal > 0 ? (totalRevenue / dailyGoal) * 100 : 0;
+        const { overdue, dueToday } = getFollowUpStats();
+        const recurringStats = getRecurringDueStats();
 
         if (netBalance < 0) {
             actions.push({
@@ -1642,6 +2029,37 @@ document.addEventListener('DOMContentLoaded', () => {
                 detail: `El balance va en ${formatCurrency(netBalance)}. Revisa gastos o base de caja antes del cierre.`,
                 label: 'Revisar caja',
                 action: 'close'
+            });
+        }
+
+        if (overdue.length > 0) {
+            actions.push({
+                tone: 'danger',
+                icon: 'fa-calendar-xmark',
+                title: 'Seguimientos vencidos',
+                detail: `${overdue.length} pendiente${overdue.length === 1 ? '' : 's'} ya pasaron la fecha limite.`,
+                label: 'Ver agenda',
+                action: 'followups'
+            });
+        } else if (dueToday.length > 0) {
+            actions.push({
+                tone: 'warning',
+                icon: 'fa-calendar-day',
+                title: 'Pendientes para hoy',
+                detail: `${dueToday.length} seguimiento${dueToday.length === 1 ? '' : 's'} programado${dueToday.length === 1 ? '' : 's'} para hoy.`,
+                label: 'Ver agenda',
+                action: 'followups'
+            });
+        }
+
+        if (recurringStats.due.length > 0) {
+            actions.push({
+                tone: 'warning',
+                icon: 'fa-repeat',
+                title: 'Gastos recurrentes vencidos',
+                detail: `${recurringStats.due.length} gasto${recurringStats.due.length === 1 ? '' : 's'} fijo${recurringStats.due.length === 1 ? '' : 's'} listo${recurringStats.due.length === 1 ? '' : 's'} para registrar.`,
+                label: 'Ver gastos',
+                action: 'recurring'
             });
         }
 
@@ -1730,6 +2148,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (action === 'config') switchView('nav-config', 'Configuracion de Empresa');
             if (action === 'close' && btnCloseRegister) btnCloseRegister.click();
             if (action === 'sale') focusTransactionForm('income');
+            if (action === 'followups') {
+                switchView('nav-dashboard');
+                document.getElementById('followups-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            if (action === 'recurring') {
+                switchView('nav-dashboard');
+                document.getElementById('recurring-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
         });
     }
 
@@ -2240,6 +2666,31 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.removeChild(link);
         showToast('Exportaci\u00f3n Global Descargada');
     });
+
+    if (copyExecutiveSummaryBtn) {
+        copyExecutiveSummaryBtn.addEventListener('click', () => {
+            const rows = [
+                `Resumen ejecutivo de ${storeName || 'Zaleasy'}`,
+                `Balance neto: ${document.getElementById('exec-net-balance')?.textContent || '$0.00'}`,
+                `Metodo principal: ${document.getElementById('exec-top-method')?.textContent || 'Sin datos'}`,
+                `Cliente clave: ${document.getElementById('exec-top-client')?.textContent || 'Sin datos'}`,
+                `Riesgo operativo: ${document.getElementById('exec-risk-level')?.textContent || 'Bajo'}`,
+                document.getElementById('executive-summary-text')?.textContent || ''
+            ];
+            const text = rows.filter(Boolean).join('\n');
+            navigator.clipboard?.writeText(text)
+                .then(() => showToast('Resumen ejecutivo copiado'))
+                .catch(() => {
+                    const area = document.createElement('textarea');
+                    area.value = text;
+                    document.body.appendChild(area);
+                    area.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(area);
+                    showToast('Resumen ejecutivo copiado');
+                });
+        });
+    }
 
     // --- Event Listeners ---
     quickAmountBtns.forEach(btn => {
@@ -2969,6 +3420,56 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    let lastCashExpected = 0;
+
+    const updateCashReconciliation = () => {
+        if (!cashExpectedDisplay || !cashCountedInput || !cashDifferenceDisplay || !cashReconciliationStatus || !cashReconciliationNote) return;
+
+        const countedRaw = cashCountedInput.value;
+        const hasCounted = countedRaw !== '';
+        const counted = parseFloat(countedRaw) || 0;
+        const diff = counted - lastCashExpected;
+
+        cashExpectedDisplay.textContent = formatCurrency(lastCashExpected);
+        cashDifferenceDisplay.textContent = hasCounted ? formatCurrency(diff) : '$0.00';
+        cashDifferenceDisplay.style.color = !hasCounted
+            ? 'var(--text-muted)'
+            : Math.abs(diff) < 0.01
+                ? 'var(--success)'
+                : diff > 0
+                    ? 'var(--warning)'
+                    : 'var(--danger)';
+
+        if (!hasCounted) {
+            cashReconciliationStatus.textContent = 'Sin contar';
+            cashReconciliationStatus.style.background = 'var(--primary-light)';
+            cashReconciliationStatus.style.color = 'var(--primary)';
+            cashReconciliationNote.textContent = 'Ingresa el efectivo contado para detectar sobrantes o faltantes.';
+            return;
+        }
+
+        if (Math.abs(diff) < 0.01) {
+            cashReconciliationStatus.textContent = 'Caja correcta';
+            cashReconciliationStatus.style.background = 'var(--success-light)';
+            cashReconciliationStatus.style.color = 'var(--success)';
+            cashReconciliationNote.textContent = 'El efectivo contado coincide con el efectivo esperado.';
+        } else if (diff > 0) {
+            cashReconciliationStatus.textContent = 'Sobrante';
+            cashReconciliationStatus.style.background = 'var(--warning-light)';
+            cashReconciliationStatus.style.color = 'var(--warning)';
+            cashReconciliationNote.textContent = `Hay un sobrante de ${formatCurrency(diff)}. Revisa ventas no cargadas o base de caja.`;
+        } else {
+            cashReconciliationStatus.textContent = 'Faltante';
+            cashReconciliationStatus.style.background = 'var(--danger-light)';
+            cashReconciliationStatus.style.color = 'var(--danger)';
+            cashReconciliationNote.textContent = `Falta ${formatCurrency(Math.abs(diff))}. Revisa gastos en efectivo, vuelto o movimientos eliminados.`;
+        }
+    };
+
+    if (cashCountedInput) {
+        cashCountedInput.addEventListener('input', updateCashReconciliation);
+    }
+
     // --- Close Register Logic ---
     btnCloseRegister.addEventListener('click', () => {
         if (sales.length === 0) {
@@ -2993,6 +3494,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Calculate total cash expenses to show final cash
         const cashExpenses = sales.filter(s => s.type === 'expense' && s.method === 'Efectivo').reduce((sum, s) => sum + s.amount, 0);
         const cashFinal = cashBase + (incomeMap['Efectivo'] || 0) - cashExpenses;
+        lastCashExpected = cashFinal;
+        if (cashCountedInput) cashCountedInput.value = '';
+        updateCashReconciliation();
 
         let summaryHtml = Object.entries(incomeMap)
             .map(([method, amount]) => `
@@ -3084,6 +3588,15 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     btnConfirmClose.addEventListener('click', () => {
+        if (cashCountedInput && cashCountedInput.value !== '') {
+            const counted = parseFloat(cashCountedInput.value) || 0;
+            const diff = counted - lastCashExpected;
+            const todayKey = `dayNotes_${new Date().toISOString().split('T')[0]}`;
+            const previousNotes = localStorage.getItem(todayKey) || '';
+            const line = `Conciliacion de caja: esperado ${formatCurrency(lastCashExpected)}, contado ${formatCurrency(counted)}, diferencia ${formatCurrency(diff)}.`;
+            localStorage.setItem(todayKey, `${previousNotes}${previousNotes ? '\n' : ''}${line}`);
+        }
+
         // Guardar las ventas de "hoy" dentro del historial completo hist\u00f3rico antes de borrarlas
         sales.forEach(s => {
             historyData.push(s);
@@ -3101,6 +3614,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setupStreakWidget();
         updateTopProduct();
         updatePeakHours();
+        if (cashCountedInput) cashCountedInput.value = '';
         closeRegisterModal.classList.remove('active');
         showToast('Cierre de caja completado con \u00e9xito!');
     });
@@ -3266,6 +3780,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnSaveInvProd = document.getElementById('btn-save-inv-product');
     const searchInventario = document.getElementById('search-inventario');
     let editingProductId = null;
+
+    if (exportInventarioCsvBtn) {
+        exportInventarioCsvBtn.addEventListener('click', () => {
+            if (productCatalog.length === 0) {
+                showToast('No hay productos para exportar');
+                return;
+            }
+            let csvContent = "Producto,Precio Base,Stock Disponible,Estado\n";
+            productCatalog
+                .slice()
+                .sort((a, b) => (a.name || '').localeCompare(b.name || ''))
+                .forEach(prod => {
+                    const stock = prod.stock !== undefined && prod.stock !== null ? Number(prod.stock) : '';
+                    const status = stock === '' ? 'Sin stock cargado' : stock <= 0 ? 'Sin stock' : stock <= 5 ? 'Stock bajo' : 'Stock saludable';
+                    const name = `"${String(prod.name || '').replace(/"/g, '""')}"`;
+                    csvContent += `${name},${Number(prod.price || 0).toFixed(2)},${stock},${status}\n`;
+                });
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", `inventario_zaleasy_${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            showToast('Inventario exportado a CSV');
+        });
+    }
     
     if (btnNewProduct && newProductForm) {
         btnNewProduct.addEventListener('click', () => {
@@ -3410,6 +3954,20 @@ document.addEventListener('DOMContentLoaded', () => {
                             localStorage.setItem('productCatalog', JSON.stringify(productCatalog));
                             renderInventario();
                             setupAutocomplete();
+                        }
+                        if (data.followUps) {
+                            const currentFollowUpIds = new Set(followUps.map(item => item.id));
+                            const newFollowUps = data.followUps.filter(item => item && item.title && !currentFollowUpIds.has(item.id));
+                            followUps = [...followUps, ...newFollowUps];
+                            saveFollowUps();
+                            renderFollowUps();
+                        }
+                        if (data.recurringExpenses) {
+                            const currentRecurringIds = new Set(recurringExpenses.map(item => item.id));
+                            const newRecurring = data.recurringExpenses.filter(item => item && item.name && !currentRecurringIds.has(item.id));
+                            recurringExpenses = [...recurringExpenses, ...newRecurring];
+                            saveRecurringExpenses();
+                            renderRecurringExpenses();
                         }
 
                         renderSales();
