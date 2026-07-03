@@ -431,6 +431,73 @@
                         <div class="action-center-list" id="action-center-list"></div>
                     </div>
 
+                    <!-- Daily Plan -->
+                    <div class="card daily-plan-card" id="daily-plan-card">
+                        <div class="card-header daily-plan-header">
+                            <div>
+                                <h2><i class="fa-solid fa-clipboard-check"></i> Plan del D&iacute;a</h2>
+                                <p id="daily-plan-subtitle">Checklist operativo generado con el estado real del negocio.</p>
+                            </div>
+                            <span class="badge" id="daily-plan-badge">0/0 listo</span>
+                        </div>
+                        <div class="daily-plan-progress" aria-hidden="true">
+                            <span id="daily-plan-progress-fill"></span>
+                        </div>
+                        <div class="daily-plan-list" id="daily-plan-list"></div>
+                    </div>
+
+                    <!-- Closing Forecast -->
+                    <div class="card closing-forecast-card" id="closing-forecast-card">
+                        <div class="card-header closing-forecast-header">
+                            <div>
+                                <h2><i class="fa-solid fa-chart-simple"></i> Pron&oacute;stico de Cierre</h2>
+                                <p id="closing-forecast-subtitle">Proyecci&oacute;n del d&iacute;a seg&uacute;n tu ritmo actual de ventas.</p>
+                            </div>
+                            <label class="closing-hour-control">
+                                <span>Cierre</span>
+                                <select id="closing-hour-select" aria-label="Hora de cierre">
+                                    <option value="18">18:00</option>
+                                    <option value="19">19:00</option>
+                                    <option value="20">20:00</option>
+                                    <option value="21">21:00</option>
+                                    <option value="22">22:00</option>
+                                    <option value="23">23:00</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="closing-forecast-grid">
+                            <div class="closing-forecast-main" data-tone="neutral" id="closing-forecast-main">
+                                <span id="closing-forecast-label">Proyectado</span>
+                                <strong id="closing-forecast-projected">$0.00</strong>
+                                <small id="closing-forecast-status">Carga movimientos para calcular el cierre.</small>
+                            </div>
+                            <div class="closing-forecast-metric">
+                                <span>Falta para meta</span>
+                                <strong id="closing-forecast-gap">$0.00</strong>
+                            </div>
+                            <div class="closing-forecast-metric">
+                                <span>Ritmo necesario</span>
+                                <strong id="closing-forecast-pace">$0.00/h</strong>
+                            </div>
+                            <div class="closing-forecast-metric">
+                                <span>Balance estimado</span>
+                                <strong id="closing-forecast-balance">$0.00</strong>
+                            </div>
+                        </div>
+                        <p class="closing-forecast-advice" id="closing-forecast-advice">Cuando registres ventas, Zaleasy estimar&aacute; si llegas a la meta antes del cierre.</p>
+                        <div class="closing-forecast-actions">
+                            <button type="button" class="btn btn-primary" id="closing-forecast-sale">
+                                <i class="fa-solid fa-plus"></i> Venta
+                            </button>
+                            <button type="button" class="btn btn-outline" id="closing-forecast-expense">
+                                <i class="fa-solid fa-minus"></i> Gasto
+                            </button>
+                            <button type="button" class="btn btn-outline" id="closing-forecast-close">
+                                <i class="fa-solid fa-cash-register"></i> Cierre
+                            </button>
+                        </div>
+                    </div>
+
                     <!-- Goal & Chart (new row) -->
                     <div class="charts-row" style="grid-template-columns: 1fr 1fr 1fr 1fr 1fr;">
                         <div class="card goal-card">
@@ -663,6 +730,58 @@
                         <div class="recurring-empty" id="recurring-empty">
                             <i class="fa-regular fa-calendar"></i>
                             <p>Sin gastos recurrentes cargados.</p>
+                        </div>
+                    </div>
+
+                    <!-- Pricing Margin Simulator -->
+                    <div class="card margin-simulator-card" id="margin-simulator-card">
+                        <div class="card-header margin-simulator-header">
+                            <div>
+                                <h2><i class="fa-solid fa-tags"></i> Precio y Margen</h2>
+                                <p id="margin-simulator-summary">Calcula precio sugerido, ganancia y margen antes de vender.</p>
+                            </div>
+                            <span class="badge" id="margin-simulator-badge">Simulador</span>
+                        </div>
+                        <div class="margin-simulator-grid">
+                            <div class="input-wrapper margin-field-wide">
+                                <i class="fa-solid fa-box"></i>
+                                <input type="text" id="margin-product-name" placeholder="Producto o servicio" list="products-datalist">
+                            </div>
+                            <label class="margin-field">
+                                <span>Costo</span>
+                                <input type="number" id="margin-cost" min="0" step="0.01" placeholder="0.00">
+                            </label>
+                            <label class="margin-field">
+                                <span>Margen deseado</span>
+                                <input type="number" id="margin-target" min="0" max="95" step="0.1" placeholder="35">
+                            </label>
+                            <label class="margin-field">
+                                <span>Precio final</span>
+                                <input type="number" id="margin-price" min="0" step="0.01" placeholder="0.00">
+                            </label>
+                        </div>
+                        <div class="margin-simulator-results">
+                            <div>
+                                <span>Ganancia</span>
+                                <strong id="margin-profit">$0.00</strong>
+                            </div>
+                            <div>
+                                <span>Margen real</span>
+                                <strong id="margin-real">0%</strong>
+                            </div>
+                            <div>
+                                <span>Markup</span>
+                                <strong id="margin-markup">0%</strong>
+                            </div>
+                        </div>
+                        <p class="margin-simulator-advice" id="margin-simulator-advice">Ingresa costo y margen para obtener un precio sugerido.</p>
+                        <div class="margin-simulator-actions">
+                            <button type="button" class="btn btn-primary" id="margin-apply-sale">
+                                <i class="fa-solid fa-arrow-right"></i> Usar en venta
+                            </button>
+                            <button type="button" class="btn btn-outline" id="margin-save-product">
+                                <i class="fa-solid fa-boxes-stacked"></i> Guardar en inventario
+                            </button>
                         </div>
                     </div>
 

@@ -60,6 +60,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const actionCenterList = document.getElementById('action-center-list');
     const actionCenterBadge = document.getElementById('action-center-badge');
     const actionCenterSubtitle = document.getElementById('action-center-subtitle');
+    const dailyPlanCard = document.getElementById('daily-plan-card');
+    const dailyPlanList = document.getElementById('daily-plan-list');
+    const dailyPlanBadge = document.getElementById('daily-plan-badge');
+    const dailyPlanSubtitle = document.getElementById('daily-plan-subtitle');
+    const dailyPlanProgressFill = document.getElementById('daily-plan-progress-fill');
+    const closingForecastCard = document.getElementById('closing-forecast-card');
+    const closingForecastMain = document.getElementById('closing-forecast-main');
+    const closingForecastSubtitle = document.getElementById('closing-forecast-subtitle');
+    const closingForecastLabel = document.getElementById('closing-forecast-label');
+    const closingForecastProjected = document.getElementById('closing-forecast-projected');
+    const closingForecastStatus = document.getElementById('closing-forecast-status');
+    const closingForecastGap = document.getElementById('closing-forecast-gap');
+    const closingForecastPace = document.getElementById('closing-forecast-pace');
+    const closingForecastBalance = document.getElementById('closing-forecast-balance');
+    const closingForecastAdvice = document.getElementById('closing-forecast-advice');
+    const closingHourSelect = document.getElementById('closing-hour-select');
+    const closingForecastSale = document.getElementById('closing-forecast-sale');
+    const closingForecastExpense = document.getElementById('closing-forecast-expense');
+    const closingForecastClose = document.getElementById('closing-forecast-close');
 
     // List Elements
     const salesBody = document.getElementById('sales-body');
@@ -153,6 +172,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const recurringEmpty = document.getElementById('recurring-empty');
     const recurringBadge = document.getElementById('recurring-badge');
     const recurringSummary = document.getElementById('recurring-summary');
+    const marginProductName = document.getElementById('margin-product-name');
+    const marginCostInput = document.getElementById('margin-cost');
+    const marginTargetInput = document.getElementById('margin-target');
+    const marginPriceInput = document.getElementById('margin-price');
+    const marginProfit = document.getElementById('margin-profit');
+    const marginReal = document.getElementById('margin-real');
+    const marginMarkup = document.getElementById('margin-markup');
+    const marginAdvice = document.getElementById('margin-simulator-advice');
+    const marginSummary = document.getElementById('margin-simulator-summary');
+    const marginBadge = document.getElementById('margin-simulator-badge');
+    const marginApplySale = document.getElementById('margin-apply-sale');
+    const marginSaveProduct = document.getElementById('margin-save-product');
 
     // Navigation Links
     const navDashboard = document.getElementById('nav-dashboard');
@@ -181,6 +212,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let cashBase = parseFloat(localStorage.getItem('cashBase')) || 0;
     let followUps = JSON.parse(localStorage.getItem('followUps')) || [];
     let recurringExpenses = JSON.parse(localStorage.getItem('recurringExpenses')) || [];
+    let dailyPlanDone = JSON.parse(localStorage.getItem(`dailyPlanDone_${new Date().toISOString().split('T')[0]}`) || '{}');
+    let closingHour = parseInt(localStorage.getItem('closingHour') || '21', 10);
+    let marginSimulator = JSON.parse(localStorage.getItem('marginSimulator') || '{"target":35}');
 
     // Type Toggle Elements
     const btnTypeIncome = document.getElementById('btn-type-income');
@@ -824,6 +858,9 @@ document.addEventListener('DOMContentLoaded', () => {
             recentProducts,
             followUps,
             recurringExpenses,
+            dailyPlanDone,
+            closingHour,
+            marginSimulator,
             exportDate: new Date().toISOString()
         };
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
@@ -900,6 +937,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setupQuickProducts();
         setupFollowUps();
         setupRecurringExpenses();
+        setupMarginSimulator();
         updateMonthlyProjection();
         updateSecondaryMetrics();
         updateActivityFeed();
@@ -1514,6 +1552,129 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    const calculateMarginFromInputs = (source = 'target') => {
+        if (!marginCostInput || !marginTargetInput || !marginPriceInput || !marginProfit || !marginReal || !marginMarkup || !marginAdvice || !marginBadge || !marginSummary) return;
+
+        const cost = parseFloat(marginCostInput.value || '0') || 0;
+        const target = parseFloat(marginTargetInput.value || '0') || 0;
+        let price = parseFloat(marginPriceInput.value || '0') || 0;
+
+        if (source === 'target' && cost > 0 && target > 0 && target < 95) {
+            price = cost / (1 - (target / 100));
+            marginPriceInput.value = price.toFixed(2);
+        }
+
+        const profit = Math.max(price - cost, 0);
+        const realMargin = price > 0 ? (profit / price) * 100 : 0;
+        const markup = cost > 0 ? (profit / cost) * 100 : 0;
+
+        marginProfit.textContent = formatCurrency(profit);
+        marginReal.textContent = `${realMargin.toFixed(1)}%`;
+        marginMarkup.textContent = `${markup.toFixed(1)}%`;
+        marginBadge.textContent = price > 0 ? `${realMargin.toFixed(0)}% margen` : 'Simulador';
+
+        if (cost <= 0) {
+            marginAdvice.textContent = 'Ingresa el costo para calcular un precio rentable.';
+        } else if (price <= cost) {
+            marginAdvice.textContent = 'El precio no cubre el costo. Revisa margen o precio final antes de vender.';
+        } else if (realMargin < 20) {
+            marginAdvice.textContent = 'Margen ajustado. Sirve para ofertas, pero conviene revisar gastos y comisiones.';
+        } else if (realMargin >= 45) {
+            marginAdvice.textContent = 'Margen alto. Asegurate de que el precio siga siendo competitivo para el cliente.';
+        } else {
+            marginAdvice.textContent = 'Precio equilibrado para vender con ganancia controlada.';
+        }
+
+        marginSummary.textContent = marginProductName?.value
+            ? `Simulando ${marginProductName.value.trim()} con costo ${formatCurrency(cost)}.`
+            : 'Calcula precio sugerido, ganancia y margen antes de vender.';
+
+        marginSimulator = {
+            product: marginProductName?.value || '',
+            cost,
+            target,
+            price
+        };
+        localStorage.setItem('marginSimulator', JSON.stringify(marginSimulator));
+    };
+
+    const fillMarginFromProduct = () => {
+        if (!marginProductName || !marginPriceInput) return;
+        const name = (marginProductName.value || '').trim().toLowerCase();
+        const product = productCatalog.find(p => (p.name || '').toLowerCase() === name);
+        if (product && Number(product.price || 0) > 0 && !marginPriceInput.value) {
+            marginPriceInput.value = Number(product.price || 0).toFixed(2);
+            calculateMarginFromInputs('price');
+        }
+    };
+
+    const getTargetItemRow = () => {
+        const focused = document.querySelector('.item-product-input:focus, .item-amount-input:focus');
+        if (focused) return focused.closest('.item-row');
+        const rows = [...document.querySelectorAll('.item-row')];
+        return rows.find(row => !(row.querySelector('.item-product-input')?.value || '').trim()) || rows[0] || null;
+    };
+
+    const setupMarginSimulator = () => {
+        if (!marginCostInput || !marginTargetInput || !marginPriceInput) return;
+
+        if (marginSimulator.product && marginProductName) marginProductName.value = marginSimulator.product;
+        if (marginSimulator.cost) marginCostInput.value = Number(marginSimulator.cost).toFixed(2);
+        marginTargetInput.value = Number(marginSimulator.target || 35).toString();
+        if (marginSimulator.price) marginPriceInput.value = Number(marginSimulator.price).toFixed(2);
+        calculateMarginFromInputs('price');
+
+        marginProductName?.addEventListener('change', () => {
+            fillMarginFromProduct();
+            calculateMarginFromInputs('price');
+        });
+        marginProductName?.addEventListener('input', () => calculateMarginFromInputs('price'));
+        marginCostInput.addEventListener('input', () => calculateMarginFromInputs('target'));
+        marginTargetInput.addEventListener('input', () => calculateMarginFromInputs('target'));
+        marginPriceInput.addEventListener('input', () => calculateMarginFromInputs('price'));
+
+        marginApplySale?.addEventListener('click', () => {
+            const price = parseFloat(marginPriceInput.value || '0') || 0;
+            if (price <= 0) {
+                showToast('Calcula un precio antes de usarlo en la venta.');
+                return;
+            }
+            focusTransactionForm('income');
+            const row = getTargetItemRow();
+            if (!row) return;
+            const productInputEl = row.querySelector('.item-product-input');
+            const amountInputEl = row.querySelector('.item-amount-input');
+            const categorySelect = row.querySelector('.item-category-select');
+            if (productInputEl && marginProductName?.value) productInputEl.value = marginProductName.value.trim();
+            if (amountInputEl) {
+                amountInputEl.value = price.toFixed(2);
+                amountInputEl.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            if (categorySelect && !categorySelect.value) categorySelect.value = 'Producto';
+            showToast('Precio aplicado a la venta');
+        });
+
+        marginSaveProduct?.addEventListener('click', () => {
+            const name = (marginProductName?.value || '').trim();
+            const price = parseFloat(marginPriceInput.value || '0') || 0;
+            if (!name || price <= 0) {
+                showToast('Completa producto y precio para guardarlo.');
+                return;
+            }
+            const existingIndex = productCatalog.findIndex(p => (p.name || '').toLowerCase() === name.toLowerCase());
+            if (existingIndex >= 0) {
+                productCatalog[existingIndex] = { ...productCatalog[existingIndex], price };
+            } else {
+                productCatalog.push({ id: Date.now(), name, price, stock: null });
+            }
+            localStorage.setItem('productCatalog', JSON.stringify(productCatalog));
+            renderInventario();
+            setupAutocomplete();
+            updateKPIs();
+            showToast(existingIndex >= 0 ? 'Precio actualizado en inventario' : 'Producto guardado en inventario');
+        });
+    };
+
     const fallbackCopyText = (text) => {
         const ta = document.createElement('textarea');
         ta.value = text;
@@ -1987,6 +2148,8 @@ document.addEventListener('DOMContentLoaded', () => {
         updateSetupChecklist();
         updateStockAlertSnapshot();
         updateActionCenter(totalRevenue, totalExpenses, totalSalesCount, netBalance);
+        updateDailyPlan(totalRevenue, totalExpenses, totalSalesCount, netBalance);
+        updateClosingForecast(totalRevenue, totalExpenses, totalSalesCount, netBalance);
 
         // Animated counter for KPI numbers
         animateKPICounter(kpiRevenue, totalRevenue, true);
@@ -2158,6 +2321,269 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    const saveDailyPlanDone = () => {
+        localStorage.setItem(`dailyPlanDone_${new Date().toISOString().split('T')[0]}`, JSON.stringify(dailyPlanDone));
+    };
+
+    const runDailyPlanAction = (action) => {
+        if (action === 'clients') switchView('nav-clientes');
+        if (action === 'inventory') switchView('nav-inventario');
+        if (action === 'reports') switchView('nav-reportes');
+        if (action === 'config') switchView('nav-config', 'Configuracion de Empresa');
+        if (action === 'close' && btnCloseRegister) btnCloseRegister.click();
+        if (action === 'sale') focusTransactionForm('income');
+        if (action === 'expense') focusTransactionForm('expense');
+        if (action === 'notes') {
+            switchView('nav-dashboard');
+            const notepad = document.getElementById('day-notepad');
+            if (notepad) {
+                notepad.focus();
+                notepad.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+        if (action === 'followups') {
+            switchView('nav-dashboard');
+            document.getElementById('followups-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        if (action === 'recurring') {
+            switchView('nav-dashboard');
+            document.getElementById('recurring-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    };
+
+    const createDailyPlanItem = ({ id, done, tone = 'neutral', icon, title, detail, action, label }) => {
+        const isDone = done || Boolean(dailyPlanDone[id]);
+        return `
+            <div class="daily-plan-item" data-id="${id}" data-tone="${isDone ? 'success' : tone}" data-done="${isDone ? 'true' : 'false'}">
+                <span class="daily-plan-icon"><i class="fa-solid ${isDone ? 'fa-circle-check' : icon}"></i></span>
+                <span class="daily-plan-copy">
+                    <strong>${title}</strong>
+                    <small>${detail}</small>
+                </span>
+                <span class="daily-plan-actions">
+                    ${action ? `<button type="button" class="btn-icon btn-daily-plan-action" data-action="${action}" title="${label}"><i class="fa-solid fa-arrow-right"></i></button>` : ''}
+                    <button type="button" class="btn-icon btn-daily-plan-done" data-id="${id}" title="Marcar listo"><i class="fa-solid fa-check"></i></button>
+                </span>
+            </div>
+        `;
+    };
+
+    const updateDailyPlan = (totalRevenue = 0, totalExpenses = 0, totalSalesCount = 0, netBalance = 0) => {
+        if (!dailyPlanCard || !dailyPlanList || !dailyPlanBadge || !dailyPlanSubtitle || !dailyPlanProgressFill) return;
+
+        const todayKey = new Date().toISOString().split('T')[0];
+        const dayNotes = (localStorage.getItem(`notepad_${todayKey}`) || '').trim();
+        const progress = dailyGoal > 0 ? (totalRevenue / dailyGoal) * 100 : 0;
+        const cashSales = sales.filter(s => s.type !== 'expense' && s.method === 'Efectivo').reduce((sum, s) => sum + s.amount, 0);
+        const cashExpenses = sales.filter(s => s.type === 'expense' && s.method === 'Efectivo').reduce((sum, s) => sum + s.amount, 0);
+        const cashInRegister = cashBase + cashSales - cashExpenses;
+        const { overdue, dueToday } = getFollowUpStats();
+        const recurringStats = getRecurringDueStats();
+        const trackedStock = productCatalog.filter(p => p.stock !== undefined && p.stock !== null);
+        const stockIssues = trackedStock.filter(p => Number(p.stock) <= 5);
+        const lastBackupDate = localStorage.getItem('lastBackupDate');
+        const daysSinceBackup = lastBackupDate
+            ? Math.floor((Date.now() - new Date(lastBackupDate).getTime()) / 86400000)
+            : Infinity;
+
+        const items = [
+            {
+                id: 'first-sale',
+                done: totalSalesCount > 0,
+                tone: 'neutral',
+                icon: 'fa-receipt',
+                title: totalSalesCount > 0 ? 'Ventas registradas' : 'Registrar primera venta',
+                detail: totalSalesCount > 0 ? `${totalSalesCount} venta${totalSalesCount === 1 ? '' : 's'} cargada${totalSalesCount === 1 ? '' : 's'} hoy.` : 'Carga la primera operacion para activar metricas y reportes.',
+                action: 'sale',
+                label: 'Cargar venta'
+            },
+            {
+                id: 'daily-goal',
+                done: progress >= 100,
+                tone: progress >= 70 ? 'warning' : 'neutral',
+                icon: 'fa-bullseye',
+                title: progress >= 100 ? 'Meta diaria alcanzada' : 'Impulsar meta diaria',
+                detail: progress >= 100 ? `Superaste la meta de ${formatCurrency(dailyGoal)}.` : `Faltan ${formatCurrency(Math.max(dailyGoal - totalRevenue, 0))} para la meta.`,
+                action: 'sale',
+                label: 'Vender mas'
+            },
+            {
+                id: 'cash-check',
+                done: cashInRegister >= 0 && (cashBase > 0 || totalSalesCount > 0 || totalExpenses > 0),
+                tone: cashInRegister < 0 ? 'danger' : 'neutral',
+                icon: 'fa-cash-register',
+                title: cashInRegister < 0 ? 'Revisar efectivo' : 'Caja bajo control',
+                detail: `Efectivo estimado: ${formatCurrency(cashInRegister)}.`,
+                action: 'close',
+                label: 'Ver caja'
+            },
+            {
+                id: 'followups',
+                done: overdue.length === 0 && dueToday.length === 0,
+                tone: overdue.length > 0 ? 'danger' : dueToday.length > 0 ? 'warning' : 'neutral',
+                icon: 'fa-calendar-check',
+                title: overdue.length > 0 ? 'Seguimientos vencidos' : dueToday.length > 0 ? 'Seguimientos de hoy' : 'Seguimientos al dia',
+                detail: overdue.length > 0 ? `${overdue.length} vencido${overdue.length === 1 ? '' : 's'} para resolver.` : dueToday.length > 0 ? `${dueToday.length} pendiente${dueToday.length === 1 ? '' : 's'} para hoy.` : 'No hay seguimientos urgentes.',
+                action: 'followups',
+                label: 'Ver agenda'
+            },
+            {
+                id: 'recurring',
+                done: recurringStats.due.length === 0,
+                tone: recurringStats.due.length > 0 ? 'warning' : 'neutral',
+                icon: 'fa-repeat',
+                title: recurringStats.due.length > 0 ? 'Registrar gastos fijos' : 'Gastos fijos al dia',
+                detail: recurringStats.due.length > 0 ? `${recurringStats.due.length} gasto${recurringStats.due.length === 1 ? '' : 's'} recurrente${recurringStats.due.length === 1 ? '' : 's'} vencido${recurringStats.due.length === 1 ? '' : 's'}.` : 'No hay vencimientos recurrentes urgentes.',
+                action: 'recurring',
+                label: 'Ver gastos'
+            },
+            {
+                id: 'stock',
+                done: trackedStock.length > 0 && stockIssues.length === 0,
+                tone: stockIssues.length > 0 ? 'warning' : 'neutral',
+                icon: 'fa-boxes-stacked',
+                title: stockIssues.length > 0 ? 'Revisar stock critico' : trackedStock.length > 0 ? 'Stock saludable' : 'Cargar stock clave',
+                detail: stockIssues.length > 0 ? `${stockIssues.length} producto${stockIssues.length === 1 ? '' : 's'} con 5 unidades o menos.` : trackedStock.length > 0 ? `${trackedStock.length} producto${trackedStock.length === 1 ? '' : 's'} monitoreado${trackedStock.length === 1 ? '' : 's'}.` : 'Carga productos con stock para prevenir quiebres.',
+                action: 'inventory',
+                label: 'Ver inventario'
+            },
+            {
+                id: 'notes',
+                done: dayNotes.length > 0,
+                tone: 'neutral',
+                icon: 'fa-pen-clip',
+                title: dayNotes.length > 0 ? 'Notas del dia guardadas' : 'Dejar nota de cierre',
+                detail: dayNotes.length > 0 ? 'Hay contexto escrito para recordar decisiones del dia.' : 'Anota pendientes, incidencias o acuerdos antes de cerrar.',
+                action: 'notes',
+                label: 'Anotar'
+            },
+            {
+                id: 'backup',
+                done: daysSinceBackup <= 7,
+                tone: daysSinceBackup === Infinity ? 'warning' : daysSinceBackup > 7 ? 'warning' : 'neutral',
+                icon: 'fa-cloud-arrow-down',
+                title: daysSinceBackup <= 7 ? 'Backup reciente' : 'Hacer backup',
+                detail: daysSinceBackup === Infinity ? 'Todavia no hay copia de seguridad registrada.' : daysSinceBackup <= 7 ? `Ultima copia hace ${daysSinceBackup} dia${daysSinceBackup === 1 ? '' : 's'}.` : `Ultima copia hace ${daysSinceBackup} dias.`,
+                action: 'config',
+                label: 'Respaldar'
+            }
+        ];
+
+        const completed = items.filter(item => item.done || dailyPlanDone[item.id]).length;
+        dailyPlanBadge.textContent = `${completed}/${items.length} listo`;
+        dailyPlanProgressFill.style.width = `${(completed / items.length) * 100}%`;
+        dailyPlanCard.dataset.state = completed === items.length ? 'complete' : items.some(item => !item.done && item.tone === 'danger') ? 'danger' : 'active';
+        dailyPlanSubtitle.textContent = completed === items.length
+            ? 'Todo lo importante del dia esta cubierto.'
+            : `${items.length - completed} punto${items.length - completed === 1 ? '' : 's'} pendiente${items.length - completed === 1 ? '' : 's'} para cerrar mejor.`;
+        dailyPlanList.innerHTML = items.map(createDailyPlanItem).join('');
+    };
+
+    if (dailyPlanList) {
+        dailyPlanList.addEventListener('click', (e) => {
+            const doneBtn = e.target.closest('.btn-daily-plan-done');
+            const actionBtn = e.target.closest('.btn-daily-plan-action');
+            if (doneBtn) {
+                const id = doneBtn.getAttribute('data-id');
+                if (!id) return;
+                dailyPlanDone[id] = true;
+                saveDailyPlanDone();
+                updateKPIs();
+                showToast('Punto del plan marcado como listo');
+                return;
+            }
+            if (actionBtn) {
+                runDailyPlanAction(actionBtn.getAttribute('data-action'));
+            }
+        });
+    }
+
+    const updateClosingForecast = (totalRevenue = 0, totalExpenses = 0, totalSalesCount = 0, netBalance = 0) => {
+        if (!closingForecastCard || !closingForecastMain || !closingForecastProjected || !closingForecastGap || !closingForecastPace || !closingForecastBalance || !closingForecastAdvice || !closingForecastStatus || !closingForecastSubtitle) return;
+
+        const now = new Date();
+        const openingHour = 8;
+        const currentHourValue = now.getHours() + (now.getMinutes() / 60);
+        const selectedCloseHour = Number(closingHour) || 21;
+        const elapsedHours = Math.max(currentHourValue - openingHour, 0.25);
+        const remainingHours = Math.max(selectedCloseHour - currentHourValue, 0);
+        const revenuePace = totalRevenue / elapsedHours;
+        const projectedRevenue = remainingHours > 0
+            ? totalRevenue + (revenuePace * remainingHours)
+            : totalRevenue;
+        const projectedExpenses = remainingHours > 0 && totalRevenue > 0
+            ? totalExpenses + ((totalExpenses / elapsedHours) * remainingHours)
+            : totalExpenses;
+        const projectedBalance = projectedRevenue - projectedExpenses;
+        const gap = Math.max(dailyGoal - totalRevenue, 0);
+        const requiredPace = remainingHours > 0 ? gap / remainingHours : gap;
+        const progress = dailyGoal > 0 ? (totalRevenue / dailyGoal) * 100 : 0;
+        const projectedProgress = dailyGoal > 0 ? (projectedRevenue / dailyGoal) * 100 : 0;
+
+        let tone = 'neutral';
+        let label = 'Proyectado';
+        let status = 'Carga movimientos para calcular el cierre.';
+        let advice = 'Cuando registres ventas, Zaleasy estimara si llegas a la meta antes del cierre.';
+
+        if (totalSalesCount === 0 && totalExpenses === 0) {
+            tone = 'neutral';
+            label = 'Sin ritmo todavia';
+            status = 'Registra la primera venta o gasto para activar la proyeccion.';
+            advice = 'Empieza con la primera operacion del dia; desde ahi el pronostico se ajusta solo.';
+        } else if (progress >= 100) {
+            tone = 'success';
+            label = 'Meta lograda';
+            status = `Ya alcanzaste el ${progress.toFixed(0)}% de la meta diaria.`;
+            advice = 'Buen momento para cuidar margen, registrar notas y preparar un cierre ordenado.';
+        } else if (remainingHours <= 0) {
+            tone = gap > 0 ? 'danger' : 'success';
+            label = 'Hora de cierre';
+            status = gap > 0 ? `Faltaron ${formatCurrency(gap)} para la meta.` : 'Cierre con meta cubierta.';
+            advice = gap > 0 ? 'Conviene cerrar caja, revisar pendientes y dejar planificada la recuperacion para manana.' : 'Puedes cerrar caja y guardar el resumen del dia.';
+        } else if (projectedProgress >= 100) {
+            tone = 'success';
+            label = 'Llegas a meta';
+            status = `A este ritmo cerrarias en ${projectedProgress.toFixed(0)}% de la meta.`;
+            advice = `Manteniendo cerca de ${formatCurrency(revenuePace)}/h llegas antes de las ${selectedCloseHour}:00.`;
+        } else if (requiredPace > revenuePace * 1.6 && totalSalesCount > 0) {
+            tone = 'danger';
+            label = 'Ritmo bajo';
+            status = `Necesitas ${formatCurrency(requiredPace)}/h para recuperar la meta.`;
+            advice = 'Activa productos rapidos, contacta clientes pendientes o registra una promocion puntual para la ultima franja.';
+        } else {
+            tone = 'warning';
+            label = 'Ajustar ritmo';
+            status = `Faltan ${formatCurrency(gap)} y quedan ${remainingHours.toFixed(1)} h.`;
+            advice = `Para llegar, apunta a ${formatCurrency(requiredPace)}/h hasta las ${selectedCloseHour}:00.`;
+        }
+
+        closingForecastCard.dataset.tone = tone;
+        closingForecastMain.dataset.tone = tone;
+        closingForecastLabel.textContent = label;
+        closingForecastProjected.textContent = formatCurrency(projectedRevenue);
+        closingForecastStatus.textContent = status;
+        closingForecastGap.textContent = formatCurrency(gap);
+        closingForecastPace.textContent = `${formatCurrency(requiredPace)}/h`;
+        closingForecastBalance.textContent = formatCurrency(projectedBalance);
+        closingForecastBalance.style.color = projectedBalance < 0 ? 'var(--danger)' : '';
+        closingForecastAdvice.textContent = advice;
+        closingForecastSubtitle.textContent = `Cierre configurado a las ${selectedCloseHour}:00. Proyeccion basada en movimientos de hoy.`;
+    };
+
+    if (closingHourSelect) {
+        closingHourSelect.value = String(closingHour);
+        closingHourSelect.addEventListener('change', () => {
+            closingHour = parseInt(closingHourSelect.value, 10) || 21;
+            localStorage.setItem('closingHour', closingHour);
+            updateKPIs();
+            showToast(`Hora de cierre ajustada a las ${closingHour}:00`);
+        });
+    }
+
+    closingForecastSale?.addEventListener('click', () => focusTransactionForm('income'));
+    closingForecastExpense?.addEventListener('click', () => focusTransactionForm('expense'));
+    closingForecastClose?.addEventListener('click', () => btnCloseRegister?.click());
 
     const updateStockAlertSnapshot = () => {
         if (!stockAlertCard || !stockAlertBadge || !stockAlertText || !stockAlertList) return;
@@ -3968,6 +4394,19 @@ document.addEventListener('DOMContentLoaded', () => {
                             recurringExpenses = [...recurringExpenses, ...newRecurring];
                             saveRecurringExpenses();
                             renderRecurringExpenses();
+                        }
+                        if (data.dailyPlanDone && typeof data.dailyPlanDone === 'object') {
+                            dailyPlanDone = { ...dailyPlanDone, ...data.dailyPlanDone };
+                            saveDailyPlanDone();
+                        }
+                        if (data.closingHour !== undefined) {
+                            closingHour = parseInt(data.closingHour, 10) || 21;
+                            localStorage.setItem('closingHour', closingHour);
+                            if (closingHourSelect) closingHourSelect.value = String(closingHour);
+                        }
+                        if (data.marginSimulator && typeof data.marginSimulator === 'object') {
+                            marginSimulator = { ...marginSimulator, ...data.marginSimulator };
+                            localStorage.setItem('marginSimulator', JSON.stringify(marginSimulator));
                         }
 
                         renderSales();

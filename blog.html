@@ -1537,6 +1537,244 @@
       box-shadow: 0 10px 22px rgba(253,203,110,0.32);
     }
 
+    .blog-learning-paths {
+      padding-top: 2.2rem;
+    }
+
+    .learning-paths-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 1.25rem;
+      align-items: stretch;
+    }
+
+    .continue-reading-card,
+    .saved-articles-card,
+    .learning-path-card {
+      border: 1px solid rgba(255,255,255,0.09);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.025)),
+        rgba(28,29,41,0.86);
+      border-radius: 8px;
+      padding: 1.35rem;
+      box-shadow: 0 14px 32px rgba(0,0,0,0.18);
+    }
+
+    .continue-reading-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .continue-reading-card[data-empty="true"] {
+      border-style: dashed;
+    }
+
+    .saved-articles-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.95rem;
+    }
+
+    .continue-reading-card span,
+    .saved-articles-card > span,
+    .learning-path-card span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      color: #00d2d3;
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.75rem;
+    }
+
+    .continue-reading-card h3,
+    .saved-articles-card h3,
+    .learning-path-card h3 {
+      margin: 0 0 0.55rem;
+      color: var(--text-main);
+      font-size: 1.15rem;
+      line-height: 1.28;
+    }
+
+    .continue-reading-card p,
+    .saved-articles-card p,
+    .learning-path-card p {
+      margin: 0;
+      color: var(--text-muted);
+      line-height: 1.55;
+      font-size: 0.92rem;
+    }
+
+    .saved-articles-list {
+      display: grid;
+      gap: 0.62rem;
+      margin-top: 0.1rem;
+    }
+
+    .saved-article-link {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.75rem;
+      align-items: center;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.045);
+      border-radius: 8px;
+      padding: 0.72rem;
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 0.86rem;
+      font-weight: 800;
+      line-height: 1.3;
+    }
+
+    .saved-article-link small {
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.76rem;
+    }
+
+    .saved-article-link:hover {
+      border-color: rgba(0,210,211,0.34);
+      background: rgba(255,255,255,0.08);
+    }
+
+    .blog-save-btn {
+      position: absolute;
+      top: 0.75rem;
+      left: 0.75rem;
+      z-index: 3;
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(10,11,16,0.68);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .blog-save-btn:hover {
+      transform: translateY(-2px);
+      border-color: rgba(253,203,110,0.55);
+    }
+
+    .blog-save-btn[aria-pressed="true"] {
+      background: linear-gradient(135deg, #fdcb6e, #ff7675);
+      color: #11131a;
+      border-color: transparent;
+    }
+
+    .blog-card .blog-img {
+      position: relative;
+    }
+
+    .continue-reading-actions,
+    .learning-path-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1rem;
+    }
+
+    .blog-tool-btn {
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.07);
+      color: var(--text-main);
+      border-radius: 8px;
+      padding: 0.68rem 0.9rem;
+      font-weight: 800;
+      font-size: 0.84rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .blog-tool-btn:hover,
+    .blog-tool-btn:focus-visible {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(0,210,211,0.38);
+      outline: none;
+    }
+
+    .blog-tool-btn.primary {
+      background: linear-gradient(135deg, #6c5ce7, #00d2d3);
+      border-color: transparent;
+      color: #fff;
+    }
+
+    .learning-path-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .blog-discovery-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.85rem;
+      margin: 1.25rem 0 -0.2rem;
+      padding: 0.9rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(28,29,41,0.72);
+      border-radius: 8px;
+    }
+
+    .blog-suggestion-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+    }
+
+    .blog-suggestion-chips button {
+      border: 1px solid rgba(255,255,255,0.11);
+      background: rgba(255,255,255,0.06);
+      color: var(--text-muted);
+      border-radius: 999px;
+      padding: 0.5rem 0.78rem;
+      font: inherit;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .blog-suggestion-chips button:hover {
+      color: #fff;
+      border-color: rgba(162,155,254,0.4);
+    }
+
+    .blog-sort-control {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      color: var(--text-muted);
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .blog-sort-control select {
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(10,11,16,0.72);
+      color: var(--text-main);
+      border-radius: 8px;
+      padding: 0.58rem 0.75rem;
+      font: inherit;
+      outline: none;
+    }
+
     @media (max-width: 980px) {
       .blog-hero-layout {
         grid-template-columns: 1fr;
@@ -1544,6 +1782,10 @@
 
       .blog-hero-visual {
         min-height: 430px;
+      }
+
+      .learning-paths-shell {
+        grid-template-columns: 1fr;
       }
     }
 
@@ -1570,6 +1812,20 @@
 
       .featured-article {
         min-height: 500px !important;
+      }
+
+      .learning-path-grid,
+      .blog-discovery-bar {
+        grid-template-columns: 1fr;
+      }
+
+      .blog-sort-control,
+      .blog-sort-control select {
+        width: 100%;
+      }
+
+      .blog-sort-control {
+        justify-content: space-between;
       }
     }
   </style>
@@ -1614,7 +1870,7 @@
         <div class="blog-hero-copy">
       <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 0.5rem;">
         <span class="article-count-badge" id="articleCountBadge" style="animation: pulse-badge 2s infinite; margin-bottom: 1rem;">
-          <i class="fa-solid fa-newspaper"></i> <span id="articleCountNum">430</span> art&iacute;culos publicados
+          <i class="fa-solid fa-newspaper"></i> <span id="articleCountNum">439</span> art&iacute;culos publicados
         </span>
         <h1 class="animated-gradient-text" style="display: inline-block; font-size: 4rem; letter-spacing: -1px; margin: 0;">Aprende a vender y ordenar tu negocio</h1>
       </div>
@@ -1669,6 +1925,7 @@
 
   <script>
     let activeBlogCategory = 'all';
+    let blogSortMode = 'newest';
     const BLOG_PAGE_SIZE = 21;
     let blogVisibleLimit = BLOG_PAGE_SIZE;
     const normalizeBlogText = value => (value || '')
@@ -1716,13 +1973,36 @@
       return categoryMatches && searchMatches;
     }
 
+    function getBlogReadingMinutes(card) {
+      const text = card.textContent || '';
+      const match = text.match(/(\d+)\s*min/i);
+      return match ? parseInt(match[1], 10) : 99;
+    }
+
+    function sortBlogCards(cards) {
+      return cards.slice().sort((a, b) => {
+        const ai = parseInt(a.dataset.originalIndex || '0', 10);
+        const bi = parseInt(b.dataset.originalIndex || '0', 10);
+        if (blogSortMode === 'oldest') return bi - ai;
+        if (blogSortMode === 'shortest') return getBlogReadingMinutes(a) - getBlogReadingMinutes(b) || ai - bi;
+        if (blogSortMode === 'title') {
+          const at = normalizeBlogText(a.querySelector('h3')?.textContent || '');
+          const bt = normalizeBlogText(b.querySelector('h3')?.textContent || '');
+          return at.localeCompare(bt) || ai - bi;
+        }
+        return ai - bi;
+      });
+    }
+
     function applyBlogFilters() {
       const input = normalizeBlogText(document.getElementById('blogSearch')?.value || '');
       const allCards = Array.from(document.querySelectorAll('.blog-card'));
       const cards = allCards.filter(card => !card.classList.contains('coming-soon'));
-      const matchingCards = cards.filter(card => getBlogMatch(card, input));
+      const matchingCards = sortBlogCards(cards.filter(card => getBlogMatch(card, input)));
       const cardsToShow = matchingCards.slice(0, blogVisibleLimit);
       const visibleCount = cardsToShow.length;
+      const grid = document.querySelector('.blog-grid');
+      if (grid) matchingCards.forEach(card => grid.appendChild(card));
 
       allCards.forEach(card => {
         if (cardsToShow.includes(card)) {
@@ -1741,6 +2021,26 @@
       if (noResults) noResults.style.display = matchingCards.length === 0 ? 'block' : 'none';
       updateSearchMeta(visibleCount, matchingCards.length, cards.length, input);
       updateLoadMoreButton(visibleCount, matchingCards.length);
+    }
+
+    function setBlogSort(mode) {
+      blogSortMode = mode || 'newest';
+      resetBlogPagination();
+      applyBlogFilters();
+    }
+
+    function setBlogRoute(category, query) {
+      activeBlogCategory = category || 'all';
+      const search = document.getElementById('blogSearch');
+      if (search) search.value = query || '';
+      const buttons = document.querySelectorAll('header.blog-header button');
+      buttons.forEach(btn => btn.classList.toggle('active', btn.dataset.filter === activeBlogCategory));
+      if (![...buttons].some(btn => btn.classList.contains('active'))) {
+        document.querySelector('.glass-filter-btn[data-filter="all"]')?.classList.add('active');
+      }
+      resetBlogPagination();
+      applyBlogFilters();
+      document.getElementById('blogArticles')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     function updateCount(n) {
@@ -1789,6 +2089,129 @@
       });
     }
 
+    function setupContinueReading() {
+      const saved = JSON.parse(localStorage.getItem('zaleasyLastBlogRead') || 'null');
+      const card = document.getElementById('continueReadingCard');
+      const title = document.getElementById('continueReadingTitle');
+      const text = document.getElementById('continueReadingText');
+      const link = document.getElementById('continueReadingLink');
+      if (saved && card && title && text && link) {
+        card.dataset.empty = 'false';
+        title.textContent = saved.title || 'Seguir leyendo';
+        text.textContent = saved.category ? `Ultima lectura guardada en ${saved.category}.` : 'Vuelve al ultimo articulo que abriste.';
+        link.href = saved.href || '#blogArticles';
+        link.innerHTML = '<i class="fa-solid fa-book-open"></i> Continuar';
+      }
+
+      document.querySelectorAll('.blog-card a[href]').forEach(a => {
+        a.addEventListener('click', () => {
+          const parent = a.closest('.blog-card');
+          const titleText = parent?.querySelector('h3')?.textContent?.trim() || a.textContent.trim();
+          const category = parent?.querySelector('.blog-category')?.textContent?.trim() || '';
+          localStorage.setItem('zaleasyLastBlogRead', JSON.stringify({
+            href: a.getAttribute('href'),
+            title: titleText,
+            category,
+            savedAt: Date.now()
+          }));
+        });
+      });
+    }
+
+    function getSavedArticles() {
+      try {
+        return JSON.parse(localStorage.getItem('zaleasySavedArticles') || '[]');
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function saveSavedArticles(items) {
+      localStorage.setItem('zaleasySavedArticles', JSON.stringify(items.slice(0, 12)));
+    }
+
+    function getCardArticleData(card) {
+      const link = card?.querySelector('a[href]');
+      return {
+        href: link?.getAttribute('href') || '',
+        title: card?.querySelector('h3')?.textContent?.trim() || 'Articulo del blog',
+        category: card?.querySelector('.blog-category')?.textContent?.trim() || 'Blog',
+        minutes: getBlogReadingMinutes(card)
+      };
+    }
+
+    function isArticleSaved(href) {
+      return getSavedArticles().some(item => item.href === href);
+    }
+
+    function renderSavedArticles() {
+      const list = document.getElementById('savedArticlesList');
+      const meta = document.getElementById('savedArticlesMeta');
+      if (!list || !meta) return;
+      const saved = getSavedArticles();
+      meta.textContent = saved.length
+        ? `${saved.length} articulo${saved.length === 1 ? '' : 's'} guardado${saved.length === 1 ? '' : 's'} para volver rapido.`
+        : 'Guarda articulos importantes para volver a ellos cuando los necesites.';
+      list.innerHTML = saved.length
+        ? saved.slice(0, 5).map(item => `
+          <a class="saved-article-link" href="${item.href}">
+            <span>${item.title}</span>
+            <small>${item.minutes || 8} min</small>
+          </a>
+        `).join('')
+        : '<p style="margin:0;color:var(--text-muted);font-size:.9rem;">Todavia no hay articulos guardados.</p>';
+    }
+
+    function refreshSaveButtons() {
+      document.querySelectorAll('.blog-save-btn').forEach(btn => {
+        const href = btn.dataset.href;
+        const saved = isArticleSaved(href);
+        btn.setAttribute('aria-pressed', saved ? 'true' : 'false');
+        btn.innerHTML = `<i class="fa-${saved ? 'solid' : 'regular'} fa-bookmark"></i>`;
+        btn.title = saved ? 'Quitar de guardados' : 'Guardar articulo';
+      });
+    }
+
+    function toggleSavedArticle(card) {
+      const data = getCardArticleData(card);
+      if (!data.href) return;
+      const saved = getSavedArticles();
+      const exists = saved.some(item => item.href === data.href);
+      const next = exists
+        ? saved.filter(item => item.href !== data.href)
+        : [{ ...data, savedAt: Date.now() }, ...saved.filter(item => item.href !== data.href)];
+      saveSavedArticles(next);
+      renderSavedArticles();
+      refreshSaveButtons();
+    }
+
+    function setupSavedArticles() {
+      document.querySelectorAll('.blog-card:not(.coming-soon)').forEach(card => {
+        const img = card.querySelector('.blog-img');
+        const href = card.querySelector('a[href]')?.getAttribute('href');
+        if (!img || !href || img.querySelector('.blog-save-btn')) return;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'blog-save-btn';
+        btn.dataset.href = href;
+        btn.setAttribute('aria-label', 'Guardar articulo');
+        btn.addEventListener('click', (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          toggleSavedArticle(card);
+        });
+        img.appendChild(btn);
+      });
+      renderSavedArticles();
+      refreshSaveButtons();
+    }
+
+    function clearSavedArticles() {
+      localStorage.removeItem('zaleasySavedArticles');
+      renderSavedArticles();
+      refreshSaveButtons();
+    }
+
     function jumpToBlogCategory(category) {
       const btn = document.querySelector(`.glass-filter-btn[data-filter="${category}"]`) || document.querySelector('.glass-filter-btn[data-filter="all"]');
       filterBlog(category, btn);
@@ -1801,7 +2224,12 @@
       updateCount(total);
       const totalStat = document.getElementById('articleTotalStat');
       if (totalStat) totalStat.textContent = total;
+      document.querySelectorAll('.blog-card').forEach((card, i) => {
+        if (!card.dataset.originalIndex) card.dataset.originalIndex = i;
+      });
       updateFilterCounts();
+      setupContinueReading();
+      setupSavedArticles();
       applyBlogFilters();
 
       // ── Scroll-reveal with IntersectionObserver ──
@@ -1834,7 +2262,7 @@
         <i class="fa-solid fa-newspaper"></i>
       </div>
       <div class="blog-stat-text">
-        <strong id="articleTotalStat">430</strong>
+        <strong id="articleTotalStat">439</strong>
         <span>Art&iacute;culos en total</span>
       </div>
     </div>
@@ -1912,6 +2340,90 @@
         </span>
         <span class="quick-nav-link">Ver productividad <i class="fa-solid fa-arrow-right"></i></span>
       </button>
+    </div>
+  </section>
+
+  <section class="container blog-learning-paths" aria-labelledby="learningPathsTitle">
+    <div class="quick-nav-header">
+      <div>
+        <span class="quick-nav-eyebrow"><i class="fa-solid fa-map-location-dot"></i> Rutas recomendadas</span>
+        <h2 class="quick-nav-title" id="learningPathsTitle">Lee por objetivo, no por azar</h2>
+      </div>
+      <p class="quick-nav-subtitle">El blog se adapta a lo que quieras resolver: vender, cobrar, ordenar caja o evitar errores operativos.</p>
+    </div>
+
+    <div class="learning-paths-shell">
+      <article class="continue-reading-card" id="continueReadingCard" data-empty="true">
+        <div>
+          <span><i class="fa-regular fa-clock"></i> Seguir leyendo</span>
+          <h3 id="continueReadingTitle">Todavia no abriste ningun articulo</h3>
+          <p id="continueReadingText">Cuando leas un articulo, lo guardaremos aca para que puedas volver rapido.</p>
+        </div>
+        <div class="continue-reading-actions">
+          <a class="blog-tool-btn primary" id="continueReadingLink" href="#blogArticles">
+            <i class="fa-solid fa-book-open"></i> Explorar articulos
+          </a>
+          <button class="blog-tool-btn" type="button" onclick="setBlogRoute('all', 'caja')">
+            <i class="fa-solid fa-magnifying-glass"></i> Buscar caja
+          </button>
+        </div>
+      </article>
+
+      <article class="saved-articles-card">
+        <div>
+          <span><i class="fa-regular fa-bookmark"></i> Mi biblioteca</span>
+          <h3>Articulos guardados</h3>
+          <p id="savedArticlesMeta">Guarda articulos importantes para volver a ellos cuando los necesites.</p>
+        </div>
+        <div class="saved-articles-list" id="savedArticlesList"></div>
+        <div class="continue-reading-actions">
+          <button class="blog-tool-btn" type="button" onclick="clearSavedArticles()">
+            <i class="fa-solid fa-trash-can"></i> Limpiar guardados
+          </button>
+        </div>
+      </article>
+
+      <div class="learning-path-grid">
+        <article class="learning-path-card">
+          <span><i class="fa-solid fa-handshake"></i> Ventas</span>
+          <h3>Convertir mas consultas en ventas</h3>
+          <p>Objeciones, seguimiento, WhatsApp, cierre y propuestas claras.</p>
+          <div class="learning-path-actions">
+            <button class="blog-tool-btn primary" type="button" onclick="setBlogRoute('ventas', 'objeciones')">Objeciones</button>
+            <button class="blog-tool-btn" type="button" onclick="setBlogRoute('ventas', 'seguimiento')">Seguimiento</button>
+          </div>
+        </article>
+
+        <article class="learning-path-card">
+          <span><i class="fa-solid fa-sack-dollar"></i> Margen</span>
+          <h3>Vender sin perder rentabilidad</h3>
+          <p>Precios, descuentos, ticket promedio, costos y decisiones por canal.</p>
+          <div class="learning-path-actions">
+            <button class="blog-tool-btn primary" type="button" onclick="setBlogRoute('finanzas', 'margen')">Margen</button>
+            <button class="blog-tool-btn" type="button" onclick="setBlogRoute('finanzas', 'descuento')">Descuentos</button>
+          </div>
+        </article>
+
+        <article class="learning-path-card">
+          <span><i class="fa-solid fa-cash-register"></i> Caja</span>
+          <h3>Ordenar cobros, gastos y cierre</h3>
+          <p>Caja diaria, fiado, comprobantes, anticipos, gastos fijos y control.</p>
+          <div class="learning-path-actions">
+            <button class="blog-tool-btn primary" type="button" onclick="setBlogRoute('finanzas', 'caja')">Caja</button>
+            <button class="blog-tool-btn" type="button" onclick="setBlogRoute('finanzas', 'cobro')">Cobros</button>
+          </div>
+        </article>
+
+        <article class="learning-path-card">
+          <span><i class="fa-solid fa-boxes-stacked"></i> Operacion</span>
+          <h3>Evitar errores de stock y entrega</h3>
+          <p>Inventario, compras, proveedores, entregas, devoluciones y responsables.</p>
+          <div class="learning-path-actions">
+            <button class="blog-tool-btn primary" type="button" onclick="setBlogRoute('productividad', 'inventario')">Inventario</button>
+            <button class="blog-tool-btn" type="button" onclick="setBlogRoute('all', 'entrega')">Entregas</button>
+          </div>
+        </article>
+      </div>
     </div>
   </section>
 
@@ -2143,6 +2655,24 @@
       </div>
       <p>Contenido accionable para consultar por problema: vender mejor, cuidar margen, ordenar caja y seguir clientes.</p>
     </div>
+    <div class="blog-discovery-bar">
+      <div class="blog-suggestion-chips" aria-label="Busquedas sugeridas">
+        <button type="button" onclick="setBlogRoute('all', 'reclamos')">Reclamos</button>
+        <button type="button" onclick="setBlogRoute('all', 'stock')">Stock</button>
+        <button type="button" onclick="setBlogRoute('all', 'proveedores')">Proveedores</button>
+        <button type="button" onclick="setBlogRoute('ventas', 'whatsapp')">WhatsApp</button>
+        <button type="button" onclick="setBlogRoute('finanzas', 'efectivo')">Efectivo</button>
+      </div>
+      <label class="blog-sort-control" for="blogSort">
+        Ordenar
+        <select id="blogSort" onchange="setBlogSort(this.value)">
+          <option value="newest">Mas nuevos primero</option>
+          <option value="oldest">Mas antiguos primero</option>
+          <option value="shortest">Lectura mas corta</option>
+          <option value="title">Titulo A-Z</option>
+        </select>
+      </label>
+    </div>
     <div class="blog-grid">
       
       <!-- Empty State for Search -->
@@ -2152,49 +2682,95 @@
         <p style="color: var(--text-muted); font-size: 1.05rem;">Intenta buscando con otras palabras clave o explora todas las categor&iacute;as.</p>
         <button onclick="filterBlog('all', document.querySelectorAll('header.blog-header button')[0])" class="btn btn-primary" style="margin-top: 1.5rem; padding: 0.6rem 1.5rem; border-radius: 20px;">Ver todos los art&iacute;culos</button>
       </div>
+      <!-- Article Mercaderia Danada de Proveedores -->
+      <article class="blog-card" data-category="compras inventario operaciones">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/mercaderia-danada-proveedores.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
+        <div class="blog-card-content"><span class="blog-category">Compras</span><h3>Mercaderia Danada de Proveedores: Como Reclamar sin Perder Stock ni Margen</h3><p>Registra danos, fotos y acuerdos para resolver reposiciones sin discusiones ni perdidas invisibles.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/mercaderia-danada-proveedores.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span></div></div>
+      </article>
+      <!-- Article Descuentos por Pago en Efectivo -->
+      <article class="blog-card" data-category="finanzas ventas estrategia">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/descuentos-por-pago-efectivo.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
+        <div class="blog-card-content"><span class="blog-category">Finanzas</span><h3>Descuentos por Pago en Efectivo: Como Vender Mas sin Romper el Margen</h3><p>Calcula descuentos, costos de cobro y margen minimo antes de ofrecer rebajas por efectivo.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/descuentos-por-pago-efectivo.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 8 min</span></div></div>
+      </article>
+      <!-- Article Renovacion de Suscripciones -->
+      <article class="blog-card" data-category="clientes servicios finanzas">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/renovacion-suscripciones-clientes.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
+        <div class="blog-card-content"><span class="blog-category">Clientes</span><h3>Renovacion de Suscripciones: Como Evitar Bajas por Falta de Seguimiento</h3><p>Controla vencimientos, avisos y renovaciones para sostener ingresos recurrentes.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/renovacion-suscripciones-clientes.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span></div></div>
+      </article>
+      <!-- Article Mantenimiento Preventivo de Refrigeracion -->
+      <article class="blog-card" data-category="operaciones inventario productividad">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/mantenimiento-preventivo-refrigeracion.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
+        <div class="blog-card-content"><span class="blog-category">Operaciones</span><h3>Mantenimiento Preventivo de Refrigeracion: Como Evitar Perdidas por Fallas</h3><p>Agenda revisiones, responsables y costos para proteger mercaderia fria antes de que falle el equipo.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/mantenimiento-preventivo-refrigeracion.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 8 min</span></div></div>
+      </article>
+      <!-- Article Comprobantes de Entrega -->
+      <article class="blog-card" data-category="logistica clientes ventas">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/comprobantes-entrega-clientes.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
+        <div class="blog-card-content"><span class="blog-category">Logistica</span><h3>Comprobantes de Entrega: Como Probar que Cada Pedido Llego Correctamente</h3><p>Organiza firmas, fotos y estados de entrega para reducir reclamos y reenvios.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/comprobantes-entrega-clientes.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 8 min</span></div></div>
+      </article>
+      <!-- Article Anticipos a Empleados -->
+      <article class="blog-card" data-category="equipo finanzas productividad">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/anticipos-empleados-control.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
+        <div class="blog-card-content"><span class="blog-category">Equipo</span><h3>Anticipos a Empleados: Como Ordenarlos sin Confundir Sueldos y Caja</h3><p>Registra adelantos, autorizaciones y descuentos para que el pago del equipo sea claro.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/anticipos-empleados-control.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span></div></div>
+      </article>
+      <!-- Article Mercaderia en Consignacion -->
+      <article class="blog-card" data-category="inventario ventas finanzas">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/mercaderia-consignacion-liquidaciones.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
+        <div class="blog-card-content"><span class="blog-category">Inventario</span><h3>Mercaderia en Consignacion: Como Liquidar Ventas sin Perder Control</h3><p>Controla stock recibido, ventas y pagos a consignantes con reglas transparentes.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/mercaderia-consignacion-liquidaciones.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span></div></div>
+      </article>
+      <!-- Article Pedidos para Retiro en Local -->
+      <article class="blog-card" data-category="ventas clientes logistica">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/pedidos-retiro-local.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
+        <div class="blog-card-content"><span class="blog-category">Ventas</span><h3>Pedidos para Retiro en Local: Como Prepararlos sin Mezclar Stock ni Turnos</h3><p>Organiza pedidos, horarios y responsables para que el cliente retire rapido y sin errores.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/pedidos-retiro-local.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 8 min</span></div></div>
+      </article>
+      <!-- Article Rentabilidad por Canal de Venta -->
+      <article class="blog-card" data-category="ecommerce finanzas ventas">
+        <div class="blog-img" style="background: url('assets/Blog imagenes/rentabilidad-productos-canal.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
+        <div class="blog-card-content"><span class="blog-category">Ecommerce</span><h3>Rentabilidad por Canal de Venta: Como Saber Donde Realmente Ganas Mas</h3><p>Compara tienda, ecommerce, marketplace y redes para decidir donde conviene vender cada producto.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/rentabilidad-productos-canal.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span></div></div>
+      </article>
+
       <!-- Article Retrasos de Entrega de Proveedores -->
       <article class="blog-card" data-category="compras inventario operaciones">
-        <div class="blog-img" style="background: url('assets/Blog imagenes/retrasos-entrega-proveedores.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
+        <div class="blog-img" style="background: url('assets/Blog imagenes/retrasos-entrega-proveedores.png') center/cover; height: 220px;"></div>
         <div class="blog-card-content"><span class="blog-category">Compras</span><h3>Retrasos de Entrega de Proveedores: Como Anticiparte sin Quedarte sin Stock</h3><p>Controla fechas prometidas, atrasos y alternativas antes de que la falta de mercaderia frene ventas.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/retrasos-entrega-proveedores.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span></div></div>
       </article>
       <!-- Article Reservas de Mesas y No-Show -->
       <article class="blog-card" data-category="ventas clientes operaciones">
-        <div class="blog-img" style="background: url('assets/Blog imagenes/reservas-mesas-no-show.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
+        <div class="blog-img" style="background: url('assets/Blog imagenes/reservas-mesas-no-show.png') center/cover; height: 220px;"></div>
         <div class="blog-card-content"><span class="blog-category">Reservas</span><h3>Reservas de Mesas y No-Show: Como Proteger Horarios Vendibles</h3><p>Ordena reservas, confirmaciones y cancelaciones para no perder mesas por ausencias de ultimo momento.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/reservas-mesas-no-show.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 8 min</span></div></div>
       </article>
       <!-- Article Facturas B2B Pendientes -->
       <article class="blog-card" data-category="finanzas ventas clientes">
-        <div class="blog-img" style="background: url('assets/Blog imagenes/facturas-b2b-pendientes.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
+        <div class="blog-img" style="background: url('assets/Blog imagenes/facturas-b2b-pendientes.png') center/cover; height: 220px;"></div>
         <div class="blog-card-content"><span class="blog-category">Finanzas</span><h3>Facturas B2B Pendientes: Como Cobrar sin Perder Relacion Comercial</h3><p>Seguimiento simple de vencimientos, promesas de pago y responsables para cobrar con orden.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/facturas-b2b-pendientes.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span></div></div>
       </article>
       <!-- Article Reclamos de Garantia -->
       <article class="blog-card" data-category="clientes ventas operaciones">
-        <div class="blog-img" style="background: url('assets/Blog imagenes/reclamos-garantia-productos.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
+        <div class="blog-img" style="background: url('assets/Blog imagenes/reclamos-garantia-productos.png') center/cover; height: 220px;"></div>
         <div class="blog-card-content"><span class="blog-category">Atencion</span><h3>Reclamos de Garantia: Como Resolver sin Perder Tiempo ni Margen</h3><p>Organiza comprobantes, estados y decisiones para que cada garantia tenga trazabilidad.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/reclamos-garantia-productos.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 8 min</span></div></div>
       </article>
       <!-- Article Capacitacion de Personal por Temporada -->
       <article class="blog-card" data-category="productividad equipo ventas">
-        <div class="blog-img" style="background: url('assets/Blog imagenes/capacitacion-personal-temporada.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
+        <div class="blog-img" style="background: url('assets/Blog imagenes/capacitacion-personal-temporada.png') center/cover; height: 220px;"></div>
         <div class="blog-card-content"><span class="blog-category">Equipo</span><h3>Capacitacion de Personal por Temporada: Como Preparar al Equipo antes del Pico</h3><p>Planifica tareas, practicas y responsables para que los refuerzos vendan y atiendan mejor desde el primer dia.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/capacitacion-personal-temporada.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span></div></div>
       </article>
       <!-- Article Depositos en Alquiler de Equipos -->
       <article class="blog-card" data-category="inventario finanzas operaciones">
-        <div class="blog-img" style="background: url('assets/Blog imagenes/depositos-alquiler-equipos.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
+        <div class="blog-img" style="background: url('assets/Blog imagenes/depositos-alquiler-equipos.png') center/cover; height: 220px;"></div>
         <div class="blog-card-content"><span class="blog-category">Alquileres</span><h3>Depositos en Alquiler de Equipos: Como Controlar Danos, Saldos y Devoluciones</h3><p>Registra anticipos, estado de entrega y cargos por dano para evitar discusiones al devolver.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/depositos-alquiler-equipos.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 8 min</span></div></div>
       </article>
       <!-- Article Listas de Precios Mayoristas -->
       <article class="blog-card" data-category="ventas finanzas clientes">
-        <div class="blog-img" style="background: url('assets/Blog imagenes/listas-precios-mayoristas-clientes.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
+        <div class="blog-img" style="background: url('assets/Blog imagenes/listas-precios-mayoristas-clientes.png') center/cover; height: 220px;"></div>
         <div class="blog-card-content"><span class="blog-category">Ventas</span><h3>Listas de Precios Mayoristas: Como Ordenarlas por Tipo de Cliente</h3><p>Define niveles de precio, condiciones y vigencia para vender al por mayor sin confusiones.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/listas-precios-mayoristas-clientes.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span></div></div>
       </article>
       <!-- Article Ordenes de Trabajo a Medida -->
       <article class="blog-card" data-category="productividad ventas operaciones">
-        <div class="blog-img" style="background: url('assets/Blog imagenes/ordenes-trabajo-muebles-medida.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
+        <div class="blog-img" style="background: url('assets/Blog imagenes/ordenes-trabajo-muebles-medida.png') center/cover; height: 220px;"></div>
         <div class="blog-card-content"><span class="blog-category">Produccion</span><h3>Ordenes de Trabajo a Medida: Como Evitar Cambios y Errores de Produccion</h3><p>Controla medidas, aprobaciones y avances para que cada pedido personalizado llegue bien al cliente.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/ordenes-trabajo-muebles-medida.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span></div></div>
       </article>
       <!-- Article Packs de Clases y Asistencia -->
       <article class="blog-card" data-category="servicios clientes finanzas">
-        <div class="blog-img" style="background: url('assets/Blog imagenes/packs-clases-fitness-asistencia.png') center/cover; height: 220px;"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div>
+        <div class="blog-img" style="background: url('assets/Blog imagenes/packs-clases-fitness-asistencia.png') center/cover; height: 220px;"></div>
         <div class="blog-card-content"><span class="blog-category">Servicios</span><h3>Packs de Clases y Asistencia: Como Controlar Creditos sin Perder Ingresos</h3><p>Ordena clases disponibles, vencimientos y asistencias para que cada cliente use lo comprado.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/packs-clases-fitness-asistencia.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 8 min</span></div></div>
       </article>
 

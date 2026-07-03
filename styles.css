@@ -3091,6 +3091,16 @@ select:focus {
     grid-column: 1 / -1;
 }
 
+#view-dashboard .daily-plan-card {
+    order: 10;
+    grid-column: 1 / -1;
+}
+
+#view-dashboard .closing-forecast-card {
+    order: 11;
+    grid-column: 1 / -1;
+}
+
 #view-dashboard .setup-checklist-card,
 #view-dashboard .receivables-card,
 #view-dashboard .stock-alert-card {
@@ -3139,6 +3149,11 @@ select:focus {
     grid-column: 1 / -1;
 }
 
+#view-dashboard .margin-simulator-card {
+    order: 43;
+    grid-column: 1 / -1;
+}
+
 #view-dashboard .kpi-card,
 #view-dashboard .daily-pulse-card,
 #view-dashboard .form-section,
@@ -3170,6 +3185,14 @@ select:focus {
     }
 
     #view-dashboard .action-center-card {
+        grid-column: 1 / -1;
+    }
+
+    #view-dashboard .daily-plan-card {
+        grid-column: 1 / -1;
+    }
+
+    #view-dashboard .closing-forecast-card {
         grid-column: 1 / -1;
     }
 }
@@ -3444,6 +3467,106 @@ select:focus {
     margin: 0;
 }
 
+.margin-simulator-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.margin-simulator-header {
+    align-items: flex-start;
+}
+
+.margin-simulator-header h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+}
+
+.margin-simulator-header p {
+    margin: 0.35rem 0 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.margin-simulator-grid {
+    display: grid;
+    grid-template-columns: minmax(240px, 1.4fr) repeat(3, minmax(130px, 1fr));
+    gap: 0.75rem;
+}
+
+.margin-simulator-grid .input-wrapper {
+    margin: 0;
+}
+
+.margin-field {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--bg-hover);
+    padding: 0.55rem 0.7rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.margin-field span {
+    color: var(--text-muted);
+    font-size: 0.74rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.margin-field input {
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--text-main);
+    font: inherit;
+    font-weight: 800;
+    min-width: 0;
+}
+
+.margin-simulator-results {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+.margin-simulator-results div {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--bg-hover);
+    padding: 0.9rem;
+}
+
+.margin-simulator-results span {
+    display: block;
+    color: var(--text-muted);
+    font-size: 0.76rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.35rem;
+}
+
+.margin-simulator-results strong {
+    color: var(--text-main);
+    font-size: 1.1rem;
+}
+
+.margin-simulator-advice {
+    margin: 0;
+    color: var(--text-muted);
+    line-height: 1.55;
+}
+
+.margin-simulator-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+}
+
 @media (max-width: 900px) {
     .followup-form {
         grid-template-columns: 1fr 1fr;
@@ -3458,6 +3581,14 @@ select:focus {
     }
 
     .recurring-title-wrap {
+        grid-column: 1 / -1;
+    }
+
+    .margin-simulator-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .margin-field-wide {
         grid-column: 1 / -1;
     }
 }
@@ -3477,6 +3608,20 @@ select:focus {
 
     .recurring-card .card-header {
         flex-direction: column;
+    }
+
+    .margin-simulator-header {
+        flex-direction: column;
+    }
+
+    .margin-simulator-grid,
+    .margin-simulator-results,
+    .margin-simulator-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .margin-simulator-actions {
+        display: grid;
     }
 }
 
@@ -3597,6 +3742,267 @@ select:focus {
     gap: 0.35rem;
 }
 
+.daily-plan-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.daily-plan-header {
+    align-items: flex-start;
+}
+
+.daily-plan-header h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+}
+
+.daily-plan-header p {
+    margin: 0.3rem 0 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.daily-plan-progress {
+    height: 8px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: var(--bg-hover);
+    border: 1px solid var(--border-color);
+}
+
+.daily-plan-progress span {
+    display: block;
+    height: 100%;
+    width: 0%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--primary), var(--success));
+    transition: width 0.35s ease;
+}
+
+.daily-plan-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 0.85rem;
+}
+
+.daily-plan-item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.75rem;
+    border: 1px solid var(--border-color);
+    background: var(--bg-hover);
+    border-radius: var(--radius-md);
+    padding: 0.9rem;
+}
+
+.daily-plan-item[data-tone="danger"] {
+    border-color: rgba(232, 67, 147, 0.38);
+    background: rgba(232, 67, 147, 0.08);
+}
+
+.daily-plan-item[data-tone="warning"] {
+    border-color: rgba(255, 214, 110, 0.38);
+    background: rgba(255, 214, 110, 0.08);
+}
+
+.daily-plan-item[data-tone="success"] {
+    border-color: rgba(0, 203, 164, 0.35);
+    background: rgba(0, 203, 164, 0.08);
+}
+
+.daily-plan-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-light);
+    color: var(--primary);
+}
+
+.daily-plan-item[data-tone="danger"] .daily-plan-icon {
+    background: var(--danger-light);
+    color: var(--danger);
+}
+
+.daily-plan-item[data-tone="warning"] .daily-plan-icon {
+    background: var(--warning-light);
+    color: var(--warning);
+}
+
+.daily-plan-item[data-tone="success"] .daily-plan-icon {
+    background: var(--success-light);
+    color: var(--success);
+}
+
+.daily-plan-copy {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.daily-plan-copy strong {
+    color: var(--text-main);
+    overflow-wrap: anywhere;
+}
+
+.daily-plan-copy small {
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+.daily-plan-actions {
+    display: inline-flex;
+    gap: 0.35rem;
+}
+
+.daily-plan-actions .btn-daily-plan-action {
+    color: var(--primary);
+}
+
+.daily-plan-actions .btn-daily-plan-done {
+    color: var(--success);
+}
+
+.daily-plan-item[data-done="true"] .btn-daily-plan-done {
+    opacity: 0.45;
+    pointer-events: none;
+}
+
+.closing-forecast-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.closing-forecast-header {
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.closing-forecast-header h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+}
+
+.closing-forecast-header p {
+    margin: 0.3rem 0 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.closing-hour-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--bg-hover);
+    padding: 0.45rem 0.65rem;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.closing-hour-control select {
+    border: 0;
+    background: transparent;
+    color: var(--text-main);
+    font: inherit;
+    outline: none;
+}
+
+.closing-forecast-grid {
+    display: grid;
+    grid-template-columns: minmax(240px, 1.3fr) repeat(3, minmax(150px, 1fr));
+    gap: 0.85rem;
+}
+
+.closing-forecast-main,
+.closing-forecast-metric {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--bg-hover);
+    padding: 1rem;
+    min-width: 0;
+}
+
+.closing-forecast-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.closing-forecast-main[data-tone="success"] {
+    border-color: rgba(0, 203, 164, 0.35);
+    background: rgba(0, 203, 164, 0.08);
+}
+
+.closing-forecast-main[data-tone="warning"] {
+    border-color: rgba(255, 214, 110, 0.38);
+    background: rgba(255, 214, 110, 0.08);
+}
+
+.closing-forecast-main[data-tone="danger"] {
+    border-color: rgba(232, 67, 147, 0.38);
+    background: rgba(232, 67, 147, 0.08);
+}
+
+.closing-forecast-main span,
+.closing-forecast-metric span {
+    color: var(--text-muted);
+    font-size: 0.76rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.closing-forecast-main strong {
+    color: var(--text-main);
+    font-size: clamp(1.7rem, 2.5vw, 2.35rem);
+    line-height: 1.1;
+}
+
+.closing-forecast-main small {
+    color: var(--text-muted);
+    line-height: 1.45;
+}
+
+.closing-forecast-metric {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.35rem;
+}
+
+.closing-forecast-metric strong {
+    color: var(--text-main);
+    font-size: 1.05rem;
+    overflow-wrap: anywhere;
+}
+
+.closing-forecast-advice {
+    margin: 0;
+    color: var(--text-muted);
+    line-height: 1.55;
+}
+
+.closing-forecast-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+}
+
+.closing-forecast-actions .btn {
+    min-height: 42px;
+}
+
 .history-quick-filters {
     display: flex;
     flex-wrap: wrap;
@@ -3707,6 +4113,18 @@ select:focus {
     .executive-summary-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+
+    .daily-plan-list {
+        grid-template-columns: 1fr;
+    }
+
+    .closing-forecast-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .closing-forecast-main {
+        grid-column: 1 / -1;
+    }
 }
 
 @media (max-width: 560px) {
@@ -3717,6 +4135,38 @@ select:focus {
     .executive-summary-card .card-header {
         flex-direction: column;
         align-items: stretch;
+    }
+
+    .daily-plan-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .daily-plan-item {
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .daily-plan-actions {
+        grid-column: 1 / -1;
+        justify-content: flex-end;
+    }
+
+    .closing-forecast-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .closing-hour-control {
+        justify-content: space-between;
+    }
+
+    .closing-forecast-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .closing-forecast-actions {
+        display: grid;
+        grid-template-columns: 1fr;
     }
 }
 
