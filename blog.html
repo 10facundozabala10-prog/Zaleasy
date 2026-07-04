@@ -1676,6 +1676,249 @@
       position: relative;
     }
 
+    .blog-read-btn {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      z-index: 3;
+      min-width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(10,11,16,0.68);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      padding: 0 0.7rem;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      font-size: 0.78rem;
+      font-weight: 800;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .blog-read-btn:hover {
+      transform: translateY(-2px);
+      border-color: rgba(0,210,211,0.52);
+    }
+
+    .blog-read-btn[aria-pressed="true"] {
+      background: linear-gradient(135deg, #00b894, #00d2d3);
+      border-color: transparent;
+      color: #071014;
+    }
+
+    .blog-card[data-read="true"] {
+      border-color: rgba(0,210,211,0.26);
+    }
+
+    .blog-card[data-read="true"] .blog-card-content,
+    .blog-card[data-read="true"] .blog-content {
+      opacity: 0.78;
+    }
+
+    .reading-progress-card {
+      grid-column: 1 / -1;
+      border: 1px solid rgba(0,210,211,0.16);
+      background:
+        linear-gradient(135deg, rgba(0,210,211,0.10), rgba(108,92,231,0.08)),
+        rgba(28,29,41,0.88);
+      border-radius: 8px;
+      padding: 1.2rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .reading-progress-card h3 {
+      margin: 0 0 0.4rem;
+      color: var(--text-main);
+      font-size: 1.15rem;
+    }
+
+    .reading-progress-card p {
+      margin: 0;
+      color: var(--text-muted);
+      line-height: 1.5;
+      font-size: 0.92rem;
+    }
+
+    .reading-progress-meter {
+      margin-top: 0.9rem;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      overflow: hidden;
+    }
+
+    .reading-progress-meter span {
+      display: block;
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #6c5ce7, #00d2d3);
+      transition: width 0.25s ease;
+    }
+
+    .reading-progress-number {
+      min-width: 92px;
+      height: 92px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #fff;
+      font-size: 1.35rem;
+      font-weight: 900;
+    }
+
+    .weekly-plan-card {
+      grid-column: 1 / -1;
+      border: 1px solid rgba(253,203,110,0.18);
+      background:
+        linear-gradient(135deg, rgba(253,203,110,0.10), rgba(255,118,117,0.07)),
+        rgba(28,29,41,0.88);
+      border-radius: 8px;
+      padding: 1.2rem;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .weekly-plan-card h3 {
+      margin: 0 0 0.4rem;
+      color: var(--text-main);
+      font-size: 1.15rem;
+    }
+
+    .weekly-plan-card p {
+      margin: 0;
+      color: var(--text-muted);
+      line-height: 1.5;
+      font-size: 0.92rem;
+    }
+
+    .weekly-plan-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.65rem;
+    }
+
+    .weekly-plan-link {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 0.7rem;
+      align-items: center;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.045);
+      border-radius: 8px;
+      padding: 0.76rem;
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 0.86rem;
+      font-weight: 800;
+      line-height: 1.3;
+    }
+
+    .weekly-plan-link em {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(253,203,110,0.16);
+      color: #fdcb6e;
+      font-style: normal;
+      font-size: 0.78rem;
+      font-weight: 900;
+    }
+
+    .weekly-plan-link small {
+      display: block;
+      margin-top: 0.22rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.76rem;
+    }
+
+    .reading-diagnostic-card {
+      grid-column: 1 / -1;
+      border: 1px solid rgba(162,155,254,0.18);
+      background:
+        linear-gradient(135deg, rgba(162,155,254,0.10), rgba(0,210,211,0.07)),
+        rgba(28,29,41,0.88);
+      border-radius: 8px;
+      padding: 1.2rem;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .reading-diagnostic-card h3 {
+      margin: 0 0 0.4rem;
+      color: var(--text-main);
+      font-size: 1.15rem;
+    }
+
+    .reading-diagnostic-card p {
+      margin: 0;
+      color: var(--text-muted);
+      line-height: 1.5;
+      font-size: 0.92rem;
+    }
+
+    .diagnostic-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.65rem;
+    }
+
+    .diagnostic-option {
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.055);
+      color: var(--text-main);
+      border-radius: 8px;
+      padding: 0.85rem;
+      text-align: left;
+      cursor: pointer;
+      font: inherit;
+      display: grid;
+      gap: 0.25rem;
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .diagnostic-option:hover,
+    .diagnostic-option.active {
+      transform: translateY(-2px);
+      border-color: rgba(0,210,211,0.36);
+      background: rgba(0,210,211,0.09);
+    }
+
+    .diagnostic-option strong {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.94rem;
+    }
+
+    .diagnostic-option small {
+      color: var(--text-muted);
+      line-height: 1.4;
+      font-size: 0.78rem;
+    }
+
+    .diagnostic-result {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      font-size: 0.92rem;
+    }
+
     .continue-reading-actions,
     .learning-path-actions {
       display: flex;
@@ -1775,6 +2018,92 @@
       outline: none;
     }
 
+    .blog-read-filter {
+      display: inline-flex;
+      gap: 0.35rem;
+      padding: 0.25rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(10,11,16,0.46);
+      border-radius: 999px;
+    }
+
+    .blog-read-filter button {
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--text-muted);
+      padding: 0.45rem 0.72rem;
+      font: inherit;
+      font-size: 0.8rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .blog-read-filter button.active {
+      background: rgba(0,210,211,0.16);
+      color: #00d2d3;
+    }
+
+    .blog-reading-tools {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      align-items: center;
+    }
+
+    .blog-reading-tools .blog-tool-btn {
+      padding: 0.58rem 0.78rem;
+      font-size: 0.8rem;
+    }
+
+    .blog-focus-mode .blog-quick-nav,
+    .blog-focus-mode .blog-learning-paths,
+    .blog-focus-mode .featured-article,
+    .blog-focus-mode .ad-banner {
+      display: none !important;
+    }
+
+    .blog-focus-mode .blog-header {
+      padding: 3rem 0 2rem;
+    }
+
+    .blog-focus-mode .blog-hero-visual {
+      display: none;
+    }
+
+    .blog-focus-mode .blog-hero-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .blog-focus-mode .blog-list-header {
+      padding-top: 2rem;
+    }
+
+    .blog-toast {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9999;
+      max-width: min(360px, calc(100vw - 36px));
+      border: 1px solid rgba(0,210,211,0.28);
+      background: rgba(22,24,36,0.94);
+      color: var(--text-main);
+      border-radius: 8px;
+      padding: 0.9rem 1rem;
+      box-shadow: 0 18px 44px rgba(0,0,0,0.38);
+      transform: translateY(18px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .blog-toast.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     @media (max-width: 980px) {
       .blog-hero-layout {
         grid-template-columns: 1fr;
@@ -1826,6 +2155,21 @@
 
       .blog-sort-control {
         justify-content: space-between;
+      }
+
+      .blog-reading-tools,
+      .blog-reading-tools .blog-tool-btn {
+        width: 100%;
+      }
+
+      .reading-progress-card {
+        grid-template-columns: 1fr;
+      }
+
+      .reading-progress-number {
+        justify-self: start;
+        min-width: 78px;
+        height: 78px;
       }
     }
   </style>
@@ -1926,6 +2270,7 @@
   <script>
     let activeBlogCategory = 'all';
     let blogSortMode = 'newest';
+    let blogReadFilter = 'all';
     const BLOG_PAGE_SIZE = 21;
     let blogVisibleLimit = BLOG_PAGE_SIZE;
     const normalizeBlogText = value => (value || '')
@@ -1969,8 +2314,12 @@
       const searchableText = normalizeBlogText([title, excerpt, categoryLabel, cats, href].join(' '));
       const categoryMatches = activeBlogCategory === 'all' || cats.split(/\s+/).includes(activeBlogCategory);
       const searchMatches = !input || searchableText.includes(input);
+      const hrefKey = card.querySelector('a[href]')?.getAttribute('href') || '';
+      const readMatches = blogReadFilter === 'all'
+        || (blogReadFilter === 'read' && isArticleRead(hrefKey))
+        || (blogReadFilter === 'pending' && !isArticleRead(hrefKey));
 
-      return categoryMatches && searchMatches;
+      return categoryMatches && searchMatches && readMatches;
     }
 
     function getBlogReadingMinutes(card) {
@@ -2029,6 +2378,15 @@
       applyBlogFilters();
     }
 
+    function setBlogReadFilter(mode, btn) {
+      blogReadFilter = mode || 'all';
+      document.querySelectorAll('.blog-read-filter button').forEach(item => {
+        item.classList.toggle('active', item === btn || item.dataset.readFilter === blogReadFilter);
+      });
+      resetBlogPagination();
+      applyBlogFilters();
+    }
+
     function setBlogRoute(category, query) {
       activeBlogCategory = category || 'all';
       const search = document.getElementById('blogSearch');
@@ -2077,6 +2435,85 @@
       applyBlogFilters();
     }
 
+    function getCurrentMatchingCards() {
+      const input = normalizeBlogText(document.getElementById('blogSearch')?.value || '');
+      const cards = Array.from(document.querySelectorAll('.blog-card:not(.coming-soon)'));
+      return sortBlogCards(cards.filter(card => getBlogMatch(card, input)));
+    }
+
+    function showBlogToast(message) {
+      let toast = document.getElementById('blogToast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'blogToast';
+        toast.className = 'blog-toast';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = message;
+      toast.classList.add('visible');
+      clearTimeout(window.__blogToastTimer);
+      window.__blogToastTimer = setTimeout(() => toast.classList.remove('visible'), 2600);
+    }
+
+    function openRandomArticle() {
+      const matches = getCurrentMatchingCards();
+      if (!matches.length) {
+        showBlogToast('No hay articulos para abrir con estos filtros.');
+        return;
+      }
+      const card = matches[Math.floor(Math.random() * matches.length)];
+      const link = card.querySelector('a[href]');
+      if (link) {
+        link.click();
+      }
+    }
+
+    function copyFirstResultLink() {
+      const card = getCurrentMatchingCards()[0];
+      const link = card?.querySelector('a[href]');
+      if (!link) {
+        showBlogToast('No hay resultado para copiar.');
+        return;
+      }
+      const absolute = new URL(link.getAttribute('href'), window.location.href).href;
+      const title = card.querySelector('h3')?.textContent?.trim() || 'Articulo Zaleasy';
+      const text = `${title} - ${absolute}`;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => showBlogToast('Enlace del primer resultado copiado.'));
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+        showBlogToast('Enlace del primer resultado copiado.');
+      }
+    }
+
+    function applyBlogFocusButton() {
+      const btn = document.getElementById('blogFocusBtn');
+      if (!btn) return;
+      const active = document.body.classList.contains('blog-focus-mode');
+      btn.innerHTML = active
+        ? '<i class="fa-solid fa-eye-slash"></i> Salir enfoque'
+        : '<i class="fa-solid fa-eye"></i> Modo enfoque';
+    }
+
+    function toggleBlogFocusMode() {
+      const active = document.body.classList.toggle('blog-focus-mode');
+      localStorage.setItem('zaleasyBlogFocusMode', active ? '1' : '0');
+      applyBlogFocusButton();
+      showBlogToast(active ? 'Modo enfoque activado.' : 'Modo enfoque desactivado.');
+    }
+
+    function setupBlogFocusMode() {
+      if (localStorage.getItem('zaleasyBlogFocusMode') === '1') {
+        document.body.classList.add('blog-focus-mode');
+      }
+      applyBlogFocusButton();
+    }
+
     function updateFilterCounts() {
       const cards = Array.from(document.querySelectorAll('.blog-card:not(.coming-soon)'));
       document.querySelectorAll('.glass-filter-btn[data-filter]').forEach(btn => {
@@ -2108,6 +2545,7 @@
           const parent = a.closest('.blog-card');
           const titleText = parent?.querySelector('h3')?.textContent?.trim() || a.textContent.trim();
           const category = parent?.querySelector('.blog-category')?.textContent?.trim() || '';
+          markArticleRead(parent, false);
           localStorage.setItem('zaleasyLastBlogRead', JSON.stringify({
             href: a.getAttribute('href'),
             title: titleText,
@@ -2116,6 +2554,206 @@
           }));
         });
       });
+    }
+
+    function getReadArticles() {
+      try {
+        return JSON.parse(localStorage.getItem('zaleasyReadArticles') || '[]');
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function saveReadArticles(items) {
+      localStorage.setItem('zaleasyReadArticles', JSON.stringify([...new Set(items)]));
+    }
+
+    function isArticleRead(href) {
+      return Boolean(href) && getReadArticles().includes(href);
+    }
+
+    function markArticleRead(card, notify = true) {
+      const href = card?.querySelector('a[href]')?.getAttribute('href');
+      if (!href) return;
+      const read = getReadArticles();
+      if (!read.includes(href)) {
+        read.push(href);
+        saveReadArticles(read);
+        refreshReadButtons();
+        renderReadingProgress();
+        if (notify) showBlogToast('Articulo marcado como leido.');
+      }
+    }
+
+    function toggleArticleRead(card) {
+      const href = card?.querySelector('a[href]')?.getAttribute('href');
+      if (!href) return;
+      const read = getReadArticles();
+      const next = read.includes(href) ? read.filter(item => item !== href) : [...read, href];
+      saveReadArticles(next);
+      refreshReadButtons();
+      renderReadingProgress();
+      applyBlogFilters();
+      showBlogToast(read.includes(href) ? 'Articulo marcado como pendiente.' : 'Articulo marcado como leido.');
+    }
+
+    function refreshReadButtons() {
+      document.querySelectorAll('.blog-card:not(.coming-soon)').forEach(card => {
+        const href = card.querySelector('a[href]')?.getAttribute('href') || '';
+        const read = isArticleRead(href);
+        card.dataset.read = read ? 'true' : 'false';
+        const btn = card.querySelector('.blog-read-btn');
+        if (btn) {
+          btn.setAttribute('aria-pressed', read ? 'true' : 'false');
+          btn.innerHTML = `<i class="fa-solid ${read ? 'fa-circle-check' : 'fa-check'}"></i><span>${read ? 'Leido' : 'Leer'}</span>`;
+          btn.title = read ? 'Marcar como pendiente' : 'Marcar como leido';
+        }
+      });
+    }
+
+    function renderReadingProgress() {
+      const total = document.querySelectorAll('.blog-card:not(.coming-soon)').length;
+      const existingHrefs = new Set(
+        Array.from(document.querySelectorAll('.blog-card:not(.coming-soon) a[href]'))
+          .map(link => link.getAttribute('href'))
+      );
+      const readCount = getReadArticles()
+        .filter(href => existingHrefs.has(href))
+        .length;
+      const pct = total ? Math.round((readCount / total) * 100) : 0;
+      const text = document.getElementById('readingProgressText');
+      const fill = document.getElementById('readingProgressFill');
+      const number = document.getElementById('readingProgressNumber');
+      if (text) text.textContent = `${readCount} de ${total} articulos leidos. Filtra pendientes para elegir el proximo.`;
+      if (fill) fill.style.width = `${pct}%`;
+      if (number) number.textContent = `${pct}%`;
+    }
+
+    function getWeeklyReadingPlan() {
+      try {
+        return JSON.parse(localStorage.getItem('zaleasyWeeklyReadingPlan') || '[]');
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function saveWeeklyReadingPlan(items) {
+      localStorage.setItem('zaleasyWeeklyReadingPlan', JSON.stringify(items.slice(0, 7)));
+    }
+
+    function renderWeeklyReadingPlan() {
+      const list = document.getElementById('weeklyPlanList');
+      const meta = document.getElementById('weeklyPlanMeta');
+      if (!list || !meta) return;
+      const plan = getWeeklyReadingPlan();
+      meta.textContent = plan.length
+        ? `${plan.length} lectura${plan.length === 1 ? '' : 's'} seleccionada${plan.length === 1 ? '' : 's'} para esta semana.`
+        : 'Genera una ruta de hasta 7 articulos desde tus filtros actuales.';
+      list.innerHTML = plan.length
+        ? plan.map((item, index) => `
+          <a class="weekly-plan-link" href="${item.href}">
+            <em>${index + 1}</em>
+            <span>${item.title}<small>${item.category || 'Blog'} · ${item.minutes || 8} min</small></span>
+          </a>
+        `).join('')
+        : '<p style="margin:0;color:var(--text-muted);font-size:.9rem;">Aun no hay plan generado.</p>';
+    }
+
+    function generateWeeklyReadingPlan() {
+      const matches = getCurrentMatchingCards();
+      const pending = matches.filter(card => !isArticleRead(card.querySelector('a[href]')?.getAttribute('href') || ''));
+      const source = pending.length >= 3 ? pending : matches;
+      const plan = source.slice(0, 7).map(getCardArticleData);
+      if (!plan.length) {
+        showBlogToast('No hay articulos para armar el plan con estos filtros.');
+        return;
+      }
+      saveWeeklyReadingPlan(plan);
+      renderWeeklyReadingPlan();
+      showBlogToast('Plan semanal creado.');
+    }
+
+    function clearWeeklyReadingPlan() {
+      localStorage.removeItem('zaleasyWeeklyReadingPlan');
+      renderWeeklyReadingPlan();
+      showBlogToast('Plan semanal reiniciado.');
+    }
+
+    const BLOG_DIAGNOSTIC_ROUTES = {
+      sales: {
+        category: 'ventas',
+        query: 'objeciones',
+        title: 'Ruta para vender mas',
+        text: 'Empieza por objeciones, seguimiento y cierre. Te mostramos articulos de ventas conectados con conversion.'
+      },
+      margin: {
+        category: 'finanzas',
+        query: 'margen',
+        title: 'Ruta para cuidar margen',
+        text: 'Prioriza precios, descuentos y rentabilidad para vender sin perder ganancia.'
+      },
+      cash: {
+        category: 'finanzas',
+        query: 'caja',
+        title: 'Ruta para ordenar caja',
+        text: 'Revisa cobros, efectivo, cierre diario y gastos para mejorar control financiero.'
+      },
+      stock: {
+        category: 'productividad',
+        query: 'stock',
+        title: 'Ruta para evitar quiebres',
+        text: 'Busca articulos de inventario, proveedores, entregas y operaciones para reducir errores.'
+      },
+      clients: {
+        category: 'all',
+        query: 'clientes',
+        title: 'Ruta para fidelizar clientes',
+        text: 'Enfocate en reclamos, renovaciones, atencion y confianza para sostener ventas repetidas.'
+      }
+    };
+
+    function renderReadingDiagnostic() {
+      const saved = localStorage.getItem('zaleasyReadingDiagnostic') || '';
+      const result = document.getElementById('diagnosticResult');
+      document.querySelectorAll('.diagnostic-option').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.diagnostic === saved);
+      });
+      if (result && saved && BLOG_DIAGNOSTIC_ROUTES[saved]) {
+        const route = BLOG_DIAGNOSTIC_ROUTES[saved];
+        result.innerHTML = `<strong style="color:var(--text-main);">${route.title}:</strong> ${route.text}`;
+      }
+    }
+
+    function applyReadingDiagnostic(type, btn) {
+      const route = BLOG_DIAGNOSTIC_ROUTES[type];
+      if (!route) return;
+      localStorage.setItem('zaleasyReadingDiagnostic', type);
+      document.querySelectorAll('.diagnostic-option').forEach(item => item.classList.toggle('active', item === btn));
+      const result = document.getElementById('diagnosticResult');
+      if (result) result.innerHTML = `<strong style="color:var(--text-main);">${route.title}:</strong> ${route.text}`;
+      setBlogRoute(route.category, route.query);
+      showBlogToast('Diagnostico aplicado a la biblioteca.');
+    }
+
+    function setupReadProgress() {
+      document.querySelectorAll('.blog-card:not(.coming-soon)').forEach(card => {
+        const img = card.querySelector('.blog-img');
+        if (!img || img.querySelector('.blog-read-btn')) return;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'blog-read-btn';
+        btn.setAttribute('aria-label', 'Marcar estado de lectura');
+        btn.addEventListener('click', (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          toggleArticleRead(card);
+        });
+        img.appendChild(btn);
+      });
+      refreshReadButtons();
+      renderReadingProgress();
+      renderWeeklyReadingPlan();
+      renderReadingDiagnostic();
     }
 
     function getSavedArticles() {
@@ -2230,6 +2868,8 @@
       updateFilterCounts();
       setupContinueReading();
       setupSavedArticles();
+      setupReadProgress();
+      setupBlogFocusMode();
       applyBlogFilters();
 
       // ── Scroll-reveal with IntersectionObserver ──
@@ -2384,6 +3024,61 @@
       </article>
 
       <div class="learning-path-grid">
+        <article class="reading-progress-card">
+          <div>
+            <h3>Tu avance en la biblioteca</h3>
+            <p id="readingProgressText">Marca articulos como leidos para saber cuanto contenido accionable ya revisaste.</p>
+            <div class="reading-progress-meter" aria-hidden="true"><span id="readingProgressFill"></span></div>
+          </div>
+          <strong class="reading-progress-number" id="readingProgressNumber">0%</strong>
+        </article>
+
+        <article class="weekly-plan-card">
+          <div>
+            <h3>Plan semanal de lectura</h3>
+            <p id="weeklyPlanMeta">Genera una ruta de hasta 7 articulos desde tus filtros actuales.</p>
+          </div>
+          <div class="weekly-plan-list" id="weeklyPlanList"></div>
+          <div class="learning-path-actions">
+            <button class="blog-tool-btn primary" type="button" onclick="generateWeeklyReadingPlan()">
+              <i class="fa-solid fa-calendar-week"></i> Crear plan
+            </button>
+            <button class="blog-tool-btn" type="button" onclick="clearWeeklyReadingPlan()">
+              <i class="fa-solid fa-rotate-left"></i> Reiniciar
+            </button>
+          </div>
+        </article>
+
+        <article class="reading-diagnostic-card">
+          <div>
+            <h3>Diagnostico rapido de lectura</h3>
+            <p>Elige el problema principal de hoy y Zaleasy te lleva a una seleccion de articulos accionables.</p>
+          </div>
+          <div class="diagnostic-options" id="diagnosticOptions">
+            <button class="diagnostic-option" type="button" data-diagnostic="sales" onclick="applyReadingDiagnostic('sales', this)">
+              <strong><i class="fa-solid fa-handshake"></i> Vender mas</strong>
+              <small>Objeciones, seguimiento, cierre y conversion.</small>
+            </button>
+            <button class="diagnostic-option" type="button" data-diagnostic="margin" onclick="applyReadingDiagnostic('margin', this)">
+              <strong><i class="fa-solid fa-chart-line"></i> Cuidar margen</strong>
+              <small>Precios, descuentos, costos y rentabilidad.</small>
+            </button>
+            <button class="diagnostic-option" type="button" data-diagnostic="cash" onclick="applyReadingDiagnostic('cash', this)">
+              <strong><i class="fa-solid fa-cash-register"></i> Ordenar caja</strong>
+              <small>Cobros, cierre, efectivo y gastos diarios.</small>
+            </button>
+            <button class="diagnostic-option" type="button" data-diagnostic="stock" onclick="applyReadingDiagnostic('stock', this)">
+              <strong><i class="fa-solid fa-boxes-stacked"></i> Evitar quiebres</strong>
+              <small>Stock, proveedores, entregas y operaciones.</small>
+            </button>
+            <button class="diagnostic-option" type="button" data-diagnostic="clients" onclick="applyReadingDiagnostic('clients', this)">
+              <strong><i class="fa-solid fa-users"></i> Fidelizar clientes</strong>
+              <small>Reclamos, renovaciones, atencion y confianza.</small>
+            </button>
+          </div>
+          <div class="diagnostic-result" id="diagnosticResult">Selecciona una opcion para recibir una ruta de lectura recomendada.</div>
+        </article>
+
         <article class="learning-path-card">
           <span><i class="fa-solid fa-handshake"></i> Ventas</span>
           <h3>Convertir mas consultas en ventas</h3>
@@ -2662,6 +3357,22 @@
         <button type="button" onclick="setBlogRoute('all', 'proveedores')">Proveedores</button>
         <button type="button" onclick="setBlogRoute('ventas', 'whatsapp')">WhatsApp</button>
         <button type="button" onclick="setBlogRoute('finanzas', 'efectivo')">Efectivo</button>
+      </div>
+      <div class="blog-reading-tools" aria-label="Herramientas de lectura">
+        <div class="blog-read-filter" aria-label="Filtrar por estado de lectura">
+          <button type="button" class="active" data-read-filter="all" onclick="setBlogReadFilter('all', this)">Todos</button>
+          <button type="button" data-read-filter="pending" onclick="setBlogReadFilter('pending', this)">Pendientes</button>
+          <button type="button" data-read-filter="read" onclick="setBlogReadFilter('read', this)">Leidos</button>
+        </div>
+        <button class="blog-tool-btn" type="button" onclick="openRandomArticle()">
+          <i class="fa-solid fa-shuffle"></i> Sorprendeme
+        </button>
+        <button class="blog-tool-btn" type="button" onclick="copyFirstResultLink()">
+          <i class="fa-regular fa-copy"></i> Copiar resultado
+        </button>
+        <button class="blog-tool-btn" type="button" id="blogFocusBtn" onclick="toggleBlogFocusMode()">
+          <i class="fa-solid fa-eye"></i> Modo enfoque
+        </button>
       </div>
       <label class="blog-sort-control" for="blogSort">
         Ordenar
