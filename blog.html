@@ -1550,6 +1550,7 @@
 
     .continue-reading-card,
     .saved-articles-card,
+    .blog-library-backup-card,
     .learning-path-card {
       border: 1px solid rgba(255,255,255,0.09);
       background:
@@ -1579,6 +1580,7 @@
 
     .continue-reading-card span,
     .saved-articles-card > span,
+    .blog-library-backup-card > div > span,
     .learning-path-card span {
       display: inline-flex;
       align-items: center;
@@ -1593,6 +1595,7 @@
 
     .continue-reading-card h3,
     .saved-articles-card h3,
+    .blog-library-backup-card h3,
     .learning-path-card h3 {
       margin: 0 0 0.55rem;
       color: var(--text-main);
@@ -1602,6 +1605,7 @@
 
     .continue-reading-card p,
     .saved-articles-card p,
+    .blog-library-backup-card p,
     .learning-path-card p {
       margin: 0;
       color: var(--text-muted);
@@ -2008,6 +2012,23 @@
       font-weight: 700;
     }
 
+    .blog-library-backup-card {
+      grid-column: 1 / -1;
+      border-color: rgba(0,210,211,0.16);
+      background:
+        linear-gradient(135deg, rgba(0,210,211,0.09), rgba(253,203,110,0.06)),
+        rgba(28,29,41,0.88);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .blog-library-backup-card .continue-reading-actions {
+      justify-content: flex-end;
+      margin-top: 0;
+    }
+
     .blog-sort-control select {
       border: 1px solid rgba(255,255,255,0.12);
       background: rgba(10,11,16,0.72);
@@ -2164,6 +2185,14 @@
 
       .reading-progress-card {
         grid-template-columns: 1fr;
+      }
+
+      .blog-library-backup-card {
+        grid-template-columns: 1fr;
+      }
+
+      .blog-library-backup-card .continue-reading-actions {
+        justify-content: flex-start;
       }
 
       .reading-progress-number {
@@ -2526,7 +2555,7 @@
       });
     }
 
-    function setupContinueReading() {
+    function renderContinueReadingCard() {
       const saved = JSON.parse(localStorage.getItem('zaleasyLastBlogRead') || 'null');
       const card = document.getElementById('continueReadingCard');
       const title = document.getElementById('continueReadingTitle');
@@ -2538,7 +2567,17 @@
         text.textContent = saved.category ? `Ultima lectura guardada en ${saved.category}.` : 'Vuelve al ultimo articulo que abriste.';
         link.href = saved.href || '#blogArticles';
         link.innerHTML = '<i class="fa-solid fa-book-open"></i> Continuar';
+      } else if (card && title && text && link) {
+        card.dataset.empty = 'true';
+        title.textContent = 'Todavia no abriste ningun articulo';
+        text.textContent = 'Cuando leas un articulo, lo guardaremos aca para que puedas volver rapido.';
+        link.href = '#blogArticles';
+        link.innerHTML = '<i class="fa-solid fa-book-open"></i> Explorar articulos';
       }
+    }
+
+    function setupContinueReading() {
+      renderContinueReadingCard();
 
       document.querySelectorAll('.blog-card a[href]').forEach(a => {
         a.addEventListener('click', () => {
@@ -2552,6 +2591,7 @@
             category,
             savedAt: Date.now()
           }));
+          updateBlogBackupStatus();
         });
       });
     }
@@ -2581,6 +2621,7 @@
         saveReadArticles(read);
         refreshReadButtons();
         renderReadingProgress();
+        updateBlogBackupStatus();
         if (notify) showBlogToast('Articulo marcado como leido.');
       }
     }
@@ -2594,6 +2635,7 @@
       refreshReadButtons();
       renderReadingProgress();
       applyBlogFilters();
+      updateBlogBackupStatus();
       showBlogToast(read.includes(href) ? 'Articulo marcado como pendiente.' : 'Articulo marcado como leido.');
     }
 
@@ -2627,6 +2669,7 @@
       if (text) text.textContent = `${readCount} de ${total} articulos leidos. Filtra pendientes para elegir el proximo.`;
       if (fill) fill.style.width = `${pct}%`;
       if (number) number.textContent = `${pct}%`;
+      updateBlogBackupStatus();
     }
 
     function getWeeklyReadingPlan() {
@@ -2670,12 +2713,14 @@
       }
       saveWeeklyReadingPlan(plan);
       renderWeeklyReadingPlan();
+      updateBlogBackupStatus();
       showBlogToast('Plan semanal creado.');
     }
 
     function clearWeeklyReadingPlan() {
       localStorage.removeItem('zaleasyWeeklyReadingPlan');
       renderWeeklyReadingPlan();
+      updateBlogBackupStatus();
       showBlogToast('Plan semanal reiniciado.');
     }
 
@@ -2732,6 +2777,7 @@
       const result = document.getElementById('diagnosticResult');
       if (result) result.innerHTML = `<strong style="color:var(--text-main);">${route.title}:</strong> ${route.text}`;
       setBlogRoute(route.category, route.query);
+      updateBlogBackupStatus();
       showBlogToast('Diagnostico aplicado a la biblioteca.');
     }
 
@@ -2821,6 +2867,7 @@
       saveSavedArticles(next);
       renderSavedArticles();
       refreshSaveButtons();
+      updateBlogBackupStatus();
     }
 
     function setupSavedArticles() {
@@ -2848,6 +2895,112 @@
       localStorage.removeItem('zaleasySavedArticles');
       renderSavedArticles();
       refreshSaveButtons();
+      updateBlogBackupStatus();
+    }
+
+    function getBlogReaderData() {
+      let lastRead = null;
+      try {
+        lastRead = JSON.parse(localStorage.getItem('zaleasyLastBlogRead') || 'null');
+      } catch (error) {
+        lastRead = null;
+      }
+      return {
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        lastRead,
+        savedArticles: getSavedArticles(),
+        readArticles: getReadArticles(),
+        weeklyPlan: getWeeklyReadingPlan(),
+        readingDiagnostic: localStorage.getItem('zaleasyReadingDiagnostic') || '',
+        focusMode: localStorage.getItem('zaleasyBlogFocusMode') || '0',
+        sortMode: blogSortMode || 'newest',
+        readFilter: blogReadFilter || 'all'
+      };
+    }
+
+    function updateBlogBackupStatus() {
+      const status = document.getElementById('blogBackupStatus');
+      if (!status) return;
+      const saved = getSavedArticles().length;
+      const read = getReadArticles().length;
+      const plan = getWeeklyReadingPlan().length;
+      status.textContent = `${saved} guardados, ${read} leidos y ${plan} en el plan semanal listos para respaldar.`;
+    }
+
+    function exportBlogReaderData() {
+      const data = getBlogReaderData();
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      const day = new Date().toISOString().slice(0, 10);
+      a.href = URL.createObjectURL(blob);
+      a.download = `zaleasy-blog-biblioteca-${day}.json`;
+      document.body.appendChild(a);
+      a.click();
+      URL.revokeObjectURL(a.href);
+      a.remove();
+      updateBlogBackupStatus();
+      showBlogToast('Respaldo del blog exportado.');
+    }
+
+    function importBlogReaderData(event) {
+      const input = event?.target;
+      const file = input?.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const data = JSON.parse(reader.result || '{}');
+          if (!data || typeof data !== 'object') throw new Error('Archivo invalido');
+
+          if (data.lastRead && typeof data.lastRead === 'object') {
+            localStorage.setItem('zaleasyLastBlogRead', JSON.stringify(data.lastRead));
+          } else {
+            localStorage.removeItem('zaleasyLastBlogRead');
+          }
+          if (Array.isArray(data.savedArticles)) saveSavedArticles(data.savedArticles);
+          if (Array.isArray(data.readArticles)) saveReadArticles(data.readArticles);
+          if (Array.isArray(data.weeklyPlan)) saveWeeklyReadingPlan(data.weeklyPlan);
+          if (typeof data.readingDiagnostic === 'string' && BLOG_DIAGNOSTIC_ROUTES[data.readingDiagnostic]) {
+            localStorage.setItem('zaleasyReadingDiagnostic', data.readingDiagnostic);
+          } else {
+            localStorage.removeItem('zaleasyReadingDiagnostic');
+          }
+          if (data.focusMode === '1') {
+            localStorage.setItem('zaleasyBlogFocusMode', '1');
+            document.body.classList.add('blog-focus-mode');
+          } else {
+            localStorage.setItem('zaleasyBlogFocusMode', '0');
+            document.body.classList.remove('blog-focus-mode');
+          }
+
+          blogSortMode = ['newest', 'oldest', 'shortest', 'title'].includes(data.sortMode) ? data.sortMode : 'newest';
+          blogReadFilter = ['all', 'read', 'pending'].includes(data.readFilter) ? data.readFilter : 'all';
+          const sort = document.getElementById('blogSort');
+          if (sort) sort.value = blogSortMode;
+          document.querySelectorAll('.blog-read-filter button').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.readFilter === blogReadFilter);
+          });
+
+          renderContinueReadingCard();
+          renderSavedArticles();
+          refreshSaveButtons();
+          refreshReadButtons();
+          renderReadingProgress();
+          renderWeeklyReadingPlan();
+          renderReadingDiagnostic();
+          applyBlogFocusButton();
+          resetBlogPagination();
+          applyBlogFilters();
+          updateBlogBackupStatus();
+          showBlogToast('Biblioteca del blog importada.');
+        } catch (error) {
+          showBlogToast('No pudimos importar ese respaldo.');
+        } finally {
+          if (input) input.value = '';
+        }
+      };
+      reader.readAsText(file);
     }
 
     function jumpToBlogCategory(category) {
@@ -3031,6 +3184,23 @@
             <div class="reading-progress-meter" aria-hidden="true"><span id="readingProgressFill"></span></div>
           </div>
           <strong class="reading-progress-number" id="readingProgressNumber">0%</strong>
+        </article>
+
+        <article class="blog-library-backup-card">
+          <div>
+            <span><i class="fa-solid fa-cloud-arrow-down"></i> Respaldo</span>
+            <h3>Respalda tu biblioteca</h3>
+            <p id="blogBackupStatus">Exporta tus guardados, leidos, plan semanal y preferencias del blog.</p>
+          </div>
+          <div class="continue-reading-actions">
+            <button class="blog-tool-btn primary" type="button" onclick="exportBlogReaderData()">
+              <i class="fa-solid fa-file-export"></i> Exportar
+            </button>
+            <button class="blog-tool-btn" type="button" onclick="document.getElementById('blogReaderImport')?.click()">
+              <i class="fa-solid fa-file-import"></i> Importar
+            </button>
+            <input type="file" id="blogReaderImport" accept="application/json" hidden onchange="importBlogReaderData(event)">
+          </div>
         </article>
 
         <article class="weekly-plan-card">

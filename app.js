@@ -65,6 +65,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const dailyPlanBadge = document.getElementById('daily-plan-badge');
     const dailyPlanSubtitle = document.getElementById('daily-plan-subtitle');
     const dailyPlanProgressFill = document.getElementById('daily-plan-progress-fill');
+    const operationalHealthCard = document.getElementById('operational-health-card');
+    const healthScoreRing = document.getElementById('health-score-ring');
+    const healthScoreValue = document.getElementById('health-score-value');
+    const healthStatusBadge = document.getElementById('health-status-badge');
+    const healthSummaryText = document.getElementById('health-summary-text');
+    const healthMetricsGrid = document.getElementById('health-metrics-grid');
+    const dataQualityCard = document.getElementById('data-quality-card');
+    const dataQualityBadge = document.getElementById('data-quality-badge');
+    const dataQualitySummary = document.getElementById('data-quality-summary');
+    const dataQualityGrid = document.getElementById('data-quality-grid');
     const closingForecastCard = document.getElementById('closing-forecast-card');
     const closingForecastMain = document.getElementById('closing-forecast-main');
     const closingForecastSubtitle = document.getElementById('closing-forecast-subtitle');
@@ -2149,6 +2159,8 @@ document.addEventListener('DOMContentLoaded', () => {
         updateStockAlertSnapshot();
         updateActionCenter(totalRevenue, totalExpenses, totalSalesCount, netBalance);
         updateDailyPlan(totalRevenue, totalExpenses, totalSalesCount, netBalance);
+        updateOperationalHealth(totalRevenue, totalExpenses, totalSalesCount, netBalance);
+        updateDataQualityAuditor();
         updateClosingForecast(totalRevenue, totalExpenses, totalSalesCount, netBalance);
 
         // Animated counter for KPI numbers
@@ -2157,6 +2169,201 @@ document.addEventListener('DOMContentLoaded', () => {
         animateKPICounter(kpiExpenses, totalExpenses, true);
         animateKPICounter(kpiBalance, netBalance, true);
     };
+
+    const createHealthMetric = ({ tone, icon, label, value, detail, action }) => `
+        <button type="button" class="health-metric" data-tone="${tone}" data-action="${action}">
+            <span class="health-metric-icon"><i class="fa-solid ${icon}"></i></span>
+            <span>
+                <strong>${label}</strong>
+                <em>${value}</em>
+                <small>${detail}</small>
+            </span>
+        </button>
+    `;
+
+    const updateOperationalHealth = (totalRevenue = 0, totalExpenses = 0, totalSalesCount = 0, netBalance = 0) => {
+        if (!operationalHealthCard || !healthScoreRing || !healthScoreValue || !healthStatusBadge || !healthSummaryText || !healthMetricsGrid) return;
+
+        const { debtClients, totalDebt } = buildClientSummary();
+        const trackedStock = productCatalog.filter(p => p.stock !== undefined && p.stock !== null);
+        const stockIssues = trackedStock.filter(p => Number(p.stock) <= 5);
+        const progress = dailyGoal > 0 ? (totalRevenue / dailyGoal) * 100 : 0;
+        const expenseRatio = totalRevenue > 0 ? (totalExpenses / totalRevenue) * 100 : (totalExpenses > 0 ? 100 : 0);
+        const lastBackupDate = localStorage.getItem('lastBackupDate');
+        const daysSinceBackup = lastBackupDate
+            ? Math.floor((Date.now() - new Date(lastBackupDate).getTime()) / 86400000)
+            : Infinity;
+
+        const metrics = [
+            {
+                key: 'sales',
+                label: 'Ventas',
+                action: 'sale',
+                icon: 'fa-bullseye',
+                score: totalSalesCount === 0 ? 25 : progress >= 100 ? 100 : progress >= 70 ? 78 : 52,
+                value: totalSalesCount === 0 ? 'Sin ventas' : `${Math.min(progress, 100).toFixed(0)}% meta`,
+                detail: totalSalesCount === 0 ? 'Carga la primera venta para activar el tablero.' : `Ingresos de hoy: ${formatCurrency(totalRevenue)}.`,
+                tone: totalSalesCount === 0 ? 'warning' : progress >= 100 ? 'success' : progress >= 70 ? 'neutral' : 'warning'
+            },
+            {
+                key: 'cash',
+                label: 'Caja',
+                action: 'close',
+                icon: 'fa-cash-register',
+                score: netBalance < 0 ? 20 : expenseRatio >= 55 ? 48 : expenseRatio >= 35 ? 72 : 95,
+                value: formatCurrency(netBalance),
+                detail: netBalance < 0 ? 'Balance negativo: revisa gastos o base de caja.' : `Gastos: ${expenseRatio.toFixed(0)}% de ingresos.`,
+                tone: netBalance < 0 ? 'danger' : expenseRatio >= 55 ? 'warning' : 'success'
+            },
+            {
+                key: 'clients',
+                label: 'Cobros',
+                action: 'clients',
+                icon: 'fa-hand-holding-dollar',
+                score: totalDebt <= 0 ? 100 : debtClients.length >= 4 ? 45 : 68,
+                value: totalDebt <= 0 ? 'Al dia' : formatCurrency(totalDebt),
+                detail: totalDebt <= 0 ? 'No hay saldos pendientes registrados.' : `${debtClients.length} cliente${debtClients.length === 1 ? '' : 's'} con deuda.`,
+                tone: totalDebt <= 0 ? 'success' : debtClients.length >= 4 ? 'danger' : 'warning'
+            },
+            {
+                key: 'stock',
+                label: 'Stock',
+                action: 'inventory',
+                icon: 'fa-boxes-stacked',
+                score: trackedStock.length === 0 ? 55 : stockIssues.length === 0 ? 100 : stockIssues.length >= 4 ? 42 : 70,
+                value: trackedStock.length === 0 ? 'Sin control' : stockIssues.length === 0 ? 'Saludable' : `${stockIssues.length} alerta${stockIssues.length === 1 ? '' : 's'}`,
+                detail: trackedStock.length === 0 ? 'Carga stock para evitar quiebres.' : `${trackedStock.length} producto${trackedStock.length === 1 ? '' : 's'} monitoreado${trackedStock.length === 1 ? '' : 's'}.`,
+                tone: trackedStock.length === 0 ? 'warning' : stockIssues.length === 0 ? 'success' : stockIssues.length >= 4 ? 'danger' : 'warning'
+            },
+            {
+                key: 'backup',
+                label: 'Respaldo',
+                action: 'config',
+                icon: 'fa-cloud-arrow-down',
+                score: daysSinceBackup <= 7 ? 100 : daysSinceBackup <= 14 ? 68 : 35,
+                value: daysSinceBackup === Infinity ? 'Sin copia' : daysSinceBackup <= 0 ? 'Hoy' : `${daysSinceBackup} d`,
+                detail: daysSinceBackup <= 7 ? 'Copia reciente registrada.' : 'Descarga una copia de seguridad.',
+                tone: daysSinceBackup <= 7 ? 'success' : daysSinceBackup <= 14 ? 'warning' : 'danger'
+            }
+        ];
+
+        const score = Math.max(0, Math.min(100, Math.round(metrics.reduce((sum, item) => sum + item.score, 0) / metrics.length)));
+        const urgent = metrics.filter(item => item.tone === 'danger');
+        const warning = metrics.filter(item => item.tone === 'warning');
+        const priority = urgent[0] || warning[0] || metrics.find(item => item.key === 'sales');
+        const tone = score >= 82 ? 'success' : score >= 58 ? 'warning' : 'danger';
+
+        operationalHealthCard.dataset.tone = tone;
+        healthScoreRing.style.setProperty('--score', score);
+        healthScoreValue.textContent = score;
+        healthStatusBadge.textContent = tone === 'success' ? 'Estable' : tone === 'warning' ? 'Atencion' : 'Critico';
+        healthSummaryText.textContent = urgent.length
+            ? `Prioridad: ${priority.label}. ${priority.detail}`
+            : warning.length
+                ? `Hay ${warning.length} punto${warning.length === 1 ? '' : 's'} para revisar antes del cierre.`
+                : 'Operacion saludable: ventas, caja, cobros, stock y respaldo estan bajo control.';
+        healthMetricsGrid.innerHTML = metrics.map(createHealthMetric).join('');
+    };
+
+    if (healthMetricsGrid) {
+        healthMetricsGrid.addEventListener('click', (e) => {
+            const item = e.target.closest('.health-metric');
+            if (!item) return;
+            const action = item.dataset.action;
+            if (action === 'sale') focusTransactionForm('income');
+            if (action === 'close' && btnCloseRegister) btnCloseRegister.click();
+            if (action === 'clients') switchView('nav-clientes');
+            if (action === 'inventory') switchView('nav-inventario');
+            if (action === 'config') switchView('nav-config', 'Configuracion de Empresa');
+        });
+    }
+
+    const createDataQualityItem = ({ tone, icon, label, value, detail, action }) => `
+        <button type="button" class="data-quality-item" data-tone="${tone}" data-action="${action}">
+            <span class="data-quality-icon"><i class="fa-solid ${icon}"></i></span>
+            <span class="data-quality-copy">
+                <strong>${label}</strong>
+                <em>${value}</em>
+                <small>${detail}</small>
+            </span>
+        </button>
+    `;
+
+    const getQualityTone = (count, mediumAt = 1, dangerAt = 4) => {
+        if (count >= dangerAt) return 'danger';
+        if (count >= mediumAt) return 'warning';
+        return 'success';
+    };
+
+    const updateDataQualityAuditor = () => {
+        if (!dataQualityCard || !dataQualityBadge || !dataQualitySummary || !dataQualityGrid) return;
+
+        const allData = [...historyData, ...sales];
+        const incomes = allData.filter(s => s.type !== 'expense');
+        const todayExpenses = sales.filter(s => s.type === 'expense');
+        const salesWithoutClient = sales.filter(s => s.type !== 'expense' && (!s.customerName || !s.customerName.trim()));
+        const uncategorized = allData.filter(s => !s.category || s.category === 'Sin categoria' || s.category === 'Sin categoría');
+        const expensesWithoutNotes = todayExpenses.filter(s => !s.notes || !s.notes.trim());
+        const productsWithoutStock = productCatalog.filter(p => p.stock === undefined || p.stock === null || p.stock === '');
+
+        const totalChecks = Math.max(incomes.length + allData.length + todayExpenses.length + productCatalog.length, 1);
+        const issues = salesWithoutClient.length + uncategorized.length + expensesWithoutNotes.length + productsWithoutStock.length;
+        const score = Math.max(0, Math.round(100 - ((issues / totalChecks) * 100)));
+        const tone = score >= 88 ? 'success' : score >= 68 ? 'warning' : 'danger';
+
+        const items = [
+            {
+                tone: getQualityTone(salesWithoutClient.length, 1, 5),
+                icon: 'fa-user-tag',
+                label: 'Clientes',
+                value: salesWithoutClient.length ? `${salesWithoutClient.length} sin nombre` : 'Completos',
+                detail: salesWithoutClient.length ? 'Agrega cliente para mejorar seguimiento y ranking.' : 'Las ventas de hoy tienen cliente asociado.',
+                action: 'history'
+            },
+            {
+                tone: getQualityTone(uncategorized.length, 1, 8),
+                icon: 'fa-tags',
+                label: 'Categorias',
+                value: uncategorized.length ? `${uncategorized.length} pendiente${uncategorized.length === 1 ? '' : 's'}` : 'Ordenadas',
+                detail: uncategorized.length ? 'Clasifica movimientos para reportes mas claros.' : 'Los movimientos tienen categoria util.',
+                action: 'history'
+            },
+            {
+                tone: getQualityTone(expensesWithoutNotes.length, 1, 4),
+                icon: 'fa-note-sticky',
+                label: 'Gastos',
+                value: expensesWithoutNotes.length ? `${expensesWithoutNotes.length} sin nota` : 'Explicados',
+                detail: expensesWithoutNotes.length ? 'Anota motivo para entender cada salida.' : 'Los gastos de hoy tienen contexto.',
+                action: 'expense'
+            },
+            {
+                tone: getQualityTone(productsWithoutStock.length, 1, 6),
+                icon: 'fa-box-open',
+                label: 'Inventario',
+                value: productsWithoutStock.length ? `${productsWithoutStock.length} sin stock` : 'Controlado',
+                detail: productsWithoutStock.length ? 'Completa stock para activar alertas confiables.' : 'El catalogo tiene stock cargado.',
+                action: 'inventory'
+            }
+        ];
+
+        dataQualityCard.dataset.tone = tone;
+        dataQualityBadge.textContent = `${score}% confiable`;
+        dataQualitySummary.textContent = issues
+            ? `${issues} dato${issues === 1 ? '' : 's'} incompleto${issues === 1 ? '' : 's'} pueden ensuciar reportes, cobros o stock.`
+            : 'Los datos clave estan completos para tomar decisiones y cerrar el dia con confianza.';
+        dataQualityGrid.innerHTML = items.map(createDataQualityItem).join('');
+    };
+
+    if (dataQualityGrid) {
+        dataQualityGrid.addEventListener('click', (e) => {
+            const item = e.target.closest('.data-quality-item');
+            if (!item) return;
+            const action = item.dataset.action;
+            if (action === 'history') switchView('nav-historial');
+            if (action === 'inventory') switchView('nav-inventario');
+            if (action === 'expense') focusTransactionForm('expense');
+        });
+    }
 
     const createActionItem = ({ tone = 'neutral', icon = 'fa-circle-info', title, detail, label, action }) => `
         <button type="button" class="action-center-item" data-action="${action}" data-tone="${tone}">
