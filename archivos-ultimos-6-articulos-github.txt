@@ -1,0 +1,16 @@
+﻿Archivos que deben subirse a GitHub para que aparezcan estos ultimos 6 articulos:
+
+blog.html
+sitemap.xml
+Blog htmls\conciliacion-transferencias-pendientes.html
+Blog htmls\gestion-productos-danados.html
+Blog htmls\seguimiento-clientes-inactivos.html
+Blog htmls\control-retiros-en-local.html
+Blog htmls\planificacion-stock-temporada.html
+Blog htmls\orden-gastos-envio.html
+assets\Blog imagenes\conciliacion-transferencias-pendientes.png
+assets\Blog imagenes\gestion-productos-danados.png
+assets\Blog imagenes\seguimiento-clientes-inactivos.png
+assets\Blog imagenes\control-retiros-en-local.png
+assets\Blog imagenes\planificacion-stock-temporada.png
+assets\Blog imagenes\orden-gastos-envio.png
