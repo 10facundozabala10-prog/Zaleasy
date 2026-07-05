@@ -1,0 +1,16 @@
+﻿Archivos que deben subirse a GitHub para que aparezcan los ultimos 6 articulos:
+
+blog.html
+sitemap.xml
+Blog htmls\control-devoluciones-proveedor.html
+Blog htmls\clientes-mayoristas-listas-precio.html
+Blog htmls\seguimiento-cuentas-corrientes.html
+Blog htmls\orden-pedidos-sucursal.html
+Blog htmls\control-promesas-pago.html
+Blog htmls\auditoria-stock-fin-semana.html
+assets\Blog imagenes\control-devoluciones-proveedor.png
+assets\Blog imagenes\clientes-mayoristas-listas-precio.png
+assets\Blog imagenes\seguimiento-cuentas-corrientes.png
+assets\Blog imagenes\orden-pedidos-sucursal.png
+assets\Blog imagenes\control-promesas-pago.png
+assets\Blog imagenes\auditoria-stock-fin-semana.png
