@@ -65,6 +65,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const dailyPlanBadge = document.getElementById('daily-plan-badge');
     const dailyPlanSubtitle = document.getElementById('daily-plan-subtitle');
     const dailyPlanProgressFill = document.getElementById('daily-plan-progress-fill');
+    const dueRadarCard = document.getElementById('due-radar-card');
+    const dueRadarSummary = document.getElementById('due-radar-summary');
+    const dueRadarBadge = document.getElementById('due-radar-badge');
+    const dueRadarTimeline = document.getElementById('due-radar-timeline');
+    const dueRadarEmpty = document.getElementById('due-radar-empty');
+    const dueRadarAddFollowup = document.getElementById('due-radar-add-followup');
+    const dueRadarAddRecurring = document.getElementById('due-radar-add-recurring');
     const operationalHealthCard = document.getElementById('operational-health-card');
     const healthScoreRing = document.getElementById('health-score-ring');
     const healthScoreValue = document.getElementById('health-score-value');
@@ -1123,6 +1130,7 @@ document.addEventListener('DOMContentLoaded', () => {
             saveFollowUps();
             followupForm.reset();
             renderFollowUps();
+            updateDueRadar();
             updateKPIs();
             updateDataHealthPanel();
             showToast('Seguimiento agregado');
@@ -1144,6 +1152,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             saveFollowUps();
             renderFollowUps();
+            updateDueRadar();
             updateKPIs();
             updateDataHealthPanel();
         });
@@ -1532,6 +1541,7 @@ document.addEventListener('DOMContentLoaded', () => {
             saveRecurringExpenses();
             recurringForm.reset();
             renderRecurringExpenses();
+            updateDueRadar();
             updateKPIs();
             showToast('Gasto recurrente agregado');
         });
@@ -1558,6 +1568,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             saveRecurringExpenses();
             renderRecurringExpenses();
+            updateDueRadar();
             updateKPIs();
         });
     };
@@ -2159,6 +2170,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateStockAlertSnapshot();
         updateActionCenter(totalRevenue, totalExpenses, totalSalesCount, netBalance);
         updateDailyPlan(totalRevenue, totalExpenses, totalSalesCount, netBalance);
+        updateDueRadar();
         updateOperationalHealth(totalRevenue, totalExpenses, totalSalesCount, netBalance);
         updateDataQualityAuditor();
         updateClosingForecast(totalRevenue, totalExpenses, totalSalesCount, netBalance);
@@ -2705,6 +2717,145 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    const formatDueRadarDate = (dateKey) => {
+        if (!dateKey) return 'Sin fecha';
+        const todayKey = new Date().toISOString().split('T')[0];
+        if (dateKey < todayKey) return 'Vencido';
+        if (dateKey === todayKey) return 'Hoy';
+        const date = new Date(dateKey + 'T00:00:00');
+        return date.toLocaleDateString('es-ES', { day: '2-digit', month: 'short' });
+    };
+
+    const buildDueRadarItems = () => {
+        const todayKey = new Date().toISOString().split('T')[0];
+        const maxDate = addDays(new Date(todayKey + 'T00:00:00'), 7);
+        const followupItems = followUps
+            .filter(item => !item.done)
+            .filter(item => !item.dueDate || item.dueDate <= maxDate)
+            .map(item => ({
+                id: item.id,
+                kind: 'followup',
+                date: item.dueDate || todayKey,
+                tone: item.dueDate && item.dueDate < todayKey ? 'danger' : item.dueDate === todayKey ? 'warning' : 'neutral',
+                icon: followUpTypeIcon(item.type),
+                title: item.title,
+                meta: `${followUpTypeLabel(item.type)} · ${formatDueRadarDate(item.dueDate)}`,
+                actionLabel: 'Listo'
+            }));
+
+        const recurringItems = recurringExpenses
+            .filter(item => !item.archived)
+            .filter(item => !item.nextDate || item.nextDate <= maxDate)
+            .map(item => ({
+                id: item.id,
+                kind: 'recurring',
+                date: item.nextDate || todayKey,
+                tone: !item.nextDate || item.nextDate <= todayKey ? 'warning' : 'neutral',
+                icon: 'fa-repeat',
+                title: item.name,
+                meta: `${formatCurrency(item.amount)} · ${recurringFrequencyLabel(item.frequency)} · ${formatDueRadarDate(item.nextDate)}`,
+                actionLabel: 'Registrar'
+            }));
+
+        return [...followupItems, ...recurringItems]
+            .sort((a, b) => {
+                const toneWeight = { danger: 0, warning: 1, neutral: 2 };
+                return (toneWeight[a.tone] - toneWeight[b.tone]) || String(a.date).localeCompare(String(b.date));
+            });
+    };
+
+    const createDueRadarItem = (item) => `
+        <div class="due-radar-item" data-tone="${item.tone}" data-kind="${item.kind}" data-id="${item.id}">
+            <span class="due-radar-icon"><i class="fa-solid ${item.icon}"></i></span>
+            <span class="due-radar-copy">
+                <strong>${item.title}</strong>
+                <small>${item.meta}</small>
+            </span>
+            <button type="button" class="btn-icon due-radar-action" title="${item.actionLabel}">
+                <i class="fa-solid ${item.kind === 'recurring' ? 'fa-cash-register' : 'fa-check'}"></i>
+            </button>
+        </div>
+    `;
+
+    const updateDueRadar = () => {
+        if (!dueRadarCard || !dueRadarTimeline || !dueRadarEmpty || !dueRadarBadge || !dueRadarSummary) return;
+
+        const items = buildDueRadarItems();
+        const urgentCount = items.filter(item => item.tone === 'danger' || item.tone === 'warning').length;
+        const dueTodayCount = items.filter(item => item.date === new Date().toISOString().split('T')[0]).length;
+        dueRadarBadge.textContent = `${urgentCount} ${urgentCount === 1 ? 'urgente' : 'urgentes'}`;
+
+        if (items.length === 0) {
+            dueRadarCard.dataset.state = 'clear';
+            dueRadarSummary.textContent = 'No hay vencimientos cercanos en los proximos 7 dias.';
+            dueRadarTimeline.style.display = 'none';
+            dueRadarEmpty.style.display = 'flex';
+            return;
+        }
+
+        dueRadarCard.dataset.state = items.some(item => item.tone === 'danger') ? 'danger' : urgentCount > 0 ? 'warning' : 'active';
+        dueRadarSummary.textContent = urgentCount > 0
+            ? `${urgentCount} vencimiento${urgentCount === 1 ? '' : 's'} requiere${urgentCount === 1 ? '' : 'n'} accion.`
+            : `${items.length} pendiente${items.length === 1 ? '' : 's'} proximo${items.length === 1 ? '' : 's'} bajo control.`;
+        if (dueTodayCount > 0 && urgentCount > 0) {
+            dueRadarSummary.textContent += ` ${dueTodayCount} para hoy.`;
+        }
+
+        dueRadarEmpty.style.display = 'none';
+        dueRadarTimeline.style.display = 'grid';
+        dueRadarTimeline.innerHTML = items.slice(0, 6).map(createDueRadarItem).join('');
+    };
+
+    dueRadarTimeline?.addEventListener('click', (e) => {
+        const actionBtn = e.target.closest('.due-radar-action');
+        const itemEl = e.target.closest('.due-radar-item');
+        if (!itemEl) return;
+
+        const kind = itemEl.dataset.kind;
+        const id = parseInt(itemEl.dataset.id || '0');
+        if (!id) return;
+
+        if (!actionBtn) {
+            switchView('nav-dashboard');
+            document.getElementById(kind === 'recurring' ? 'recurring-card' : 'followups-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+        }
+
+        if (kind === 'followup') {
+            followUps = followUps.map(item => item.id === id ? { ...item, done: true, completedAt: Date.now() } : item);
+            saveFollowUps();
+            renderFollowUps();
+            showToast('Seguimiento completado');
+        }
+
+        if (kind === 'recurring') {
+            const item = recurringExpenses.find(expense => expense.id === id);
+            if (item && registerRecurringExpense(item)) {
+                recurringExpenses = recurringExpenses.map(expense => expense.id === id
+                    ? { ...expense, nextDate: nextRecurringDate(expense.nextDate, expense.frequency), lastPreparedAt: Date.now() }
+                    : expense
+                );
+                saveRecurringExpenses();
+                renderRecurringExpenses();
+            }
+        }
+
+        updateDueRadar();
+        updateKPIs();
+    });
+
+    dueRadarAddFollowup?.addEventListener('click', () => {
+        switchView('nav-dashboard');
+        document.getElementById('followups-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => followupTitleInput?.focus(), 250);
+    });
+
+    dueRadarAddRecurring?.addEventListener('click', () => {
+        switchView('nav-dashboard');
+        document.getElementById('recurring-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => recurringNameInput?.focus(), 250);
+    });
 
     const updateClosingForecast = (totalRevenue = 0, totalExpenses = 0, totalSalesCount = 0, netBalance = 0) => {
         if (!closingForecastCard || !closingForecastMain || !closingForecastProjected || !closingForecastGap || !closingForecastPace || !closingForecastBalance || !closingForecastAdvice || !closingForecastStatus || !closingForecastSubtitle) return;

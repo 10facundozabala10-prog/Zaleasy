@@ -446,6 +446,31 @@
                         <div class="daily-plan-list" id="daily-plan-list"></div>
                     </div>
 
+                    <!-- Due Radar -->
+                    <div class="card due-radar-card" id="due-radar-card">
+                        <div class="card-header">
+                            <div>
+                                <h2><i class="fa-solid fa-tower-broadcast"></i> Radar de vencimientos</h2>
+                                <p id="due-radar-summary">Anticipa seguimientos, cobros y gastos antes de que se acumulen.</p>
+                            </div>
+                            <span class="badge" id="due-radar-badge">0 urgentes</span>
+                        </div>
+                        <div class="due-radar-timeline" id="due-radar-timeline"></div>
+                        <div class="due-radar-empty" id="due-radar-empty">
+                            <i class="fa-regular fa-circle-check"></i>
+                            <p>Sin vencimientos cercanos.</p>
+                            <span>Agrega seguimientos o gastos recurrentes para verlos ordenados por prioridad.</span>
+                        </div>
+                        <div class="due-radar-actions">
+                            <button type="button" class="btn btn-outline" id="due-radar-add-followup">
+                                <i class="fa-solid fa-calendar-plus"></i> Nuevo seguimiento
+                            </button>
+                            <button type="button" class="btn btn-outline" id="due-radar-add-recurring">
+                                <i class="fa-solid fa-receipt"></i> Gasto recurrente
+                            </button>
+                        </div>
+                    </div>
+
                     <!-- Operational Health -->
                     <div class="card operational-health-card" id="operational-health-card">
                         <div class="operational-health-main">
