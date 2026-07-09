@@ -3047,6 +3047,36 @@
       document.getElementById('blogArticles')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
+    function setupDailyFeaturedArticle() {
+      const featured = document.getElementById('dailyFeaturedArticle');
+      const title = document.getElementById('dailyFeaturedTitle');
+      const excerpt = document.getElementById('dailyFeaturedExcerpt');
+      const link = document.getElementById('dailyFeaturedLink');
+      const meta = document.getElementById('dailyFeaturedMeta');
+      const cards = Array.from(document.querySelectorAll('.blog-card:not(.coming-soon)'));
+      if (!featured || !title || !excerpt || !link || !cards.length) return;
+
+      const todayKey = new Date().toLocaleDateString('en-CA');
+      let dayNumber = Math.floor(new Date(`${todayKey}T00:00:00`).getTime() / 86400000);
+      if (!Number.isFinite(dayNumber)) dayNumber = Math.floor(Date.now() / 86400000);
+      const selected = cards[dayNumber % cards.length];
+      const selectedTitle = selected.querySelector('h3')?.textContent?.trim();
+      const selectedExcerpt = selected.querySelector('p')?.textContent?.trim();
+      const selectedLink = selected.querySelector('a[href]')?.getAttribute('href');
+      const imageStyle = selected.querySelector('.blog-img')?.getAttribute('style') || '';
+      const imageMatch = imageStyle.match(/url\((['"]?)(.*?)\1\)/i);
+      const minutesMatch = selected.textContent.match(/(\d+)\s*min/i);
+
+      if (selectedTitle) title.textContent = selectedTitle;
+      if (selectedExcerpt) excerpt.textContent = selectedExcerpt;
+      if (selectedLink) link.href = selectedLink;
+      if (imageMatch?.[2]) featured.style.background = `url('${imageMatch[2]}') center/cover`;
+      if (meta) {
+        const minutes = minutesMatch ? minutesMatch[1] : '8';
+        meta.innerHTML = `<i class="fa-regular fa-clock" style="margin-right: 5px;"></i> ${minutes} min lectura&nbsp;&nbsp;<i class="fa-solid fa-user-pen" style="margin-right: 5px;"></i> Facundo L. Zabala`;
+      }
+    }
+
     // Init count on load
     window.addEventListener('DOMContentLoaded', () => {
       const total = document.querySelectorAll('.blog-card:not(.coming-soon)').length;
@@ -3061,6 +3091,7 @@
       setupSavedArticles();
       setupReadProgress();
       setupBlogFocusMode();
+      setupDailyFeaturedArticle();
       applyBlogFilters();
 
       // ── Scroll-reveal with IntersectionObserver ──
@@ -3183,7 +3214,7 @@
   </div>
   <!-- Featured Article Banner -->
   <section class="container" style="padding-top: 3rem;">
-    <div class="featured-article" style="
+    <div class="featured-article" id="dailyFeaturedArticle" style="
       background: url('assets/Blog imagenes/oferta-irresistible.png') center/cover;
       border-radius: 24px;
       overflow: hidden;
@@ -3209,17 +3240,17 @@
           text-transform: uppercase; letter-spacing: 0.08em;
           display: inline-block; margin-bottom: 1.2rem;
         "><i class="fa-solid fa-fire" style="margin-right: 6px;"></i>Art&iacute;culo Destacado</span>
-        <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 1rem; line-height: 1.3; color: white;">
+        <h2 id="dailyFeaturedTitle" style="font-size: 2rem; font-weight: 800; margin-bottom: 1rem; line-height: 1.3; color: white;">
           Embudos de Venta: C&oacute;mo Automatizar tus Ventas y Generar Ingresos Mientras Duermes
         </h2>
-        <p style="color: rgba(255,255,255,0.7); margin-bottom: 1.8rem; font-size: 1.05rem; line-height: 1.6;">
+        <p id="dailyFeaturedExcerpt" style="color: rgba(255,255,255,0.7); margin-bottom: 1.8rem; font-size: 1.05rem; line-height: 1.6;">
           Descubre el sistema m&aacute;s poderoso de cualquier negocio digital. Las 4 etapas del embudo y el embudo m&iacute;nimo viable para empezar hoy.
         </p>
         <div style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;">
-          <a href="Blog htmls/embudos-de-venta.html" class="btn btn-primary" style="padding: 0.8rem 2rem; border-radius: 12px; font-size: 1rem;">
+          <a id="dailyFeaturedLink" href="Blog htmls/embudos-de-venta.html" class="btn btn-primary" style="padding: 0.8rem 2rem; border-radius: 12px; font-size: 1rem;">
             Leer ahora <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>
           </a>
-          <span style="color: rgba(255,255,255,0.5); font-size: 0.9rem;">
+          <span id="dailyFeaturedMeta" style="color: rgba(255,255,255,0.5); font-size: 0.9rem;">
             <i class="fa-regular fa-clock" style="margin-right: 5px;"></i> 6 min lectura
             &nbsp;&nbsp;
             <i class="fa-solid fa-user-pen" style="margin-right: 5px;"></i> Facundo L. Zabala
