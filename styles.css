@@ -3210,13 +3210,18 @@ select:focus {
     grid-column: 1 / -1;
 }
 
-#view-dashboard .daily-pulse-card {
+#view-dashboard .smart-shortcuts-card {
     order: 2;
     grid-column: 1 / -1;
 }
 
-#view-dashboard .form-section {
+#view-dashboard .daily-pulse-card {
     order: 3;
+    grid-column: 1 / -1;
+}
+
+#view-dashboard .form-section {
+    order: 4;
     grid-column: 1 / span 5;
     position: sticky;
     top: calc(var(--header-height) + 1rem);
@@ -3224,7 +3229,7 @@ select:focus {
 }
 
 #view-dashboard .list-section {
-    order: 4;
+    order: 5;
     grid-column: 6 / -1;
     min-height: 620px;
 }
@@ -3234,57 +3239,57 @@ select:focus {
 }
 
 #view-dashboard .secondary-metrics-strip {
-    order: 5;
+    order: 6;
     grid-column: 1 / -1;
 }
 
 #view-dashboard .setup-checklist-card {
-    order: 6;
+    order: 7;
     grid-column: 1 / span 4;
     height: 100%;
 }
 
 #view-dashboard .receivables-card {
-    order: 7;
+    order: 8;
     grid-column: 5 / span 4;
     height: 100%;
 }
 
 #view-dashboard .stock-alert-card {
-    order: 8;
+    order: 9;
     grid-column: 9 / -1;
     height: 100%;
 }
 
 #view-dashboard .action-center-card {
-    order: 9;
-    grid-column: 1 / -1;
-}
-
-#view-dashboard .daily-plan-card {
     order: 10;
     grid-column: 1 / -1;
 }
 
-#view-dashboard .due-radar-card {
+#view-dashboard .daily-plan-card {
     order: 11;
+    grid-column: 1 / -1;
+}
+
+#view-dashboard .due-radar-card {
+    order: 12;
     grid-column: 1 / -1;
     width: 100%;
     min-width: 0;
 }
 
 #view-dashboard .operational-health-card {
-    order: 12;
-    grid-column: 1 / -1;
-}
-
-#view-dashboard .data-quality-card {
     order: 13;
     grid-column: 1 / -1;
 }
 
-#view-dashboard .closing-forecast-card {
+#view-dashboard .data-quality-card {
     order: 14;
+    grid-column: 1 / -1;
+}
+
+#view-dashboard .closing-forecast-card {
+    order: 15;
     grid-column: 1 / -1;
 }
 
@@ -4071,6 +4076,162 @@ select:focus {
 .daily-plan-item[data-done="true"] .btn-daily-plan-done {
     opacity: 0.45;
     pointer-events: none;
+}
+
+.smart-shortcuts-card {
+    padding: 1.1rem 1.25rem;
+    border-color: rgba(0, 203, 164, 0.18);
+    background:
+        linear-gradient(135deg, rgba(0, 203, 164, 0.08), rgba(124, 111, 240, 0.06)),
+        var(--bg-card);
+    display: grid;
+    grid-template-columns: minmax(230px, 0.8fr) minmax(0, 1.2fr);
+    gap: 1rem;
+    align-items: center;
+}
+
+.smart-shortcuts-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.8rem;
+    min-width: 0;
+}
+
+.smart-shortcuts-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--success);
+    font-weight: 850;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.45rem;
+}
+
+.smart-shortcuts-head h2 {
+    margin: 0 0 0.35rem;
+    color: var(--text-main);
+    font-size: 1.1rem;
+    line-height: 1.25;
+}
+
+.smart-shortcuts-head p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    line-height: 1.45;
+}
+
+.smart-shortcuts-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 0.65rem;
+}
+
+.smart-shortcut {
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    background: rgba(255, 255, 255, 0.045);
+    color: var(--text-main);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem;
+    min-height: 94px;
+    display: grid;
+    align-content: start;
+    gap: 0.5rem;
+    text-align: left;
+    cursor: pointer;
+    font: inherit;
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.smart-shortcut:hover,
+.smart-shortcut:focus-visible {
+    transform: translateY(-2px);
+    border-color: rgba(0, 203, 164, 0.38);
+    background: rgba(255, 255, 255, 0.07);
+    outline: none;
+}
+
+.smart-shortcut[data-tone="danger"] {
+    border-color: rgba(232, 67, 147, 0.28);
+}
+
+.smart-shortcut[data-tone="warning"] {
+    border-color: rgba(255, 214, 110, 0.28);
+}
+
+.smart-shortcut[data-tone="success"] {
+    border-color: rgba(0, 203, 164, 0.28);
+}
+
+.smart-shortcut-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 203, 164, 0.12);
+    color: var(--success);
+}
+
+.smart-shortcut[data-tone="danger"] .smart-shortcut-icon {
+    background: var(--danger-light);
+    color: var(--danger);
+}
+
+.smart-shortcut[data-tone="warning"] .smart-shortcut-icon {
+    background: var(--warning-light);
+    color: var(--warning);
+}
+
+.smart-shortcut strong,
+.smart-shortcut small {
+    display: block;
+}
+
+.smart-shortcut strong {
+    font-size: 0.88rem;
+    line-height: 1.2;
+}
+
+.smart-shortcut small {
+    margin-top: 0.18rem;
+    color: var(--text-muted);
+    font-size: 0.74rem;
+    line-height: 1.25;
+}
+
+@media (max-width: 1180px) {
+    .smart-shortcuts-card {
+        grid-template-columns: 1fr;
+        align-items: stretch;
+    }
+
+    .smart-shortcuts-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .smart-shortcuts-card {
+        padding: 1rem;
+    }
+
+    .smart-shortcuts-head {
+        flex-direction: column;
+    }
+
+    .smart-shortcuts-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .smart-shortcut {
+        min-height: 86px;
+        padding: 0.7rem;
+    }
 }
 
 .operational-health-card {

@@ -50,6 +50,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const setupProgressFill = document.getElementById('setup-progress-fill');
     const setupChecklistToggle = document.getElementById('setup-checklist-toggle');
     const setupChecklistGrid = document.getElementById('setup-checklist-grid');
+    const smartShortcutsCard = document.getElementById('smart-shortcuts-card');
+    const smartShortcutsGrid = document.getElementById('smart-shortcuts-grid');
+    const smartShortcutsSummary = document.getElementById('smart-shortcuts-summary');
+    const smartShortcutsBadge = document.getElementById('smart-shortcuts-badge');
     const stockAlertCard = document.getElementById('stock-alert-card');
     const stockAlertBadge = document.getElementById('stock-alert-badge');
     const stockAlertText = document.getElementById('stock-alert-text');
@@ -464,6 +468,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (editCashBaseBtn) editCashBaseBtn.click();
             } else if (stepName === 'sale') {
                 focusTransactionForm('income');
+            }
+        });
+    }
+
+    if (smartShortcutsGrid) {
+        smartShortcutsGrid.addEventListener('click', (e) => {
+            const shortcut = e.target.closest('.smart-shortcut[data-action]');
+            if (!shortcut) return;
+            const action = shortcut.dataset.action;
+
+            if (action === 'sale') focusTransactionForm('income');
+            if (action === 'expense') focusTransactionForm('expense');
+            if (action === 'clients') switchView('nav-clientes');
+            if (action === 'inventory') switchView('nav-inventario');
+            if (action === 'close' && btnCloseRegister) btnCloseRegister.click();
+
+            if (action === 'followups') {
+                switchView('nav-dashboard');
+                const followupsCard = document.getElementById('followups-card');
+                if (followupsCard) followupsCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(() => followupTitleInput?.focus(), 250);
             }
         });
     }
@@ -2107,6 +2132,79 @@ document.addEventListener('DOMContentLoaded', () => {
         renderTrend('kpi-trend-balance', todayBalance, lastBalance);
     };
 
+    const updateSmartShortcuts = (totalRevenue = 0, totalExpenses = 0, totalSalesCount = 0, netBalance = 0) => {
+        if (!smartShortcutsCard || !smartShortcutsGrid || !smartShortcutsSummary || !smartShortcutsBadge) return;
+
+        const { debtClients, totalDebt } = buildClientSummary();
+        const trackedStock = productCatalog.filter(p => p.stock !== undefined && p.stock !== null && p.stock !== '');
+        const lowStock = trackedStock.filter(p => Number(p.stock) <= 5);
+        const followStats = typeof getFollowUpStats === 'function'
+            ? getFollowUpStats()
+            : { overdue: [], dueToday: [] };
+        const recurringStats = typeof getRecurringDueStats === 'function'
+            ? getRecurringDueStats()
+            : { due: [] };
+        const dueTodayTotal = (followStats.dueToday?.length || 0) + (recurringStats.due?.length || 0);
+        const focusCount = [
+            netBalance < 0,
+            totalDebt > 0,
+            lowStock.length > 0,
+            (followStats.overdue?.length || 0) > 0,
+            dueTodayTotal > 0
+        ].filter(Boolean).length;
+
+        smartShortcutsCard.dataset.state = focusCount > 0 ? 'attention' : totalSalesCount > 0 ? 'active' : 'empty';
+        smartShortcutsBadge.textContent = focusCount > 0
+            ? `${focusCount} foco${focusCount === 1 ? '' : 's'}`
+            : totalSalesCount > 0
+                ? 'En marcha'
+                : 'Para empezar';
+        smartShortcutsSummary.textContent = focusCount > 0
+            ? `Hay ${focusCount} punto${focusCount === 1 ? '' : 's'} para atender entre caja, cobros, stock y agenda.`
+            : totalSalesCount > 0
+                ? `${totalSalesCount} venta${totalSalesCount === 1 ? '' : 's'} registrada${totalSalesCount === 1 ? '' : 's'} hoy. Continua cargando movimientos y revisa el cierre.`
+                : 'Empieza registrando una venta, gasto o pendiente para que el tablero priorice acciones.';
+
+        const shortcutModels = {
+            sale: {
+                tone: totalSalesCount > 0 ? 'success' : 'neutral',
+                detail: totalSalesCount > 0 ? `${totalSalesCount} hoy` : 'Registrar ingreso'
+            },
+            expense: {
+                tone: totalExpenses > 0 ? 'warning' : 'neutral',
+                detail: totalExpenses > 0 ? formatCurrency(totalExpenses) : 'Registrar salida'
+            },
+            clients: {
+                tone: totalDebt > 0 ? (debtClients.length >= 4 ? 'danger' : 'warning') : 'success',
+                detail: totalDebt > 0 ? formatCurrency(totalDebt) : 'Sin saldos'
+            },
+            inventory: {
+                tone: lowStock.length > 0 ? (lowStock.length >= 4 ? 'danger' : 'warning') : trackedStock.length > 0 ? 'success' : 'neutral',
+                detail: lowStock.length > 0 ? `${lowStock.length} alerta${lowStock.length === 1 ? '' : 's'}` : trackedStock.length > 0 ? 'Saludable' : 'Cargar stock'
+            },
+            followups: {
+                tone: (followStats.overdue?.length || 0) > 0 ? 'danger' : dueTodayTotal > 0 ? 'warning' : 'success',
+                detail: (followStats.overdue?.length || 0) > 0
+                    ? `${followStats.overdue.length} vencido${followStats.overdue.length === 1 ? '' : 's'}`
+                    : dueTodayTotal > 0
+                        ? `${dueTodayTotal} hoy`
+                        : 'Al dia'
+            },
+            close: {
+                tone: netBalance < 0 ? 'danger' : (totalSalesCount > 0 || totalExpenses > 0) ? 'success' : 'neutral',
+                detail: netBalance < 0 ? 'Revisar' : (totalSalesCount > 0 || totalExpenses > 0) ? formatCurrency(netBalance) : 'Controlar caja'
+            }
+        };
+
+        smartShortcutsGrid.querySelectorAll('.smart-shortcut[data-action]').forEach(shortcut => {
+            const model = shortcutModels[shortcut.dataset.action];
+            if (!model) return;
+            shortcut.dataset.tone = model.tone;
+            const detail = shortcut.querySelector('small');
+            if (detail) detail.textContent = model.detail;
+        });
+    };
+
     // --- KPIs ---
     const updateKPIs = () => {
         let totalRevenue = 0;
@@ -2164,6 +2262,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateSecondaryMetrics();
         updateActivityFeed();
         updateDailyPulse(totalRevenue, totalExpenses, totalSalesCount, netBalance);
+        updateSmartShortcuts(totalRevenue, totalExpenses, totalSalesCount, netBalance);
         updateReceivablesSnapshot();
         updateDataHealthPanel();
         updateSetupChecklist();

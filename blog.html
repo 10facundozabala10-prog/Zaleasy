@@ -2163,6 +2163,143 @@
       transform: translateY(0);
     }
 
+    .blog-problem-routes {
+      padding: 2.4rem 0 0.5rem;
+    }
+
+    .problem-routes-shell {
+      display: grid;
+      grid-template-columns: minmax(240px, 0.78fr) minmax(0, 1.22fr);
+      gap: 1.25rem;
+      align-items: stretch;
+    }
+
+    .problem-routes-intro {
+      border: 1px solid rgba(255,255,255,0.09);
+      background:
+        linear-gradient(135deg, rgba(0,210,211,0.10), rgba(162,155,254,0.08)),
+        rgba(28,29,41,0.88);
+      border-radius: 8px;
+      padding: 1.35rem;
+      display: grid;
+      align-content: space-between;
+      gap: 1.25rem;
+    }
+
+    .problem-routes-intro h2 {
+      margin: 0.45rem 0 0.7rem;
+      color: var(--text-main);
+      font-size: clamp(1.45rem, 3vw, 2rem);
+      line-height: 1.15;
+    }
+
+    .problem-routes-intro p {
+      margin: 0;
+      color: var(--text-muted);
+      line-height: 1.58;
+    }
+
+    .problem-routes-note {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      color: var(--text-muted);
+      font-weight: 750;
+      font-size: 0.88rem;
+    }
+
+    .problem-routes-note i {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,210,211,0.12);
+      color: #00d2d3;
+      flex: 0 0 auto;
+    }
+
+    .problem-route-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.9rem;
+    }
+
+    .problem-route-card {
+      border: 1px solid rgba(255,255,255,0.09);
+      background: rgba(28,29,41,0.82);
+      color: inherit;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: left;
+      cursor: pointer;
+      font: inherit;
+      min-height: 156px;
+      display: grid;
+      align-content: space-between;
+      gap: 0.9rem;
+      transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+    }
+
+    .problem-route-card:hover,
+    .problem-route-card:focus-visible {
+      transform: translateY(-3px);
+      border-color: rgba(0,210,211,0.35);
+      background: rgba(255,255,255,0.07);
+      outline: none;
+    }
+
+    .problem-route-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.07);
+      color: #00d2d3;
+    }
+
+    .problem-route-card strong {
+      display: block;
+      color: var(--text-main);
+      font-size: 0.98rem;
+      line-height: 1.3;
+      margin: 0.65rem 0 0.35rem;
+    }
+
+    .problem-route-card span:not(.problem-route-icon):not(.problem-route-action) {
+      display: block;
+      color: var(--text-muted);
+      font-size: 0.84rem;
+      line-height: 1.45;
+    }
+
+    .problem-route-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: #00d2d3;
+      font-size: 0.82rem;
+      font-weight: 850;
+    }
+
+    .blog-discovery-bar {
+      background: rgba(20,21,32,0.9);
+      position: sticky;
+      top: 72px;
+      z-index: 25;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 16px 34px rgba(0,0,0,0.22);
+    }
+
+    .blog-focus-mode .blog-problem-routes {
+      display: none !important;
+    }
+
     @media (max-width: 980px) {
       .blog-hero-layout {
         grid-template-columns: 1fr;
@@ -2174,6 +2311,14 @@
 
       .learning-paths-shell {
         grid-template-columns: 1fr;
+      }
+
+      .problem-routes-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .problem-route-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
@@ -2205,6 +2350,14 @@
       .learning-path-grid,
       .blog-discovery-bar {
         grid-template-columns: 1fr;
+      }
+
+      .problem-route-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .blog-discovery-bar {
+        position: static;
       }
 
       .blog-sort-control,
@@ -3256,6 +3409,78 @@
             <i class="fa-solid fa-user-pen" style="margin-right: 5px;"></i> Facundo L. Zabala
           </span>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container blog-problem-routes" aria-labelledby="problemRoutesTitle">
+    <div class="problem-routes-shell">
+      <div class="problem-routes-intro">
+        <div>
+          <span class="section-kicker"><i class="fa-solid fa-crosshairs"></i> Rutas por problema</span>
+          <h2 id="problemRoutesTitle">Lee segun lo que necesitas resolver ahora</h2>
+          <p>El blog ya es grande. Estas rutas reducen ruido y te llevan directo a lecturas accionables por ventas, caja, stock, clientes, entregas y equipo.</p>
+        </div>
+        <div class="problem-routes-note">
+          <i class="fa-solid fa-filter"></i>
+          <span>Cada ruta filtra la biblioteca y mantiene el buscador listo para seguir explorando.</span>
+        </div>
+      </div>
+
+      <div class="problem-route-grid" aria-label="Rutas recomendadas del blog">
+        <button class="problem-route-card" type="button" onclick="setBlogRoute('ventas', 'presupuesto')">
+          <span>
+            <span class="problem-route-icon"><i class="fa-solid fa-file-signature"></i></span>
+            <strong>Convertir presupuestos</strong>
+            <span>Seguimiento, vencimientos, objeciones y cierres sin perder oportunidades calientes.</span>
+          </span>
+          <span class="problem-route-action">Ver ruta <i class="fa-solid fa-arrow-right"></i></span>
+        </button>
+
+        <button class="problem-route-card" type="button" onclick="setBlogRoute('finanzas', 'caja')">
+          <span>
+            <span class="problem-route-icon"><i class="fa-solid fa-cash-register"></i></span>
+            <strong>Ordenar caja y cobros</strong>
+            <span>Cierres diarios, comprobantes, saldos, notas de credito y control de efectivo.</span>
+          </span>
+          <span class="problem-route-action">Ver ruta <i class="fa-solid fa-arrow-right"></i></span>
+        </button>
+
+        <button class="problem-route-card" type="button" onclick="setBlogRoute('all', 'stock')">
+          <span>
+            <span class="problem-route-icon"><i class="fa-solid fa-boxes-stacked"></i></span>
+            <strong>Evitar errores de stock</strong>
+            <span>Reservas, exhibicion, sucursales, consignacion y productos sin rotacion.</span>
+          </span>
+          <span class="problem-route-action">Ver ruta <i class="fa-solid fa-arrow-right"></i></span>
+        </button>
+
+        <button class="problem-route-card" type="button" onclick="setBlogRoute('all', 'clientes')">
+          <span>
+            <span class="problem-route-icon"><i class="fa-solid fa-user-check"></i></span>
+            <strong>Cuidar clientes</strong>
+            <span>Reclamos, garantias, clientes sin respuesta, VIP y seguimiento postventa.</span>
+          </span>
+          <span class="problem-route-action">Ver ruta <i class="fa-solid fa-arrow-right"></i></span>
+        </button>
+
+        <button class="problem-route-card" type="button" onclick="setBlogRoute('all', 'entrega')">
+          <span>
+            <span class="problem-route-icon"><i class="fa-solid fa-truck-fast"></i></span>
+            <strong>Controlar entregas</strong>
+            <span>Firmas, zonas, envios demorados, tercerizadas y costos reales de reparto.</span>
+          </span>
+          <span class="problem-route-action">Ver ruta <i class="fa-solid fa-arrow-right"></i></span>
+        </button>
+
+        <button class="problem-route-card" type="button" onclick="setBlogRoute('all', 'equipo')">
+          <span>
+            <span class="problem-route-icon"><i class="fa-solid fa-people-group"></i></span>
+            <strong>Ordenar al equipo</strong>
+            <span>Turnos, horas extra, capacitacion, foco diario y responsabilidades visibles.</span>
+          </span>
+          <span class="problem-route-action">Ver ruta <i class="fa-solid fa-arrow-right"></i></span>
+        </button>
       </div>
     </div>
   </section>
