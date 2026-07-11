@@ -54,6 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const smartShortcutsGrid = document.getElementById('smart-shortcuts-grid');
     const smartShortcutsSummary = document.getElementById('smart-shortcuts-summary');
     const smartShortcutsBadge = document.getElementById('smart-shortcuts-badge');
+    const dashboardViewControls = document.getElementById('dashboard-view-controls');
+    const dashboardViewDescription = document.getElementById('dashboard-view-description');
+    const dashboardViewCount = document.getElementById('dashboard-view-count');
     const stockAlertCard = document.getElementById('stock-alert-card');
     const stockAlertBadge = document.getElementById('stock-alert-badge');
     const stockAlertText = document.getElementById('stock-alert-text');
@@ -236,6 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let dailyPlanDone = JSON.parse(localStorage.getItem(`dailyPlanDone_${new Date().toISOString().split('T')[0]}`) || '{}');
     let closingHour = parseInt(localStorage.getItem('closingHour') || '21', 10);
     let marginSimulator = JSON.parse(localStorage.getItem('marginSimulator') || '{"target":35}');
+    let dashboardViewMode = localStorage.getItem('dashboardViewMode') || 'summary';
 
     // Type Toggle Elements
     const btnTypeIncome = document.getElementById('btn-type-income');
@@ -949,6 +953,86 @@ document.addEventListener('DOMContentLoaded', () => {
         statusEl.style.color = lastBackupDate ? 'var(--success)' : 'var(--warning)';
     };
 
+    const dashboardViewConfig = {
+        summary: {
+            description: 'Lo esencial para registrar movimientos y decidir qu\u00e9 atender hoy.',
+            selectors: [
+                '.kpi-cards', '.smart-shortcuts-card', '.daily-pulse-card',
+                '.form-section', '.list-section', '.secondary-metrics-strip',
+                '.setup-checklist-card', '.action-center-card'
+            ]
+        },
+        operation: {
+            description: 'Caja, clientes, stock y pendientes reunidos para trabajar sin distracciones.',
+            selectors: [
+                '.kpi-cards', '.smart-shortcuts-card', '.form-section', '.list-section',
+                '.receivables-card', '.stock-alert-card', '.action-center-card',
+                '.daily-plan-card', '.due-radar-card', '.notepad-card',
+                '.followups-card', '.recurring-card'
+            ]
+        },
+        analysis: {
+            description: 'Indicadores, tendencias y diagn\u00f3sticos para revisar el rendimiento del negocio.',
+            selectors: [
+                '.kpi-cards', '.secondary-metrics-strip', '.operational-health-card',
+                '.data-quality-card', '.closing-forecast-card', '.charts-row',
+                '#week-vs-lastweek-card', '.margin-simulator-card'
+            ]
+        },
+        all: {
+            description: 'Todas las herramientas del tablero en una sola vista.',
+            selectors: ['*']
+        }
+    };
+
+    const applyDashboardView = (mode, persist = true) => {
+        if (!viewDashboard || !dashboardViewControls) return;
+
+        const normalizedMode = dashboardViewConfig[mode] ? mode : 'summary';
+        const dashboardGrid = viewDashboard.querySelector('.dashboard-grid');
+        if (!dashboardGrid) return;
+
+        const children = Array.from(dashboardGrid.children);
+        const config = dashboardViewConfig[normalizedMode];
+        const visibleItems = normalizedMode === 'all'
+            ? new Set(children)
+            : new Set(config.selectors.flatMap(selector => Array.from(dashboardGrid.querySelectorAll(`:scope > ${selector}`))));
+
+        children.forEach(item => {
+            const isVisible = visibleItems.has(item);
+            item.classList.toggle('dashboard-item-hidden', !isVisible);
+            item.setAttribute('aria-hidden', isVisible ? 'false' : 'true');
+        });
+
+        dashboardViewControls.querySelectorAll('[data-dashboard-view]').forEach(button => {
+            const active = button.dataset.dashboardView === normalizedMode;
+            button.classList.toggle('active', active);
+            button.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+
+        dashboardViewMode = normalizedMode;
+        dashboardViewDescription.textContent = config.description;
+        const visibleCount = children.filter(item => !item.classList.contains('dashboard-item-hidden')).length;
+        dashboardViewCount.textContent = `${visibleCount} ${visibleCount === 1 ? 'secci\u00f3n' : 'secciones'}`;
+        if (persist) localStorage.setItem('dashboardViewMode', normalizedMode);
+
+        window.requestAnimationFrame(() => {
+            if (methodsChartInstance && normalizedMode !== 'operation') methodsChartInstance.resize();
+        });
+    };
+
+    const setupDashboardViews = () => {
+        if (!dashboardViewControls) return;
+
+        dashboardViewControls.addEventListener('click', (event) => {
+            const button = event.target.closest('[data-dashboard-view]');
+            if (!button) return;
+            applyDashboardView(button.dataset.dashboardView);
+        });
+
+        applyDashboardView(dashboardViewMode, false);
+    };
+
     // --- Application Initialization ---
     const init = () => {
         document.getElementById('sidebar-brand-name').innerText = storeName;
@@ -987,6 +1071,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateDataHealthPanel();
         updateSetupChecklist();
         updateStockAlertSnapshot();
+        setupDashboardViews();
         initMilestoneCelebrations();
     };
 

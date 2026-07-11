@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zaleasy | Gesti&oacute;n de Ventas</title>
     <meta name="description" content="Sistema premium para la gesti&oacute;n y seguimiento de ventas diarias.">
-    <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=20260711-dashboard-views">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
@@ -209,6 +209,28 @@
             </header>
 
             <div id="view-dashboard" class="dashboard-wrapper">
+                <section class="dashboard-viewbar" aria-labelledby="dashboard-view-title">
+                    <div class="dashboard-viewbar-copy">
+                        <span class="dashboard-viewbar-kicker"><i class="fa-solid fa-table-columns"></i> Tablero personalizable</span>
+                        <h2 id="dashboard-view-title">Vista del tablero</h2>
+                        <p id="dashboard-view-description">Lo esencial para registrar movimientos y decidir qu&eacute; atender hoy.</p>
+                    </div>
+                    <div class="dashboard-view-controls" id="dashboard-view-controls" role="group" aria-label="Elegir contenido del tablero">
+                        <button type="button" class="dashboard-view-option active" data-dashboard-view="summary" aria-pressed="true">
+                            <i class="fa-solid fa-gauge-high"></i><span>Resumen</span>
+                        </button>
+                        <button type="button" class="dashboard-view-option" data-dashboard-view="operation" aria-pressed="false">
+                            <i class="fa-solid fa-list-check"></i><span>Operaci&oacute;n</span>
+                        </button>
+                        <button type="button" class="dashboard-view-option" data-dashboard-view="analysis" aria-pressed="false">
+                            <i class="fa-solid fa-chart-line"></i><span>An&aacute;lisis</span>
+                        </button>
+                        <button type="button" class="dashboard-view-option" data-dashboard-view="all" aria-pressed="false">
+                            <i class="fa-solid fa-border-all"></i><span>Todo</span>
+                        </button>
+                    </div>
+                    <span class="dashboard-view-count" id="dashboard-view-count" aria-live="polite">0 secciones</span>
+                </section>
                 <div class="dashboard-grid">
                     <!-- KPI Cards -->
                     <div class="kpi-cards">
@@ -1768,7 +1790,7 @@
     </button>
 
     <!-- Script for Logic -->
-    <script src="app.js"></script>
+    <script src="app.js?v=20260711-dashboard-views"></script>
 </body>
 
 </html>
