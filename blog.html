@@ -2392,6 +2392,145 @@
         height: 78px;
       }
     }
+
+    /* Expert pass: a shorter first viewport that exposes the library sooner. */
+    .blog-header {
+      padding: 2.4rem 0 2rem;
+    }
+
+    .blog-hero-layout {
+      grid-template-columns: minmax(0, 1.12fr) minmax(330px, .68fr);
+      gap: clamp(1.5rem, 3.5vw, 3.25rem);
+    }
+
+    .blog-hero-copy {
+      min-width: 0;
+    }
+
+    .blog-header h1 {
+      max-width: 680px;
+      font-size: clamp(2.75rem, 5.2vw, 4rem) !important;
+      line-height: 1.02;
+    }
+
+    .blog-header p {
+      max-width: 620px;
+      font-size: 1.05rem !important;
+      line-height: 1.55 !important;
+    }
+
+    .blog-search-shell {
+      margin-top: 1.3rem !important;
+      padding: .5rem;
+      border-radius: 18px;
+    }
+
+    .blog-search-shell .glass-search-input {
+      min-height: 50px;
+      border-radius: 12px;
+    }
+
+    .blog-search-meta {
+      min-height: 1.25rem;
+      margin-top: .55rem;
+      font-size: .78rem;
+    }
+
+    .blog-filters-container {
+      margin-top: .8rem !important;
+      gap: .55rem !important;
+    }
+
+    .glass-filter-btn {
+      padding: .55rem .82rem;
+      font-size: .76rem;
+    }
+
+    .blog-hero-visual {
+      min-height: 440px;
+      align-self: center;
+    }
+
+    .hero-feature-content {
+      left: 1.2rem;
+      right: 1.2rem;
+      bottom: 13rem;
+    }
+
+    .hero-feature-content h2 {
+      font-size: clamp(1.45rem, 2.4vw, 2rem);
+      line-height: 1.05;
+    }
+
+    .hero-feature-content p {
+      display: none;
+    }
+
+    .hero-mini-list {
+      left: 1rem;
+      right: 1rem;
+      bottom: 1rem;
+      gap: .45rem;
+    }
+
+    .hero-mini-list a {
+      min-height: 44px;
+      padding: .55rem .7rem;
+    }
+
+    @media (max-width: 900px) {
+      .blog-header {
+        padding-top: 2rem;
+      }
+
+      .blog-hero-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .blog-hero-visual {
+        min-height: 360px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .blog-header {
+        padding: 1.8rem 0 1.5rem;
+      }
+
+      .blog-header h1 {
+        display: block !important;
+        width: 100%;
+        max-width: 100%;
+        font-size: 2.05rem !important;
+        overflow-wrap: normal;
+      }
+
+      .blog-header p {
+        font-size: .96rem !important;
+      }
+
+      .article-count-badge {
+        margin-bottom: .7rem !important;
+      }
+
+      .blog-search-shell {
+        width: 100%;
+        margin-top: 1rem !important;
+      }
+
+      .blog-search-meta {
+        white-space: normal;
+      }
+
+      .blog-filters-container {
+        margin-top: .55rem !important;
+        padding-bottom: .35rem;
+      }
+
+      .blog-hero-visual {
+        display: none;
+      }
+    }
   </style>
 
   <link rel="icon" type="image/png" href="assets/logo-navbar.png" />
@@ -2450,14 +2589,14 @@
       <div class="blog-search-meta" id="blogSearchMeta" aria-live="polite"></div>
 
       <!-- Category Filters -->
-      <div class="blog-filters-container" style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-        <button class="glass-filter-btn active" data-filter="all" onclick="filterBlog('all', this)">Todos <span class="filter-count">0</span></button>
-        <button class="glass-filter-btn" data-filter="ventas" onclick="filterBlog('ventas', this)">Ventas <span class="filter-count">0</span></button>
-        <button class="glass-filter-btn" data-filter="marketing" onclick="filterBlog('marketing', this)">Marketing <span class="filter-count">0</span></button>
-        <button class="glass-filter-btn" data-filter="finanzas" onclick="filterBlog('finanzas', this)">Finanzas <span class="filter-count">0</span></button>
-        <button class="glass-filter-btn" data-filter="productividad" onclick="filterBlog('productividad', this)">Productividad <span class="filter-count">0</span></button>
-        <button class="glass-filter-btn" data-filter="tecnologia" onclick="filterBlog('tecnologia', this)">Tecnolog&iacute;a <span class="filter-count">0</span></button>
-        <button class="glass-filter-btn" data-filter="motivacion" onclick="filterBlog('motivacion', this)">Motivaci&oacute;n <span class="filter-count">0</span></button>
+      <div class="blog-filters-container" role="group" aria-label="Filtrar articulos por categoria" style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <button class="glass-filter-btn active" aria-pressed="true" data-filter="all" onclick="filterBlog('all', this)">Todos <span class="filter-count">0</span></button>
+        <button class="glass-filter-btn" aria-pressed="false" data-filter="ventas" onclick="filterBlog('ventas', this)">Ventas <span class="filter-count">0</span></button>
+        <button class="glass-filter-btn" aria-pressed="false" data-filter="marketing" onclick="filterBlog('marketing', this)">Marketing <span class="filter-count">0</span></button>
+        <button class="glass-filter-btn" aria-pressed="false" data-filter="finanzas" onclick="filterBlog('finanzas', this)">Finanzas <span class="filter-count">0</span></button>
+        <button class="glass-filter-btn" aria-pressed="false" data-filter="productividad" onclick="filterBlog('productividad', this)">Productividad <span class="filter-count">0</span></button>
+        <button class="glass-filter-btn" aria-pressed="false" data-filter="tecnologia" onclick="filterBlog('tecnologia', this)">Tecnolog&iacute;a <span class="filter-count">0</span></button>
+        <button class="glass-filter-btn" aria-pressed="false" data-filter="motivacion" onclick="filterBlog('motivacion', this)">Motivaci&oacute;n <span class="filter-count">0</span></button>
       </div>
         </div>
 
@@ -2509,8 +2648,11 @@
       if (search) search.value = "";
 
       const buttons = document.querySelectorAll('header.blog-header button');
-      buttons.forEach(btn => btn.classList.remove('active'));
-      if (btnElement) btnElement.classList.add('active');
+      buttons.forEach(btn => {
+        const selected = btn === btnElement;
+        btn.classList.toggle('active', selected);
+        btn.setAttribute('aria-pressed', selected ? 'true' : 'false');
+      });
 
       resetBlogPagination();
       applyBlogFilters();
@@ -2519,7 +2661,11 @@
     function searchBlog() {
       activeBlogCategory = 'all';
       const buttons = document.querySelectorAll('header.blog-header button');
-      buttons.forEach(btn => btn.classList.toggle('active', btn.dataset.filter === 'all'));
+      buttons.forEach(btn => {
+        const selected = btn.dataset.filter === 'all';
+        btn.classList.toggle('active', selected);
+        btn.setAttribute('aria-pressed', selected ? 'true' : 'false');
+      });
 
       resetBlogPagination();
       applyBlogFilters();
@@ -2601,7 +2747,9 @@
     function setBlogReadFilter(mode, btn) {
       blogReadFilter = mode || 'all';
       document.querySelectorAll('.blog-read-filter button').forEach(item => {
-        item.classList.toggle('active', item === btn || item.dataset.readFilter === blogReadFilter);
+        const selected = item === btn || item.dataset.readFilter === blogReadFilter;
+        item.classList.toggle('active', selected);
+        item.setAttribute('aria-pressed', selected ? 'true' : 'false');
       });
       resetBlogPagination();
       applyBlogFilters();
@@ -2612,9 +2760,15 @@
       const search = document.getElementById('blogSearch');
       if (search) search.value = query || '';
       const buttons = document.querySelectorAll('header.blog-header button');
-      buttons.forEach(btn => btn.classList.toggle('active', btn.dataset.filter === activeBlogCategory));
+      buttons.forEach(btn => {
+        const selected = btn.dataset.filter === activeBlogCategory;
+        btn.classList.toggle('active', selected);
+        btn.setAttribute('aria-pressed', selected ? 'true' : 'false');
+      });
       if (![...buttons].some(btn => btn.classList.contains('active'))) {
-        document.querySelector('.glass-filter-btn[data-filter="all"]')?.classList.add('active');
+        const fallback = document.querySelector('.glass-filter-btn[data-filter="all"]');
+        fallback?.classList.add('active');
+        fallback?.setAttribute('aria-pressed', 'true');
       }
       resetBlogPagination();
       applyBlogFilters();
