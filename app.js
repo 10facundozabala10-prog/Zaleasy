@@ -103,6 +103,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const closingForecastSale = document.getElementById('closing-forecast-sale');
     const closingForecastExpense = document.getElementById('closing-forecast-expense');
     const closingForecastClose = document.getElementById('closing-forecast-close');
+    const globalSearch = document.getElementById('global-search');
+    const globalSearchInput = document.getElementById('global-search-input');
+    const globalSearchClear = document.getElementById('global-search-clear');
+    const globalSearchPanel = document.getElementById('global-search-panel');
+    const globalSearchResults = document.getElementById('global-search-results');
+    const globalSearchStatus = document.getElementById('global-search-status');
+    const globalSearchCount = document.getElementById('global-search-count');
 
     // List Elements
     const salesBody = document.getElementById('sales-body');
@@ -148,7 +155,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const receiptModal = document.getElementById('receipt-modal');
     const receiptBody = document.getElementById('receipt-body');
     const btnPrintReceipt = document.getElementById('btn-print-receipt');
-    const btnWhatsappReceipt = document.getElementById('btn-whatsapp-receipt');
 
     // Auth Elements
     const authScreen = document.getElementById('auth-screen');
@@ -396,7 +402,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     : `<span style="color:var(--text-muted);">Sin deuda</span>`;
                     
                 const actionHtml = c.totalDeuda > 0
-                    ? `<button class="btn btn-outline btn-sm btn-wsp-debt" data-client="${clientName}" data-debt="${c.totalDeuda}" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; border-color: #25D366; color: #25D366;" title="Recordatorio WhatsApp"><i class="fa-brands fa-whatsapp"></i> Cobrar</button>`
+                    ? `<button class="btn btn-outline btn-sm btn-register-debt" data-client="${clientName}" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" title="Registrar cobro"><i class="fa-solid fa-circle-dollar-to-slot"></i> Cobrar</button>`
                     : `<span style="color:var(--text-muted); font-size: 0.8rem;">—</span>`;
 
                 tr.innerHTML = `
@@ -517,12 +523,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     document.addEventListener('click', (e) => {
-        if (e.target.closest('.btn-wsp-debt')) {
-            const btn = e.target.closest('.btn-wsp-debt');
+        if (e.target.closest('.btn-register-debt')) {
+            const btn = e.target.closest('.btn-register-debt');
             const client = btn.getAttribute('data-client');
-            const debt = parseFloat(btn.getAttribute('data-debt'));
-            const msg = `Hola ${client}, te escribo de ${storeName || 'nuestra tienda'}. Este es un recordatorio amigable sobre tu saldo pendiente de ${formatCurrency(debt)}. ¡Gracias!`;
-            window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+            switchView('nav-dashboard');
+            btnTypeIncome.click();
+            if (methodSelect) methodSelect.value = 'Pago de Deuda';
+            if (customerNameInput) {
+                customerNameInput.value = client;
+                customerNameInput.focus();
+                customerNameInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            showToast(`Registra el cobro pendiente de ${client}.`);
         }
 
         if (e.target.closest('#export-clientes-csv')) {
@@ -1072,6 +1084,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateSetupChecklist();
         updateStockAlertSnapshot();
         setupDashboardViews();
+        setupGlobalSearch();
         initMilestoneCelebrations();
     };
 
@@ -2019,6 +2032,181 @@ document.addEventListener('DOMContentLoaded', () => {
         toast.querySelector('.toast-message').textContent = message;
         toast.classList.add('show');
         setTimeout(() => toast.classList.remove('show'), 3000);
+    };
+
+    const escapeSearchHtml = (value = '') => String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+
+    const normalizeGlobalSearch = (value = '') => String(value)
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .trim();
+
+    const globalSearchDestinations = [
+        { type: 'view', target: 'nav-dashboard', title: 'Dashboard', meta: 'Resumen y operacion del dia', icon: 'fa-house', keywords: 'inicio tablero ventas caja' },
+        { type: 'view', target: 'nav-historial', title: 'Historial', meta: 'Todos los movimientos registrados', icon: 'fa-clock-rotate-left', keywords: 'ventas gastos movimientos transacciones' },
+        { type: 'view', target: 'nav-reportes', title: 'Reportes', meta: 'Indicadores y comparaciones', icon: 'fa-chart-pie', keywords: 'analisis metricas estadisticas' },
+        { type: 'view', target: 'nav-clientes', title: 'Clientes', meta: 'Compras, saldos y seguimiento', icon: 'fa-address-book', keywords: 'crm deuda cobrar contactos' },
+        { type: 'view', target: 'nav-inventario', title: 'Inventario', meta: 'Productos, precios y stock', icon: 'fa-boxes-stacked', keywords: 'catalogo mercaderia existencias' },
+        { type: 'view', target: 'nav-config', title: 'Configuracion', meta: 'Negocio, meta y respaldo', icon: 'fa-gear', keywords: 'ajustes backup datos tienda' }
+    ];
+
+    let globalSearchItems = [];
+    let globalSearchActiveIndex = -1;
+
+    const buildGlobalSearchItems = (query) => {
+        const normalized = normalizeGlobalSearch(query);
+        const destinations = globalSearchDestinations
+            .filter(item => !normalized || normalizeGlobalSearch(`${item.title} ${item.meta} ${item.keywords}`).includes(normalized))
+            .slice(0, normalized ? 3 : 6);
+
+        if (!normalized) return destinations;
+
+        const products = productCatalog
+            .filter(product => normalizeGlobalSearch(`${product.name || ''} ${product.category || ''}`).includes(normalized))
+            .slice(0, 3)
+            .map(product => ({
+                type: 'product', target: product.name || '',
+                title: product.name || 'Producto sin nombre',
+                meta: `${formatCurrency(Number(product.price || 0))} · ${product.stock === undefined || product.stock === null ? 'Stock sin cargar' : `${Number(product.stock)} unidades`}`,
+                icon: 'fa-box'
+            }));
+
+        const { clientMap } = buildClientSummary();
+        const clients = Object.entries(clientMap)
+            .filter(([name]) => normalizeGlobalSearch(name).includes(normalized))
+            .sort(([, a], [, b]) => b.totalGastado - a.totalGastado)
+            .slice(0, 3)
+            .map(([name, client]) => ({
+                type: 'client', target: name, title: name,
+                meta: client.totalDeuda > 0 ? `${formatCurrency(client.totalDeuda)} pendiente` : `${client.totalCompras} movimientos · sin deuda`,
+                icon: 'fa-user'
+            }));
+
+        const transactions = [...sales, ...historyData]
+            .filter(transaction => normalizeGlobalSearch(`${transaction.product || ''} ${transaction.customerName || ''} ${transaction.category || ''} ${transaction.method || ''}`).includes(normalized))
+            .sort((a, b) => Number(b.timestamp || 0) - Number(a.timestamp || 0))
+            .slice(0, 4)
+            .map(transaction => ({
+                type: 'transaction', target: transaction.product || transaction.customerName || '',
+                title: transaction.product || transaction.customerName || 'Movimiento',
+                meta: `${transaction.type === 'expense' ? 'Gasto' : 'Venta'} · ${formatCurrency(Number(transaction.amount || 0))}${transaction.customerName ? ` · ${transaction.customerName}` : ''}`,
+                icon: transaction.type === 'expense' ? 'fa-arrow-trend-down' : 'fa-receipt'
+            }));
+
+        return [...destinations, ...products, ...clients, ...transactions].slice(0, 10);
+    };
+
+    const searchTypeLabel = (type) => ({
+        view: 'Seccion', product: 'Producto', client: 'Cliente', transaction: 'Movimiento'
+    }[type] || 'Resultado');
+
+    const setGlobalSearchOpen = (open) => {
+        if (!globalSearchPanel || !globalSearchInput || !globalSearch) return;
+        globalSearchPanel.hidden = !open;
+        globalSearch.classList.toggle('open', open);
+        globalSearchInput.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (!open) globalSearchActiveIndex = -1;
+    };
+
+    const updateGlobalSearchSelection = () => {
+        const options = globalSearchResults?.querySelectorAll('.global-search-result') || [];
+        options.forEach((option, index) => {
+            const active = index === globalSearchActiveIndex;
+            option.classList.toggle('active', active);
+            option.setAttribute('aria-selected', active ? 'true' : 'false');
+            if (active) option.scrollIntoView({ block: 'nearest' });
+        });
+    };
+
+    const renderGlobalSearch = () => {
+        if (!globalSearchInput || !globalSearchResults || !globalSearchStatus || !globalSearchCount || !globalSearchClear) return;
+        const query = globalSearchInput.value;
+        globalSearchItems = buildGlobalSearchItems(query);
+        globalSearchActiveIndex = -1;
+        globalSearchClear.hidden = !query;
+        globalSearchStatus.textContent = query ? 'Resultados encontrados' : 'Accesos rapidos';
+        globalSearchCount.textContent = query ? `${globalSearchItems.length} resultado${globalSearchItems.length === 1 ? '' : 's'}` : '';
+
+        if (!globalSearchItems.length) {
+            globalSearchResults.innerHTML = `<div class="global-search-empty"><i class="fa-solid fa-magnifying-glass"></i><strong>Sin coincidencias</strong><span>Prueba con otro cliente, producto o seccion.</span></div>`;
+            return;
+        }
+
+        globalSearchResults.innerHTML = globalSearchItems.map((item, index) => `
+            <button type="button" class="global-search-result" data-search-index="${index}" role="option" aria-selected="false">
+                <span class="global-search-result-icon" data-type="${item.type}"><i class="fa-solid ${item.icon}"></i></span>
+                <span class="global-search-result-copy"><strong>${escapeSearchHtml(item.title)}</strong><small>${escapeSearchHtml(item.meta)}</small></span>
+                <span class="global-search-result-type">${searchTypeLabel(item.type)}</span>
+                <i class="fa-solid fa-arrow-right global-search-result-arrow"></i>
+            </button>`).join('');
+    };
+
+    const activateGlobalSearchItem = (item) => {
+        if (!item) return;
+        if (item.type === 'view') {
+            switchView(item.target);
+        } else if (item.type === 'product') {
+            switchView('nav-inventario');
+            if (searchInventario) searchInventario.value = item.target;
+            renderInventario();
+        } else if (item.type === 'client') {
+            switchView('nav-clientes');
+            if (searchClientesInput) searchClientesInput.value = item.target;
+            renderClientes();
+        } else if (item.type === 'transaction') {
+            switchView('nav-historial');
+            if (historySearch) historySearch.value = item.target;
+            renderHistory();
+        }
+        setGlobalSearchOpen(false);
+        globalSearchInput.value = '';
+        if (globalSearchClear) globalSearchClear.hidden = true;
+    };
+
+    const setupGlobalSearch = () => {
+        if (!globalSearch || !globalSearchInput || !globalSearchResults) return;
+        globalSearchInput.addEventListener('focus', () => {
+            renderGlobalSearch();
+            setGlobalSearchOpen(true);
+        });
+        globalSearchInput.addEventListener('input', () => {
+            renderGlobalSearch();
+            setGlobalSearchOpen(true);
+        });
+        globalSearchInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                setGlobalSearchOpen(false);
+                globalSearchInput.blur();
+                return;
+            }
+            if (!globalSearchItems.length || !['ArrowDown', 'ArrowUp', 'Enter'].includes(event.key)) return;
+            event.preventDefault();
+            if (event.key === 'ArrowDown') globalSearchActiveIndex = (globalSearchActiveIndex + 1) % globalSearchItems.length;
+            if (event.key === 'ArrowUp') globalSearchActiveIndex = (globalSearchActiveIndex - 1 + globalSearchItems.length) % globalSearchItems.length;
+            if (event.key === 'Enter') {
+                activateGlobalSearchItem(globalSearchItems[globalSearchActiveIndex >= 0 ? globalSearchActiveIndex : 0]);
+                return;
+            }
+            updateGlobalSearchSelection();
+        });
+        globalSearchResults.addEventListener('click', (event) => {
+            const result = event.target.closest('[data-search-index]');
+            if (result) activateGlobalSearchItem(globalSearchItems[Number(result.dataset.searchIndex)]);
+        });
+        globalSearchClear?.addEventListener('click', () => {
+            globalSearchInput.value = '';
+            renderGlobalSearch();
+            globalSearchInput.focus();
+        });
+        document.addEventListener('click', (event) => {
+            if (!globalSearch.contains(event.target)) setGlobalSearchOpen(false);
+        });
     };
 
     // --- Chart ---
@@ -3217,7 +3405,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const topDebt = clientMap[topDebtor]?.totalDeuda || 0;
-        receivablesDetail.innerHTML = `<strong>${topDebtor}</strong> concentra ${formatCurrency(topDebt)} pendientes. Revisa el directorio para enviar recordatorios por WhatsApp.`;
+        receivablesDetail.innerHTML = `<strong>${topDebtor}</strong> concentra ${formatCurrency(topDebt)} pendientes. Revisa el directorio para registrar el proximo cobro.`;
     };
 
     const setPulseAction = (button, icon, label, handler) => {
@@ -4255,49 +4443,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- WhatsApp Receipt ---
-    const sendWhatsAppReceipt = () => {
-        if (!currentReceiptSale) return;
-        const groupItems = currentReceiptGroup.length > 0 ? currentReceiptGroup : [currentReceiptSale];
-        const repr = groupItems[0];
-        const d = new Date(repr.timestamp);
-        const dateStr = d.toLocaleDateString('es-ES');
-        const timeStr = d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
-        const totalAmount = groupItems.reduce((sum, s) => sum + s.amount, 0);
-        const amountFormatted = formatCurrency(totalAmount);
-
-        let text = `🧾 *${repr.isQuote ? 'Presupuesto' : 'Recibo'} de ${storeName}*\n`;
-        text += `Fecha: ${dateStr} ${timeStr}\n\n`;
-
-        if (groupItems.length > 1) {
-            text += `*Detalle de compra:*\n`;
-            groupItems.forEach(it => {
-                text += `• ${it.product}: ${formatCurrency(it.amount)}\n`;
-            });
-            text += `\n*TOTAL: ${amountFormatted}*\n`;
-        } else {
-            text += `*Descripci\u00f3n:* ${repr.product}\n`;
-            text += `*Monto:* ${amountFormatted}\n`;
-        }
-
-        text += `\nM\u00e9todo de Pago: ${repr.method}\n`;
-        if (repr.customerName) text += `Cliente: ${repr.customerName}\n`;
-        if (repr.notes) text += `Notas: ${repr.notes}\n`;
-
-        text += `\n\u00a1Gracias por elegirnos!`;
-
-        const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
-        window.open(url, '_blank');
-    };
-
     if (btnPrintReceipt) {
         btnPrintReceipt.addEventListener('click', printReceipt);
     }
-
-    if (btnWhatsappReceipt) {
-        btnWhatsappReceipt.addEventListener('click', sendWhatsAppReceipt);
-    }
-
 
     saveGoalBtn.addEventListener('click', () => {
         const val = parseFloat(newGoalInput.value);
@@ -4372,18 +4520,20 @@ document.addEventListener('DOMContentLoaded', () => {
             text += `🛍️ *Ventas Totales:* ${count}\n\n`;
             text += `🚀 Control Diario Zaleasy`;
 
+            const copySummary = () => navigator.clipboard.writeText(text)
+                .then(() => showToast('Resumen copiado al portapapeles'))
+                .catch(() => showToast('No se pudo compartir el resumen'));
+
             if (navigator.share) {
                 navigator.share({
                     title: `Resumen de Ventas - ${dateStr}`,
                     text: text
                 }).catch(err => {
                     console.warn('Share error:', err);
-                    const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
-                    window.open(url, '_blank');
+                    copySummary();
                 });
             } else {
-                const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
-                window.open(url, '_blank');
+                copySummary();
             }
         });
     }

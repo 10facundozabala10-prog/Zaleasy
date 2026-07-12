@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zaleasy | Gesti&oacute;n de Ventas</title>
     <meta name="description" content="Sistema premium para la gesti&oacute;n y seguimiento de ventas diarias.">
-  <link rel="stylesheet" href="styles.css?v=20260711-dashboard-views">
+  <link rel="stylesheet" href="styles.css?v=20260711-global-search-v2">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
@@ -187,6 +187,22 @@
                     <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap: wrap;">
                         <p id="current-date" style="margin: 0;">Cargando fecha...</p>
                         <span id="live-clock" class="live-clock"></span>
+                    </div>
+                </div>
+                <div class="global-search" id="global-search">
+                    <i class="fa-solid fa-magnifying-glass global-search-icon" aria-hidden="true"></i>
+                    <input type="search" id="global-search-input" placeholder="Buscar clientes, productos o movimientos..."
+                        autocomplete="off" aria-label="Buscar en toda la aplicacion" aria-expanded="false"
+                        aria-controls="global-search-results" aria-autocomplete="list" />
+                    <button type="button" class="global-search-clear" id="global-search-clear" title="Limpiar busqueda" aria-label="Limpiar busqueda" hidden>
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    <div class="global-search-panel" id="global-search-panel" hidden>
+                        <div class="global-search-panel-head">
+                            <span id="global-search-status">Accesos rapidos</span>
+                            <small id="global-search-count"></small>
+                        </div>
+                        <div class="global-search-results" id="global-search-results" role="listbox" aria-label="Resultados de busqueda"></div>
                     </div>
                 </div>
                 <div class="header-right">
@@ -974,7 +990,7 @@
                                     $10.000</button>
                             </div>
                             <div class="form-actions-row" style="display:flex; gap: 0.8rem; flex-wrap: wrap;">
-                                <button type="button" class="btn btn-outline" id="btn-generate-quote" style="flex: 1; min-width: 140px;" title="Generar un presupuesto en PDF/WhatsApp sin afectar la caja">
+                                <button type="button" class="btn btn-outline" id="btn-generate-quote" style="flex: 1; min-width: 140px;" title="Generar un presupuesto en PDF sin afectar la caja">
                                     <i class="fa-solid fa-file-invoice"></i> Presupuesto
                                 </button>
                                 <button type="submit" class="btn btn-primary" style="flex: 2; min-width: 140px;" id="btn-submit-transaction">
@@ -1661,9 +1677,6 @@
                 <!-- Populated by JS -->
             </div>
             <div style="margin-top:1.5rem; display:flex; gap:.8rem;">
-                <button id="btn-whatsapp-receipt" class="btn" style="flex:1; background-color: #25D366; color: white;">
-                    <i class="fa-brands fa-whatsapp"></i> Enviar
-                </button>
                 <button id="btn-print-receipt" class="btn btn-primary" style="flex:1;">
                     <i class="fa-solid fa-print"></i> Guardar PDF
                 </button>
@@ -1790,7 +1803,7 @@
     </button>
 
     <!-- Script for Logic -->
-    <script src="app.js?v=20260711-dashboard-views"></script>
+    <script src="app.js?v=20260711-global-search-v2"></script>
 </body>
 
 </html>
