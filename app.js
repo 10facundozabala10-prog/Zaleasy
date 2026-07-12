@@ -110,6 +110,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const globalSearchResults = document.getElementById('global-search-results');
     const globalSearchStatus = document.getElementById('global-search-status');
     const globalSearchCount = document.getElementById('global-search-count');
+    const notificationCenter = document.getElementById('notification-center');
+    const notificationTrigger = document.getElementById('notification-trigger');
+    const notificationPanel = document.getElementById('notification-panel');
+    const notificationCount = document.getElementById('notification-count');
+    const notificationStatus = document.getElementById('notification-status');
+    const notificationSummary = document.getElementById('notification-summary');
+    const notificationList = document.getElementById('notification-list');
+    const notificationReview = document.getElementById('notification-review');
 
     // List Elements
     const salesBody = document.getElementById('sales-body');
@@ -2543,6 +2551,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateActionCenter(totalRevenue, totalExpenses, totalSalesCount, netBalance);
         updateDailyPlan(totalRevenue, totalExpenses, totalSalesCount, netBalance);
         updateDueRadar();
+        updateNotificationCenter();
         updateOperationalHealth(totalRevenue, totalExpenses, totalSalesCount, netBalance);
         updateDataQualityAuditor();
         updateClosingForecast(totalRevenue, totalExpenses, totalSalesCount, netBalance);
@@ -3136,6 +3145,126 @@ document.addEventListener('DOMContentLoaded', () => {
                 return (toneWeight[a.tone] - toneWeight[b.tone]) || String(a.date).localeCompare(String(b.date));
             });
     };
+
+    const buildNotificationItems = () => {
+        const items = [];
+        const { debtClients, totalDebt } = buildClientSummary();
+        const trackedStock = productCatalog.filter(product => product.stock !== undefined && product.stock !== null && product.stock !== '');
+        const outOfStock = trackedStock.filter(product => Number(product.stock) <= 0);
+        const lowStock = trackedStock.filter(product => Number(product.stock) > 0 && Number(product.stock) <= 5);
+        const radarItems = buildDueRadarItems();
+        const overdue = radarItems.filter(item => item.tone === 'danger');
+        const dueNow = radarItems.filter(item => item.tone === 'warning');
+        const lastBackupDate = localStorage.getItem('lastBackupDate');
+        const daysSinceBackup = lastBackupDate
+            ? Math.floor((Date.now() - new Date(lastBackupDate).getTime()) / 86400000)
+            : Infinity;
+
+        if (overdue.length) items.push({
+            tone: 'danger', icon: 'fa-clock-rotate-left', action: 'agenda',
+            title: `${overdue.length} pendiente${overdue.length === 1 ? '' : 's'} vencido${overdue.length === 1 ? '' : 's'}`,
+            detail: 'Revisa seguimientos y gastos que ya pasaron su fecha.'
+        });
+        if (outOfStock.length) items.push({
+            tone: 'danger', icon: 'fa-box-open', action: 'inventory',
+            title: `${outOfStock.length} producto${outOfStock.length === 1 ? '' : 's'} sin stock`,
+            detail: outOfStock.slice(0, 2).map(product => product.name).join(' - ')
+        });
+        if (debtClients.length) items.push({
+            tone: debtClients.length >= 4 ? 'danger' : 'warning', icon: 'fa-hand-holding-dollar', action: 'clients',
+            title: `${debtClients.length} cobro${debtClients.length === 1 ? '' : 's'} pendiente${debtClients.length === 1 ? '' : 's'}`,
+            detail: `Saldo total por cobrar: ${formatCurrency(totalDebt)}.`
+        });
+        if (dueNow.length) items.push({
+            tone: 'warning', icon: 'fa-calendar-day', action: 'agenda',
+            title: `${dueNow.length} accion${dueNow.length === 1 ? '' : 'es'} para hoy`,
+            detail: 'Completa la agenda antes del cierre de caja.'
+        });
+        if (lowStock.length) items.push({
+            tone: 'warning', icon: 'fa-boxes-stacked', action: 'inventory',
+            title: `${lowStock.length} producto${lowStock.length === 1 ? '' : 's'} con stock bajo`,
+            detail: 'Quedan 5 unidades o menos; conviene planificar reposicion.'
+        });
+        if (daysSinceBackup >= 7) items.push({
+            tone: 'warning', icon: 'fa-cloud-arrow-down', action: 'config',
+            title: lastBackupDate ? 'Respaldo desactualizado' : 'Todavia no hay respaldo',
+            detail: lastBackupDate ? `La ultima copia fue hace ${daysSinceBackup} dias.` : 'Guarda una copia para proteger la informacion del negocio.'
+        });
+
+        return items.slice(0, 6);
+    };
+
+    const closeNotificationCenter = () => {
+        if (!notificationPanel || !notificationTrigger || !notificationCenter) return;
+        notificationPanel.hidden = true;
+        notificationTrigger.setAttribute('aria-expanded', 'false');
+        notificationCenter.classList.remove('open');
+    };
+
+    const runNotificationAction = (action) => {
+        closeNotificationCenter();
+        if (action === 'clients') switchView('nav-clientes');
+        if (action === 'inventory') switchView('nav-inventario');
+        if (action === 'config') switchView('nav-config', 'Configuracion de Empresa');
+        if (action === 'agenda') {
+            switchView('nav-dashboard');
+            document.getElementById('due-radar-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        if (action === 'plan') {
+            switchView('nav-dashboard');
+            document.getElementById('daily-plan-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    };
+
+    const updateNotificationCenter = () => {
+        if (!notificationList || !notificationCount || !notificationStatus || !notificationSummary) return;
+        const items = buildNotificationItems();
+        const urgentCount = items.filter(item => item.tone === 'danger').length;
+        notificationCount.hidden = items.length === 0;
+        notificationCount.textContent = items.length > 9 ? '9+' : String(items.length);
+        notificationStatus.textContent = urgentCount
+            ? `${urgentCount} urgente${urgentCount === 1 ? '' : 's'}`
+            : items.length ? `${items.length} por revisar` : 'Todo al dia';
+        notificationSummary.textContent = urgentCount
+            ? 'Hay asuntos que conviene resolver antes de continuar con la operacion.'
+            : items.length
+                ? 'Estas son las proximas acciones recomendadas para mantener el negocio ordenado.'
+                : 'Caja, cobros, stock, agenda y respaldo no muestran alertas.';
+        notificationList.innerHTML = items.length
+            ? items.map(item => `
+                <button type="button" class="notification-item" data-tone="${item.tone}" data-action="${item.action}">
+                    <span class="notification-item-icon"><i class="fa-solid ${item.icon}"></i></span>
+                    <span class="notification-item-copy"><strong>${escapeSearchHtml(item.title)}</strong><small>${escapeSearchHtml(item.detail)}</small></span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>`).join('')
+            : '<div class="notification-empty"><i class="fa-regular fa-circle-check"></i><strong>Operacion bajo control</strong><span>No hay prioridades urgentes ahora.</span></div>';
+    };
+
+    notificationTrigger?.addEventListener('click', () => {
+        if (notificationPanel.hidden) {
+            updateNotificationCenter();
+            notificationPanel.hidden = false;
+            notificationTrigger.setAttribute('aria-expanded', 'true');
+            notificationCenter.classList.add('open');
+        } else {
+            closeNotificationCenter();
+        }
+    });
+
+    notificationList?.addEventListener('click', event => {
+        const item = event.target.closest('.notification-item[data-action]');
+        if (item) runNotificationAction(item.dataset.action);
+    });
+
+    notificationReview?.addEventListener('click', () => runNotificationAction('plan'));
+
+    document.addEventListener('click', event => {
+        if (notificationCenter && !notificationCenter.contains(event.target)) closeNotificationCenter();
+    });
+
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Escape') closeNotificationCenter();
+    });
 
     const createDueRadarItem = (item) => `
         <div class="due-radar-item" data-tone="${item.tone}" data-kind="${item.kind}" data-id="${item.id}">
