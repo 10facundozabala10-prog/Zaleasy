@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zaleasy | Gesti&oacute;n de Ventas</title>
     <meta name="description" content="Sistema premium para la gesti&oacute;n y seguimiento de ventas diarias.">
-  <link rel="stylesheet" href="styles.css?v=20260712-alert-center-v1">
+  <link rel="stylesheet" href="styles.css?v=20260712-quick-create-v2">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
@@ -1819,13 +1819,34 @@
     <canvas id="confetti-canvas"
         style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;"></canvas>
 
-    <!-- Floating Quick-Add Button -->
-    <button id="fab-quick-add" class="fab-btn" title="Agregar venta r&aacute;pida">
-        <i class="fa-solid fa-plus"></i>
-    </button>
+    <!-- Floating Quick-Create Menu -->
+    <div class="quick-create" id="quick-create">
+        <div class="quick-create-menu" id="quick-create-menu" hidden>
+            <button type="button" class="quick-create-action" data-quick-action="product">
+                <span class="quick-create-action-icon product"><i class="fa-solid fa-box"></i></span>
+                <span><strong>Nuevo producto</strong><small>Agregar al inventario</small></span>
+            </button>
+            <button type="button" class="quick-create-action" data-quick-action="followup">
+                <span class="quick-create-action-icon followup"><i class="fa-solid fa-calendar-plus"></i></span>
+                <span><strong>Nuevo seguimiento</strong><small>Agendar un pendiente</small></span>
+            </button>
+            <button type="button" class="quick-create-action" data-quick-action="expense">
+                <span class="quick-create-action-icon expense"><i class="fa-solid fa-receipt"></i></span>
+                <span><strong>Registrar gasto</strong><small>Anotar una salida</small></span>
+            </button>
+            <button type="button" class="quick-create-action" data-quick-action="sale">
+                <span class="quick-create-action-icon sale"><i class="fa-solid fa-cart-plus"></i></span>
+                <span><strong>Registrar venta</strong><small>Cargar un ingreso</small></span>
+            </button>
+        </div>
+        <button id="fab-quick-add" class="fab-btn" type="button" title="Crear nuevo" aria-label="Abrir menu de creacion rapida"
+            aria-expanded="false" aria-controls="quick-create-menu">
+            <i class="fa-solid fa-plus"></i>
+        </button>
+    </div>
 
     <!-- Script for Logic -->
-    <script src="app.js?v=20260712-alert-center-v1"></script>
+    <script src="app.js?v=20260712-quick-create-v2"></script>
 </body>
 
 </html>

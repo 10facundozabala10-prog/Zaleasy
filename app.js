@@ -1841,21 +1841,59 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Floating Action Buttons ---
     const setupFABs = () => {
+        const quickCreate = document.getElementById('quick-create');
+        const quickCreateMenu = document.getElementById('quick-create-menu');
         const fabQuickAdd = document.getElementById('fab-quick-add');
 
-        if (fabQuickAdd) {
-            fabQuickAdd.addEventListener('click', () => {
-                // Navigate to dashboard and focus the form
+        if (!quickCreate || !quickCreateMenu || !fabQuickAdd) return;
+
+        const closeQuickCreate = () => {
+            quickCreateMenu.hidden = true;
+            quickCreate.classList.remove('open');
+            fabQuickAdd.setAttribute('aria-expanded', 'false');
+            fabQuickAdd.setAttribute('aria-label', 'Abrir menu de creacion rapida');
+        };
+
+        const openQuickCreate = () => {
+            quickCreateMenu.hidden = false;
+            quickCreate.classList.add('open');
+            fabQuickAdd.setAttribute('aria-expanded', 'true');
+            fabQuickAdd.setAttribute('aria-label', 'Cerrar menu de creacion rapida');
+            quickCreateMenu.querySelector('.quick-create-action')?.focus();
+        };
+
+        fabQuickAdd.addEventListener('click', () => {
+            if (quickCreateMenu.hidden) openQuickCreate();
+            else closeQuickCreate();
+        });
+
+        quickCreateMenu.addEventListener('click', (event) => {
+            const actionButton = event.target.closest('.quick-create-action[data-quick-action]');
+            if (!actionButton) return;
+            const action = actionButton.dataset.quickAction;
+            closeQuickCreate();
+
+            if (action === 'sale') focusTransactionForm('income');
+            if (action === 'expense') focusTransactionForm('expense');
+            if (action === 'product') openInventoryForm();
+            if (action === 'followup') {
                 switchView('nav-dashboard');
                 setTimeout(() => {
-                    const productInput = document.getElementById('product');
-                    if (productInput) {
-                        productInput.focus();
-                        productInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }
-                }, 100);
-            });
-        }
+                    document.getElementById('followups-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    followupTitleInput?.focus();
+                }, 150);
+            }
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!quickCreate.contains(event.target)) closeQuickCreate();
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key !== 'Escape' || quickCreateMenu.hidden) return;
+            closeQuickCreate();
+            fabQuickAdd.focus();
+        });
     };
 
     // --- Theme & Branding ---
