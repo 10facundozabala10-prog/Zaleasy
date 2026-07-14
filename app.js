@@ -295,6 +295,54 @@ document.addEventListener('DOMContentLoaded', () => {
         btnSubmitTransaction.style.flex = "2";
     });
 
+    const appViewMeta = {
+        'nav-historial': {
+            title: 'Historial de movimientos',
+            description: 'Consulta, filtra y exporta todas las operaciones registradas.',
+            documentTitle: 'Historial'
+        },
+        'nav-reportes': {
+            title: 'Reportes del negocio',
+            description: 'Analiza resultados, tendencias y oportunidades de mejora.',
+            documentTitle: 'Reportes'
+        },
+        'nav-clientes': {
+            title: 'Clientes',
+            description: 'Revisa compras, saldos pendientes y relaciones comerciales.',
+            documentTitle: 'Clientes'
+        },
+        'nav-inventario': {
+            title: 'Inventario',
+            description: 'Administra productos, precios y niveles de stock.',
+            documentTitle: 'Inventario'
+        },
+        'nav-config': {
+            title: 'Configuracion',
+            description: 'Personaliza el negocio y protege la informacion guardada.',
+            documentTitle: 'Configuracion'
+        }
+    };
+
+    const updateHeaderContext = (targetId, fallbackTitle = '') => {
+        const liveClock = document.getElementById('live-clock');
+        if (targetId === 'nav-dashboard') {
+            setupDate();
+            if (liveClock) liveClock.hidden = false;
+            document.title = 'Zaleasy | Dashboard';
+            return;
+        }
+
+        const meta = appViewMeta[targetId] || {
+            title: fallbackTitle || 'Zaleasy',
+            description: 'Gestiona tu negocio desde un solo lugar.',
+            documentTitle: fallbackTitle || 'Aplicacion'
+        };
+        greetingEl.textContent = meta.title;
+        dateEl.textContent = meta.description;
+        if (liveClock) liveClock.hidden = true;
+        document.title = `Zaleasy | ${meta.documentTitle}`;
+    };
+
     // --- Navigation Logic ---
     let switchView = (targetId, title) => {
         // Update active class on nav
@@ -327,6 +375,8 @@ document.addEventListener('DOMContentLoaded', () => {
             viewComingSoon.style.display = 'block';
             comingSoonTitle.innerText = title;
         }
+        updateHeaderContext(targetId, title);
+        localStorage.setItem('activeAppView', targetId);
     };
 
     navDashboard.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-dashboard'); });
@@ -569,18 +619,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const sidebar = document.querySelector('.sidebar');
     const sidebarOverlay = document.getElementById('sidebar-overlay');
 
+    const setSidebarOpen = (open) => {
+        sidebar.classList.toggle('active', open);
+        sidebarOverlay.classList.toggle('active', open);
+        mobileMenuBtn?.setAttribute('aria-expanded', open ? 'true' : 'false');
+        document.body.classList.toggle('sidebar-open', open);
+    };
+
     const toggleSidebar = () => {
-        sidebar.classList.toggle('active');
-        sidebarOverlay.classList.toggle('active');
+        setSidebarOpen(!sidebar.classList.contains('active'));
     };
 
     const closeSidebar = () => {
-        sidebar.classList.remove('active');
-        sidebarOverlay.classList.remove('active');
+        setSidebarOpen(false);
     };
 
     if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', toggleSidebar);
     if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && sidebar.classList.contains('active')) closeSidebar();
+    });
 
     // Patch switchView to also close sidebar on mobile
     const originalSwitchView = switchView;
@@ -1093,6 +1151,9 @@ document.addEventListener('DOMContentLoaded', () => {
         updateStockAlertSnapshot();
         setupDashboardViews();
         setupGlobalSearch();
+        const validViews = new Set(['nav-dashboard', 'nav-historial', 'nav-reportes', 'nav-clientes', 'nav-inventario', 'nav-config']);
+        const savedView = localStorage.getItem('activeAppView');
+        switchView(validViews.has(savedView) ? savedView : 'nav-dashboard');
         initMilestoneCelebrations();
     };
 
@@ -1109,6 +1170,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             greetingEl.innerHTML = '\u00a1Buenas noches! 🌙';
         }
+        greetingEl.textContent = currentHour < 12 ? 'Buenos dias' : currentHour < 19 ? 'Buenas tardes' : 'Buenas noches';
     };
 
     // --- Live Clock ---
@@ -1839,6 +1901,19 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.removeChild(ta);
     };
 
+    const runQuickAction = (action) => {
+        if (action === 'sale') focusTransactionForm('income');
+        if (action === 'expense') focusTransactionForm('expense');
+        if (action === 'product') openInventoryForm();
+        if (action === 'followup') {
+            switchView('nav-dashboard');
+            setTimeout(() => {
+                document.getElementById('followups-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                followupTitleInput?.focus();
+            }, 150);
+        }
+    };
+
     // --- Floating Action Buttons ---
     const setupFABs = () => {
         const quickCreate = document.getElementById('quick-create');
@@ -1872,17 +1947,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!actionButton) return;
             const action = actionButton.dataset.quickAction;
             closeQuickCreate();
-
-            if (action === 'sale') focusTransactionForm('income');
-            if (action === 'expense') focusTransactionForm('expense');
-            if (action === 'product') openInventoryForm();
-            if (action === 'followup') {
-                switchView('nav-dashboard');
-                setTimeout(() => {
-                    document.getElementById('followups-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    followupTitleInput?.focus();
-                }, 150);
-            }
+            runQuickAction(action);
         });
 
         document.addEventListener('click', (event) => {
@@ -2102,16 +2167,25 @@ document.addEventListener('DOMContentLoaded', () => {
         { type: 'view', target: 'nav-config', title: 'Configuracion', meta: 'Negocio, meta y respaldo', icon: 'fa-gear', keywords: 'ajustes backup datos tienda' }
     ];
 
+    const globalSearchActions = [
+        { type: 'action', target: 'sale', title: 'Registrar venta', meta: 'Abrir el formulario de ingresos', icon: 'fa-cart-plus', keywords: 'nueva venta ingreso cobrar registrar' },
+        { type: 'action', target: 'expense', title: 'Registrar gasto', meta: 'Abrir el formulario de egresos', icon: 'fa-receipt', keywords: 'nuevo gasto egreso pagar compra registrar' },
+        { type: 'action', target: 'followup', title: 'Crear seguimiento', meta: 'Agendar una tarea o vencimiento', icon: 'fa-calendar-plus', keywords: 'nuevo seguimiento tarea agenda vencimiento recordatorio' },
+        { type: 'action', target: 'product', title: 'Agregar producto', meta: 'Cargar un articulo al inventario', icon: 'fa-box-open', keywords: 'nuevo producto inventario stock catalogo agregar' }
+    ];
+
     let globalSearchItems = [];
     let globalSearchActiveIndex = -1;
 
     const buildGlobalSearchItems = (query) => {
         const normalized = normalizeGlobalSearch(query);
+        const actions = globalSearchActions
+            .filter(item => !normalized || normalizeGlobalSearch(`${item.title} ${item.meta} ${item.keywords}`).includes(normalized));
         const destinations = globalSearchDestinations
             .filter(item => !normalized || normalizeGlobalSearch(`${item.title} ${item.meta} ${item.keywords}`).includes(normalized))
             .slice(0, normalized ? 3 : 6);
 
-        if (!normalized) return destinations;
+        if (!normalized) return [...actions, ...destinations].slice(0, 10);
 
         const products = productCatalog
             .filter(product => normalizeGlobalSearch(`${product.name || ''} ${product.category || ''}`).includes(normalized))
@@ -2145,11 +2219,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 icon: transaction.type === 'expense' ? 'fa-arrow-trend-down' : 'fa-receipt'
             }));
 
-        return [...destinations, ...products, ...clients, ...transactions].slice(0, 10);
+        return [...actions, ...destinations, ...products, ...clients, ...transactions].slice(0, 10);
     };
 
     const searchTypeLabel = (type) => ({
-        view: 'Seccion', product: 'Producto', client: 'Cliente', transaction: 'Movimiento'
+        action: 'Accion', view: 'Seccion', product: 'Producto', client: 'Cliente', transaction: 'Movimiento'
     }[type] || 'Resultado');
 
     const setGlobalSearchOpen = (open) => {
@@ -2176,11 +2250,11 @@ document.addEventListener('DOMContentLoaded', () => {
         globalSearchItems = buildGlobalSearchItems(query);
         globalSearchActiveIndex = -1;
         globalSearchClear.hidden = !query;
-        globalSearchStatus.textContent = query ? 'Resultados encontrados' : 'Accesos rapidos';
+        globalSearchStatus.textContent = query ? 'Resultados encontrados' : 'Acciones y secciones';
         globalSearchCount.textContent = query ? `${globalSearchItems.length} resultado${globalSearchItems.length === 1 ? '' : 's'}` : '';
 
         if (!globalSearchItems.length) {
-            globalSearchResults.innerHTML = `<div class="global-search-empty"><i class="fa-solid fa-magnifying-glass"></i><strong>Sin coincidencias</strong><span>Prueba con otro cliente, producto o seccion.</span></div>`;
+            globalSearchResults.innerHTML = `<div class="global-search-empty"><i class="fa-solid fa-magnifying-glass"></i><strong>Sin coincidencias</strong><span>Prueba con una accion, cliente, producto o seccion.</span></div>`;
             return;
         }
 
@@ -2195,7 +2269,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const activateGlobalSearchItem = (item) => {
         if (!item) return;
-        if (item.type === 'view') {
+        if (item.type === 'action') {
+            runQuickAction(item.target);
+        } else if (item.type === 'view') {
             switchView(item.target);
         } else if (item.type === 'product') {
             switchView('nav-inventario');
@@ -2252,6 +2328,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         document.addEventListener('click', (event) => {
             if (!globalSearch.contains(event.target)) setGlobalSearchOpen(false);
+        });
+        document.addEventListener('keydown', (event) => {
+            if (!(event.ctrlKey || event.metaKey) || event.key.toLowerCase() !== 'k') return;
+            event.preventDefault();
+            renderGlobalSearch();
+            setGlobalSearchOpen(true);
+            globalSearchInput.focus();
+            globalSearchInput.select();
         });
     };
 

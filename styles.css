@@ -625,6 +625,7 @@ h1 {
 .global-search-result-icon[data-type="client"] { color: var(--success); background: var(--success-light); }
 .global-search-result-icon[data-type="product"] { color: var(--warning); background: var(--warning-light); }
 .global-search-result-icon[data-type="transaction"] { color: var(--danger); background: var(--danger-light); }
+.global-search-result-icon[data-type="action"] { color: #00b8d4; background: rgba(0, 184, 212, 0.13); }
 
 .global-search-result-copy { min-width: 0; }
 
@@ -1480,6 +1481,10 @@ select:focus {
 }
 
 @media (max-width: 768px) {
+    body.sidebar-open {
+        overflow: hidden;
+    }
+
     .sidebar {
         transform: translateX(-100%);
         transition: transform 0.3s ease;

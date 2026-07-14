@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zaleasy | Gesti&oacute;n de Ventas</title>
     <meta name="description" content="Sistema premium para la gesti&oacute;n y seguimiento de ventas diarias.">
-  <link rel="stylesheet" href="styles.css?v=20260712-quick-create-v2">
+  <link rel="stylesheet" href="styles.css?v=20260714-context-navigation-v1">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
@@ -121,7 +121,7 @@
         <!-- Sidebar Overlay -->
         <div class="sidebar-overlay" id="sidebar-overlay"></div>
         <!-- Sidebar -->
-        <aside class="sidebar">
+        <aside class="sidebar" id="app-sidebar">
             <div class="brand">
                 <img src="assets/logo-navbar.png" alt="Zaleasy Logo"
                     style="height: 38px; border-radius: 20%; margin-right: 0.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
@@ -178,7 +178,8 @@
             <header class="top-header">
                 <div class="header-left" style="min-width: 0;">
                     <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.4rem; flex-wrap: wrap;">
-                        <button id="mobile-menu-btn" class="btn-icon hide-desktop"
+                        <button id="mobile-menu-btn" class="btn-icon hide-desktop" type="button"
+                            aria-label="Abrir menu de navegacion" aria-expanded="false" aria-controls="app-sidebar"
                             style="display: none; font-size: 1.4rem; color: var(--text-main); background: none; border: none; padding: 0;">
                             <i class="fa-solid fa-bars"></i>
                         </button>
@@ -191,15 +192,15 @@
                 </div>
                 <div class="global-search" id="global-search">
                     <i class="fa-solid fa-magnifying-glass global-search-icon" aria-hidden="true"></i>
-                    <input type="search" id="global-search-input" placeholder="Buscar clientes, productos o movimientos..."
+                    <input type="search" id="global-search-input" placeholder="Buscar o ejecutar una accion..."
                         autocomplete="off" aria-label="Buscar en toda la aplicacion" aria-expanded="false"
-                        aria-controls="global-search-results" aria-autocomplete="list" />
+                        aria-controls="global-search-results" aria-autocomplete="list" aria-keyshortcuts="Control+K Meta+K" />
                     <button type="button" class="global-search-clear" id="global-search-clear" title="Limpiar busqueda" aria-label="Limpiar busqueda" hidden>
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                     <div class="global-search-panel" id="global-search-panel" hidden>
                         <div class="global-search-panel-head">
-                            <span id="global-search-status">Accesos rapidos</span>
+                            <span id="global-search-status">Acciones y secciones</span>
                             <small id="global-search-count"></small>
                         </div>
                         <div class="global-search-results" id="global-search-results" role="listbox" aria-label="Resultados de busqueda"></div>
@@ -1846,7 +1847,7 @@
     </div>
 
     <!-- Script for Logic -->
-    <script src="app.js?v=20260712-quick-create-v2"></script>
+    <script src="app.js?v=20260714-context-navigation-v1"></script>
 </body>
 
 </html>
