@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zaleasy | Gesti&oacute;n de Ventas</title>
     <meta name="description" content="Sistema premium para la gesti&oacute;n y seguimiento de ventas diarias.">
-  <link rel="stylesheet" href="styles.css?v=20260714-context-navigation-v1">
+  <link rel="stylesheet" href="styles.css?v=20260716-mobile-app-nav-v1">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
@@ -195,6 +195,7 @@
                     <input type="search" id="global-search-input" placeholder="Buscar o ejecutar una accion..."
                         autocomplete="off" aria-label="Buscar en toda la aplicacion" aria-expanded="false"
                         aria-controls="global-search-results" aria-autocomplete="list" aria-keyshortcuts="Control+K Meta+K" />
+                    <kbd class="global-search-shortcut" aria-hidden="true">Ctrl K</kbd>
                     <button type="button" class="global-search-clear" id="global-search-clear" title="Limpiar busqueda" aria-label="Limpiar busqueda" hidden>
                         <i class="fa-solid fa-xmark"></i>
                     </button>
@@ -943,7 +944,7 @@
                     <div class="card form-section">
                         <div class="card-header">
                             <h2>Nueva Transacci&oacute;n</h2>
-                            <span class="badge">Nuevo</span>
+                            <span class="badge" id="transaction-draft-status">Nuevo</span>
                         </div>
                         <form id="sale-form" class="sale-form">
                             <div class="transaction-type-toggle"
@@ -1570,6 +1571,25 @@
                 </div>
             </div>
         </main>
+
+        <!-- Mobile App Navigation -->
+        <nav class="mobile-app-nav" id="mobile-app-nav" aria-label="Navegacion principal movil">
+            <button type="button" class="mobile-app-nav-item active" data-mobile-view="nav-dashboard" aria-label="Ir al inicio" aria-current="page">
+                <i class="fa-solid fa-house"></i><span>Inicio</span>
+            </button>
+            <button type="button" class="mobile-app-nav-item" data-mobile-view="nav-historial" aria-label="Ir al historial">
+                <i class="fa-solid fa-clock-rotate-left"></i><span>Historial</span>
+            </button>
+            <button type="button" class="mobile-app-nav-item mobile-app-nav-primary" data-mobile-action="sale" aria-label="Registrar nueva venta">
+                <span class="mobile-app-nav-primary-icon"><i class="fa-solid fa-plus"></i></span><span>Venta</span>
+            </button>
+            <button type="button" class="mobile-app-nav-item" data-mobile-view="nav-clientes" aria-label="Ir a clientes">
+                <i class="fa-solid fa-address-book"></i><span>Clientes</span>
+            </button>
+            <button type="button" class="mobile-app-nav-item" data-mobile-view="nav-inventario" aria-label="Ir al inventario">
+                <i class="fa-solid fa-boxes-stacked"></i><span>Stock</span>
+            </button>
+        </nav>
     </div>
 
     <!-- Notification Toast -->
@@ -1847,7 +1867,7 @@
     </div>
 
     <!-- Script for Logic -->
-    <script src="app.js?v=20260714-context-navigation-v1"></script>
+    <script src="app.js?v=20260716-mobile-app-nav-v1"></script>
 </body>
 
 </html>

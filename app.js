@@ -618,6 +618,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const sidebar = document.querySelector('.sidebar');
     const sidebarOverlay = document.getElementById('sidebar-overlay');
+    const mobileAppNav = document.getElementById('mobile-app-nav');
 
     const setSidebarOpen = (open) => {
         sidebar.classList.toggle('active', open);
@@ -645,7 +646,24 @@ document.addEventListener('DOMContentLoaded', () => {
     switchView = (targetId, title) => {
         originalSwitchView(targetId, title);
         closeSidebar();
+        if (mobileAppNav) {
+            mobileAppNav.querySelectorAll('[data-mobile-view]').forEach(item => {
+                const active = item.dataset.mobileView === targetId;
+                item.classList.toggle('active', active);
+                if (active) item.setAttribute('aria-current', 'page');
+                else item.removeAttribute('aria-current');
+            });
+        }
     };
+
+    if (mobileAppNav) {
+        mobileAppNav.addEventListener('click', (event) => {
+            const viewButton = event.target.closest('[data-mobile-view]');
+            const actionButton = event.target.closest('[data-mobile-action]');
+            if (viewButton) switchView(viewButton.dataset.mobileView);
+            if (actionButton) runQuickAction(actionButton.dataset.mobileAction);
+        });
+    }
 
     // --- Reports Chart Instances ---
     let repWeeklyChartInstance = null;
@@ -1490,7 +1508,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const buildCategoryOptions = () => CATEGORY_OPTIONS
         .map(o => `<option value="${o.value}">${o.label}</option>`).join('');
 
-    const createItemRow = (isFirst = false) => {
+    const createItemRow = (isFirst = false, item = {}) => {
         const row = document.createElement('div');
         row.className = 'item-row';
         row.style.animation = 'itemSlideIn 0.25s ease';
@@ -1568,12 +1586,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    const resetMultiItems = () => {
+    const resetMultiItems = (focusFirst = true) => {
         const container = document.getElementById('items-container');
         container.innerHTML = '';
         const firstRow = createItemRow(true);
         container.appendChild(firstRow);
-        firstRow.querySelector('.item-product-input').focus();
+        if (focusFirst) firstRow.querySelector('.item-product-input').focus();
         updateMultiTotal();
     };
 
@@ -1596,6 +1614,58 @@ document.addEventListener('DOMContentLoaded', () => {
             addBtn.style.transform = 'scale(0.9)';
             setTimeout(() => addBtn.style.transform = 'scale(1)', 150);
         });
+    };
+
+    const TRANSACTION_DRAFT_KEY = 'zaleasyTransactionDraft';
+
+    const updateTransactionDraftStatus = (hasDraft, restored = false) => {
+        const status = document.getElementById('transaction-draft-status');
+        if (status) status.textContent = restored ? 'Borrador recuperado' : hasDraft ? 'Borrador guardado' : 'Nuevo';
+    };
+
+    const saveTransactionDraft = () => {
+        if (!saleForm) return;
+        const items = [...document.querySelectorAll('.item-row')].map(row => ({
+            product: row.querySelector('.item-product-input')?.value.trim() || '',
+            amount: row.querySelector('.item-amount-input')?.value || '',
+            category: row.querySelector('.item-category-select')?.value || ''
+        }));
+        const draft = { type: currentTransactionType, customerName: customerNameInput?.value.trim() || '', method: methodSelect?.value || 'Efectivo', notes: notesInput?.value.trim() || '', items };
+        const hasContent = draft.customerName || draft.notes || items.some(item => item.product || item.amount || item.category);
+        if (!hasContent) {
+            localStorage.removeItem(TRANSACTION_DRAFT_KEY);
+            updateTransactionDraftStatus(false);
+            return;
+        }
+        localStorage.setItem(TRANSACTION_DRAFT_KEY, JSON.stringify(draft));
+        updateTransactionDraftStatus(true);
+    };
+
+    const clearTransactionDraft = () => {
+        localStorage.removeItem(TRANSACTION_DRAFT_KEY);
+        updateTransactionDraftStatus(false);
+    };
+
+    const setupTransactionDraft = () => {
+        if (!saleForm) return;
+        let draft = null;
+        try { draft = JSON.parse(localStorage.getItem(TRANSACTION_DRAFT_KEY) || 'null'); } catch { draft = null; }
+        if (draft && (draft.customerName || draft.notes || draft.items?.some(item => item.product || item.amount || item.category))) {
+            if (customerNameInput) customerNameInput.value = draft.customerName || '';
+            if (notesInput) notesInput.value = draft.notes || '';
+            if (methodSelect) methodSelect.value = draft.method || 'Efectivo';
+            if (draft.type === 'expense') btnTypeExpense?.click();
+            const container = document.getElementById('items-container');
+            if (container) {
+                container.innerHTML = '';
+                (draft.items?.length ? draft.items : [{}]).forEach((item, index) => container.appendChild(createItemRow(index === 0, item)));
+                syncFirstRowRemoveBtn();
+                updateMultiTotal();
+            }
+            updateTransactionDraftStatus(true, true);
+        }
+        saleForm.addEventListener('input', saveTransactionDraft);
+        saleForm.addEventListener('change', saveTransactionDraft);
     };
 
     // --- Recurring Expenses ---
@@ -3089,6 +3159,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 </span>
             </div>
         `;
+
+        row.querySelector('.item-product-input').value = item.product || '';
+        row.querySelector('.item-amount-input').value = item.amount || '';
+        row.querySelector('.item-category-select').value = item.category || '';
     };
 
     const updateDailyPlan = (totalRevenue = 0, totalExpenses = 0, totalSalesCount = 0, netBalance = 0) => {
