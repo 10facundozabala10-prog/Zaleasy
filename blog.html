@@ -2373,130 +2373,6 @@
       font-weight: 700;
     }
 
-    .blog-library-backup-card {
-      grid-column: 1 / -1;
-      border-color: rgba(0,210,211,0.16);
-      background:
-        linear-gradient(135deg, rgba(0,210,211,0.09), rgba(253,203,110,0.06)),
-        rgba(28,29,41,0.88);
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 1rem;
-      align-items: center;
-    }
-
-    .blog-library-backup-card .continue-reading-actions {
-      justify-content: flex-end;
-      margin-top: 0;
-    }
-
-    .blog-reader-hub {
-      margin: 1rem 0 1.35rem;
-      border: 1px solid rgba(0,210,211,0.14);
-      border-radius: 10px;
-      background:
-        linear-gradient(135deg, rgba(108,92,231,0.08), rgba(0,210,211,0.045)),
-        rgba(18,19,29,0.76);
-      box-shadow: 0 18px 42px rgba(0,0,0,0.18);
-      overflow: hidden;
-    }
-
-    .blog-reader-hub-head {
-      width: 100%;
-      padding: 1rem 1.15rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      border: 0;
-      background: transparent;
-      color: var(--text-main);
-      font: inherit;
-      text-align: left;
-      cursor: pointer;
-    }
-
-    .blog-reader-hub-head > span:first-child {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      min-width: 0;
-    }
-
-    .blog-reader-hub-icon {
-      width: 42px;
-      height: 42px;
-      flex: 0 0 42px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 10px;
-      color: #081114;
-      background: linear-gradient(135deg, #00d2d3, #55efc4);
-      box-shadow: 0 8px 22px rgba(0,210,211,0.22);
-    }
-
-    .blog-reader-hub-head strong,
-    .blog-reader-hub-head small {
-      display: block;
-    }
-
-    .blog-reader-hub-head strong {
-      font-size: 1rem;
-      line-height: 1.3;
-    }
-
-    .blog-reader-hub-head small {
-      margin-top: 0.18rem;
-      color: var(--text-muted);
-      font-size: 0.78rem;
-      font-weight: 650;
-    }
-
-    .blog-reader-hub-chevron {
-      color: var(--text-muted);
-      transition: transform 0.2s ease;
-    }
-
-    .blog-reader-hub.collapsed .blog-reader-hub-chevron {
-      transform: rotate(-90deg);
-    }
-
-    .blog-reader-hub-content {
-      padding: 0 1rem 1rem;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.85rem;
-    }
-
-    .blog-reader-hub-content[hidden] {
-      display: none;
-    }
-
-    .blog-focus-mode .blog-reader-hub {
-      display: none;
-    }
-
-    @media (max-width: 760px) {
-      .blog-reader-hub-content {
-        grid-template-columns: minmax(0, 1fr);
-      }
-
-      .reading-progress-card,
-      .weekly-plan-card,
-      .blog-library-backup-card {
-        grid-column: 1;
-      }
-
-      .blog-library-backup-card {
-        grid-template-columns: 1fr;
-      }
-
-      .blog-library-backup-card .continue-reading-actions {
-        justify-content: flex-start;
-      }
-    }
-
     .blog-sort-control select {
       border: 1px solid rgba(255,255,255,0.12);
       background: rgba(10,11,16,0.72);
@@ -3572,27 +3448,6 @@
       applyBlogFocusButton();
     }
 
-    function setBlogReaderHubCollapsed(collapsed, persist = true) {
-      const hub = document.getElementById('blogReaderHub');
-      const content = document.getElementById('blogReaderHubContent');
-      const toggle = document.getElementById('blogReaderHubToggle');
-      if (!hub || !content || !toggle) return;
-      hub.classList.toggle('collapsed', collapsed);
-      content.hidden = collapsed;
-      toggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
-      if (persist) localStorage.setItem('zaleasyBlogReaderHubCollapsed', collapsed ? '1' : '0');
-    }
-
-    function setupBlogReaderHub() {
-      const toggle = document.getElementById('blogReaderHubToggle');
-      if (!toggle) return;
-      setBlogReaderHubCollapsed(localStorage.getItem('zaleasyBlogReaderHubCollapsed') === '1', false);
-      toggle.addEventListener('click', () => {
-        const content = document.getElementById('blogReaderHubContent');
-        setBlogReaderHubCollapsed(!content || !content.hidden ? true : false);
-      });
-    }
-
     function updateFilterCounts() {
       const cards = Array.from(document.querySelectorAll('.blog-card:not(.coming-soon)'));
       document.querySelectorAll('.glass-filter-btn[data-filter]').forEach(btn => {
@@ -4269,7 +4124,6 @@
       setupSavedArticles();
       setupReadProgress();
       setupBlogFocusMode();
-      setupBlogReaderHub();
       setupBlogSearchShortcut();
       setupDailyFeaturedArticle();
       applyBlogFilters();
@@ -4685,78 +4539,6 @@
         </select>
       </label>
     </div>
-
-    <section class="blog-reader-hub" id="blogReaderHub" aria-labelledby="blogReaderHubTitle">
-      <button class="blog-reader-hub-head" id="blogReaderHubToggle" type="button" aria-expanded="true" aria-controls="blogReaderHubContent">
-        <span>
-          <span class="blog-reader-hub-icon"><i class="fa-solid fa-book-open-reader"></i></span>
-          <span>
-            <strong id="blogReaderHubTitle">Mi espacio de lectura</strong>
-            <small>Continua, guarda y organiza articulos sin crear una cuenta.</small>
-          </span>
-        </span>
-        <span class="blog-reader-hub-chevron"><i class="fa-solid fa-chevron-down"></i></span>
-      </button>
-
-      <div class="blog-reader-hub-content" id="blogReaderHubContent">
-        <article class="reading-progress-card">
-          <div>
-            <h3>Tu progreso en la biblioteca</h3>
-            <p id="readingProgressText">Preparando tu progreso de lectura...</p>
-            <div class="reading-progress-meter" aria-hidden="true"><span id="readingProgressFill"></span></div>
-          </div>
-          <strong class="reading-progress-number" id="readingProgressNumber">0%</strong>
-        </article>
-
-        <article class="continue-reading-card" id="continueReadingCard" data-empty="true">
-          <div>
-            <span><i class="fa-solid fa-clock-rotate-left"></i> Continuar</span>
-            <h3 id="continueReadingTitle">Todavia no abriste ningun articulo</h3>
-            <p id="continueReadingText">Cuando leas uno, lo guardaremos aca para que puedas volver rapido.</p>
-          </div>
-          <div class="continue-reading-actions">
-            <a class="blog-tool-btn primary" id="continueReadingLink" href="#blogArticles"><i class="fa-solid fa-book-open"></i> Explorar articulos</a>
-          </div>
-        </article>
-
-        <article class="saved-articles-card">
-          <span><i class="fa-solid fa-bookmark"></i> Guardados</span>
-          <div>
-            <h3>Lecturas para volver</h3>
-            <p id="savedArticlesMeta">Guarda articulos importantes para encontrarlos rapido.</p>
-          </div>
-          <div class="saved-articles-list" id="savedArticlesList"></div>
-          <div class="continue-reading-actions">
-            <button class="blog-tool-btn" type="button" onclick="clearSavedArticles()"><i class="fa-regular fa-trash-can"></i> Vaciar guardados</button>
-          </div>
-        </article>
-
-        <article class="weekly-plan-card">
-          <div>
-            <h3><i class="fa-solid fa-calendar-week" style="color:#fdcb6e;margin-right:.45rem;"></i> Plan de lectura semanal</h3>
-            <p id="weeklyPlanMeta">Arma una semana de hasta 7 lecturas desde los filtros actuales.</p>
-          </div>
-          <div class="weekly-plan-list" id="weeklyPlanList"></div>
-          <div class="continue-reading-actions">
-            <button class="blog-tool-btn primary" type="button" onclick="generateWeeklyReadingPlan()"><i class="fa-solid fa-wand-magic-sparkles"></i> Crear plan</button>
-            <button class="blog-tool-btn" type="button" onclick="clearWeeklyReadingPlan()"><i class="fa-solid fa-rotate-left"></i> Reiniciar</button>
-          </div>
-        </article>
-
-        <article class="blog-library-backup-card">
-          <div>
-            <span><i class="fa-solid fa-shield-halved"></i> Respaldo local</span>
-            <h3>Conserva tu biblioteca personal</h3>
-            <p id="blogBackupStatus">Preparando el estado de tus lecturas...</p>
-          </div>
-          <div class="continue-reading-actions">
-            <button class="blog-tool-btn" type="button" onclick="exportBlogReaderData()"><i class="fa-solid fa-download"></i> Exportar</button>
-            <label class="blog-tool-btn" for="blogReaderImport"><i class="fa-solid fa-upload"></i> Importar</label>
-            <input type="file" id="blogReaderImport" accept="application/json,.json" onchange="importBlogReaderData(event)" hidden>
-          </div>
-        </article>
-      </div>
-    </section>
 
     <div class="blog-grid">
       
