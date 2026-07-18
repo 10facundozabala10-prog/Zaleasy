@@ -2898,6 +2898,36 @@
         animation: none;
       }
     }
+
+    /* Compact navigation assistance for the long-form catalog. */
+    #back-to-top {
+      --scroll-progress: 0deg;
+      padding: 3px;
+      background: conic-gradient(#00d2d3 var(--scroll-progress), rgba(255,255,255,0.14) 0);
+    }
+
+    #back-to-top .back-to-top-core {
+      width: 100%;
+      height: 100%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6c5ce7, #4540a8);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+
+    #back-to-top:focus-visible {
+      outline: 3px solid #55efc4;
+      outline-offset: 4px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .skip-link,
+      #back-to-top {
+        transition: none;
+      }
+    }
   </style>
 
   <link rel="icon" type="image/png" href="assets/logo-navbar.png" />
@@ -2906,6 +2936,8 @@
 </head>
 
 <body>
+  <a class="skip-link" href="#blogArticles">Saltar a la biblioteca</a>
+
   <!-- Background Animation -->
   <div class="bg-animated"></div>
 
@@ -10442,18 +10474,36 @@
   </footer>
 
   <!-- Back to Top Button -->
-  <button id="back-to-top" aria-label="Volver arriba" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-    <i class="fa-solid fa-chevron-up"></i>
+  <button id="back-to-top" type="button" aria-label="Volver arriba">
+    <span class="back-to-top-core" aria-hidden="true"><i class="fa-solid fa-chevron-up"></i></span>
   </button>
   <script>
-    window.addEventListener('scroll', () => {
+    function updateBlogScrollAssist() {
       const btn = document.getElementById('back-to-top');
-      if (window.scrollY > 400) {
-        btn.classList.add('visible');
-      } else {
-        btn.classList.remove('visible');
-      }
+      if (!btn) return;
+      const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      const progress = maxScroll ? Math.min(100, Math.round((window.scrollY / maxScroll) * 100)) : 0;
+      btn.style.setProperty('--scroll-progress', `${progress * 3.6}deg`);
+      btn.classList.toggle('visible', window.scrollY > 400);
+      btn.setAttribute('aria-label', progress ? `Volver arriba. ${progress}% de la pagina recorrida` : 'Volver arriba');
+    }
+
+    let blogScrollTicking = false;
+    window.addEventListener('scroll', () => {
+      if (blogScrollTicking) return;
+      blogScrollTicking = true;
+      window.requestAnimationFrame(() => {
+        updateBlogScrollAssist();
+        blogScrollTicking = false;
+      });
+    }, { passive: true });
+
+    document.getElementById('back-to-top')?.addEventListener('click', () => {
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
     });
+
+    updateBlogScrollAssist();
   </script>
 
 </body>

@@ -2167,6 +2167,66 @@ document.addEventListener('DOMContentLoaded', () => {
         const authEmailInput = document.getElementById('auth-email');
         const authPasswordInput = document.getElementById('auth-password');
         const btnEmailRegister = document.getElementById('btn-email-register');
+        const authPasswordToggle = document.getElementById('auth-password-toggle');
+        const btnForgotPassword = document.getElementById('btn-forgot-password');
+        const authFormFeedback = document.getElementById('auth-form-feedback');
+
+        const setAuthFeedback = (message = '', state = 'info') => {
+            if (!authFormFeedback) return;
+            authFormFeedback.textContent = message;
+            authFormFeedback.dataset.state = state;
+            authFormFeedback.hidden = !message;
+        };
+
+        const getFriendlyAuthError = (error, action = 'login') => {
+            const code = error?.code || '';
+            if (code.includes('invalid-email')) return 'Revisa el correo ingresado.';
+            if (code.includes('weak-password')) return 'La contrase\u00f1a debe tener al menos 6 caracteres.';
+            if (code.includes('email-already-in-use')) return 'Ese correo ya tiene una cuenta. Prueba iniciar sesi\u00f3n.';
+            if (code.includes('invalid-credential') || code.includes('wrong-password') || code.includes('user-not-found')) {
+                return 'El correo o la contrase\u00f1a no son correctos.';
+            }
+            if (code.includes('too-many-requests')) return 'Demasiados intentos. Espera unos minutos y vuelve a probar.';
+            return action === 'reset'
+                ? 'No pudimos enviar el enlace. Revisa el correo e intenta nuevamente.'
+                : 'No pudimos completar la operaci\u00f3n. Intenta nuevamente.';
+        };
+
+        authPasswordToggle?.addEventListener('click', () => {
+            const showing = authPasswordInput.type === 'text';
+            authPasswordInput.type = showing ? 'password' : 'text';
+            authPasswordToggle.setAttribute('aria-pressed', showing ? 'false' : 'true');
+            authPasswordToggle.setAttribute('aria-label', showing ? 'Mostrar contrase\u00f1a' : 'Ocultar contrase\u00f1a');
+            authPasswordToggle.innerHTML = `<i class="fa-regular ${showing ? 'fa-eye' : 'fa-eye-slash'}" aria-hidden="true"></i>`;
+            authPasswordInput.focus();
+        });
+
+        btnForgotPassword?.addEventListener('click', async () => {
+            const email = authEmailInput.value.trim();
+            if (!email || !authEmailInput.checkValidity()) {
+                setAuthFeedback('Ingresa un correo v\u00e1lido para recuperar tu cuenta.', 'error');
+                authEmailInput.focus();
+                return;
+            }
+            if (!window.firebaseAuth || !window.firebaseSendPasswordResetEmail) {
+                setAuthFeedback('La recuperaci\u00f3n por correo estar\u00e1 disponible al conectar Firebase.', 'error');
+                return;
+            }
+            const originalText = btnForgotPassword.textContent;
+            btnForgotPassword.disabled = true;
+            btnForgotPassword.textContent = 'Enviando enlace...';
+            setAuthFeedback('');
+            try {
+                await window.firebaseSendPasswordResetEmail(window.firebaseAuth, email);
+                setAuthFeedback(`Te enviamos un enlace de recuperaci\u00f3n a ${email}.`, 'success');
+            } catch (error) {
+                console.error('Error al recuperar contrase\u00f1a:', error);
+                setAuthFeedback(getFriendlyAuthError(error, 'reset'), 'error');
+            } finally {
+                btnForgotPassword.disabled = false;
+                btnForgotPassword.textContent = originalText;
+            }
+        });
 
         // Fallback for visual testing if Firebase script is commented out or missing
         if (!window.firebaseAuth) {
@@ -2247,12 +2307,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const email = authEmailInput.value;
                 const password = authPasswordInput.value;
                 const btnOriginalText = document.getElementById('btn-email-login').innerHTML;
+                setAuthFeedback('');
                 document.getElementById('btn-email-login').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Iniciando...';
 
                 window.firebaseSignInWithEmail(window.firebaseAuth, email, password)
                     .catch((error) => {
                         console.error("Error en login por email:", error);
-                        alert("Error al iniciar sesi\u00f3n: " + error.message);
+                        setAuthFeedback(getFriendlyAuthError(error, 'login'), 'error');
                         document.getElementById('btn-email-login').innerHTML = btnOriginalText;
                     });
             });
@@ -2268,12 +2329,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const email = authEmailInput.value;
                 const password = authPasswordInput.value;
                 const btnOriginalText = btnEmailRegister.innerHTML;
+                setAuthFeedback('');
                 btnEmailRegister.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Registrando...';
 
                 window.firebaseCreateUserWithEmail(window.firebaseAuth, email, password)
                     .catch((error) => {
                         console.error("Error en registro por email:", error);
-                        alert("Error al registrar: " + error.message);
+                        setAuthFeedback(getFriendlyAuthError(error, 'register'), 'error');
                         btnEmailRegister.innerHTML = btnOriginalText;
                     });
             });

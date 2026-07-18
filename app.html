@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zaleasy | Gesti&oacute;n de Ventas</title>
     <meta name="description" content="Sistema premium para la gesti&oacute;n y seguimiento de ventas diarias.">
-  <link rel="stylesheet" href="styles.css?v=20260717-nav-indicators-v1">
+  <link rel="stylesheet" href="styles.css?v=20260718-auth-recovery-v1">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
@@ -16,7 +16,7 @@
     <!-- Firebase SDK (Version 10) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics.js";
 
         const firebaseConfig = {
@@ -41,6 +41,7 @@
         window.firebaseOnAuth = onAuthStateChanged;
         window.firebaseSignInWithEmail = signInWithEmailAndPassword;
         window.firebaseCreateUserWithEmail = createUserWithEmailAndPassword;
+        window.firebaseSendPasswordResetEmail = sendPasswordResetEmail;
     </script>
 
   <link rel="icon" type="image/png" href="assets/logo-navbar.png" />
@@ -62,24 +63,36 @@
             </div>
             <p class="auth-subtitle">Inicia sesi&oacute;n para gestionar tus ventas en la nube.</p>
 
-            <form id="email-auth-form" style="display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1rem;">
-                <div class="input-wrapper" style="margin-bottom: 0;">
-                    <i class="fa-solid fa-envelope"></i>
-                    <input type="email" id="auth-email" placeholder="Correo electr&oacute;nico" required
-                        style="padding-left: 2.5rem; width: 100%;">
+            <form id="email-auth-form" class="auth-email-form">
+                <div class="auth-field">
+                    <label for="auth-email">Correo electr&oacute;nico</label>
+                    <div class="input-wrapper auth-input-wrapper">
+                        <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+                        <input type="email" id="auth-email" placeholder="tu@negocio.com" required autocomplete="email"
+                            aria-describedby="auth-form-feedback">
+                    </div>
                 </div>
-                <div class="input-wrapper" style="margin-bottom: 0;">
-                    <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="auth-password" placeholder="Contrase&ntilde;a" required
-                        style="padding-left: 2.5rem; width: 100%;">
+                <div class="auth-field">
+                    <label for="auth-password">Contrase&ntilde;a</label>
+                    <div class="input-wrapper auth-input-wrapper">
+                        <i class="fa-solid fa-lock" aria-hidden="true"></i>
+                        <input type="password" id="auth-password" placeholder="Tu contrase&ntilde;a" required
+                            minlength="6" autocomplete="current-password" aria-describedby="auth-form-feedback">
+                        <button type="button" class="auth-password-toggle" id="auth-password-toggle"
+                            aria-label="Mostrar contrase&ntilde;a" aria-pressed="false">
+                            <i class="fa-regular fa-eye" aria-hidden="true"></i>
+                        </button>
+                    </div>
                 </div>
-                <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
-                    <button type="submit" id="btn-email-login" class="btn btn-primary btn-block auth-btn"
-                        style="flex: 1;">
+                <div class="auth-form-options">
+                    <button type="button" class="auth-link-button" id="btn-forgot-password">&iquest;Olvidaste tu contrase&ntilde;a?</button>
+                </div>
+                <p class="auth-form-feedback" id="auth-form-feedback" role="status" aria-live="polite" hidden></p>
+                <div class="auth-actions">
+                    <button type="submit" id="btn-email-login" class="btn btn-primary btn-block auth-btn">
                         Iniciar Sesi&oacute;n
                     </button>
-                    <button type="button" id="btn-email-register" class="btn btn-outline btn-block auth-btn"
-                        style="flex: 1; margin: 0;">
+                    <button type="button" id="btn-email-register" class="btn btn-outline btn-block auth-btn">
                         Registrarse
                     </button>
                 </div>
@@ -1870,7 +1883,7 @@
     </div>
 
     <!-- Script for Logic -->
-    <script src="app.js?v=20260717-view-routing-v1"></script>
+    <script src="app.js?v=20260718-auth-recovery-v1"></script>
 </body>
 
 </html>
