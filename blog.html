@@ -1089,10 +1089,6 @@
       background: rgba(28,29,41,0.8) !important;
     }
 
-    #liveNotif {
-      display: none !important;
-    }
-
     @media (max-width: 900px) {
       .quick-nav-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1453,6 +1449,11 @@
         rgba(31,33,48,0.94);
     }
 
+    .blog-card:focus-within {
+      border-color: rgba(0,210,211,0.5);
+      box-shadow: 0 22px 46px rgba(0,0,0,0.3), 0 0 0 3px rgba(0,210,211,0.12);
+    }
+
     .blog-img {
       height: 214px !important;
       position: relative;
@@ -1475,6 +1476,19 @@
     .blog-card .blog-img::after {
       opacity: 1;
       background: linear-gradient(180deg, transparent 45%, rgba(8,9,14,0.52) 100%);
+      pointer-events: none;
+    }
+
+    .blog-image-link {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      border-radius: inherit;
+    }
+
+    .blog-image-link:focus-visible {
+      outline: 3px solid #00d2d3;
+      outline-offset: -5px;
     }
 
     .blog-card-content {
@@ -1485,6 +1499,19 @@
       border-radius: 999px;
       font-weight: 800;
       border: 1px solid currentColor;
+    }
+
+    .blog-category-button {
+      cursor: pointer;
+      transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .blog-category-button:hover,
+    .blog-category-button:focus-visible {
+      transform: translateY(-1px);
+      background-color: rgba(0,210,211,0.12);
+      box-shadow: 0 0 0 3px rgba(0,210,211,0.1);
+      outline: none;
     }
 
     .blog-card h3 {
@@ -1545,6 +1572,17 @@
     .blog-card h3 a {
       color: var(--text-main) !important;
       text-decoration: none !important;
+    }
+
+    .blog-card-title-link {
+      display: block;
+      border-radius: 4px;
+    }
+
+    .blog-card-title-link:focus-visible {
+      color: #ffffff !important;
+      outline: 3px solid rgba(0,210,211,0.6);
+      outline-offset: 4px;
     }
 
     .blog-card h2 a:hover,
@@ -2128,6 +2166,202 @@
     .blog-suggestion-chips button:hover {
       color: #fff;
       border-color: rgba(162,155,254,0.4);
+    }
+
+    .blog-suggestion-chips .topic-explorer-trigger {
+      color: #071014;
+      border-color: transparent;
+      background: linear-gradient(135deg, #00d2d3, #55efc4);
+      font-weight: 850;
+    }
+
+    .blog-suggestion-chips .topic-explorer-trigger:hover {
+      color: #071014;
+      border-color: transparent;
+      box-shadow: 0 8px 22px rgba(0,210,211,0.22);
+    }
+
+    .topic-explorer-dialog {
+      width: min(820px, calc(100vw - 2rem));
+      max-height: min(780px, calc(100vh - 2rem));
+      padding: 0;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px;
+      background: #181923;
+      color: var(--text-main);
+      box-shadow: 0 30px 90px rgba(0,0,0,0.62);
+    }
+
+    .topic-explorer-dialog::backdrop {
+      background: rgba(7,8,14,0.76);
+      backdrop-filter: blur(8px);
+    }
+
+    .topic-explorer-shell {
+      max-height: min(780px, calc(100vh - 2rem));
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topic-explorer-head {
+      padding: 1.25rem 1.35rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(135deg, rgba(108,92,231,0.15), rgba(0,210,211,0.08));
+    }
+
+    .topic-explorer-head h2 {
+      margin: 0;
+      font-size: 1.35rem;
+      line-height: 1.25;
+    }
+
+    .topic-explorer-head p {
+      margin: 0.35rem 0 0;
+      color: var(--text-muted);
+      font-size: 0.86rem;
+      line-height: 1.5;
+    }
+
+    .topic-explorer-close {
+      width: 38px;
+      height: 38px;
+      flex: 0 0 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255,255,255,0.11);
+      border-radius: 9px;
+      background: rgba(255,255,255,0.06);
+      color: var(--text-main);
+      cursor: pointer;
+    }
+
+    .topic-explorer-body {
+      padding: 1rem 1.35rem 1.35rem;
+      min-height: 0;
+      overflow-y: auto;
+    }
+
+    .topic-explorer-search {
+      position: relative;
+      margin-bottom: 0.75rem;
+    }
+
+    .topic-explorer-search i {
+      position: absolute;
+      left: 0.9rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .topic-explorer-search input {
+      width: 100%;
+      min-height: 46px;
+      padding: 0 0.9rem 0 2.55rem;
+      border: 1px solid rgba(255,255,255,0.11);
+      border-radius: 10px;
+      background: rgba(10,11,16,0.68);
+      color: var(--text-main);
+      font: inherit;
+      outline: none;
+    }
+
+    .topic-explorer-search input:focus {
+      border-color: rgba(0,210,211,0.46);
+      box-shadow: 0 0 0 3px rgba(0,210,211,0.09);
+    }
+
+    .topic-explorer-meta {
+      margin: 0 0 0.85rem;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .topic-explorer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.6rem;
+    }
+
+    .topic-explorer-item {
+      min-width: 0;
+      padding: 0.78rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.65rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 9px;
+      background: rgba(255,255,255,0.045);
+      color: var(--text-main);
+      font: inherit;
+      font-size: 0.84rem;
+      font-weight: 760;
+      text-align: left;
+      cursor: pointer;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .topic-explorer-item:hover,
+    .topic-explorer-item:focus-visible {
+      transform: translateY(-2px);
+      border-color: rgba(0,210,211,0.34);
+      background: rgba(0,210,211,0.08);
+      outline: none;
+    }
+
+    .topic-explorer-item span:first-child {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .topic-explorer-count {
+      min-width: 28px;
+      padding: 0.2rem 0.45rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      color: #00d2d3;
+      font-size: 0.72rem;
+      font-weight: 850;
+      text-align: center;
+    }
+
+    .topic-explorer-empty {
+      grid-column: 1 / -1;
+      padding: 2rem 1rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    @media (max-width: 680px) {
+      .topic-explorer-dialog {
+        width: calc(100vw - 1rem);
+        max-height: calc(100vh - 1rem);
+      }
+
+      .topic-explorer-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .topic-explorer-head,
+      .topic-explorer-body {
+        padding-inline: 1rem;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .topic-explorer-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     .blog-sort-control {
@@ -2958,7 +3192,11 @@
 
     function restoreBlogViewFromUrl() {
       const params = new URLSearchParams(window.location.search);
-      const categories = new Set(['all', ...Array.from(document.querySelectorAll('.glass-filter-btn[data-filter]')).map(btn => btn.dataset.filter)]);
+      const categories = new Set([
+        'all',
+        ...Array.from(document.querySelectorAll('.glass-filter-btn[data-filter]')).map(btn => btn.dataset.filter),
+        ...getBlogTopicDirectory().map(item => item.topic)
+      ]);
       const sorts = new Set(['newest', 'oldest', 'shortest', 'title']);
       const readModes = new Set(['all', 'pending', 'read']);
       const requestedCategory = normalizeBlogText(params.get('categoria') || 'all');
@@ -3139,7 +3377,7 @@
       if (!text || !clear) return;
       const query = (document.getElementById('blogSearch')?.value || '').trim();
       const parts = [];
-      if (activeBlogCategory !== 'all') parts.push(`Categoria: ${activeBlogCategory}`);
+      if (activeBlogCategory !== 'all') parts.push(`Categoria: ${formatBlogTopic(activeBlogCategory)}`);
       if (query) parts.push(`Busqueda: "${query}"`);
       if (blogReadFilter === 'pending') parts.push('Solo pendientes');
       if (blogReadFilter === 'read') parts.push('Solo leidos');
@@ -3209,6 +3447,20 @@
         fallback?.classList.add('active');
         fallback?.setAttribute('aria-pressed', 'true');
       }
+      resetBlogPagination();
+      applyBlogFilters();
+      syncBlogViewUrl('push');
+      document.getElementById('blogArticles')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function setBlogTopic(topic) {
+      activeBlogCategory = topic || 'all';
+      setBlogSearchValue('');
+      document.querySelectorAll('header.blog-header .glass-filter-btn[data-filter]').forEach(btn => {
+        const selected = btn.dataset.filter === activeBlogCategory;
+        btn.classList.toggle('active', selected);
+        btn.setAttribute('aria-pressed', selected ? 'true' : 'false');
+      });
       resetBlogPagination();
       applyBlogFilters();
       syncBlogViewUrl('push');
@@ -3353,6 +3605,109 @@
       });
     }
 
+    const BLOG_TOPIC_LABELS = {
+      administracion: 'Administracion',
+      automatizacion: 'Automatizacion',
+      atencion: 'Atencion al cliente',
+      comunicacion: 'Comunicacion',
+      ecommerce: 'Ecommerce',
+      gestion: 'Gestion',
+      logistica: 'Logistica',
+      motivacion: 'Motivacion',
+      organizacion: 'Organizacion',
+      planificacion: 'Planificacion',
+      tecnologia: 'Tecnologia'
+    };
+
+    function formatBlogTopic(topic) {
+      return BLOG_TOPIC_LABELS[topic]
+        || topic.replace(/[-_]+/g, ' ').replace(/\b\w/g, letter => letter.toUpperCase());
+    }
+
+    function getBlogTopicDirectory() {
+      const counts = new Map();
+      document.querySelectorAll('.blog-card:not(.coming-soon)').forEach(card => {
+        const topics = new Set(normalizeBlogText(card.dataset.category || '').split(/\s+/).filter(Boolean));
+        topics.forEach(topic => counts.set(topic, (counts.get(topic) || 0) + 1));
+      });
+      return [...counts.entries()]
+        .map(([topic, count]) => ({ topic, count, label: formatBlogTopic(topic) }))
+        .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label, 'es'));
+    }
+
+    function renderBlogTopicExplorer(query = '') {
+      const grid = document.getElementById('topicExplorerGrid');
+      const meta = document.getElementById('topicExplorerMeta');
+      if (!grid || !meta) return;
+      const normalizedQuery = normalizeBlogText(query);
+      const allTopics = getBlogTopicDirectory();
+      const topics = allTopics.filter(item => !normalizedQuery || normalizeBlogText(item.label).includes(normalizedQuery) || item.topic.includes(normalizedQuery));
+
+      grid.replaceChildren();
+      topics.forEach(item => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'topic-explorer-item';
+        button.dataset.topic = item.topic;
+        button.setAttribute('aria-label', `${item.label}, ${item.count} articulos`);
+
+        const label = document.createElement('span');
+        label.textContent = item.label;
+        const count = document.createElement('span');
+        count.className = 'topic-explorer-count';
+        count.textContent = item.count;
+        button.append(label, count);
+        grid.appendChild(button);
+      });
+
+      if (!topics.length) {
+        const empty = document.createElement('p');
+        empty.className = 'topic-explorer-empty';
+        empty.textContent = 'No encontramos temas con ese nombre.';
+        grid.appendChild(empty);
+      }
+      meta.textContent = normalizedQuery
+        ? `${topics.length} de ${allTopics.length} temas coinciden con tu busqueda.`
+        : `${allTopics.length} temas ordenados por cantidad de articulos.`;
+    }
+
+    function openBlogTopicExplorer() {
+      const dialog = document.getElementById('topicExplorerDialog');
+      const search = document.getElementById('topicExplorerSearch');
+      if (!dialog) return;
+      if (search) search.value = '';
+      renderBlogTopicExplorer();
+      if (typeof dialog.showModal === 'function') dialog.showModal();
+      else dialog.setAttribute('open', '');
+      setTimeout(() => search?.focus(), 40);
+    }
+
+    function closeBlogTopicExplorer() {
+      const dialog = document.getElementById('topicExplorerDialog');
+      if (!dialog) return;
+      if (typeof dialog.close === 'function') dialog.close();
+      else dialog.removeAttribute('open');
+    }
+
+    function setupBlogTopicExplorer() {
+      const dialog = document.getElementById('topicExplorerDialog');
+      const search = document.getElementById('topicExplorerSearch');
+      const grid = document.getElementById('topicExplorerGrid');
+      if (!dialog || !grid) return;
+      renderBlogTopicExplorer();
+      search?.addEventListener('input', () => renderBlogTopicExplorer(search.value));
+      grid.addEventListener('click', event => {
+        const button = event.target.closest('.topic-explorer-item[data-topic]');
+        if (!button) return;
+        const topic = button.dataset.topic;
+        closeBlogTopicExplorer();
+        setBlogTopic(topic);
+      });
+      dialog.addEventListener('click', event => {
+        if (event.target === dialog) closeBlogTopicExplorer();
+      });
+    }
+
     function renderContinueReadingCard() {
       const saved = JSON.parse(localStorage.getItem('zaleasyLastBlogRead') || 'null');
       const card = document.getElementById('continueReadingCard');
@@ -3390,6 +3745,61 @@
             savedAt: Date.now()
           }));
           updateBlogBackupStatus();
+        });
+      });
+    }
+
+    function setupArticleCardNavigation() {
+      const availableTopics = new Set(getBlogTopicDirectory().map(item => item.topic));
+
+      document.querySelectorAll('.blog-card:not(.coming-soon)').forEach(card => {
+        const sourceLink = card.querySelector('.btn-read-more, .blog-read-more, .read-more, .blog-footer a[href]')
+          || card.querySelector('a[href]');
+        const href = sourceLink?.getAttribute('href');
+        const heading = card.querySelector('h3, h2');
+        const title = heading?.textContent?.trim() || 'Articulo del blog';
+        if (!href || !heading) return;
+
+        sourceLink.setAttribute('aria-label', `Leer ${title}`);
+
+        let titleLink = heading.querySelector('a[href]');
+        if (!titleLink) {
+          titleLink = document.createElement('a');
+          titleLink.href = href;
+          titleLink.textContent = title;
+          heading.replaceChildren(titleLink);
+        }
+        titleLink.classList.add('blog-card-title-link');
+
+        const image = card.querySelector('.blog-img');
+        if (image && !image.querySelector('.blog-image-link')) {
+          const imageLink = document.createElement('a');
+          imageLink.href = href;
+          imageLink.className = 'blog-image-link';
+          imageLink.setAttribute('aria-label', `Leer ${title}`);
+          image.prepend(imageLink);
+        }
+
+        const category = card.querySelector('.blog-category');
+        if (!category || category.classList.contains('blog-category-button')) return;
+        const categoryLabel = category.textContent.trim();
+        const cardTopics = normalizeBlogText(card.dataset.category || '').split(/\s+/).filter(Boolean);
+        const normalizedLabel = normalizeBlogText(categoryLabel);
+        const topic = cardTopics.find(item => item === normalizedLabel)
+          || cardTopics.find(item => normalizedLabel.includes(item))
+          || cardTopics[0];
+        if (!topic || !availableTopics.has(topic)) return;
+
+        category.classList.add('blog-category-button');
+        category.setAttribute('role', 'button');
+        category.setAttribute('tabindex', '0');
+        category.setAttribute('aria-label', `Ver articulos de ${categoryLabel}`);
+        const openTopic = () => setBlogTopic(topic);
+        category.addEventListener('click', openTopic);
+        category.addEventListener('keydown', event => {
+          if (event.key !== 'Enter' && event.key !== ' ') return;
+          event.preventDefault();
+          openTopic();
         });
       });
     }
@@ -3440,11 +3850,13 @@
     function refreshReadButtons() {
       document.querySelectorAll('.blog-card:not(.coming-soon)').forEach(card => {
         const href = card.querySelector('a[href]')?.getAttribute('href') || '';
+        const title = card.querySelector('h3, h2')?.textContent?.trim() || 'este articulo';
         const read = isArticleRead(href);
         card.dataset.read = read ? 'true' : 'false';
         const btn = card.querySelector('.blog-read-btn');
         if (btn) {
           btn.setAttribute('aria-pressed', read ? 'true' : 'false');
+          btn.setAttribute('aria-label', read ? `Marcar ${title} como pendiente` : `Marcar ${title} como leido`);
           btn.innerHTML = `<i class="fa-solid ${read ? 'fa-circle-check' : 'fa-check'}"></i><span>${read ? 'Leido' : 'Leer'}</span>`;
           btn.title = read ? 'Marcar como pendiente' : 'Marcar como leido';
         }
@@ -3586,7 +3998,6 @@
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'blog-read-btn';
-        btn.setAttribute('aria-label', 'Marcar estado de lectura');
         btn.addEventListener('click', (event) => {
           event.preventDefault();
           event.stopPropagation();
@@ -3647,8 +4058,10 @@
     function refreshSaveButtons() {
       document.querySelectorAll('.blog-save-btn').forEach(btn => {
         const href = btn.dataset.href;
+        const title = btn.closest('.blog-card')?.querySelector('h3, h2')?.textContent?.trim() || 'este articulo';
         const saved = isArticleSaved(href);
         btn.setAttribute('aria-pressed', saved ? 'true' : 'false');
+        btn.setAttribute('aria-label', saved ? `Quitar ${title} de guardados` : `Guardar ${title}`);
         btn.innerHTML = `<i class="fa-${saved ? 'solid' : 'regular'} fa-bookmark"></i>`;
         btn.title = saved ? 'Quitar de guardados' : 'Guardar articulo';
       });
@@ -3677,7 +4090,6 @@
         btn.type = 'button';
         btn.className = 'blog-save-btn';
         btn.dataset.href = href;
-        btn.setAttribute('aria-label', 'Guardar articulo');
         btn.addEventListener('click', (event) => {
           event.preventDefault();
           event.stopPropagation();
@@ -3851,6 +4263,8 @@
       prepareLazyBlogImages();
       updateBlogStats();
       updateFilterCounts();
+      setupBlogTopicExplorer();
+      setupArticleCardNavigation();
       setupContinueReading();
       setupSavedArticles();
       setupReadProgress();
@@ -4243,6 +4657,7 @@
         <button type="button" onclick="setBlogRoute('all', 'proveedores')">Proveedores</button>
         <button type="button" onclick="setBlogRoute('ventas', 'whatsapp')">WhatsApp</button>
         <button type="button" onclick="setBlogRoute('finanzas', 'efectivo')">Efectivo</button>
+        <button type="button" class="topic-explorer-trigger" onclick="openBlogTopicExplorer()"><i class="fa-solid fa-compass"></i> Explorar temas</button>
       </div>
       <div class="blog-reading-tools" aria-label="Herramientas de lectura">
         <div class="blog-read-filter" role="group" aria-label="Filtrar por estado de lectura">
@@ -9033,6 +9448,27 @@
       </button>
     </div>
   </section>
+
+  <dialog class="topic-explorer-dialog" id="topicExplorerDialog" aria-labelledby="topicExplorerTitle">
+    <div class="topic-explorer-shell">
+      <header class="topic-explorer-head">
+        <div>
+          <h2 id="topicExplorerTitle"><i class="fa-solid fa-compass" style="color:#00d2d3;margin-right:.45rem;"></i> Explorar todos los temas</h2>
+          <p>Encuentra una entrada concreta a la biblioteca sin recorrer cientos de articulos.</p>
+        </div>
+        <button class="topic-explorer-close" type="button" onclick="closeBlogTopicExplorer()" aria-label="Cerrar explorador de temas"><i class="fa-solid fa-xmark"></i></button>
+      </header>
+      <div class="topic-explorer-body">
+        <div class="topic-explorer-search">
+          <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+          <input type="search" id="topicExplorerSearch" placeholder="Buscar un tema..." autocomplete="off" aria-label="Buscar entre todos los temas">
+        </div>
+        <p class="topic-explorer-meta" id="topicExplorerMeta" aria-live="polite">Preparando temas...</p>
+        <div class="topic-explorer-grid" id="topicExplorerGrid"></div>
+      </div>
+    </div>
+  </dialog>
+
   <!-- Live Poll -->
   <section class="container" style="margin: 2rem auto;" id="encuesta">
     <div style="background:var(--bg-card);border:1px solid rgba(255,255,255,0.07);border-radius:24px;overflow:hidden;box-shadow:0 15px 40px rgba(0,0,0,0.25);">
@@ -10238,59 +10674,6 @@
     });
   </script>
 
-  <!-- ── Live Social Proof Notification ── -->
-  <div id="liveNotif" style="
-    position:fixed; bottom:90px; left:20px; z-index:9998;
-    background:rgba(26, 26, 46, 0.75); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-    border:1px solid rgba(255,255,255,0.15);
-    border-radius:18px; padding:1rem 1.2rem; max-width:310px;
-    box-shadow:0 15px 35px rgba(0,0,0,0.4), inset 0 2px 5px rgba(255,255,255,0.05); 
-    display:flex; align-items:center; gap:1rem;
-    transform:translateX(-120%); transition:transform 0.6s cubic-bezier(0.34,1.56,0.64,1);
-    cursor:pointer;
-  " onclick="this.style.transform='translateX(-120%)'">
-    <div id="lnAvatar" style="width:46px;height:46px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:800;color:white;box-shadow:0 4px 10px rgba(0,0,0,0.3);"></div>
-    <div style="flex:1;min-width:0;">
-      <p id="lnText" style="font-size:0.82rem;color:rgba(255,255,255,0.85);margin:0;line-height:1.4;"></p>
-      <p style="font-size:0.72rem;color:rgba(255,255,255,0.4);margin:0.2rem 0 0;">hace un momento · blog.zaleasy.com</p>
-    </div>
-    <button onclick="event.stopPropagation();document.getElementById('liveNotif').style.transform='translateX(-120%)'" style="background:none;border:none;color:rgba(255,255,255,0.3);font-size:0.9rem;cursor:pointer;padding:0;flex-shrink:0;">&times;</button>
-  </div>
-
-  <style>
-    @media(max-width:480px){
-      #liveNotif { max-width:calc(100vw - 40px); }
-    }
-  </style>
-
-  <script>
-    (function(){
-      const notifications = [
-        { name:"Sofía G.",  city:"Santiago, CL",  color:"linear-gradient(135deg,#fd79a8,#e84393)", initials:"SG", msg:"está aplicando el artículo de Copywriting en su negocio 📝" },
-        { name:"Martín R.", city:"Córdoba, AR",    color:"linear-gradient(135deg,#6c5ce7,#a29bfe)", initials:"MR", msg:"acaba de leer sobre manejo de objeciones 🎯" },
-        { name:"Diego L.",  city:"Bogotá, CO",     color:"linear-gradient(135deg,#ffa502,#ff6348)", initials:"DL", msg:"cerró una venta usando el Elevator Pitch 🚀" },
-        { name:"Ana P.",    city:"Lima, PE",        color:"linear-gradient(135deg,#00b894,#00d2d3)", initials:"AP", msg:"está leyendo sobre gastos hormiga en su tienda 💰" },
-        { name:"Camila T.", city:"Montevideo, UY",  color:"linear-gradient(135deg,#2ed573,#00b894)", initials:"CT", msg:"terminó el quiz y descubrió su perfil de ventas 🧠" },
-        { name:"Ricardo M.","city":"Monterrey, MX", color:"linear-gradient(135deg,#0984e3,#74b9ff)", initials:"RM", msg:"subió sus precios tras leer el artículo de valor percibido 💎" },
-        { name:"Valeria F.", city:"Asunción, PY",   color:"linear-gradient(135deg,#6c5ce7,#00d2d3)", initials:"VF", msg:"está probando la calculadora de ventas 📊" },
-        { name:"Jorge S.",  city:"Santiago, DO",    color:"linear-gradient(135deg,#e17055,#d63031)", initials:"JS", msg:"aprendió a cerrar sin suplicar ✅" },
-      ];
-      let shown = 0;
-      function showNotif(){
-        const n = notifications[shown % notifications.length];
-        shown++;
-        const el   = document.getElementById('liveNotif');
-        const av   = document.getElementById('lnAvatar');
-        const txt  = document.getElementById('lnText');
-        av.style.background = n.color;
-        av.textContent = n.initials;
-        txt.innerHTML = '<strong style="color:white;">'+n.name+'</strong> de '+n.city+'<br>'+n.msg;
-        el.style.transform = 'translateX(0)';
-        setTimeout(()=>{ el.style.transform='translateX(-120%)'; }, 5000);
-      }
-      // Automatic social-proof popups were disabled to keep the reading experience calm.
-    })();
-  </script>
 </body>
 </html>
 

@@ -253,6 +253,37 @@ html {
     font-weight: 600;
 }
 
+.nav-indicator {
+    min-width: 24px;
+    height: 22px;
+    margin-left: auto;
+    padding: 0 0.42rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: var(--primary-light);
+    color: var(--primary);
+    font-size: 0.68rem;
+    font-weight: 850;
+    line-height: 1;
+}
+
+.nav-indicator.danger {
+    background: var(--danger-light);
+    color: var(--danger);
+}
+
+.nav-indicator.warning {
+    background: var(--warning-light);
+    color: var(--warning);
+}
+
+.nav-indicator[hidden],
+.mobile-nav-indicator[hidden] {
+    display: none !important;
+}
+
 .sidebar-footer {
     padding: 1.25rem;
     justify-self: flex-end;
@@ -1650,6 +1681,7 @@ select:focus {
     }
 
     .mobile-app-nav-item {
+        position: relative;
         min-width: 0;
         min-height: 52px;
         padding: 0.35rem 0.15rem;
@@ -1676,6 +1708,29 @@ select:focus {
         color: var(--success);
         background: var(--success-light);
     }
+
+    .mobile-nav-indicator {
+        position: absolute;
+        top: 2px;
+        right: max(4px, 14%);
+        min-width: 18px;
+        height: 18px;
+        padding: 0 0.28rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid var(--bg-card);
+        border-radius: 999px;
+        background: var(--primary);
+        color: #fff;
+        font-size: 0.58rem;
+        font-weight: 850;
+        line-height: 1;
+        box-sizing: border-box;
+    }
+
+    .mobile-nav-indicator.danger { background: var(--danger); }
+    .mobile-nav-indicator.warning { background: var(--warning); color: #17130a; }
 
     .mobile-app-nav-primary {
         position: relative;

@@ -323,6 +323,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    const appViewRoutes = {
+        'nav-dashboard': 'inicio',
+        'nav-historial': 'historial',
+        'nav-reportes': 'reportes',
+        'nav-clientes': 'clientes',
+        'nav-inventario': 'inventario',
+        'nav-config': 'configuracion'
+    };
+
+    const routeToAppView = Object.fromEntries(
+        Object.entries(appViewRoutes).map(([view, route]) => [route, view])
+    );
+
+    const getAppViewFromLocation = () => {
+        const route = decodeURIComponent(window.location.hash.replace(/^#/, '')).toLowerCase();
+        return routeToAppView[route] || null;
+    };
+
+    const syncAppViewUrl = (targetId, mode = 'push') => {
+        const route = appViewRoutes[targetId];
+        if (!route || mode === 'none') return;
+        const url = new URL(window.location.href);
+        url.hash = route;
+        const next = `${url.pathname}${url.search}${url.hash}`;
+        const current = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+        if (next === current) return;
+        window.history[mode === 'replace' ? 'replaceState' : 'pushState']({ appView: targetId }, '', next);
+    };
+
     const updateHeaderContext = (targetId, fallbackTitle = '') => {
         const liveClock = document.getElementById('live-clock');
         if (targetId === 'nav-dashboard') {
@@ -344,11 +373,17 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // --- Navigation Logic ---
-    let switchView = (targetId, title) => {
+    let switchView = (targetId, title, historyMode = 'push') => {
         // Update active class on nav
-        allNavItems.forEach(item => item.classList.remove('active'));
+        allNavItems.forEach(item => {
+            item.classList.remove('active');
+            item.removeAttribute('aria-current');
+        });
         const navEl = document.getElementById(targetId);
-        if (navEl) navEl.classList.add('active');
+        if (navEl) {
+            navEl.classList.add('active');
+            navEl.setAttribute('aria-current', 'page');
+        }
 
         [viewDashboard, viewHistorial, viewReportes, viewConfig, viewClientes, viewInventario, viewComingSoon].forEach(v => {
             if (v) v.style.display = 'none';
@@ -377,6 +412,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         updateHeaderContext(targetId, title);
         localStorage.setItem('activeAppView', targetId);
+        syncAppViewUrl(targetId, historyMode);
     };
 
     navDashboard.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-dashboard'); });
@@ -426,6 +462,41 @@ document.addEventListener('DOMContentLoaded', () => {
         const topDebtor = debtClients.sort((a, b) => clientMap[b].totalDeuda - clientMap[a].totalDeuda)[0] || null;
 
         return { clientMap, clients, debtClients, totalDebt, topDebtor };
+    };
+
+    const updateNavigationIndicators = () => {
+        const { debtClients } = buildClientSummary();
+        const lowStock = productCatalog.filter(product =>
+            product.stock !== undefined
+            && product.stock !== null
+            && product.stock !== ''
+            && Number(product.stock) <= 5
+        );
+
+        const setBadge = (desktopId, mobileId, count, sectionLabel, detailLabel) => {
+            const visible = count > 0;
+            const text = count > 99 ? '99+' : String(count);
+            [document.getElementById(desktopId), document.getElementById(mobileId)].forEach(badge => {
+                if (!badge) return;
+                badge.hidden = !visible;
+                badge.textContent = text;
+            });
+
+            const desktopBadge = document.getElementById(desktopId);
+            const mobileBadge = document.getElementById(mobileId);
+            [desktopBadge?.closest('.nav-item'), mobileBadge?.closest('.mobile-app-nav-item')].forEach(control => {
+                if (!control) return;
+                const description = visible
+                    ? `${sectionLabel}: ${count} ${detailLabel}`
+                    : `${sectionLabel}: sin alertas pendientes`;
+                control.setAttribute('aria-label', description);
+                control.title = description;
+            });
+        };
+
+        setBadge('nav-historial-badge', 'mobile-history-badge', sales.length, 'Historial', sales.length === 1 ? 'movimiento hoy' : 'movimientos hoy');
+        setBadge('nav-clientes-badge', 'mobile-clients-badge', debtClients.length, 'Clientes', debtClients.length === 1 ? 'cliente con saldo pendiente' : 'clientes con saldo pendiente');
+        setBadge('nav-inventario-badge', 'mobile-inventory-badge', lowStock.length, 'Inventario', lowStock.length === 1 ? 'producto con stock bajo' : 'productos con stock bajo');
     };
 
     const renderClientes = () => {
@@ -643,8 +714,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Patch switchView to also close sidebar on mobile
     const originalSwitchView = switchView;
-    switchView = (targetId, title) => {
-        originalSwitchView(targetId, title);
+    switchView = (targetId, title, historyMode = 'push') => {
+        originalSwitchView(targetId, title, historyMode);
         closeSidebar();
         if (mobileAppNav) {
             mobileAppNav.querySelectorAll('[data-mobile-view]').forEach(item => {
@@ -664,6 +735,16 @@ document.addEventListener('DOMContentLoaded', () => {
             if (actionButton) runQuickAction(actionButton.dataset.mobileAction);
         });
     }
+
+    const restoreAppViewFromUrl = () => {
+        const targetId = getAppViewFromLocation();
+        if (targetId && !document.getElementById(targetId)?.classList.contains('active')) {
+            switchView(targetId, undefined, 'none');
+        }
+    };
+
+    window.addEventListener('popstate', restoreAppViewFromUrl);
+    window.addEventListener('hashchange', restoreAppViewFromUrl);
 
     // --- Reports Chart Instances ---
     let repWeeklyChartInstance = null;
@@ -1171,7 +1252,11 @@ document.addEventListener('DOMContentLoaded', () => {
         setupGlobalSearch();
         const validViews = new Set(['nav-dashboard', 'nav-historial', 'nav-reportes', 'nav-clientes', 'nav-inventario', 'nav-config']);
         const savedView = localStorage.getItem('activeAppView');
-        switchView(validViews.has(savedView) ? savedView : 'nav-dashboard');
+        const routeView = getAppViewFromLocation();
+        const initialView = validViews.has(routeView)
+            ? routeView
+            : validViews.has(savedView) ? savedView : 'nav-dashboard';
+        switchView(initialView, undefined, 'replace');
         initMilestoneCelebrations();
     };
 
@@ -2740,6 +2825,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateDataHealthPanel();
         updateSetupChecklist();
         updateStockAlertSnapshot();
+        updateNavigationIndicators();
         updateActionCenter(totalRevenue, totalExpenses, totalSalesCount, netBalance);
         updateDailyPlan(totalRevenue, totalExpenses, totalSalesCount, netBalance);
         updateDueRadar();

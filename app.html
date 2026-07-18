@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zaleasy | Gesti&oacute;n de Ventas</title>
     <meta name="description" content="Sistema premium para la gesti&oacute;n y seguimiento de ventas diarias.">
-  <link rel="stylesheet" href="styles.css?v=20260716-mobile-app-nav-v1">
+  <link rel="stylesheet" href="styles.css?v=20260717-nav-indicators-v1">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
@@ -136,27 +136,30 @@
             </div>
 
             <nav class="nav-menu">
-                <a href="#" class="nav-item active" id="nav-dashboard">
+                <a href="#inicio" class="nav-item active" id="nav-dashboard" aria-current="page">
                     <i class="fa-solid fa-house"></i>
                     <span>Dashboard</span>
                 </a>
-                <a href="#" class="nav-item" id="nav-historial">
+                <a href="#historial" class="nav-item" id="nav-historial">
                     <i class="fa-solid fa-clock-rotate-left"></i>
                     <span>Historial</span>
+                    <span class="nav-indicator" id="nav-historial-badge" aria-hidden="true" hidden>0</span>
                 </a>
-                <a href="#" class="nav-item" id="nav-reportes">
+                <a href="#reportes" class="nav-item" id="nav-reportes">
                     <i class="fa-solid fa-chart-pie"></i>
                     <span>Reportes</span>
                 </a>
-                <a href="#" class="nav-item" id="nav-clientes">
+                <a href="#clientes" class="nav-item" id="nav-clientes">
                     <i class="fa-solid fa-address-book"></i>
                     <span>Clientes</span>
+                    <span class="nav-indicator danger" id="nav-clientes-badge" aria-hidden="true" hidden>0</span>
                 </a>
-                <a href="#" class="nav-item" id="nav-inventario">
+                <a href="#inventario" class="nav-item" id="nav-inventario">
                     <i class="fa-solid fa-boxes-stacked"></i>
                     <span>Inventario</span>
+                    <span class="nav-indicator warning" id="nav-inventario-badge" aria-hidden="true" hidden>0</span>
                 </a>
-                <a href="#" class="nav-item" id="nav-config">
+                <a href="#configuracion" class="nav-item" id="nav-config">
                     <i class="fa-solid fa-gear"></i>
                     <span>Configuraci&oacute;n</span>
                 </a>
@@ -1578,16 +1581,16 @@
                 <i class="fa-solid fa-house"></i><span>Inicio</span>
             </button>
             <button type="button" class="mobile-app-nav-item" data-mobile-view="nav-historial" aria-label="Ir al historial">
-                <i class="fa-solid fa-clock-rotate-left"></i><span>Historial</span>
+                <i class="fa-solid fa-clock-rotate-left"></i><span>Historial</span><span class="mobile-nav-indicator" id="mobile-history-badge" aria-hidden="true" hidden>0</span>
             </button>
             <button type="button" class="mobile-app-nav-item mobile-app-nav-primary" data-mobile-action="sale" aria-label="Registrar nueva venta">
                 <span class="mobile-app-nav-primary-icon"><i class="fa-solid fa-plus"></i></span><span>Venta</span>
             </button>
             <button type="button" class="mobile-app-nav-item" data-mobile-view="nav-clientes" aria-label="Ir a clientes">
-                <i class="fa-solid fa-address-book"></i><span>Clientes</span>
+                <i class="fa-solid fa-address-book"></i><span>Clientes</span><span class="mobile-nav-indicator danger" id="mobile-clients-badge" aria-hidden="true" hidden>0</span>
             </button>
             <button type="button" class="mobile-app-nav-item" data-mobile-view="nav-inventario" aria-label="Ir al inventario">
-                <i class="fa-solid fa-boxes-stacked"></i><span>Stock</span>
+                <i class="fa-solid fa-boxes-stacked"></i><span>Stock</span><span class="mobile-nav-indicator warning" id="mobile-inventory-badge" aria-hidden="true" hidden>0</span>
             </button>
         </nav>
     </div>
@@ -1867,7 +1870,7 @@
     </div>
 
     <!-- Script for Logic -->
-    <script src="app.js?v=20260716-mobile-app-nav-v1"></script>
+    <script src="app.js?v=20260717-view-routing-v1"></script>
 </body>
 
 </html>
