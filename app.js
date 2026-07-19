@@ -2247,6 +2247,66 @@ document.addEventListener('DOMContentLoaded', () => {
         const authPasswordToggle = document.getElementById('auth-password-toggle');
         const btnForgotPassword = document.getElementById('btn-forgot-password');
         const authFormFeedback = document.getElementById('auth-form-feedback');
+        const btnLocalDemo = document.getElementById('btn-local-demo');
+        const localDemoIndicator = document.getElementById('local-demo-indicator');
+        const btnExitLocalDemo = document.getElementById('btn-exit-local-demo');
+        const localDemoSessionKey = 'zaleasyLocalDemo';
+
+        const isLocalDemoActive = () => {
+            try {
+                return sessionStorage.getItem(localDemoSessionKey) === 'true';
+            } catch (error) {
+                return false;
+            }
+        };
+
+        const setLocalDemoState = (active) => {
+            try {
+                if (active) sessionStorage.setItem(localDemoSessionKey, 'true');
+                else sessionStorage.removeItem(localDemoSessionKey);
+            } catch (error) {
+                console.warn('No se pudo guardar el estado del modo local.', error);
+            }
+            document.body.classList.toggle('local-demo-active', active);
+            if (localDemoIndicator) localDemoIndicator.hidden = !active;
+        };
+
+        const showApp = ({ localDemo = false, user = null } = {}) => {
+            authScreen.style.display = 'none';
+            if (trialScreen) trialScreen.style.display = 'none';
+            mainApp.style.display = 'flex';
+            setLocalDemoState(localDemo);
+            updateVisibleAppDocumentTitle();
+
+            if (localDemo) {
+                userAvatar.src = 'https://ui-avatars.com/api/?name=Local&background=14b8a6&color=fff';
+                userAvatar.alt = 'Perfil del modo local';
+                userProfileBtn.title = 'Salir del modo local';
+            } else if (user) {
+                userAvatar.src = user.photoURL || "https://ui-avatars.com/api/?name=" + (user.displayName || "User") + "&background=6c5ce7&color=fff";
+                userAvatar.alt = user.displayName ? `Perfil de ${user.displayName}` : 'Perfil de usuario';
+                userProfileBtn.title = 'Cerrar sesi\u00f3n';
+            }
+        };
+
+        const showSignIn = () => {
+            setLocalDemoState(false);
+            mainApp.style.display = 'none';
+            if (trialScreen) trialScreen.style.display = 'none';
+            authScreen.style.display = 'flex';
+            showAuthDocumentTitle();
+        };
+
+        const enterLocalDemo = () => {
+            showApp({ localDemo: true });
+            showToast('Modo local activo: tus datos quedan en este dispositivo.');
+        };
+
+        btnLocalDemo?.addEventListener('click', enterLocalDemo);
+        btnExitLocalDemo?.addEventListener('click', () => {
+            showSignIn();
+            btnLocalDemo?.focus();
+        });
 
         const setAuthFeedback = (message = '', state = 'info') => {
             if (!authFormFeedback) return;
@@ -2308,40 +2368,29 @@ document.addEventListener('DOMContentLoaded', () => {
         // Fallback for visual testing if Firebase script is commented out or missing
         if (!window.firebaseAuth) {
             console.log("Firebase no configurado a\u00fan. Mostrando UI Demo.");
-            showAuthDocumentTitle();
+            if (isLocalDemoActive()) showApp({ localDemo: true });
+            else showAuthDocumentTitle();
 
             btnGoogleLogin.addEventListener('click', () => {
-                // Simulate login
-                authScreen.style.display = 'none';
-                mainApp.style.display = 'flex';
-                updateVisibleAppDocumentTitle();
-                showToast('Modo de Prueba (Sin Nube)');
+                enterLocalDemo();
             });
 
             if (emailAuthForm) {
                 emailAuthForm.addEventListener('submit', (e) => {
                     e.preventDefault();
-                    authScreen.style.display = 'none';
-                    mainApp.style.display = 'flex';
-                    updateVisibleAppDocumentTitle();
-                    showToast('Modo de Prueba (Email) (Sin Nube)');
+                    enterLocalDemo();
                 });
             }
             if (btnEmailRegister) {
                 btnEmailRegister.addEventListener('click', (e) => {
                     e.preventDefault();
-                    authScreen.style.display = 'none';
-                    mainApp.style.display = 'flex';
-                    updateVisibleAppDocumentTitle();
-                    showToast('Modo de Prueba (Registro) (Sin Nube)');
+                    enterLocalDemo();
                 });
             }
 
             userProfileBtn.addEventListener('click', () => {
                 if (confirm('\u00bfCerrar sesi\u00f3n de prueba?')) {
-                    mainApp.style.display = 'none';
-                    authScreen.style.display = 'flex';
-                    showAuthDocumentTitle();
+                    showSignIn();
                 }
             });
             return;
@@ -2351,18 +2400,13 @@ document.addEventListener('DOMContentLoaded', () => {
         window.firebaseOnAuth(window.firebaseAuth, (user) => {
             if (user) {
                 // Logged in — direct access, no paywall
-                authScreen.style.display = 'none';
-                if (trialScreen) trialScreen.style.display = 'none';
-                mainApp.style.display = 'flex';
-                updateVisibleAppDocumentTitle();
-                userAvatar.src = user.photoURL || "https://ui-avatars.com/api/?name=" + (user.displayName || "User") + "&background=6c5ce7&color=fff";
+                showApp({ user });
                 showToast(`\u00a1Bienvenid@, ${user.displayName ? user.displayName.split(' ')[0] : (user.email ? user.email.split('@')[0] : 'Usuario')}! 🚀`);
+            } else if (isLocalDemoActive()) {
+                showApp({ localDemo: true });
             } else {
                 // Logged out
-                mainApp.style.display = 'none';
-                if (trialScreen) trialScreen.style.display = 'none';
-                authScreen.style.display = 'flex';
-                showAuthDocumentTitle();
+                showSignIn();
             }
         });
 
@@ -2426,6 +2470,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         userProfileBtn.addEventListener('click', () => {
+            if (isLocalDemoActive()) {
+                if (confirm('\u00bfSalir del modo local? Tus datos seguir\u00e1n guardados en este dispositivo.')) {
+                    showSignIn();
+                }
+                return;
+            }
             if (confirm('\u00bfEst\u00e1s seguro de que deseas cerrar sesi\u00f3n?')) {
                 window.firebaseSignOut(window.firebaseAuth);
             }
