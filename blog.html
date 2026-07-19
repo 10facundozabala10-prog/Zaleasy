@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Blog - Zaleasy | Consejos sobre ventas</title>
+  <title>Blog de Zaleasy | Ventas y gesti&oacute;n</title>
   <meta name="description"
     content="574 articulos practicos de Zaleasy sobre ventas, caja, precios, clientes, inventario y gestion diaria para ordenar tu negocio y vender mejor." />
 
@@ -2091,6 +2091,12 @@
       box-shadow: 0 0 0 3px rgba(0,210,211,0.1);
     }
 
+    .blog-library-search input::-webkit-search-cancel-button {
+      display: none;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
     .blog-library-search button {
       position: absolute;
       right: 0.45rem;
@@ -2113,6 +2119,96 @@
     }
 
     .blog-library-search button[hidden] { display: none; }
+
+    .blog-empty-state {
+      grid-column: 1 / -1;
+      padding: clamp(2.4rem, 6vw, 4.5rem) 1.5rem;
+      border: 1px dashed rgba(0,210,211,0.24);
+      border-radius: 12px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(0,210,211,0.09), transparent 45%),
+        rgba(28,29,41,0.72);
+      text-align: center;
+    }
+
+    .blog-empty-state[hidden] { display: none; }
+
+    .blog-empty-icon {
+      width: 68px;
+      height: 68px;
+      margin: 0 auto 1.2rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(0,210,211,0.24);
+      border-radius: 18px;
+      background: rgba(0,210,211,0.1);
+      color: #00d2d3;
+      font-size: 1.65rem;
+    }
+
+    .blog-empty-state h3 {
+      margin: 0 0 0.6rem;
+      color: var(--text-main);
+      font-size: clamp(1.35rem, 3vw, 1.8rem);
+    }
+
+    .blog-empty-state > p {
+      max-width: 590px;
+      margin: 0 auto;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    .blog-empty-actions,
+    .blog-empty-suggestions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+    }
+
+    .blog-empty-actions { margin-top: 1.4rem; }
+    .blog-empty-suggestions { margin-top: 1rem; }
+
+    .blog-empty-actions button,
+    .blog-empty-suggestions button {
+      min-height: 42px;
+      padding: 0.58rem 0.9rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.06);
+      color: var(--text-main);
+      font: inherit;
+      font-size: 0.8rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .blog-empty-actions button:first-child {
+      border-color: transparent;
+      background: linear-gradient(135deg, #6c5ce7, #00d2d3);
+      color: #fff;
+    }
+
+    .blog-empty-actions button:hover,
+    .blog-empty-actions button:focus-visible,
+    .blog-empty-suggestions button:hover,
+    .blog-empty-suggestions button:focus-visible {
+      border-color: rgba(0,210,211,0.42);
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .blog-empty-suggestions span {
+      width: 100%;
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      font-weight: 750;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
 
     #blogActiveStateText {
       overflow: hidden;
@@ -2956,11 +3052,11 @@
         <i class="fa-solid fa-bars"></i>
       </button>
       <div class="nav-links">
-        <a href="blog.html" style="color: var(--text-main);">Blog</a>
+        <a href="blog.html" aria-current="page" style="color: var(--text-main);">Blog</a>
         <a href="index.html#features">Caracter&iacute;sticas</a>
         <a href="index.html#how-it-works">&iquest;C&oacute;mo funciona?</a>
         <a href="index.html#creator">Nuestra Misi&oacute;n</a>
-        <a href="app.html" class="btn btn-primary">Iniciar Sesi&oacute;n</a>
+        <a href="app.html" class="btn btn-primary">Abrir Zaleasy</a>
       </div>
     </div>
   </nav>
@@ -3071,11 +3167,14 @@
       blogVisibleLimit = BLOG_PAGE_SIZE;
     }
 
-    function placeBlogLibraryFirst() {
+    function placeBlogDiscoveryFirst() {
       const library = document.getElementById('blogArticles');
       const stats = document.querySelector('.blog-stats-strip');
-      if (!library || !stats || stats.nextElementSibling === library) return;
-      stats.insertAdjacentElement('afterend', library);
+      const routes = document.querySelector('.blog-problem-routes');
+      if (!library || !stats) return;
+      if (routes && stats.nextElementSibling !== routes) stats.insertAdjacentElement('afterend', routes);
+      const discoveryAnchor = routes || stats;
+      if (discoveryAnchor.nextElementSibling !== library) discoveryAnchor.insertAdjacentElement('afterend', library);
     }
 
     function getBlogViewUrl() {
@@ -3272,11 +3371,47 @@
 
       updateCount(matchingCards.length);
       const noResults = document.getElementById('noResults');
-      if (noResults) noResults.style.display = matchingCards.length === 0 ? 'block' : 'none';
+      if (noResults) {
+        const isEmpty = matchingCards.length === 0;
+        noResults.hidden = !isEmpty;
+        if (isEmpty) {
+          const emptyText = document.getElementById('blogNoResultsText');
+          const rawQuery = (document.getElementById('blogSearch')?.value || '').trim();
+          const category = activeBlogCategory !== 'all' ? formatBlogTopic(activeBlogCategory) : '';
+          if (emptyText) {
+            emptyText.textContent = rawQuery && category
+              ? `No encontramos coincidencias para "${rawQuery}" dentro de ${category}. Prueba otra ruta o restablece la biblioteca.`
+              : rawQuery
+                ? `No encontramos coincidencias para "${rawQuery}". Prueba una palabra más general o explora todos los temas.`
+                : 'No hay artículos disponibles con esta combinación de filtros. Restablece la biblioteca para volver a empezar.';
+          }
+        }
+      }
       updateSearchMeta(visibleCount, matchingCards.length, cards.length, input);
       updateLoadMoreButton(visibleCount, matchingCards.length);
       updateActiveBlogState(matchingCards.length, cards.length);
+      updateBlogDocumentTitle(matchingCards.length);
       cardsToShow.forEach(loadBlogCardImage);
+    }
+
+    function updateBlogDocumentTitle(matched) {
+      const rawQuery = (document.getElementById('blogSearch')?.value || '').trim();
+      const query = rawQuery.length > 48 ? `${rawQuery.slice(0, 45)}...` : rawQuery;
+      const category = activeBlogCategory !== 'all' ? formatBlogTopic(activeBlogCategory) : '';
+
+      if (query && category) {
+        document.title = `${query} en ${category} (${matched}) | Blog Zaleasy`;
+      } else if (query) {
+        document.title = `${query} (${matched}) | Blog Zaleasy`;
+      } else if (category) {
+        document.title = `${category}: ${matched} art\u00edculos | Blog Zaleasy`;
+      } else if (blogReadFilter === 'pending') {
+        document.title = `Lecturas pendientes (${matched}) | Blog Zaleasy`;
+      } else if (blogReadFilter === 'read') {
+        document.title = `Art\u00edculos le\u00eddos (${matched}) | Blog Zaleasy`;
+      } else {
+        document.title = 'Blog de Zaleasy | Ventas y gesti\u00f3n';
+      }
     }
 
     function updateActiveBlogState(matched, total) {
@@ -3558,10 +3693,13 @@
         : `${allTopics.length} temas ordenados por cantidad de articulos.`;
     }
 
+    let blogTopicExplorerTrigger = null;
+
     function openBlogTopicExplorer() {
       const dialog = document.getElementById('topicExplorerDialog');
       const search = document.getElementById('topicExplorerSearch');
       if (!dialog) return;
+      blogTopicExplorerTrigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       if (search) search.value = '';
       renderBlogTopicExplorer();
       if (typeof dialog.showModal === 'function') dialog.showModal();
@@ -3592,6 +3730,20 @@
       });
       dialog.addEventListener('click', event => {
         if (event.target === dialog) closeBlogTopicExplorer();
+      });
+      dialog.addEventListener('cancel', event => {
+        event.preventDefault();
+        closeBlogTopicExplorer();
+      });
+      dialog.addEventListener('keydown', event => {
+        if (event.key !== 'Escape') return;
+        event.preventDefault();
+        closeBlogTopicExplorer();
+      });
+      dialog.addEventListener('close', () => {
+        const trigger = blogTopicExplorerTrigger;
+        blogTopicExplorerTrigger = null;
+        if (trigger && document.contains(trigger)) requestAnimationFrame(() => trigger.focus());
       });
     }
 
@@ -4100,12 +4252,6 @@
       reader.readAsText(file);
     }
 
-    function jumpToBlogCategory(category) {
-      const btn = document.querySelector(`.glass-filter-btn[data-filter="${category}"]`) || document.querySelector('.glass-filter-btn[data-filter="all"]');
-      filterBlog(category, btn);
-      document.getElementById('blogArticles')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
     function setupDailyFeaturedArticle() {
       const featured = document.getElementById('dailyFeaturedArticle');
       const title = document.getElementById('dailyFeaturedTitle');
@@ -4140,7 +4286,7 @@
 
     // Init count on load
     window.addEventListener('DOMContentLoaded', () => {
-      placeBlogLibraryFirst();
+      placeBlogDiscoveryFirst();
       const total = document.querySelectorAll('.blog-card:not(.coming-soon)').length;
       updateCount(total);
       document.querySelectorAll('.blog-card').forEach((card, i) => {
@@ -4229,54 +4375,6 @@
       </div>
     </div>
   </div>
-
-  <section class="container blog-quick-nav" aria-labelledby="quickNavTitle">
-    <div class="quick-nav-header">
-      <div>
-        <span class="quick-nav-eyebrow"><i class="fa-solid fa-compass"></i> Guia de lectura</span>
-        <h2 class="quick-nav-title" id="quickNavTitle">Encuentra el articulo que necesitas hoy</h2>
-      </div>
-      <p class="quick-nav-subtitle">Elige por objetivo y salta directo a una seleccion mas precisa de contenidos.</p>
-    </div>
-
-    <div class="quick-nav-grid">
-      <button class="quick-nav-card" type="button" onclick="jumpToBlogCategory('ventas')">
-        <span>
-          <span class="quick-nav-icon" style="background:rgba(108,92,231,0.16);color:#a29bfe;"><i class="fa-solid fa-handshake"></i></span>
-          <strong>Quiero vender mas</strong>
-          <span>Cierres, objeciones, seguimiento, WhatsApp y tecnicas para convertir mejor.</span>
-        </span>
-        <span class="quick-nav-link">Ver ventas <i class="fa-solid fa-arrow-right"></i></span>
-      </button>
-
-      <button class="quick-nav-card" type="button" onclick="jumpToBlogCategory('finanzas')">
-        <span>
-          <span class="quick-nav-icon" style="background:rgba(46,213,115,0.14);color:#2ed573;"><i class="fa-solid fa-chart-line"></i></span>
-          <strong>Quiero ordenar mis numeros</strong>
-          <span>Margen, caja, presupuesto, costos y decisiones rentables para el negocio.</span>
-        </span>
-        <span class="quick-nav-link">Ver finanzas <i class="fa-solid fa-arrow-right"></i></span>
-      </button>
-
-      <button class="quick-nav-card" type="button" onclick="jumpToBlogCategory('marketing')">
-        <span>
-          <span class="quick-nav-icon" style="background:rgba(0,184,212,0.14);color:#00d2d3;"><i class="fa-solid fa-bullhorn"></i></span>
-          <strong>Quiero atraer mejores clientes</strong>
-          <span>Copywriting, contenido, embudos, oferta, marca personal y prueba social.</span>
-        </span>
-        <span class="quick-nav-link">Ver marketing <i class="fa-solid fa-arrow-right"></i></span>
-      </button>
-
-      <button class="quick-nav-card" type="button" onclick="jumpToBlogCategory('productividad')">
-        <span>
-          <span class="quick-nav-icon" style="background:rgba(255,165,2,0.14);color:#ffa502;"><i class="fa-solid fa-list-check"></i></span>
-          <strong>Quiero trabajar con mas foco</strong>
-          <span>Rutinas, metas, seguimiento comercial, inventario y gestion diaria sin caos.</span>
-        </span>
-        <span class="quick-nav-link">Ver productividad <i class="fa-solid fa-arrow-right"></i></span>
-      </button>
-    </div>
-  </section>
 
   <!-- Ad Banner -->
   <div class="ad-banner" aria-label="Publicidad">
@@ -4575,11 +4673,20 @@
     <div class="blog-grid">
       
       <!-- Empty State for Search -->
-      <div id="noResults" style="display: none; grid-column: 1 / -1; text-align: center; padding: 4rem 2rem; background: var(--bg-card); border-radius: 16px; border: 1px dashed rgba(255,255,255,0.1);">
-        <i class="fa-solid fa-folder-open" style="font-size: 3.5rem; color: rgba(162, 155, 254, 0.5); margin-bottom: 1.5rem;"></i>
-        <h3 style="font-size: 1.5rem; margin-bottom: 0.8rem; font-weight: 700;">No encontramos art&iacute;culos</h3>
-        <p style="color: var(--text-muted); font-size: 1.05rem;">Intenta buscando con otras palabras clave o explora todas las categor&iacute;as.</p>
-        <button onclick="filterBlog('all', document.querySelectorAll('header.blog-header button')[0])" class="btn btn-primary" style="margin-top: 1.5rem; padding: 0.6rem 1.5rem; border-radius: 20px;">Ver todos los art&iacute;culos</button>
+      <div id="noResults" class="blog-empty-state" role="status" aria-live="polite" hidden>
+        <span class="blog-empty-icon"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></span>
+        <h3>No encontramos art&iacute;culos</h3>
+        <p id="blogNoResultsText">Prueba una b&uacute;squeda m&aacute;s general o restablece la biblioteca.</p>
+        <div class="blog-empty-actions">
+          <button type="button" onclick="clearAllBlogFilters()"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Restablecer biblioteca</button>
+          <button type="button" onclick="openBlogTopicExplorer()"><i class="fa-solid fa-compass" aria-hidden="true"></i> Explorar temas</button>
+        </div>
+        <div class="blog-empty-suggestions" aria-label="Rutas alternativas">
+          <span>O prueba una ruta frecuente</span>
+          <button type="button" onclick="setBlogRoute('ventas', '')">Ventas</button>
+          <button type="button" onclick="setBlogRoute('finanzas', 'caja')">Caja</button>
+          <button type="button" onclick="setBlogRoute('all', 'stock')">Stock</button>
+        </div>
       </div>
       <article class="blog-card" data-category="operaciones operaciones ventas"><div class="blog-img" data-bg="assets/Blog imagenes/control-mermas-productos-frescos.png" data-image-state="pending" style="height:220px"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div><div class="blog-card-content"><span class="blog-category">Operaciones</span><h3>Mermas de Productos Frescos: Como Detectarlas Antes de que Reduzcan tu Margen</h3><p>Organiza controles de compra, exhibicion y descarte para reducir perdidas silenciosas en productos frescos.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/control-mermas-productos-frescos.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer Mas <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span></div></div></article>
       <article class="blog-card" data-category="ventas operaciones ventas"><div class="blog-img" data-bg="assets/Blog imagenes/seguimiento-cotizaciones-comerciales.png" data-image-state="pending" style="height:220px"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div><div class="blog-card-content"><span class="blog-category">Ventas</span><h3>Seguimiento de Cotizaciones: Como Convertir Presupuestos en Ventas sin Presionar</h3><p>Define responsables, fechas y proximo paso para que cada presupuesto tenga seguimiento claro y comercial.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/seguimiento-cotizaciones-comerciales.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer Mas <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 8 min</span></div></div></article>
@@ -9263,7 +9370,7 @@
     </div>
   </section>
 
-  <dialog class="topic-explorer-dialog" id="topicExplorerDialog" aria-labelledby="topicExplorerTitle">
+  <dialog class="topic-explorer-dialog" id="topicExplorerDialog" aria-modal="true" aria-labelledby="topicExplorerTitle">
     <div class="topic-explorer-shell">
       <header class="topic-explorer-head">
         <div>
@@ -9968,30 +10075,30 @@
           <p style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--primary);margin-bottom:1.5rem;"><i class="fa-solid fa-sliders" style="margin-right:6px;"></i>Tus datos actuales</p>
 
           <div class="calc-field">
-            <label>Prospectos que contactas <strong>por semana</strong></label>
+            <label for="cProspectos">Prospectos que contactas <strong>por semana</strong></label>
             <div class="calc-input-wrap">
               <i class="fa-solid fa-users"></i>
               <input type="number" id="cProspectos" value="20" min="1" max="500" oninput="calcUpdate()">
             </div>
-            <input type="range" id="rProspectos" min="1" max="200" value="20" class="calc-range" oninput="document.getElementById('cProspectos').value=this.value;calcUpdate()">
+            <input type="range" id="rProspectos" aria-label="Ajustar prospectos contactados por semana" min="1" max="200" value="20" class="calc-range" oninput="document.getElementById('cProspectos').value=this.value;calcUpdate()">
           </div>
 
           <div class="calc-field">
-            <label>Tasa de cierre actual <strong>(%)</strong></label>
+            <label for="cCierre">Tasa de cierre actual <strong>(%)</strong></label>
             <div class="calc-input-wrap">
               <i class="fa-solid fa-percent"></i>
               <input type="number" id="cCierre" value="20" min="1" max="100" oninput="calcUpdate()">
             </div>
-            <input type="range" id="rCierre" min="1" max="100" value="20" class="calc-range" oninput="document.getElementById('cCierre').value=this.value;calcUpdate()">
+            <input type="range" id="rCierre" aria-label="Ajustar tasa de cierre actual" min="1" max="100" value="20" class="calc-range" oninput="document.getElementById('cCierre').value=this.value;calcUpdate()">
           </div>
 
           <div class="calc-field">
-            <label>Ticket promedio por venta <strong>($)</strong></label>
+            <label for="cTicket">Ticket promedio por venta <strong>($)</strong></label>
             <div class="calc-input-wrap">
               <i class="fa-solid fa-dollar-sign"></i>
               <input type="number" id="cTicket" value="5000" min="100" step="100" oninput="calcUpdate()">
             </div>
-            <input type="range" id="rTicket" min="100" max="50000" step="100" value="5000" class="calc-range" oninput="document.getElementById('cTicket').value=this.value;calcUpdate()">
+            <input type="range" id="rTicket" aria-label="Ajustar ticket promedio por venta" min="100" max="50000" step="100" value="5000" class="calc-range" oninput="document.getElementById('cTicket').value=this.value;calcUpdate()">
           </div>
         </div>
 
@@ -10462,7 +10569,7 @@
       </div>
       <div class="footer-links">
         <h4>Enlaces &Uacute;tiles</h4>
-        <a href="app.html">Iniciar Sesi&oacute;n</a>
+        <a href="app.html">Abrir Zaleasy</a>
         <a href="blog.html">Blog</a>
         <a href="index.html#features">Caracter&iacute;sticas</a>
         <a href="index.html#creator">Nuestra Misi&oacute;n</a>

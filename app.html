@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zaleasy | Gesti&oacute;n de Ventas</title>
+    <title>Iniciar sesi&oacute;n | Zaleasy</title>
     <meta name="description" content="Sistema premium para la gesti&oacute;n y seguimiento de ventas diarias.">
-  <link rel="stylesheet" href="styles.css?v=20260718-auth-recovery-v1">
+  <link rel="stylesheet" href="styles.css?v=20260719-auth-experience-v1">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
@@ -54,7 +54,38 @@
 
     <!-- Auth Screen Layout -->
     <div id="auth-screen" class="auth-container">
-        <div class="auth-card card">
+        <div class="auth-shell">
+            <section class="auth-intro" aria-labelledby="auth-intro-title">
+                <span class="auth-eyebrow"><i class="fa-solid fa-sparkles" aria-hidden="true"></i> Gesti&oacute;n simple para negocios reales</span>
+                <h1 id="auth-intro-title">Todo tu negocio claro, desde un solo lugar.</h1>
+                <p class="auth-intro-copy">Registra lo que vendes, entiende tu caja y detecta qu&eacute; necesita atenci&oacute;n sin depender de planillas dispersas.</p>
+
+                <ul class="auth-benefits" aria-label="Beneficios principales de Zaleasy">
+                    <li><span><i class="fa-solid fa-bolt" aria-hidden="true"></i></span><div><strong>Opera m&aacute;s r&aacute;pido</strong><small>Ventas y gastos listos en pocos pasos.</small></div></li>
+                    <li><span><i class="fa-solid fa-layer-group" aria-hidden="true"></i></span><div><strong>Centraliza tu gesti&oacute;n</strong><small>Caja, clientes, inventario y seguimiento conectados.</small></div></li>
+                    <li><span><i class="fa-solid fa-chart-line" aria-hidden="true"></i></span><div><strong>Decide con contexto</strong><small>Reportes, alertas y pr&oacute;ximas acciones visibles.</small></div></li>
+                </ul>
+
+                <div class="auth-preview" aria-label="Vista ilustrativa del panel de Zaleasy">
+                    <div class="auth-preview-head">
+                        <span><i class="fa-solid fa-table-cells-large" aria-hidden="true"></i> Resumen del negocio</span>
+                        <small>Ejemplo</small>
+                    </div>
+                    <div class="auth-preview-grid">
+                        <div><span class="auth-preview-icon income"><i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i></span><small>Ventas de hoy</small><strong>$184.500</strong></div>
+                        <div><span class="auth-preview-icon cash"><i class="fa-solid fa-wallet" aria-hidden="true"></i></span><small>Caja neta</small><strong>$151.200</strong></div>
+                        <div><span class="auth-preview-icon stock"><i class="fa-solid fa-boxes-stacked" aria-hidden="true"></i></span><small>Stock cr&iacute;tico</small><strong>2 alertas</strong></div>
+                    </div>
+                </div>
+
+                <div class="auth-trust-row" aria-label="Condiciones de acceso">
+                    <span><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Gratis de por vida</span>
+                    <span><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Sin tarjeta</span>
+                    <span><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Acceso seguro</span>
+                </div>
+            </section>
+
+            <div class="auth-card card">
             <div class="brand auth-brand">
                 <div class="logo-icon">
                     <i class="fa-solid fa-chart-line"></i>
@@ -109,6 +140,12 @@
                 <i class="fa-brands fa-google" style="color: #4285F4;"></i> Continuar con Google
             </button>
             <p class="auth-note"><i class="fa-solid fa-shield-halved"></i> Acceso seguro y cifrado</p>
+            <a class="auth-resource-link" href="blog.html">
+                <i class="fa-regular fa-compass" aria-hidden="true"></i>
+                <span><strong>&iquest;Primera vez en Zaleasy?</strong> Explora gu&iacute;as pr&aacute;cticas para empezar.</span>
+                <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+            </a>
+            </div>
         </div>
     </div>
 
@@ -179,6 +216,11 @@
             </nav>
 
             <div class="sidebar-footer">
+                <a class="sidebar-resource-link" href="blog.html">
+                    <span class="sidebar-resource-icon"><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i></span>
+                    <span><strong>Centro de aprendizaje</strong><small>Gu&iacute;as para gestionar mejor</small></span>
+                    <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                </a>
                 <div class="license-info">
                     <i class="fa-solid fa-heart" style="color: var(--danger, #ff4757)"></i>
                     <div class="license-text">
@@ -434,8 +476,9 @@
                                 </div>
                                 <p id="setup-checklist-subtitle">Completa lo esencial para que Zaleasy trabaje mejor con tus datos.</p>
                             </div>
-                            <button type="button" class="setup-checklist-toggle" id="setup-checklist-toggle">
-                                <i class="fa-solid fa-chevron-up"></i>
+                            <button type="button" class="setup-checklist-toggle" id="setup-checklist-toggle"
+                                aria-label="Contraer configuracion inicial" aria-expanded="true" aria-controls="setup-checklist-grid">
+                                <i class="fa-solid fa-chevron-up" aria-hidden="true"></i>
                             </button>
                         </div>
                         <div class="setup-progress-track" aria-hidden="true">
@@ -834,7 +877,7 @@
                                 style="font-size:.75rem; color:var(--success); opacity:0; transition:opacity .5s;"><i
                                     class="fa-solid fa-check"></i> Guardado</span>
                         </div>
-                        <textarea id="day-notepad"
+                        <textarea id="day-notepad" aria-label="Notas y pendientes del dia"
                             placeholder="Anota recordatorios, pendientes o cualquier cosa del d&iacute;a..." rows="2"
                             style="width:100%; resize:vertical; background:var(--bg-hover); border:1px solid var(--border-color); border-radius:var(--radius-sm); color:var(--text-main); font-family:inherit; font-size:.92rem; padding:.8rem 1rem; outline:none; line-height:1.6; transition:border-color .2s;"></textarea>
                     </div>
@@ -851,16 +894,16 @@
                         <form id="followup-form" class="followup-form">
                             <div class="input-wrapper followup-title-wrap">
                                 <i class="fa-solid fa-list-check"></i>
-                                <input type="text" id="followup-title" placeholder="Ej: llamar a cliente, reponer stock, revisar gasto..." required>
+                                <input type="text" id="followup-title" aria-label="Descripcion del seguimiento" placeholder="Ej: llamar a cliente, reponer stock, revisar gasto..." required>
                             </div>
-                            <select id="followup-type">
+                            <select id="followup-type" aria-label="Tipo de seguimiento">
                                 <option value="general">General</option>
                                 <option value="cobro">Cobro</option>
                                 <option value="stock">Stock</option>
                                 <option value="cliente">Cliente</option>
                                 <option value="caja">Caja</option>
                             </select>
-                            <input type="date" id="followup-date">
+                            <input type="date" id="followup-date" aria-label="Fecha del seguimiento">
                             <button type="submit" class="btn btn-primary">
                                 <i class="fa-solid fa-plus"></i> Agregar
                             </button>
@@ -884,15 +927,15 @@
                         <form id="recurring-form" class="recurring-form">
                             <div class="input-wrapper recurring-title-wrap">
                                 <i class="fa-solid fa-receipt"></i>
-                                <input type="text" id="recurring-name" placeholder="Ej: alquiler, internet, proveedor mensual..." required>
+                                <input type="text" id="recurring-name" aria-label="Nombre del gasto recurrente" placeholder="Ej: alquiler, internet, proveedor mensual..." required>
                             </div>
-                            <input type="number" id="recurring-amount" min="0" step="0.01" placeholder="Monto" required>
-                            <select id="recurring-frequency">
+                            <input type="number" id="recurring-amount" min="0" step="0.01" placeholder="Monto" aria-label="Monto del gasto recurrente" required>
+                            <select id="recurring-frequency" aria-label="Frecuencia del gasto recurrente">
                                 <option value="monthly">Mensual</option>
                                 <option value="weekly">Semanal</option>
                                 <option value="daily">Diario</option>
                             </select>
-                            <input type="date" id="recurring-next-date">
+                            <input type="date" id="recurring-next-date" aria-label="Proxima fecha del gasto recurrente">
                             <button type="submit" class="btn btn-primary">
                                 <i class="fa-solid fa-plus"></i> Agregar
                             </button>
@@ -916,7 +959,7 @@
                         <div class="margin-simulator-grid">
                             <div class="input-wrapper margin-field-wide">
                                 <i class="fa-solid fa-box"></i>
-                                <input type="text" id="margin-product-name" placeholder="Producto o servicio" list="products-datalist">
+                                <input type="text" id="margin-product-name" aria-label="Producto o servicio para simular" placeholder="Producto o servicio" list="products-datalist">
                             </div>
                             <label class="margin-field">
                                 <span>Costo</span>
@@ -1058,7 +1101,7 @@
                         </div>
                         <div class="search-container">
                             <i class="fa-solid fa-magnifying-glass"></i>
-                            <input type="text" id="search-sales" placeholder="Buscar por descripci&oacute;n...">
+                            <input type="text" id="search-sales" aria-label="Buscar ventas por descripcion" placeholder="Buscar por descripci&oacute;n...">
                         </div>
                         <!-- Category Filter Pills -->
                         <div id="category-filters" class="category-filter-row">
@@ -1106,14 +1149,14 @@
                     <div class="card-header">
                         <h2>Historial Completo</h2>
                         <div class="header-actions">
-                            <select id="history-type-filter" class="form-control"
+                            <select id="history-type-filter" class="form-control" aria-label="Filtrar historial por tipo"
                                 style="background: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius-sm); padding: 0.5rem; display: inline-block; width: auto; margin-right: 0.5rem;">
                                 <option value="">Todos</option>
                                 <option value="income">Ingresos</option>
                                 <option value="expense">Gastos</option>
                                 <option value="pending">Por cobrar</option>
                             </select>
-                            <input type="date" id="history-date-filter" class="form-control"
+                            <input type="date" id="history-date-filter" class="form-control" aria-label="Filtrar historial por fecha"
                                 style="background: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius-sm); padding: 0.5rem; display: inline-block; width: auto; margin-right: 1rem;">
                             <button class="btn-icon" id="history-export-csv" title="Exportar CSV">
                                 <i class="fa-solid fa-download"></i>
@@ -1125,7 +1168,7 @@
                     </div>
                     <div class="search-container">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" id="history-search"
+                        <input type="text" id="history-search" aria-label="Buscar en el historial"
                             placeholder="Buscar por producto, m&eacute;todo o tipo...">
                     </div>
                     <div class="history-quick-filters" id="history-quick-filters">
@@ -1337,7 +1380,7 @@
                     </div>
                     <div class="search-container">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" id="search-clientes" placeholder="Buscar por nombre del cliente...">
+                        <input type="text" id="search-clientes" aria-label="Buscar clientes por nombre" placeholder="Buscar por nombre del cliente...">
                     </div>
                     <div class="table-container" id="clientes-table-container">
                         <table class="sales-table">
@@ -1413,7 +1456,7 @@
 
                     <div class="search-container">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" id="search-inventario" placeholder="Buscar productos en el cat&aacute;logo...">
+                        <input type="text" id="search-inventario" aria-label="Buscar productos en el inventario" placeholder="Buscar productos en el cat&aacute;logo...">
                     </div>
                     
                     <div class="table-container" id="inventario-table-container">
@@ -1606,6 +1649,32 @@
                 <i class="fa-solid fa-boxes-stacked"></i><span>Stock</span><span class="mobile-nav-indicator warning" id="mobile-inventory-badge" aria-hidden="true" hidden>0</span>
             </button>
         </nav>
+
+        <!-- Available only while the authenticated application is visible -->
+        <div class="quick-create" id="quick-create">
+            <div class="quick-create-menu" id="quick-create-menu" hidden>
+                <button type="button" class="quick-create-action" data-quick-action="product">
+                    <span class="quick-create-action-icon product"><i class="fa-solid fa-box"></i></span>
+                    <span><strong>Nuevo producto</strong><small>Agregar al inventario</small></span>
+                </button>
+                <button type="button" class="quick-create-action" data-quick-action="followup">
+                    <span class="quick-create-action-icon followup"><i class="fa-solid fa-calendar-plus"></i></span>
+                    <span><strong>Nuevo seguimiento</strong><small>Agendar un pendiente</small></span>
+                </button>
+                <button type="button" class="quick-create-action" data-quick-action="expense">
+                    <span class="quick-create-action-icon expense"><i class="fa-solid fa-receipt"></i></span>
+                    <span><strong>Registrar gasto</strong><small>Anotar una salida</small></span>
+                </button>
+                <button type="button" class="quick-create-action" data-quick-action="sale">
+                    <span class="quick-create-action-icon sale"><i class="fa-solid fa-cart-plus"></i></span>
+                    <span><strong>Registrar venta</strong><small>Cargar un ingreso</small></span>
+                </button>
+            </div>
+            <button id="fab-quick-add" class="fab-btn" type="button" title="Crear nuevo" aria-label="Abrir menu de creacion rapida"
+                aria-expanded="false" aria-controls="quick-create-menu">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+        </div>
     </div>
 
     <!-- Notification Toast -->
@@ -1620,11 +1689,11 @@
     </div>
 
     <!-- Goal Modal -->
-    <div id="goal-modal" class="modal-overlay">
+    <div id="goal-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="goal-modal-title" aria-hidden="true">
         <div class="modal">
             <div class="modal-header">
-                <h2>Configurar Meta Diaria</h2>
-                <button class="btn-icon close-modal"><i class="fa-solid fa-xmark"></i></button>
+                <h2 id="goal-modal-title">Configurar Meta Diaria</h2>
+                <button type="button" class="btn-icon close-modal" aria-label="Cerrar configuracion de meta"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -1642,11 +1711,11 @@
     </div>
 
     <!-- Close Register Modal -->
-    <div id="close-modal" class="modal-overlay">
+    <div id="close-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="close-modal-title" aria-hidden="true">
         <div class="modal modal-lg">
             <div class="modal-header">
-                <h2>Resumen de Cierre de Caja</h2>
-                <button class="btn-icon close-modal-close"><i class="fa-solid fa-xmark"></i></button>
+                <h2 id="close-modal-title">Resumen de Cierre de Caja</h2>
+                <button type="button" class="btn-icon close-modal-close" aria-label="Cerrar resumen de caja"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
             </div>
             <div class="modal-body">
                 <div class="summary-grid" id="close-summary-grid">
@@ -1694,11 +1763,11 @@
     </div>
 
     <!-- Calculator Modal -->
-    <div id="calculator-modal" class="modal-overlay">
+    <div id="calculator-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="calculator-modal-title" aria-hidden="true">
         <div class="modal">
             <div class="modal-header">
-                <h2>Calculadora de Vuelto</h2>
-                <button class="btn-icon close-modal-close"><i class="fa-solid fa-xmark"></i></button>
+                <h2 id="calculator-modal-title">Calculadora de Vuelto</h2>
+                <button type="button" class="btn-icon close-modal-close" aria-label="Cerrar calculadora de vuelto"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -1725,12 +1794,12 @@
     </div>
 
     <!-- Receipt Modal -->
-    <div id="receipt-modal" class="modal-overlay">
+    <div id="receipt-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="receipt-modal-title" aria-hidden="true">
         <div class="modal modal-lg" style="max-width:420px;">
             <div class="modal-header">
-                <h2><i class="fa-solid fa-receipt" style="color:var(--primary);margin-right:.5rem;"></i>Recibo de
+                <h2 id="receipt-modal-title"><i class="fa-solid fa-receipt" style="color:var(--primary);margin-right:.5rem;"></i>Recibo de
                     Transacci&oacute;n</h2>
-                <button class="btn-icon close-modal-close"><i class="fa-solid fa-xmark"></i></button>
+                <button type="button" class="btn-icon close-modal-close" aria-label="Cerrar comprobante"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
             </div>
             <div class="modal-body" id="receipt-body">
                 <!-- Populated by JS -->
@@ -1747,12 +1816,12 @@
     </div>
 
     <!-- Edit Transaction Modal -->
-    <div id="edit-modal" class="modal-overlay">
+    <div id="edit-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="edit-modal-title" aria-hidden="true">
         <div class="modal modal-lg" style="max-width:460px;">
             <div class="modal-header">
-                <h2><i class="fa-solid fa-pen-to-square" style="color:var(--primary);margin-right:.5rem;"></i>Editar
+                <h2 id="edit-modal-title"><i class="fa-solid fa-pen-to-square" style="color:var(--primary);margin-right:.5rem;"></i>Editar
                     Transacci&oacute;n</h2>
-                <button class="btn-icon" id="close-edit-modal"><i class="fa-solid fa-xmark"></i></button>
+                <button type="button" class="btn-icon" id="close-edit-modal" aria-label="Cerrar edicion de transaccion"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
             </div>
             <div class="modal-body">
                 <input type="hidden" id="edit-id">
@@ -1818,12 +1887,12 @@
     </div>
 
     <!-- Currency Converter Modal -->
-    <div id="converter-modal" class="modal-overlay">
+    <div id="converter-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="converter-modal-title" aria-hidden="true">
         <div class="modal" style="max-width:380px;">
             <div class="modal-header">
-                <h2><i class="fa-solid fa-coins" style="color:var(--success);margin-right:.5rem;"></i>Conversor ARS /
+                <h2 id="converter-modal-title"><i class="fa-solid fa-coins" style="color:var(--success);margin-right:.5rem;"></i>Conversor ARS /
                     USD</h2>
-                <button class="btn-icon close-modal-close"><i class="fa-solid fa-xmark"></i></button>
+                <button type="button" class="btn-icon close-modal-close" aria-label="Cerrar conversor de moneda"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
             </div>
             <div class="modal-body">
                 <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:1rem;">Tipo de cambio: <strong
@@ -1856,34 +1925,8 @@
     <canvas id="confetti-canvas"
         style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;"></canvas>
 
-    <!-- Floating Quick-Create Menu -->
-    <div class="quick-create" id="quick-create">
-        <div class="quick-create-menu" id="quick-create-menu" hidden>
-            <button type="button" class="quick-create-action" data-quick-action="product">
-                <span class="quick-create-action-icon product"><i class="fa-solid fa-box"></i></span>
-                <span><strong>Nuevo producto</strong><small>Agregar al inventario</small></span>
-            </button>
-            <button type="button" class="quick-create-action" data-quick-action="followup">
-                <span class="quick-create-action-icon followup"><i class="fa-solid fa-calendar-plus"></i></span>
-                <span><strong>Nuevo seguimiento</strong><small>Agendar un pendiente</small></span>
-            </button>
-            <button type="button" class="quick-create-action" data-quick-action="expense">
-                <span class="quick-create-action-icon expense"><i class="fa-solid fa-receipt"></i></span>
-                <span><strong>Registrar gasto</strong><small>Anotar una salida</small></span>
-            </button>
-            <button type="button" class="quick-create-action" data-quick-action="sale">
-                <span class="quick-create-action-icon sale"><i class="fa-solid fa-cart-plus"></i></span>
-                <span><strong>Registrar venta</strong><small>Cargar un ingreso</small></span>
-            </button>
-        </div>
-        <button id="fab-quick-add" class="fab-btn" type="button" title="Crear nuevo" aria-label="Abrir menu de creacion rapida"
-            aria-expanded="false" aria-controls="quick-create-menu">
-            <i class="fa-solid fa-plus"></i>
-        </button>
-    </div>
-
     <!-- Script for Logic -->
-    <script src="app.js?v=20260718-auth-recovery-v1"></script>
+    <script src="app.js?v=20260719-dialog-accessibility-v1"></script>
 </body>
 
 </html>

@@ -163,6 +163,67 @@ document.addEventListener('DOMContentLoaded', () => {
     const receiptModal = document.getElementById('receipt-modal');
     const receiptBody = document.getElementById('receipt-body');
     const btnPrintReceipt = document.getElementById('btn-print-receipt');
+    const converterModal = document.getElementById('converter-modal');
+
+    // Keep every custom modal accessible and return focus to the action that opened it.
+    const modalTriggers = new WeakMap();
+    const getModalFocusable = modal => Array.from(modal.querySelectorAll(
+        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    )).filter(element => element.getClientRects().length > 0 && element.getAttribute('aria-hidden') !== 'true');
+
+    const openModal = (modal, preferredFocus = null) => {
+        if (!modal) return;
+        const trigger = document.activeElement;
+        if (trigger instanceof HTMLElement && trigger !== document.body) modalTriggers.set(modal, trigger);
+        modal.classList.add('active');
+        modal.setAttribute('aria-hidden', 'false');
+        requestAnimationFrame(() => {
+            const target = preferredFocus || getModalFocusable(modal)[0];
+            if (target instanceof HTMLElement) target.focus();
+        });
+    };
+
+    const closeModal = (modal, restoreFocus = true) => {
+        if (!modal || !modal.classList.contains('active')) return;
+        modal.classList.remove('active');
+        modal.setAttribute('aria-hidden', 'true');
+        const trigger = modalTriggers.get(modal);
+        modalTriggers.delete(modal);
+        if (restoreFocus && trigger instanceof HTMLElement && document.contains(trigger)) {
+            requestAnimationFrame(() => trigger.focus());
+        }
+    };
+
+    document.addEventListener('keydown', event => {
+        const modal = document.querySelector('.modal-overlay.active');
+        if (!modal) return;
+
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            closeModal(modal);
+            return;
+        }
+
+        if (event.key !== 'Tab') return;
+        const focusable = getModalFocusable(modal);
+        if (!focusable.length) {
+            event.preventDefault();
+            return;
+        }
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (!modal.contains(document.activeElement)) {
+            event.preventDefault();
+            first.focus();
+        } else if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+        }
+    });
 
     // Auth Elements
     const authScreen = document.getElementById('auth-screen');
@@ -354,10 +415,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const updateHeaderContext = (targetId, fallbackTitle = '') => {
         const liveClock = document.getElementById('live-clock');
+        const appIsVisible = mainApp && mainApp.style.display !== 'none';
         if (targetId === 'nav-dashboard') {
             setupDate();
             if (liveClock) liveClock.hidden = false;
-            document.title = 'Zaleasy | Dashboard';
+            if (appIsVisible) document.title = 'Dashboard | Zaleasy';
             return;
         }
 
@@ -369,7 +431,16 @@ document.addEventListener('DOMContentLoaded', () => {
         greetingEl.textContent = meta.title;
         dateEl.textContent = meta.description;
         if (liveClock) liveClock.hidden = true;
-        document.title = `Zaleasy | ${meta.documentTitle}`;
+        if (appIsVisible) document.title = `${meta.documentTitle} | Zaleasy`;
+    };
+
+    const updateVisibleAppDocumentTitle = () => {
+        const activeView = document.querySelector('.nav-item.active')?.id || 'nav-dashboard';
+        updateHeaderContext(activeView);
+    };
+
+    const showAuthDocumentTitle = () => {
+        document.title = 'Iniciar sesi\u00f3n | Zaleasy';
     };
 
     // --- Navigation Logic ---
@@ -583,7 +654,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setupChecklistToggle.addEventListener('click', () => {
             const collapsed = setupChecklistCard.classList.toggle('collapsed');
             localStorage.setItem('setupChecklistCollapsed', collapsed ? '1' : '0');
-            setupChecklistToggle.innerHTML = `<i class="fa-solid ${collapsed ? 'fa-chevron-down' : 'fa-chevron-up'}"></i>`;
+            setupChecklistToggle.innerHTML = `<i class="fa-solid ${collapsed ? 'fa-chevron-down' : 'fa-chevron-up'}" aria-hidden="true"></i>`;
+            setupChecklistToggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+            setupChecklistToggle.setAttribute('aria-label', collapsed ? 'Expandir configuracion inicial' : 'Contraer configuracion inicial');
         });
     }
 
@@ -1215,7 +1288,11 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('sidebar-brand-name').innerText = storeName;
         if (setupChecklistCard && localStorage.getItem('setupChecklistCollapsed') === '1') {
             setupChecklistCard.classList.add('collapsed');
-            if (setupChecklistToggle) setupChecklistToggle.innerHTML = '<i class="fa-solid fa-chevron-down"></i>';
+            if (setupChecklistToggle) {
+                setupChecklistToggle.innerHTML = '<i class="fa-solid fa-chevron-down" aria-hidden="true"></i>';
+                setupChecklistToggle.setAttribute('aria-expanded', 'false');
+                setupChecklistToggle.setAttribute('aria-label', 'Expandir configuracion inicial');
+            }
         }
         setupDate();
         setupLiveClock();
@@ -1602,18 +1679,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="item-field-desc">
                     <div class="input-wrapper" style="margin-bottom:0;">
                         <i class="fa-solid fa-tag"></i>
-                        <input type="text" class="item-product-input" placeholder="Producto o descripci\u00f3n" list="products-datalist" required>
+                        <input type="text" class="item-product-input" aria-label="Producto o descripcion del item" placeholder="Producto o descripci\u00f3n" list="products-datalist" required>
                     </div>
                 </div>
                 <div class="item-field-amount">
                     <div class="input-wrapper" style="margin-bottom:0;">
                         <i class="fa-solid fa-dollar-sign"></i>
-                        <input type="number" class="item-amount-input" step="0.01" min="0" placeholder="0.00" value="" required>
+                        <input type="number" class="item-amount-input" aria-label="Monto del item" step="0.01" min="0" placeholder="0.00" value="" required>
                     </div>
                 </div>
                 <div class="item-field-cat">
                     <div class="input-wrapper" style="margin-bottom:0; padding-left:0;">
-                        <select class="item-category-select" style="padding-left:.8rem;">
+                        <select class="item-category-select" aria-label="Categoria del item" style="padding-left:.8rem;">
                             ${buildCategoryOptions()}
                         </select>
                     </div>
@@ -2231,11 +2308,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Fallback for visual testing if Firebase script is commented out or missing
         if (!window.firebaseAuth) {
             console.log("Firebase no configurado a\u00fan. Mostrando UI Demo.");
+            showAuthDocumentTitle();
 
             btnGoogleLogin.addEventListener('click', () => {
                 // Simulate login
                 authScreen.style.display = 'none';
                 mainApp.style.display = 'flex';
+                updateVisibleAppDocumentTitle();
                 showToast('Modo de Prueba (Sin Nube)');
             });
 
@@ -2244,6 +2323,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     e.preventDefault();
                     authScreen.style.display = 'none';
                     mainApp.style.display = 'flex';
+                    updateVisibleAppDocumentTitle();
                     showToast('Modo de Prueba (Email) (Sin Nube)');
                 });
             }
@@ -2252,6 +2332,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     e.preventDefault();
                     authScreen.style.display = 'none';
                     mainApp.style.display = 'flex';
+                    updateVisibleAppDocumentTitle();
                     showToast('Modo de Prueba (Registro) (Sin Nube)');
                 });
             }
@@ -2260,6 +2341,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (confirm('\u00bfCerrar sesi\u00f3n de prueba?')) {
                     mainApp.style.display = 'none';
                     authScreen.style.display = 'flex';
+                    showAuthDocumentTitle();
                 }
             });
             return;
@@ -2272,6 +2354,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 authScreen.style.display = 'none';
                 if (trialScreen) trialScreen.style.display = 'none';
                 mainApp.style.display = 'flex';
+                updateVisibleAppDocumentTitle();
                 userAvatar.src = user.photoURL || "https://ui-avatars.com/api/?name=" + (user.displayName || "User") + "&background=6c5ce7&color=fff";
                 showToast(`\u00a1Bienvenid@, ${user.displayName ? user.displayName.split(' ')[0] : (user.email ? user.email.split('@')[0] : 'Usuario')}! 🚀`);
             } else {
@@ -2279,6 +2362,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 mainApp.style.display = 'none';
                 if (trialScreen) trialScreen.style.display = 'none';
                 authScreen.style.display = 'flex';
+                showAuthDocumentTitle();
             }
         });
 
@@ -2381,7 +2465,8 @@ document.addEventListener('DOMContentLoaded', () => {
         { type: 'view', target: 'nav-reportes', title: 'Reportes', meta: 'Indicadores y comparaciones', icon: 'fa-chart-pie', keywords: 'analisis metricas estadisticas' },
         { type: 'view', target: 'nav-clientes', title: 'Clientes', meta: 'Compras, saldos y seguimiento', icon: 'fa-address-book', keywords: 'crm deuda cobrar contactos' },
         { type: 'view', target: 'nav-inventario', title: 'Inventario', meta: 'Productos, precios y stock', icon: 'fa-boxes-stacked', keywords: 'catalogo mercaderia existencias' },
-        { type: 'view', target: 'nav-config', title: 'Configuracion', meta: 'Negocio, meta y respaldo', icon: 'fa-gear', keywords: 'ajustes backup datos tienda' }
+        { type: 'view', target: 'nav-config', title: 'Configuracion', meta: 'Negocio, meta y respaldo', icon: 'fa-gear', keywords: 'ajustes backup datos tienda' },
+        { type: 'resource', target: 'blog.html', title: 'Centro de aprendizaje', meta: 'Guias practicas de ventas y gestion', icon: 'fa-graduation-cap', keywords: 'ayuda blog guias aprender soporte consejos recursos' }
     ];
 
     const globalSearchActions = [
@@ -2440,7 +2525,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const searchTypeLabel = (type) => ({
-        action: 'Accion', view: 'Seccion', product: 'Producto', client: 'Cliente', transaction: 'Movimiento'
+        action: 'Accion', view: 'Seccion', resource: 'Recurso', product: 'Producto', client: 'Cliente', transaction: 'Movimiento'
     }[type] || 'Resultado');
 
     const setGlobalSearchOpen = (open) => {
@@ -2490,6 +2575,8 @@ document.addEventListener('DOMContentLoaded', () => {
             runQuickAction(item.target);
         } else if (item.type === 'view') {
             switchView(item.target);
+        } else if (item.type === 'resource') {
+            window.location.href = item.target;
         } else if (item.type === 'product') {
             switchView('nav-inventario');
             if (searchInventario) searchInventario.value = item.target;
@@ -4515,7 +4602,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Goal Modal Config ---
     editGoalBtn.addEventListener('click', () => {
         newGoalInput.value = dailyGoal;
-        goalModal.classList.add('active');
+        openModal(goalModal, newGoalInput);
     });
 
     if (editCashBaseBtn) {
@@ -4540,17 +4627,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     closeModalBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            goalModal.classList.remove('active');
-            closeRegisterModal.classList.remove('active');
-            calculatorModal.classList.remove('active');
-            if (receiptModal) receiptModal.classList.remove('active');
-            if (editModal) editModal.classList.remove('active');
-            const converterModal = document.getElementById('converter-modal');
-            if (converterModal) converterModal.classList.remove('active');
+            closeModal(btn.closest('.modal-overlay'));
         });
     });
 
-    if (closeEditModalBtn) closeEditModalBtn.addEventListener('click', () => editModal.classList.remove('active'));
+    if (closeEditModalBtn) closeEditModalBtn.addEventListener('click', () => closeModal(editModal));
 
     // --- Edit Modal Setup ---
     const openEditModal = (sale, source) => {
@@ -4575,7 +4656,7 @@ document.addEventListener('DOMContentLoaded', () => {
             editTypeExpense.className = 'btn btn-outline';
             editTypeExpense.style.cssText = 'flex:1;';
         }
-        editModal.classList.add('active');
+        openModal(editModal, editProductInput);
     };
 
     const setupEditModal = () => {
@@ -4629,15 +4710,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderHistory();
             }
 
-            editModal.classList.remove('active');
+            closeModal(editModal);
             showToast('✅ Transacci\u00f3n actualizada correctamente.');
         });
     };
-
-    // Also close receipt modal with close-modal-close buttons inside it
-    document.querySelectorAll('#receipt-modal .close-modal-close').forEach(btn => {
-        btn.addEventListener('click', () => receiptModal.classList.remove('active'));
-    });
 
     // --- Receipt Modal Logic ---
     let currentReceiptSale = null; // Store for printing
@@ -4724,7 +4800,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 Generado por ${storeName} • ${repr.isQuote ? 'Presupuesto V\u00e1lido 15 D\u00edas' : 'Comprobante'} #${repr.id.toString().slice(-6)}
             </div>
         `;
-        receiptModal.classList.add('active');
+        openModal(receiptModal, btnPrintReceipt);
     };
 
     // --- Print Receipt via dedicated popup window ---
@@ -4926,7 +5002,7 @@ document.addEventListener('DOMContentLoaded', () => {
             dailyGoal = val;
             localStorage.setItem('dailyGoal', dailyGoal);
             updateKPIs();
-            goalModal.classList.remove('active');
+            closeModal(goalModal);
             showToast('Meta diaria actualizada');
         } else {
             alert('Ingresa una meta v\u00e1lida');
@@ -4943,9 +5019,7 @@ document.addEventListener('DOMContentLoaded', () => {
         calcReceivedInput.value = '';
         calcChangeDisplay.textContent = '$0.00';
         calcChangeDisplay.style.color = 'var(--primary)';
-        calculatorModal.classList.add('active');
-
-        setTimeout(() => calcReceivedInput.focus(), 100);
+        openModal(calculatorModal, calcReceivedInput);
     });
 
     calcReceivedInput.addEventListener('input', () => {
@@ -5116,7 +5190,7 @@ document.addEventListener('DOMContentLoaded', () => {
         closeTotalDay.textContent = formatCurrency(totalIncome - totalExpense);
         renderCloseReadiness({ totalIncome, totalExpense, cashFinal });
 
-        closeRegisterModal.classList.add('active');
+        openModal(closeRegisterModal, cashCountedInput);
     });
 
     const renderCloseReadiness = ({ totalIncome, totalExpense, cashFinal }) => {
@@ -5206,7 +5280,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateTopProduct();
         updatePeakHours();
         if (cashCountedInput) cashCountedInput.value = '';
-        closeRegisterModal.classList.remove('active');
+        closeModal(closeRegisterModal);
         showToast('Cierre de caja completado con \u00e9xito!');
     });
 
