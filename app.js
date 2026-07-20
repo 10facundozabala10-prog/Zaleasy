@@ -1056,6 +1056,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 repTopBody.appendChild(tr);
             });
         }
+
+        // --- Top Clients ---
+        const repClientsBody = document.getElementById('rep-top-clients-body');
+        const repClientsContainer = document.getElementById('rep-top-clients-container');
+        const repClientsEmptyState = document.getElementById('rep-clients-empty-state');
+        if (repClientsBody && repClientsContainer && repClientsEmptyState) {
+            repClientsBody.replaceChildren();
+            const { clientMap } = buildClientSummary();
+            const topClients = Object.entries(clientMap)
+                .sort((a, b) => b[1].totalGastado - a[1].totalGastado)
+                .slice(0, 10);
+
+            const hasClients = topClients.length > 0;
+            repClientsContainer.style.display = hasClients ? 'block' : 'none';
+            repClientsEmptyState.classList.toggle('active', !hasClients);
+
+            topClients.forEach(([clientName, client], index) => {
+                const row = document.createElement('tr');
+                const values = [
+                    String(index + 1),
+                    clientName,
+                    `${client.totalCompras} ${client.totalCompras === 1 ? 'compra' : 'compras'}`,
+                    formatCurrency(client.totalGastado)
+                ];
+                values.forEach((value, cellIndex) => {
+                    const cell = document.createElement('td');
+                    cell.textContent = value;
+                    if (cellIndex === 1) cell.style.fontWeight = '700';
+                    if (cellIndex === 3) {
+                        cell.style.color = 'var(--success)';
+                        cell.style.fontWeight = '700';
+                    }
+                    row.appendChild(cell);
+                });
+                repClientsBody.appendChild(row);
+            });
+        }
     };
 
     // --- Config Logic ---
@@ -1121,13 +1158,57 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    document.getElementById('btn-factory-reset').addEventListener('click', () => {
-        if (confirm('\u00bfEST\u00c1S COMPLETAMENTE SEGURO? Esto borrar\u00e1 tu cuenta, tu historial, tus configuraciones y todos tus datos registrados. La aplicaci\u00f3n volver\u00e1 a quedar como reci\u00e9n instalada.')) {
-            if (confirm('\u00daLTIMA ADVERTENCIA: Esta acci\u00f3n es final e irreversible. \u00bfEjecutar borrado y reiniciar sistema?')) {
-                localStorage.clear();
-                window.location.reload();
-            }
+    const factoryResetButton = document.getElementById('btn-factory-reset');
+    const resetDataModal = document.getElementById('reset-data-modal');
+    const resetDataSummary = document.getElementById('reset-data-summary');
+    const resetConfirmInput = document.getElementById('reset-confirm-input');
+    const confirmFactoryResetButton = document.getElementById('btn-confirm-factory-reset');
+    const backupBeforeResetButton = document.getElementById('btn-backup-before-reset');
+
+    const updateFactoryResetConfirmation = () => {
+        const matches = resetConfirmInput?.value.trim().toUpperCase() === 'BORRAR';
+        if (confirmFactoryResetButton) confirmFactoryResetButton.disabled = !matches;
+    };
+
+    factoryResetButton?.addEventListener('click', () => {
+        const { clients } = buildClientSummary();
+        if (resetDataSummary) {
+            const items = [
+                { label: 'Movimientos de hoy', value: sales.length },
+                { label: 'Registros hist\u00f3ricos', value: historyData.length },
+                { label: 'Clientes detectados', value: clients.length },
+                { label: 'Productos del cat\u00e1logo', value: productCatalog.length }
+            ];
+            resetDataSummary.replaceChildren(...items.map(item => {
+                const row = document.createElement('div');
+                const label = document.createElement('span');
+                const value = document.createElement('strong');
+                label.textContent = item.label;
+                value.textContent = String(item.value);
+                row.append(label, value);
+                return row;
+            }));
         }
+        if (resetConfirmInput) resetConfirmInput.value = '';
+        updateFactoryResetConfirmation();
+        openModal(resetDataModal, resetConfirmInput);
+    });
+
+    resetConfirmInput?.addEventListener('input', updateFactoryResetConfirmation);
+
+    backupBeforeResetButton?.addEventListener('click', () => {
+        document.getElementById('btn-backup-data')?.click();
+    });
+
+    confirmFactoryResetButton?.addEventListener('click', () => {
+        if (resetConfirmInput?.value.trim().toUpperCase() !== 'BORRAR') {
+            updateFactoryResetConfirmation();
+            resetConfirmInput?.focus();
+            return;
+        }
+        closeModal(resetDataModal, false);
+        localStorage.clear();
+        window.location.reload();
     });
 
     // --- Alert Threshold Config ---
@@ -1304,7 +1385,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setupAutocomplete();
         setupAuth();
         setupStreakWidget();
-        setupImportBackup();
+        setupImportBackupSafe();
         setupEditModal();
         setupDayNotepad();
         setupCategoryFilters();
@@ -2180,6 +2261,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const action = actionButton.dataset.quickAction;
             closeQuickCreate();
             runQuickAction(action);
+        });
+
+        document.querySelectorAll('.empty-state-action[data-quick-action]').forEach((button) => {
+            button.addEventListener('click', () => runQuickAction(button.dataset.quickAction));
         });
 
         document.addEventListener('click', (event) => {
@@ -5604,7 +5689,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Import Backup Logic ---
-    const setupImportBackup = () => {
+    const setupImportBackupLegacy = () => {
         const importInput = document.getElementById('btn-import-data');
         if (!importInput) return;
         importInput.addEventListener('change', (e) => {
@@ -5710,6 +5795,223 @@ document.addEventListener('DOMContentLoaded', () => {
                 importInput.value = ''; // Reset so same file can re-trigger
             };
             reader.readAsText(file);
+        });
+    };
+
+    // --- Safe Import Preview & Strategy ---
+    const setupImportBackupSafe = () => {
+        const importInput = document.getElementById('btn-import-data');
+        const importModal = document.getElementById('import-data-modal');
+        const importSummary = document.getElementById('import-data-summary');
+        const importFileName = document.getElementById('import-file-name');
+        const importFileDate = document.getElementById('import-file-date');
+        const importFileVersion = document.getElementById('import-file-version');
+        const importFeedback = document.getElementById('import-data-feedback');
+        const mergeButton = document.getElementById('btn-confirm-import-merge');
+        const replaceButton = document.getElementById('btn-confirm-import-replace');
+        const backupCurrentButton = document.getElementById('btn-backup-before-import');
+        if (!importInput || !importModal) return;
+
+        let pendingImportData = null;
+
+        const showImportError = (message) => {
+            if (!importFeedback) return;
+            importFeedback.textContent = message;
+            importFeedback.hidden = false;
+        };
+
+        const clearImportError = () => {
+            if (!importFeedback) return;
+            importFeedback.textContent = '';
+            importFeedback.hidden = true;
+        };
+
+        const validateBackup = (data) => {
+            if (!data || typeof data !== 'object' || Array.isArray(data)) throw new Error('El archivo no contiene una copia v\u00e1lida.');
+            const recognizedKeys = ['sales', 'historyData', 'productCatalog', 'storeName', 'followUps', 'recurringExpenses'];
+            if (!recognizedKeys.some(key => Object.prototype.hasOwnProperty.call(data, key))) {
+                throw new Error('El archivo no contiene datos reconocibles de Zaleasy.');
+            }
+            ['sales', 'historyData', 'productCatalog', 'recentProducts', 'followUps', 'recurringExpenses'].forEach(key => {
+                if (Object.prototype.hasOwnProperty.call(data, key) && !Array.isArray(data[key])) {
+                    throw new Error(`El campo ${key} tiene un formato incorrecto.`);
+                }
+            });
+            return data;
+        };
+
+        const mergeUnique = (current, incoming, getKey, isValid = () => true) => {
+            const result = [...current];
+            const keys = new Set(current.filter(isValid).map(getKey));
+            incoming.filter(isValid).forEach(item => {
+                const key = getKey(item);
+                if (keys.has(key)) return;
+                keys.add(key);
+                result.push(item);
+            });
+            return result;
+        };
+
+        const transactionKey = item => item.id ?? `${item.timestamp || ''}|${item.product || ''}|${item.amount || 0}|${item.type || ''}`;
+        const itemIdKey = item => item.id ?? `${item.name || item.title || ''}|${item.date || item.dueDate || ''}`;
+        const normalizeBrandColor = value => /^#[0-9a-f]{6}$/i.test(value || '') ? value : null;
+
+        const persistImportedState = () => {
+            localStorage.setItem('dailySales', JSON.stringify(sales));
+            localStorage.setItem('allHistoryData', JSON.stringify(historyData));
+            localStorage.setItem('productCatalog', JSON.stringify(productCatalog));
+            localStorage.setItem('recentProducts', JSON.stringify(recentProducts));
+            localStorage.setItem('storeName', storeName);
+            localStorage.setItem('brandColor', brandColor);
+            localStorage.setItem('dailyGoal', dailyGoal);
+            localStorage.setItem('alertThreshold', alertThreshold);
+            localStorage.setItem('cashBase', cashBase);
+            localStorage.setItem('closingHour', closingHour);
+            localStorage.setItem('marginSimulator', JSON.stringify(marginSimulator));
+            saveFollowUps();
+            saveRecurringExpenses();
+            saveDailyPlanDone();
+        };
+
+        const refreshAfterImport = () => {
+            document.getElementById('sidebar-brand-name').textContent = storeName;
+            applyBrandColor(brandColor);
+            loadConfigData();
+            if (closingHourSelect) closingHourSelect.value = String(closingHour);
+            renderSales();
+            renderHistory();
+            renderClientes();
+            renderInventario();
+            renderReports();
+            renderFollowUps();
+            renderRecurringExpenses();
+            setupAutocomplete();
+            updateKPIs();
+            updateDataHealthPanel();
+            updateSetupChecklist();
+            updateNavigationIndicators();
+        };
+
+        const applyImportedBackup = (data, mode) => {
+            const importedSales = data.sales || [];
+            const importedHistory = data.historyData || [];
+            const importedProducts = data.productCatalog || [];
+            const importedRecent = data.recentProducts || [];
+            const importedFollowUps = data.followUps || [];
+            const importedRecurring = data.recurringExpenses || [];
+            let importedCounts = { sales: importedSales.length, history: importedHistory.length };
+
+            if (mode === 'replace') {
+                sales = [...importedSales];
+                historyData = [...importedHistory];
+                productCatalog = importedProducts.filter(item => item && item.name);
+                recentProducts = [...importedRecent];
+                followUps = importedFollowUps.filter(item => item && item.title);
+                recurringExpenses = importedRecurring.filter(item => item && item.name);
+                dailyPlanDone = data.dailyPlanDone && typeof data.dailyPlanDone === 'object' ? { ...data.dailyPlanDone } : {};
+                storeName = typeof data.storeName === 'string' && data.storeName.trim() ? data.storeName.trim() : 'Zaleasy';
+                brandColor = normalizeBrandColor(data.brandColor) || '#6c5ce7';
+                dailyGoal = Number(data.dailyGoal) > 0 ? Number(data.dailyGoal) : 100;
+                alertThreshold = Number(data.alertThreshold) || 0;
+                cashBase = Number(data.cashBase) || 0;
+                closingHour = Number.parseInt(data.closingHour, 10) || 21;
+                marginSimulator = data.marginSimulator && typeof data.marginSimulator === 'object' ? { ...data.marginSimulator } : { target: 35 };
+            } else {
+                const previousSales = sales.length;
+                const previousHistory = historyData.length;
+                sales = mergeUnique(sales, importedSales, transactionKey, item => item && typeof item === 'object');
+                historyData = mergeUnique(historyData, importedHistory, transactionKey, item => item && typeof item === 'object');
+                productCatalog = mergeUnique(productCatalog, importedProducts, item => (item.name || '').trim().toLowerCase(), item => item && item.name);
+                recentProducts = mergeUnique(recentProducts, importedRecent, item => typeof item === 'string' ? item.toLowerCase() : JSON.stringify(item));
+                followUps = mergeUnique(followUps, importedFollowUps, itemIdKey, item => item && item.title);
+                recurringExpenses = mergeUnique(recurringExpenses, importedRecurring, itemIdKey, item => item && item.name);
+                if (data.dailyPlanDone && typeof data.dailyPlanDone === 'object') dailyPlanDone = { ...dailyPlanDone, ...data.dailyPlanDone };
+                if (typeof data.storeName === 'string' && data.storeName.trim()) storeName = data.storeName.trim();
+                if (normalizeBrandColor(data.brandColor)) brandColor = data.brandColor;
+                if (Number(data.dailyGoal) > 0) dailyGoal = Number(data.dailyGoal);
+                if (data.alertThreshold !== undefined) alertThreshold = Number(data.alertThreshold) || 0;
+                if (data.cashBase !== undefined) cashBase = Number(data.cashBase) || 0;
+                if (data.closingHour !== undefined) closingHour = Number.parseInt(data.closingHour, 10) || 21;
+                if (data.marginSimulator && typeof data.marginSimulator === 'object') marginSimulator = { ...marginSimulator, ...data.marginSimulator };
+                importedCounts = { sales: sales.length - previousSales, history: historyData.length - previousHistory };
+            }
+
+            persistImportedState();
+            refreshAfterImport();
+            closeModal(importModal);
+
+            const message = mode === 'replace'
+                ? `Copia restaurada: ${sales.length} movimientos de hoy y ${historyData.length} hist\u00f3ricos.`
+                : `Datos fusionados: +${importedCounts.sales} movimientos y +${importedCounts.history} hist\u00f3ricos.`;
+            showToast(message);
+            pendingImportData = null;
+        };
+
+        const renderImportPreview = (data, file) => {
+            const summaryItems = [
+                { label: 'Movimientos de hoy', value: (data.sales || []).length },
+                { label: 'Hist\u00f3ricos', value: (data.historyData || []).length },
+                { label: 'Productos', value: (data.productCatalog || []).length },
+                { label: 'Seguimientos', value: (data.followUps || []).length },
+                { label: 'Gastos recurrentes', value: (data.recurringExpenses || []).length },
+                { label: 'Negocio', value: data.storeName || 'Sin nombre' }
+            ];
+            if (importSummary) {
+                importSummary.replaceChildren(...summaryItems.map(item => {
+                    const card = document.createElement('div');
+                    const label = document.createElement('span');
+                    const value = document.createElement('strong');
+                    label.textContent = item.label;
+                    value.textContent = String(item.value);
+                    card.append(label, value);
+                    return card;
+                }));
+            }
+            if (importFileName) importFileName.textContent = file.name;
+            if (importFileVersion) importFileVersion.textContent = `Versi\u00f3n ${data.version || 1}`;
+            if (importFileDate) {
+                const parsedDate = data.exportDate ? new Date(data.exportDate) : null;
+                importFileDate.textContent = parsedDate && !Number.isNaN(parsedDate.getTime())
+                    ? `Exportada el ${parsedDate.toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' })}`
+                    : 'Fecha de exportaci\u00f3n no disponible';
+            }
+        };
+
+        importInput.addEventListener('change', event => {
+            const file = event.target.files?.[0];
+            if (!file) return;
+            clearImportError();
+            const reader = new FileReader();
+            reader.onload = loadEvent => {
+                try {
+                    const data = validateBackup(JSON.parse(loadEvent.target.result));
+                    pendingImportData = data;
+                    renderImportPreview(data, file);
+                    openModal(importModal, mergeButton);
+                } catch (error) {
+                    pendingImportData = null;
+                    showImportError(error.message || 'No pudimos leer esta copia de seguridad.');
+                } finally {
+                    importInput.value = '';
+                }
+            };
+            reader.onerror = () => {
+                pendingImportData = null;
+                showImportError('No pudimos abrir el archivo seleccionado.');
+                importInput.value = '';
+            };
+            reader.readAsText(file);
+        });
+
+        mergeButton?.addEventListener('click', () => {
+            if (pendingImportData) applyImportedBackup(pendingImportData, 'merge');
+        });
+        replaceButton?.addEventListener('click', () => {
+            if (pendingImportData) applyImportedBackup(pendingImportData, 'replace');
+        });
+        backupCurrentButton?.addEventListener('click', () => document.getElementById('btn-backup-data')?.click());
+        importModal.querySelectorAll('.close-modal-close').forEach(button => {
+            button.addEventListener('click', () => { pendingImportData = null; });
         });
     };
 

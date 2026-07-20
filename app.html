@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar sesi&oacute;n | Zaleasy</title>
     <meta name="description" content="Sistema premium para la gesti&oacute;n y seguimiento de ventas diarias.">
-  <link rel="stylesheet" href="styles.css?v=20260719-local-demo-v1">
+  <link rel="stylesheet" href="styles.css?v=20260720-control-a11y-v1">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
@@ -94,6 +94,14 @@
             </div>
             <p class="auth-subtitle">Inicia sesi&oacute;n para gestionar tus ventas en la nube.</p>
 
+            <div class="auth-fast-entry">
+                <button type="button" id="btn-local-demo" class="auth-demo-button">
+                    <span><i class="fa-solid fa-laptop" aria-hidden="true"></i> Explorar sin cuenta</span>
+                    <small>Prueba la app ahora · datos solo en este dispositivo</small>
+                </button>
+            </div>
+            <div class="auth-account-divider" aria-hidden="true"><span>o accede con tu cuenta</span></div>
+
             <form id="email-auth-form" class="auth-email-form">
                 <div class="auth-field">
                     <label for="auth-email">Correo electr&oacute;nico</label>
@@ -140,16 +148,6 @@
                 <i class="fa-brands fa-google" style="color: #4285F4;"></i> Continuar con Google
             </button>
             <p class="auth-note"><i class="fa-solid fa-shield-halved"></i> Acceso seguro y cifrado</p>
-            <div class="auth-demo-entry" aria-labelledby="auth-demo-title">
-                <span class="auth-demo-icon" aria-hidden="true"><i class="fa-solid fa-laptop"></i></span>
-                <div class="auth-demo-copy">
-                    <strong id="auth-demo-title">&iquest;Quieres conocerla primero?</strong>
-                    <small>Explora todas las funciones sin registrarte. Tus pruebas quedar&aacute;n solo en este dispositivo.</small>
-                </div>
-                <button type="button" id="btn-local-demo" class="auth-demo-button">
-                    Explorar sin cuenta <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-                </button>
-            </div>
             <a class="auth-resource-link" href="blog.html">
                 <i class="fa-regular fa-compass" aria-hidden="true"></i>
                 <span><strong>&iquest;Primera vez en Zaleasy?</strong> Explora gu&iacute;as pr&aacute;cticas para empezar.</span>
@@ -188,9 +186,9 @@
                 <div style="display: flex; align-items: center; gap: 0.4rem; overflow: hidden;">
                     <h2 id="sidebar-brand-name"
                         style="margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Zaleasy</h2>
-                    <button class="btn-icon" id="edit-sidebar-brand" title="Editar Nombre del Negocio"
+                    <button type="button" class="btn-icon" id="edit-sidebar-brand" title="Editar nombre del negocio" aria-label="Editar nombre del negocio"
                         style="padding: 0; width: auto; height: auto; background: none; border: none; cursor: pointer;">
-                        <i class="fa-solid fa-pen" style="font-size: 0.8rem; color: var(--text-muted);"></i>
+                        <i class="fa-solid fa-pen" style="font-size: 0.8rem; color: var(--text-muted);" aria-hidden="true"></i>
                     </button>
                 </div>
             </div>
@@ -468,10 +466,10 @@
                                 <div
                                     style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
                                     <span class="sec-metric-label">Efectivo en Caja
-                                        <button class="btn-icon" id="edit-cash-base"
-                                            title="Editar monto inicial en caja"
+                                        <button type="button" class="btn-icon" id="edit-cash-base"
+                                            title="Editar monto inicial en caja" aria-label="Editar monto inicial en caja"
                                             style="padding: 0; width: auto; height: auto; margin-left: 5px; background: none; border: none; cursor: pointer;">
-                                            <i class="fa-solid fa-pen"
+                                            <i class="fa-solid fa-pen" aria-hidden="true"
                                                 style="font-size: 0.8rem; color: var(--text-muted);"></i>
                                         </button>
                                     </span>
@@ -732,8 +730,8 @@
                         <div class="card goal-card">
                             <div class="card-header">
                                 <h2>Meta Diaria</h2>
-                                <button class="btn-icon" id="edit-goal" title="Editar Meta"><i
-                                        class="fa-solid fa-pen"></i></button>
+                                <button type="button" class="btn-icon" id="edit-goal" title="Editar meta" aria-label="Editar meta diaria"><i
+                                        class="fa-solid fa-pen" aria-hidden="true"></i></button>
                             </div>
                             <div class="goal-info">
                                 <span id="goal-progress-text">$0.00 / $100.00</span>
@@ -1106,11 +1104,11 @@
                         <div class="card-header">
                             <h2>Ventas Recientes</h2>
                             <div class="header-actions">
-                                <button class="btn-icon" id="export-csv" title="Exportar CSV">
-                                    <i class="fa-solid fa-download"></i>
+                                <button type="button" class="btn-icon" id="export-csv" title="Exportar CSV" aria-label="Exportar movimientos actuales en CSV">
+                                    <i class="fa-solid fa-download" aria-hidden="true"></i>
                                 </button>
-                                <button class="btn-icon" id="clear-sales" title="Limpiar historial">
-                                    <i class="fa-solid fa-trash-can"></i>
+                                <button type="button" class="btn-icon" id="clear-sales" title="Limpiar movimientos actuales" aria-label="Limpiar movimientos actuales">
+                                    <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
                                 </button>
                             </div>
                         </div>
@@ -1149,10 +1147,18 @@
                         </div>
                         <div class="empty-state" id="empty-state">
                             <div class="empty-icon">
-                                <i class="fa-solid fa-receipt"></i>
+                                <i class="fa-solid fa-receipt" aria-hidden="true"></i>
                             </div>
                             <p>No hay ventas registradas hoy.</p>
-                            <span>Crea una venta para verla aqu&iacute;.</span>
+                            <span>Registra el primer movimiento para comenzar a ver tu operaci&oacute;n del d&iacute;a.</span>
+                            <div class="empty-state-actions" aria-label="Acciones para comenzar las ventas del d&iacute;a">
+                                <button type="button" class="btn btn-primary empty-state-action" data-quick-action="sale">
+                                    <i class="fa-solid fa-cart-plus" aria-hidden="true"></i> Registrar primera venta
+                                </button>
+                                <a class="empty-state-guide" href="Blog htmls/ventas-mostrador-datos.html" target="_blank" rel="noopener">
+                                    Ver gu&iacute;a para registrar mejores datos <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1173,11 +1179,11 @@
                             </select>
                             <input type="date" id="history-date-filter" class="form-control" aria-label="Filtrar historial por fecha"
                                 style="background: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius-sm); padding: 0.5rem; display: inline-block; width: auto; margin-right: 1rem;">
-                            <button class="btn-icon" id="history-export-csv" title="Exportar CSV">
-                                <i class="fa-solid fa-download"></i>
+                            <button type="button" class="btn-icon" id="history-export-csv" title="Exportar CSV" aria-label="Exportar historial completo en CSV">
+                                <i class="fa-solid fa-download" aria-hidden="true"></i>
                             </button>
-                            <button class="btn-icon" id="history-clear-all" title="Limpiar Todo el Historial">
-                                <i class="fa-solid fa-trash-can"></i>
+                            <button type="button" class="btn-icon" id="history-clear-all" title="Limpiar todo el historial" aria-label="Limpiar todo el historial">
+                                <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
                             </button>
                         </div>
                     </div>
@@ -1216,6 +1222,17 @@
                         <p>No hay registros hist&oacute;ricos.</p>
                         <span>Tus ventas y gastos pasados aparecer&aacute;n aqu&iacute; despu&eacute;s de los cierres de
                             caja.</span>
+                        <div class="empty-state-actions" aria-label="Acciones para comenzar">
+                            <button type="button" class="btn btn-primary empty-state-action" data-quick-action="sale">
+                                <i class="fa-solid fa-cart-plus" aria-hidden="true"></i> Registrar primera venta
+                            </button>
+                            <button type="button" class="btn btn-outline empty-state-action" data-quick-action="expense">
+                                <i class="fa-solid fa-receipt" aria-hidden="true"></i> Anotar un gasto
+                            </button>
+                            <a class="empty-state-guide" href="Blog htmls/cierre-de-caja-diario.html" target="_blank" rel="noopener">
+                                Ver gu&iacute;a de cierre de caja <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1349,9 +1366,17 @@
                         </table>
                     </div>
                     <div class="empty-state" id="rep-empty-state">
-                        <div class="empty-icon"><i class="fa-solid fa-chart-bar"></i></div>
+                        <div class="empty-icon"><i class="fa-solid fa-chart-bar" aria-hidden="true"></i></div>
                         <p>No hay datos hist&oacute;ricos.</p>
-                        <span>Realiza ventas y cierra la caja para generar reportes.</span>
+                        <span>Registra movimientos y realiza un cierre de caja para generar indicadores comparables.</span>
+                        <div class="empty-state-actions" aria-label="Acciones para generar reportes">
+                            <button type="button" class="btn btn-primary empty-state-action" data-quick-action="sale">
+                                <i class="fa-solid fa-cart-plus" aria-hidden="true"></i> Registrar una venta
+                            </button>
+                            <a class="empty-state-guide" href="Blog htmls/reporte-semanal-de-ventas.html" target="_blank" rel="noopener">
+                                Aprender a leer un reporte semanal <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
 
@@ -1375,9 +1400,14 @@
                         </table>
                     </div>
                     <div class="empty-state" id="rep-clients-empty-state">
-                        <div class="empty-icon"><i class="fa-solid fa-user-slash"></i></div>
+                        <div class="empty-icon"><i class="fa-solid fa-user-slash" aria-hidden="true"></i></div>
                         <p>No hay clientes registrados.</p>
                         <span>Asocia un nombre de cliente al registrar ventas para verlos aqu&iacute;.</span>
+                        <div class="empty-state-actions" aria-label="Acciones para comenzar el reporte de clientes">
+                            <button type="button" class="btn btn-outline empty-state-action" data-quick-action="sale">
+                                <i class="fa-solid fa-user-plus" aria-hidden="true"></i> Registrar venta con cliente
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1388,8 +1418,8 @@
                     <div class="card-header">
                         <h2><i class="fa-solid fa-address-book" style="color: var(--primary); margin-right: .5rem;"></i>Directorio de Clientes</h2>
                         <div class="header-actions">
-                            <button class="btn-icon" id="export-clientes-csv" title="Exportar CSV">
-                                <i class="fa-solid fa-download"></i>
+                            <button type="button" class="btn-icon" id="export-clientes-csv" title="Exportar CSV" aria-label="Exportar clientes en CSV">
+                                <i class="fa-solid fa-download" aria-hidden="true"></i>
                             </button>
                         </div>
                     </div>
@@ -1415,9 +1445,17 @@
                         </table>
                     </div>
                     <div class="empty-state" id="clientes-empty-state">
-                        <div class="empty-icon"><i class="fa-solid fa-user-slash"></i></div>
+                        <div class="empty-icon"><i class="fa-solid fa-user-slash" aria-hidden="true"></i></div>
                         <p>No hay clientes registrados en el historial.</p>
                         <span>Asocia nombres de cliente (opcional) al registrar tus ventas para que aparezcan analizados autom&aacute;ticamente en este directorio.</span>
+                        <div class="empty-state-actions" aria-label="Acciones para crear el directorio de clientes">
+                            <button type="button" class="btn btn-primary empty-state-action" data-quick-action="sale">
+                                <i class="fa-solid fa-user-plus" aria-hidden="true"></i> Registrar venta con cliente
+                            </button>
+                            <a class="empty-state-guide" href="Blog htmls/ficha-cliente-completa.html" target="_blank" rel="noopener">
+                                Ver qu&eacute; datos conviene guardar <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1490,9 +1528,17 @@
                         </table>
                     </div>
                     <div class="empty-state" id="inventario-empty-state">
-                        <div class="empty-icon"><i class="fa-solid fa-box-open"></i></div>
+                        <div class="empty-icon"><i class="fa-solid fa-box-open" aria-hidden="true"></i></div>
                         <p>Tu cat&aacute;logo est&aacute; vac&iacute;o.</p>
                         <span>A&ntilde;ade productos para que se completen autom&aacute;ticamente al registrar tus ventas de forma m&aacute;s r&aacute;pida.</span>
+                        <div class="empty-state-actions" aria-label="Acciones para comenzar el inventario">
+                            <button type="button" class="btn btn-primary empty-state-action" data-quick-action="product">
+                                <i class="fa-solid fa-box" aria-hidden="true"></i> Agregar primer producto
+                            </button>
+                            <a class="empty-state-guide" href="Blog htmls/inventario-y-ventas.html" target="_blank" rel="noopener">
+                                Ver gu&iacute;a de inventario y ventas <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1614,9 +1660,9 @@
                                 no se pueden deshacer y borrar&aacute;n tus datos guardados.</p>
 
                             <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                                <button class="btn btn-outline" id="btn-factory-reset"
+                                <button type="button" class="btn btn-outline" id="btn-factory-reset"
                                     style="color: var(--danger); border-color: var(--danger);">
-                                    <i class="fa-solid fa-skull"></i> Borrar ABSOLUTAMENTE TODO (Factory Reset)
+                                    <i class="fa-solid fa-trash-can" aria-hidden="true"></i> Borrar todos los datos
                                 </button>
                                 <button class="btn btn-outline" id="btn-backup-data">
                                     <i class="fa-solid fa-cloud-arrow-down"></i> Descargar Copia de Seguridad (JSON)
@@ -1624,9 +1670,11 @@
                                 <label class="btn btn-outline" style="cursor:pointer;"
                                     title="Importar copia de seguridad JSON">
                                     <i class="fa-solid fa-cloud-arrow-up"></i> Importar Copia de Seguridad (JSON)
-                                    <input type="file" id="btn-import-data" accept=".json" style="display:none;">
+                                    <input type="file" id="btn-import-data" accept=".json,application/json" style="display:none;"
+                                        aria-describedby="import-data-feedback">
                                 </label>
                             </div>
+                            <p class="data-import-feedback" id="import-data-feedback" role="alert" hidden></p>
                         </div>
                     </div>
                 </div>
@@ -1700,6 +1748,95 @@
         <div class="toast-content">
             <p class="toast-title">&Eacute;xito</p>
             <p class="toast-message">Venta registrada correctamente.</p>
+        </div>
+    </div>
+
+    <!-- Import Preview Modal -->
+    <div id="import-data-modal" class="modal-overlay" role="dialog" aria-modal="true"
+        aria-labelledby="import-data-modal-title" aria-describedby="import-data-modal-description" aria-hidden="true">
+        <div class="modal import-data-modal">
+            <div class="modal-header">
+                <div>
+                    <span class="import-modal-kicker">Vista previa segura</span>
+                    <h2 id="import-data-modal-title">Revisar copia de seguridad</h2>
+                </div>
+                <button type="button" class="btn-icon close-modal-close" aria-label="Cerrar vista previa de importaci&oacute;n">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="import-file-meta">
+                    <span aria-hidden="true"><i class="fa-solid fa-file-shield"></i></span>
+                    <div>
+                        <strong id="import-file-name">Copia de Zaleasy</strong>
+                        <small id="import-file-date">Fecha no disponible</small>
+                    </div>
+                    <span class="badge" id="import-file-version">Versi&oacute;n 1</span>
+                </div>
+                <p class="import-modal-description" id="import-data-modal-description">Comprueba el contenido y elige c&oacute;mo incorporarlo. Nada cambiar&aacute; hasta que selecciones una opci&oacute;n.</p>
+                <div class="import-data-summary" id="import-data-summary" aria-live="polite"></div>
+                <div class="import-current-backup">
+                    <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+                    <span>Si vas a reemplazar, puedes respaldar primero el estado actual.</span>
+                    <button type="button" class="btn btn-outline" id="btn-backup-before-import">Respaldar ahora</button>
+                </div>
+                <div class="import-choice-grid">
+                    <button type="button" class="import-choice merge" id="btn-confirm-import-merge">
+                        <span class="import-choice-icon"><i class="fa-solid fa-code-merge" aria-hidden="true"></i></span>
+                        <span><strong>Fusionar con mis datos</strong><small>Conserva lo actual y agrega registros que no est&eacute;n repetidos.</small></span>
+                    </button>
+                    <button type="button" class="import-choice replace" id="btn-confirm-import-replace">
+                        <span class="import-choice-icon"><i class="fa-solid fa-arrow-rotate-left" aria-hidden="true"></i></span>
+                        <span><strong>Reemplazar datos</strong><small>Sustituye movimientos, clientes, productos y preferencias por esta copia.</small></span>
+                    </button>
+                </div>
+                <button type="button" class="btn btn-outline import-cancel close-modal-close">Cancelar importaci&oacute;n</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Reset Confirmation Modal -->
+    <div id="reset-data-modal" class="modal-overlay" role="dialog" aria-modal="true"
+        aria-labelledby="reset-data-modal-title" aria-describedby="reset-data-modal-description" aria-hidden="true">
+        <div class="modal reset-data-modal">
+            <div class="modal-header">
+                <div>
+                    <span class="reset-modal-kicker">Acci&oacute;n irreversible</span>
+                    <h2 id="reset-data-modal-title">Borrar todos los datos locales</h2>
+                </div>
+                <button type="button" class="btn-icon close-modal-close" aria-label="Cerrar confirmaci&oacute;n de borrado">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="reset-warning-hero">
+                    <span aria-hidden="true"><i class="fa-solid fa-triangle-exclamation"></i></span>
+                    <div>
+                        <strong>Esta acci&oacute;n no se puede deshacer.</strong>
+                        <p id="reset-data-modal-description">Se eliminar&aacute;n movimientos, historial, clientes, productos y preferencias guardadas en este dispositivo.</p>
+                    </div>
+                </div>
+                <div class="reset-data-summary" id="reset-data-summary" aria-live="polite"></div>
+                <div class="reset-backup-reminder">
+                    <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+                    <span><strong>Recomendado:</strong> descarga una copia antes de continuar.</span>
+                    <button type="button" class="btn btn-outline" id="btn-backup-before-reset">
+                        <i class="fa-solid fa-download" aria-hidden="true"></i> Descargar copia
+                    </button>
+                </div>
+                <div class="form-group reset-confirm-field">
+                    <label for="reset-confirm-input">Escribe <strong>BORRAR</strong> para confirmar</label>
+                    <input type="text" id="reset-confirm-input" autocomplete="off" spellcheck="false"
+                        aria-describedby="reset-confirm-help" placeholder="BORRAR">
+                    <small id="reset-confirm-help">El bot&oacute;n final permanecer&aacute; desactivado hasta que el texto coincida.</small>
+                </div>
+                <div class="reset-modal-actions">
+                    <button type="button" class="btn btn-outline close-modal-close">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="btn-confirm-factory-reset" disabled>
+                        <i class="fa-solid fa-trash-can" aria-hidden="true"></i> Borrar definitivamente
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1941,7 +2078,7 @@
         style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;"></canvas>
 
     <!-- Script for Logic -->
-    <script src="app.js?v=20260719-local-demo-v1"></script>
+    <script src="app.js?v=20260720-safe-import-v1"></script>
 </body>
 
 </html>

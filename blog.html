@@ -6,13 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Blog de Zaleasy | Ventas y gesti&oacute;n</title>
   <meta name="description"
-    content="574 articulos practicos de Zaleasy sobre ventas, caja, precios, clientes, inventario y gestion diaria para ordenar tu negocio y vender mejor." />
+    content="584 art&iacute;culos pr&aacute;cticos de Zaleasy sobre ventas, caja, precios, clientes, inventario y gesti&oacute;n diaria para ordenar tu negocio y vender mejor." />
 
   <!-- Open Graph / Facebook / WhatsApp -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://zaleasy.com/blog.html" />
   <meta property="og:title" content="Blog de Zaleasy | Estrategias de Ventas y Finanzas" />
-  <meta property="og:description" content="574 articulos practicos de ventas, finanzas, clientes e inventario para ordenar tu negocio y vender mejor con Zaleasy." />
+  <meta property="og:description" content="584 art&iacute;culos pr&aacute;cticos de ventas, finanzas, clientes e inventario para ordenar tu negocio y vender mejor con Zaleasy." />
   <meta property="og:image" content="https://zaleasy.com/assets/Blog%20imagenes/oferta-irresistible.png" />
   <meta property="og:locale" content="es_AR" />
   <meta property="og:site_name" content="Zaleasy" />
@@ -21,7 +21,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:url" content="https://zaleasy.com/blog.html" />
   <meta name="twitter:title" content="Blog de Zaleasy | Estrategias de Ventas y Finanzas" />
-  <meta name="twitter:description" content="574 articulos de ventas, marketing, finanzas, clientes e inventario para emprendedores y negocios en crecimiento." />
+  <meta name="twitter:description" content="584 art&iacute;culos de ventas, marketing, finanzas, clientes e inventario para emprendedores y negocios en crecimiento." />
   <meta name="twitter:image" content="https://zaleasy.com/assets/Blog%20imagenes/oferta-irresistible.png" />
 
   <link rel="canonical" href="https://zaleasy.com/blog.html" />
@@ -33,7 +33,7 @@
     "@type": "Blog",
     "name": "Blog de Zaleasy",
     "url": "https://zaleasy.com/blog.html",
-    "description": "574 articulos practicos sobre ventas, caja, precios, clientes, inventario y gestion diaria.",
+    "description": "584 artículos prácticos sobre ventas, caja, precios, clientes, inventario y gestión diaria.",
     "publisher": {
       "@type": "Organization",
       "name": "Zaleasy",
@@ -46,7 +46,7 @@
     "mainEntityOfPage": "https://zaleasy.com/blog.html"
   }
   </script>
-  <link rel="stylesheet" href="landing.css" />
+  <link rel="stylesheet" href="landing.css?v=20260720-blog-nav-a11y-v1" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -3048,10 +3048,10 @@
             " />
         <h2>Zaleasy</h2>
       </div>
-      <button class="mobile-menu-btn" aria-label="Abrir men&uacute;" onclick="document.querySelector('.nav-links').classList.toggle('active')">
-        <i class="fa-solid fa-bars"></i>
+      <button type="button" class="mobile-menu-btn" id="blogMobileMenuButton" aria-label="Abrir men&uacute;" aria-expanded="false" aria-controls="blogPrimaryNavigation">
+        <i class="fa-solid fa-bars" aria-hidden="true"></i>
       </button>
-      <div class="nav-links">
+      <div class="nav-links" id="blogPrimaryNavigation">
         <a href="blog.html" aria-current="page" style="color: var(--text-main);">Blog</a>
         <a href="index.html#features">Caracter&iacute;sticas</a>
         <a href="index.html#how-it-works">&iquest;C&oacute;mo funciona?</a>
@@ -3068,12 +3068,12 @@
         <div class="blog-hero-copy">
       <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 0.5rem;">
         <span class="article-count-badge" id="articleCountBadge" style="animation: pulse-badge 2s infinite; margin-bottom: 1rem;">
-          <i class="fa-solid fa-newspaper"></i> <span id="articleCountNum">574</span> art&iacute;culos publicados
+          <i class="fa-solid fa-newspaper"></i> <span id="articleCountNum">584</span> art&iacute;culos publicados
         </span>
         <h1 class="animated-gradient-text" style="display: inline-block; font-size: 4rem; letter-spacing: -1px; margin: 0;">Aprende a vender y ordenar tu negocio</h1>
       </div>
       <p style="font-size: 1.2rem; line-height: 1.6; margin-top: 0.5rem; color: rgba(255,255,255,0.85);">
-        Guias practicas de ventas, caja, precios, clientes y gestion diaria para tomar mejores decisiones sin perderte entre planillas.
+        Gu&iacute;as pr&aacute;cticas de ventas, caja, precios, clientes y gesti&oacute;n diaria para tomar mejores decisiones sin perderte entre planillas.
       </p>
       
       <!-- Search Bar -->
@@ -3084,7 +3084,7 @@
       <div class="blog-search-meta" id="blogSearchMeta" aria-live="polite"></div>
 
       <!-- Category Filters -->
-      <div class="blog-filters-container" role="group" aria-label="Filtrar articulos por categoria" style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+      <div class="blog-filters-container" role="group" aria-label="Filtrar art&iacute;culos por categor&iacute;a" style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
         <button class="glass-filter-btn active" aria-pressed="true" data-filter="all" onclick="filterBlog('all', this)">Todos <span class="filter-count">0</span></button>
         <button class="glass-filter-btn" aria-pressed="false" data-filter="ventas" onclick="filterBlog('ventas', this)">Ventas <span class="filter-count">0</span></button>
         <button class="glass-filter-btn" aria-pressed="false" data-filter="marketing" onclick="filterBlog('marketing', this)">Marketing <span class="filter-count">0</span></button>
@@ -3095,10 +3095,10 @@
       </div>
         </div>
 
-        <aside class="blog-hero-visual" aria-label="Articulos recomendados">
+        <aside class="blog-hero-visual" aria-label="Art&iacute;culos recomendados">
           <div class="hero-feature-image"></div>
           <div class="hero-feature-content">
-            <span class="hero-feature-label"><i class="fa-solid fa-wand-magic-sparkles"></i> Empieza por aca</span>
+            <span class="hero-feature-label"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i> Empieza por ac&aacute;</span>
             <h2>Una biblioteca para vender mejor cada semana</h2>
             <p>Lecturas cortas, tacticas accionables y recursos para ordenar ventas, caja y clientes.</p>
           </div>
@@ -3165,6 +3165,32 @@
 
     function resetBlogPagination() {
       blogVisibleLimit = BLOG_PAGE_SIZE;
+    }
+
+    function setupBlogMobileNavigation() {
+      const button = document.getElementById('blogMobileMenuButton');
+      const navigation = document.getElementById('blogPrimaryNavigation');
+      if (!button || !navigation) return;
+
+      const setOpen = (open) => {
+        navigation.classList.toggle('active', open);
+        button.setAttribute('aria-expanded', open ? 'true' : 'false');
+        button.setAttribute('aria-label', open ? 'Cerrar men\u00fa' : 'Abrir men\u00fa');
+        button.innerHTML = `<i class="fa-solid ${open ? 'fa-xmark' : 'fa-bars'}" aria-hidden="true"></i>`;
+      };
+
+      button.addEventListener('click', () => setOpen(button.getAttribute('aria-expanded') !== 'true'));
+      navigation.addEventListener('click', (event) => {
+        if (event.target.closest('a')) setOpen(false);
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape' || button.getAttribute('aria-expanded') !== 'true') return;
+        setOpen(false);
+        button.focus();
+      });
+      window.addEventListener('resize', () => {
+        if (window.innerWidth > 768 && button.getAttribute('aria-expanded') === 'true') setOpen(false);
+      });
     }
 
     function placeBlogDiscoveryFirst() {
@@ -3420,7 +3446,7 @@
       if (!text || !clear) return;
       const query = (document.getElementById('blogSearch')?.value || '').trim();
       const parts = [];
-      if (activeBlogCategory !== 'all') parts.push(`Categoria: ${formatBlogTopic(activeBlogCategory)}`);
+      if (activeBlogCategory !== 'all') parts.push(`Categoría: ${formatBlogTopic(activeBlogCategory)}`);
       if (query) parts.push(`Busqueda: "${query}"`);
       if (blogReadFilter === 'pending') parts.push('Solo pendientes');
       if (blogReadFilter === 'read') parts.push('Solo leidos');
@@ -3430,7 +3456,7 @@
       const hasFilters = parts.length > 0;
       text.textContent = hasFilters
         ? `${matched} resultado${matched === 1 ? '' : 's'} · ${parts.join(' · ')}`
-        : `${total} articulos disponibles · Mostrando ${Math.min(blogVisibleLimit, total)} ahora`;
+        : `${total} artículos disponibles · Mostrando ${Math.min(blogVisibleLimit, total)} ahora`;
       clear.hidden = !hasFilters;
     }
 
@@ -3521,9 +3547,9 @@
       if (input) {
         meta.textContent = `Mostrando ${visible} de ${matched} resultado${matched === 1 ? '' : 's'} para tu busqueda`;
       } else if (activeBlogCategory !== 'all') {
-        meta.textContent = `Mostrando ${visible} de ${matched} articulo${matched === 1 ? '' : 's'} en esta categoria`;
+        meta.textContent = `Mostrando ${visible} de ${matched} artículo${matched === 1 ? '' : 's'} en esta categoría`;
       } else {
-        meta.textContent = `Mostrando ${visible} de ${total} articulos listos para leer. Usa la guia o busca por tema.`;
+        meta.textContent = `Mostrando ${visible} de ${total} artículos listos para leer. Usa la guía o busca por tema.`;
       }
     }
 
@@ -3567,7 +3593,7 @@
     function openRandomArticle() {
       const matches = getCurrentMatchingCards();
       if (!matches.length) {
-        showBlogToast('No hay articulos para abrir con estos filtros.');
+        showBlogToast('No hay artículos para abrir con estos filtros.');
         return;
       }
       const card = matches[Math.floor(Math.random() * matches.length)];
@@ -3628,17 +3654,17 @@
     }
 
     const BLOG_TOPIC_LABELS = {
-      administracion: 'Administracion',
-      automatizacion: 'Automatizacion',
-      atencion: 'Atencion al cliente',
-      comunicacion: 'Comunicacion',
+      administracion: 'Administración',
+      automatizacion: 'Automatización',
+      atencion: 'Atención al cliente',
+      comunicacion: 'Comunicación',
       ecommerce: 'Ecommerce',
-      gestion: 'Gestion',
-      logistica: 'Logistica',
-      motivacion: 'Motivacion',
-      organizacion: 'Organizacion',
-      planificacion: 'Planificacion',
-      tecnologia: 'Tecnologia'
+      gestion: 'Gestión',
+      logistica: 'Logística',
+      motivacion: 'Motivación',
+      organizacion: 'Organización',
+      planificacion: 'Planificación',
+      tecnologia: 'Tecnología'
     };
 
     function formatBlogTopic(topic) {
@@ -3671,7 +3697,7 @@
         button.type = 'button';
         button.className = 'topic-explorer-item';
         button.dataset.topic = item.topic;
-        button.setAttribute('aria-label', `${item.label}, ${item.count} articulos`);
+        button.setAttribute('aria-label', `${item.label}, ${item.count} artículos`);
 
         const label = document.createElement('span');
         label.textContent = item.label;
@@ -3690,7 +3716,7 @@
       }
       meta.textContent = normalizedQuery
         ? `${topics.length} de ${allTopics.length} temas coinciden con tu busqueda.`
-        : `${allTopics.length} temas ordenados por cantidad de articulos.`;
+        : `${allTopics.length} temas ordenados por cantidad de artículos.`;
     }
 
     let blogTopicExplorerTrigger = null;
@@ -3764,7 +3790,7 @@
         title.textContent = 'Todavia no abriste ningun articulo';
         text.textContent = 'Cuando leas un articulo, lo guardaremos aca para que puedas volver rapido.';
         link.href = '#blogArticles';
-        link.innerHTML = '<i class="fa-solid fa-book-open"></i> Explorar articulos';
+        link.innerHTML = '<i class="fa-solid fa-book-open" aria-hidden="true"></i> Explorar artículos';
       }
     }
 
@@ -3832,7 +3858,7 @@
         category.classList.add('blog-category-button');
         category.setAttribute('role', 'button');
         category.setAttribute('tabindex', '0');
-        category.setAttribute('aria-label', `Ver articulos de ${categoryLabel}`);
+        category.setAttribute('aria-label', `Ver artículos de ${categoryLabel}`);
         const openTopic = () => setBlogTopic(topic);
         category.addEventListener('click', openTopic);
         category.addEventListener('keydown', event => {
@@ -3915,7 +3941,7 @@
       const text = document.getElementById('readingProgressText');
       const fill = document.getElementById('readingProgressFill');
       const number = document.getElementById('readingProgressNumber');
-      if (text) text.textContent = `${readCount} de ${total} articulos leidos. Filtra pendientes para elegir el proximo.`;
+      if (text) text.textContent = `${readCount} de ${total} artículos leídos. Filtra pendientes para elegir el próximo.`;
       if (fill) fill.style.width = `${pct}%`;
       if (number) number.textContent = `${pct}%`;
       updateBlogBackupStatus();
@@ -3957,7 +3983,7 @@
       const source = pending.length >= 3 ? pending : matches;
       const plan = source.slice(0, 7).map(getCardArticleData);
       if (!plan.length) {
-        showBlogToast('No hay articulos para armar el plan con estos filtros.');
+        showBlogToast('No hay artículos para armar el plan con estos filtros.');
         return;
       }
       saveWeeklyReadingPlan(plan);
@@ -4297,6 +4323,7 @@
       updateBlogStats();
       updateFilterCounts();
       setupBlogTopicExplorer();
+      setupBlogMobileNavigation();
       setupArticleCardNavigation();
       setupContinueReading();
       setupSavedArticles();
@@ -4343,7 +4370,7 @@
         <i class="fa-solid fa-newspaper"></i>
       </div>
       <div class="blog-stat-text">
-        <strong id="articleTotalStat">574</strong>
+        <strong id="articleTotalStat">584</strong>
         <span>Art&iacute;culos en total</span>
       </div>
     </div>
@@ -4352,7 +4379,7 @@
         <i class="fa-regular fa-clock"></i>
       </div>
       <div class="blog-stat-text">
-        <strong id="readingMinutesStat">5.067</strong>
+        <strong id="readingMinutesStat">5.151</strong>
         <span>Minutos de lectura</span>
       </div>
     </div>
@@ -4436,8 +4463,8 @@
       <div class="problem-routes-intro">
         <div>
           <span class="section-kicker"><i class="fa-solid fa-crosshairs"></i> Rutas por problema</span>
-          <h2 id="problemRoutesTitle">Lee segun lo que necesitas resolver ahora</h2>
-          <p>El blog ya es grande. Estas rutas reducen ruido y te llevan directo a lecturas accionables por ventas, caja, stock, clientes, entregas y equipo.</p>
+          <h2 id="problemRoutesTitle">Lee seg&uacute;n lo que necesitas resolver ahora</h2>
+          <p>El blog ya es grande. Estas rutas reducen el ruido y te llevan directo a lecturas accionables sobre ventas, caja, stock, clientes, entregas y equipo.</p>
         </div>
         <div class="problem-routes-note">
           <i class="fa-solid fa-filter"></i>
@@ -4616,7 +4643,7 @@
     <div class="blog-list-header">
       <div>
         <span class="section-kicker"><i class="fa-solid fa-layer-group"></i> Biblioteca</span>
-        <h2>Todos los articulos</h2>
+        <h2>Todos los art&iacute;culos</h2>
       </div>
       <p>Contenido accionable para consultar por problema: vender mejor, cuidar margen, ordenar caja y seguir clientes.</p>
     </div>
@@ -4631,11 +4658,11 @@
         <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
         <input type="search" id="blogLibrarySearch" placeholder="Buscar en la biblioteca..."
           oninput="searchBlog('blogLibrarySearch')" autocomplete="off" aria-label="Buscar dentro de la biblioteca">
-        <button type="button" id="blogLibrarySearchClear" onclick="clearBlogSearch()" title="Limpiar busqueda" aria-label="Limpiar busqueda" hidden>
-          <i class="fa-solid fa-xmark"></i>
+        <button type="button" id="blogLibrarySearchClear" onclick="clearBlogSearch()" title="Limpiar b&uacute;squeda" aria-label="Limpiar b&uacute;squeda" hidden>
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
         </button>
       </div>
-      <div class="blog-suggestion-chips" aria-label="Busquedas sugeridas">
+      <div class="blog-suggestion-chips" aria-label="B&uacute;squedas sugeridas">
         <button type="button" onclick="setBlogRoute('all', 'reclamos')">Reclamos</button>
         <button type="button" onclick="setBlogRoute('all', 'stock')">Stock</button>
         <button type="button" onclick="setBlogRoute('all', 'proveedores')">Proveedores</button>
@@ -4662,9 +4689,9 @@
       <label class="blog-sort-control" for="blogSort">
         Ordenar
         <select id="blogSort" onchange="setBlogSort(this.value)">
-          <option value="newest">Mas nuevos primero</option>
-          <option value="oldest">Mas antiguos primero</option>
-          <option value="shortest">Lectura mas corta</option>
+          <option value="newest">M&aacute;s nuevos primero</option>
+          <option value="oldest">M&aacute;s antiguos primero</option>
+          <option value="shortest">Lectura m&aacute;s corta</option>
           <option value="title">Titulo A-Z</option>
         </select>
       </label>
@@ -4688,6 +4715,16 @@
           <button type="button" onclick="setBlogRoute('all', 'stock')">Stock</button>
         </div>
       </div>
+      <article class="blog-card" data-category="ventas cierre clientes"><div class="blog-img" data-bg="assets/Blog imagenes/tecnicas-de-cierre.png" data-image-state="pending" style="height:220px"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div><div class="blog-card-content"><span class="blog-category">Ventas</span><h3>T&eacute;cnicas de Cierre: C&oacute;mo Eliminar el &quot;D&eacute;jame Pensarlo&quot; y Vender sin Suplicar</h3><p>Aprende t&aacute;cticas para cerrar con mayor efectividad y posicionarte como una autoridad que resuelve problemas reales.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/tecnicas-de-cierre-sin-suplicar.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 7 min</span></div></div></article>
+      <article class="blog-card" data-category="compras proveedores inventario operaciones"><div class="blog-img" data-bg="assets/Blog imagenes/mercaderia-danada-proveedores.png" data-image-state="pending" style="height:220px"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div><div class="blog-card-content"><span class="blog-category">Compras</span><h3>Mercader&iacute;a Da&ntilde;ada de Proveedores: C&oacute;mo Reclamar sin Perder Stock ni Margen</h3><p>Registra da&ntilde;os, fotos y acuerdos para resolver reposiciones sin discusiones ni p&eacute;rdidas invisibles.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/mercaderia-danada-proveedores.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span></div></div></article>
+      <article class="blog-card" data-category="ventas finanzas precios rentabilidad"><div class="blog-img" data-bg="assets/Blog imagenes/descuentos-por-pago-efectivo.png" data-image-state="pending" style="height:220px"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div><div class="blog-card-content"><span class="blog-category">Finanzas</span><h3>Descuentos por Pago en Efectivo: C&oacute;mo Vender M&aacute;s sin Romper el Margen</h3><p>Calcula descuentos, costos de cobro y margen m&iacute;nimo antes de ofrecer rebajas por efectivo.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/descuentos-por-pago-efectivo.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 8 min</span></div></div></article>
+      <article class="blog-card" data-category="clientes ventas finanzas seguimiento"><div class="blog-img" data-bg="assets/Blog imagenes/renovacion-suscripciones-clientes.png" data-image-state="pending" style="height:220px"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div><div class="blog-card-content"><span class="blog-category">Clientes</span><h3>Renovaci&oacute;n de Suscripciones: C&oacute;mo Evitar Bajas por Falta de Seguimiento</h3><p>Controla vencimientos, avisos y renovaciones para sostener ingresos recurrentes.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/renovacion-suscripciones-clientes.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span></div></div></article>
+      <article class="blog-card" data-category="operaciones inventario costos"><div class="blog-img" data-bg="assets/Blog imagenes/mantenimiento-preventivo-refrigeracion.png" data-image-state="pending" style="height:220px"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div><div class="blog-card-content"><span class="blog-category">Operaciones</span><h3>Mantenimiento Preventivo de Refrigeraci&oacute;n: C&oacute;mo Evitar P&eacute;rdidas por Fallas</h3><p>Agenda revisiones, responsables y costos para proteger mercader&iacute;a fr&iacute;a antes de que falle el equipo.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/mantenimiento-preventivo-refrigeracion.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 8 min</span></div></div></article>
+      <article class="blog-card" data-category="logistica clientes operaciones entregas"><div class="blog-img" data-bg="assets/Blog imagenes/comprobantes-entrega-clientes.png" data-image-state="pending" style="height:220px"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div><div class="blog-card-content"><span class="blog-category">Log&iacute;stica</span><h3>Comprobantes de Entrega: C&oacute;mo Probar que Cada Pedido Lleg&oacute; Correctamente</h3><p>Organiza firmas, fotos y estados de entrega para reducir reclamos y reenv&iacute;os.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/comprobantes-entrega-clientes.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 8 min</span></div></div></article>
+      <article class="blog-card" data-category="equipo finanzas caja"><div class="blog-img" data-bg="assets/Blog imagenes/anticipos-empleados-control.png" data-image-state="pending" style="height:220px"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div><div class="blog-card-content"><span class="blog-category">Equipo</span><h3>Anticipos a Empleados: C&oacute;mo Ordenarlos sin Confundir Sueldos y Caja</h3><p>Registra adelantos, autorizaciones y descuentos para que el pago del equipo sea claro.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/anticipos-empleados-control.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span></div></div></article>
+      <article class="blog-card" data-category="inventario finanzas ventas proveedores"><div class="blog-img" data-bg="assets/Blog imagenes/mercaderia-consignacion-liquidaciones.png" data-image-state="pending" style="height:220px"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div><div class="blog-card-content"><span class="blog-category">Inventario</span><h3>Mercader&iacute;a en Consignaci&oacute;n: C&oacute;mo Liquidar Ventas sin Perder Control</h3><p>Controla stock recibido, ventas y pagos a consignantes con reglas transparentes.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/mercaderia-consignacion-liquidaciones.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span></div></div></article>
+      <article class="blog-card" data-category="operaciones ventas clientes logistica"><div class="blog-img" data-bg="assets/Blog imagenes/pedidos-retiro-local.png" data-image-state="pending" style="height:220px"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div><div class="blog-card-content"><span class="blog-category">Operaciones</span><h3>Pedidos para Retiro en Local: C&oacute;mo Prepararlos sin Mezclar Stock ni Turnos</h3><p>Organiza pedidos, horarios y responsables para que el cliente retire r&aacute;pido y sin errores.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/pedidos-retiro-local.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 8 min</span></div></div></article>
+      <article class="blog-card" data-category="finanzas ventas ecommerce reportes"><div class="blog-img" data-bg="assets/Blog imagenes/rentabilidad-productos-canal.png" data-image-state="pending" style="height:220px"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div><div class="blog-card-content"><span class="blog-category">Finanzas</span><h3>Rentabilidad por Canal de Venta: C&oacute;mo Saber D&oacute;nde Realmente Ganas M&aacute;s</h3><p>Compara tienda, ecommerce, marketplace y redes para decidir d&oacute;nde conviene vender cada producto.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/rentabilidad-productos-canal.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer M&aacute;s <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span></div></div></article>
       <article class="blog-card" data-category="operaciones operaciones ventas"><div class="blog-img" data-bg="assets/Blog imagenes/control-mermas-productos-frescos.png" data-image-state="pending" style="height:220px"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div><div class="blog-card-content"><span class="blog-category">Operaciones</span><h3>Mermas de Productos Frescos: Como Detectarlas Antes de que Reduzcan tu Margen</h3><p>Organiza controles de compra, exhibicion y descarte para reducir perdidas silenciosas en productos frescos.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/control-mermas-productos-frescos.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer Mas <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span></div></div></article>
       <article class="blog-card" data-category="ventas operaciones ventas"><div class="blog-img" data-bg="assets/Blog imagenes/seguimiento-cotizaciones-comerciales.png" data-image-state="pending" style="height:220px"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div><div class="blog-card-content"><span class="blog-category">Ventas</span><h3>Seguimiento de Cotizaciones: Como Convertir Presupuestos en Ventas sin Presionar</h3><p>Define responsables, fechas y proximo paso para que cada presupuesto tenga seguimiento claro y comercial.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/seguimiento-cotizaciones-comerciales.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer Mas <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 8 min</span></div></div></article>
       <article class="blog-card" data-category="logistica operaciones ventas"><div class="blog-img" data-bg="assets/Blog imagenes/planificacion-entregas-por-zonas.png" data-image-state="pending" style="height:220px"><span class="badge-hot"><i class="fa-solid fa-star"></i> Nuevo</span></div><div class="blog-card-content"><span class="blog-category">Logistica</span><h3>Entregas por Zonas: Como Agrupar Pedidos para Ahorrar Tiempo y Cumplir Mejor</h3><p>Agrupa pedidos por zona, horario y capacidad para reducir recorridos improductivos y mejorar cada entrega.</p><div class="blog-footer-meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><a href="Blog htmls/planificacion-entregas-por-zonas.html" class="btn-read-more" style="color:var(--primary);font-weight:600;text-decoration:none;">Leer Mas <i class="fa-solid fa-arrow-right"></i></a><span style="font-size:.85rem;color:var(--text-muted);"><i class="fa-regular fa-clock"></i> 9 min</span></div></div></article>

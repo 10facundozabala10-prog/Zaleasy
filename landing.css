@@ -202,11 +202,26 @@ html {
 
 .mobile-menu-btn {
   display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
   background: none;
   border: none;
+  border-radius: 10px;
   color: var(--text-main);
   font-size: 1.5rem;
   cursor: pointer;
+}
+
+.mobile-menu-btn:hover {
+  background: rgba(108, 92, 231, 0.12);
+  color: var(--primary);
+}
+
+.mobile-menu-btn:focus-visible {
+  outline: 3px solid rgba(108, 92, 231, 0.38);
+  outline-offset: 2px;
 }
 
 .btn {
@@ -882,7 +897,7 @@ html {
   }
 
   .mobile-menu-btn {
-    display: block;
+    display: flex;
   }
 
   .nav-links {
