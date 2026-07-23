@@ -1555,17 +1555,23 @@
 
             <!-- Config View -->
             <div id="view-config" class="dashboard-wrapper" style="display: none;">
-                <div class="card list-section" style="max-width: 800px; margin: 0 auto;">
+                <div class="card list-section config-card">
                     <div class="card-header">
                         <h2><i class="fa-solid fa-gear"
                                 style="color: var(--text-muted); margin-right: .5rem;"></i>Configuraci&oacute;n de
                             Empresa</h2>
                     </div>
 
-                    <div style="padding: 1rem 0;">
+                    <nav class="config-nav" aria-label="Secciones de configuraci&oacute;n">
+                        <button type="button" data-config-target="config-profile"><i class="fa-solid fa-store" aria-hidden="true"></i> Perfil</button>
+                        <button type="button" data-config-target="config-goals"><i class="fa-solid fa-bullseye" aria-hidden="true"></i> Objetivos</button>
+                        <button type="button" data-config-target="config-alerts"><i class="fa-solid fa-bell" aria-hidden="true"></i> Alertas</button>
+                        <button type="button" data-config-target="config-data"><i class="fa-solid fa-database" aria-hidden="true"></i> Datos y respaldo</button>
+                    </nav>
+
+                    <div class="config-content">
                         <!-- Store / User Settings -->
-                        <div
-                            style="margin-bottom: 2rem; padding: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+                        <section class="config-section" id="config-profile">
                             <h3 style="margin-bottom: 1rem; color: var(--text-main);"><i class="fa-solid fa-store"
                                     style="margin-right: 0.5rem; color: var(--primary);"></i>Perfil del Negocio</h3>
                             <div class="form-group" style="margin-bottom: 1rem;">
@@ -1586,11 +1592,10 @@
                                 <button class="btn btn-outline" id="btn-save-store-name">Guardar Nombre</button>
                                 <button class="btn btn-primary" id="btn-save-brand-color" style="flex: 1;"><i class="fa-solid fa-palette"></i> Aplicar Color</button>
                             </div>
-                        </div>
+                        </section>
 
                         <!-- Daily Goal Default -->
-                        <div
-                            style="margin-bottom: 2rem; padding: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+                        <section class="config-section" id="config-goals">
                             <h3 style="margin-bottom: 1rem; color: var(--text-main);"><i class="fa-solid fa-bullseye"
                                     style="margin-right: 0.5rem; color: var(--primary);"></i>Meta Diaria</h3>
                             <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">Esto ajusta la
@@ -1603,11 +1608,10 @@
                                 </div>
                             </div>
                             <button class="btn btn-outline" id="btn-save-config-goal">Actualizar Meta</button>
-                        </div>
+                        </section>
 
                         <!-- Alert Threshold -->
-                        <div
-                            style="margin-bottom: 2rem; padding: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+                        <section class="config-section" id="config-alerts">
                             <h3 style="margin-bottom: 1rem; color: var(--text-main);"><i class="fa-solid fa-bell"
                                     style="margin-right: 0.5rem; color: var(--warning);"></i>Alerta de Venta Grande</h3>
                             <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">Recibe una
@@ -1621,14 +1625,14 @@
                                 </div>
                             </div>
                             <button class="btn btn-outline" id="btn-save-alert-threshold">Guardar Alerta</button>
-                        </div>
+                        </section>
 
                         <!-- Data Health -->
-                        <div class="data-health-panel">
+                        <section class="data-health-panel" id="config-data">
                             <div class="data-health-header">
                                 <div>
                                     <h3><i class="fa-solid fa-database"></i> Estado de Datos</h3>
-                                    <p>Resumen r&aacute;pido de tu informaci&oacute;n local y respaldo.</p>
+                                    <p>Revisa el estado de tu informaci&oacute;n y crea una copia antes de hacer cambios importantes.</p>
                                 </div>
                                 <span class="badge" id="data-health-status">Calculando...</span>
                             </div>
@@ -1654,22 +1658,7 @@
                                 <span id="data-health-storage"><i class="fa-solid fa-hard-drive"></i> Uso local: 0 KB</span>
                                 <span id="data-health-backup"><i class="fa-solid fa-clock-rotate-left"></i> Sin copias registradas</span>
                             </div>
-                        </div>
-
-                        <!-- Security and Data -->
-                        <div
-                            style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: rgba(231,76,60,0.02);">
-                            <h3 style="margin-bottom: 1rem; color: var(--danger);"><i
-                                    class="fa-solid fa-triangle-exclamation" style="margin-right: 0.5rem;"></i>Zona de
-                                Peligro</h3>
-                            <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">Estas acciones
-                                no se pueden deshacer y borrar&aacute;n tus datos guardados.</p>
-
-                            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                                <button type="button" class="btn btn-outline" id="btn-factory-reset"
-                                    style="color: var(--danger); border-color: var(--danger);">
-                                    <i class="fa-solid fa-trash-can" aria-hidden="true"></i> Borrar todos los datos
-                                </button>
+                            <div class="config-backup-actions" aria-label="Acciones de respaldo">
                                 <button class="btn btn-outline" id="btn-backup-data">
                                     <i class="fa-solid fa-cloud-arrow-down"></i> Descargar Copia de Seguridad (JSON)
                                 </button>
@@ -1681,7 +1670,18 @@
                                 </label>
                             </div>
                             <p class="data-import-feedback" id="import-data-feedback" role="alert" hidden></p>
-                        </div>
+                        </section>
+
+                        <!-- Destructive action isolated from safe backup tools -->
+                        <section class="config-danger">
+                            <div>
+                                <h3><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> Zona de peligro</h3>
+                                <p>Borra definitivamente la informaci&oacute;n guardada en este dispositivo. Esta acci&oacute;n no se puede deshacer.</p>
+                            </div>
+                            <button type="button" class="btn btn-outline" id="btn-factory-reset">
+                                <i class="fa-solid fa-trash-can" aria-hidden="true"></i> Borrar todos los datos
+                            </button>
+                        </section>
                     </div>
                 </div>
             </div>

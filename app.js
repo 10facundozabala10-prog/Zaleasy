@@ -383,9 +383,9 @@ document.addEventListener('DOMContentLoaded', () => {
             documentTitle: 'Inventario'
         },
         'nav-config': {
-            title: 'Configuracion',
-            description: 'Personaliza el negocio y protege la informacion guardada.',
-            documentTitle: 'Configuracion'
+            title: 'Configuración',
+            description: 'Personaliza el negocio y protege la información guardada.',
+            documentTitle: 'Configuración'
         }
     };
 
@@ -813,6 +813,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (actionButton) runQuickAction(actionButton.dataset.mobileAction);
         });
     }
+
+    document.querySelectorAll('[data-config-target]').forEach((button) => {
+        button.addEventListener('click', () => {
+            const target = document.getElementById(button.dataset.configTarget);
+            if (!target) return;
+            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            target.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+        });
+    });
 
     const restoreAppViewFromUrl = () => {
         const targetId = getAppViewFromLocation();
@@ -2609,7 +2618,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { type: 'view', target: 'nav-reportes', title: 'Reportes', meta: 'Indicadores y comparaciones', icon: 'fa-chart-pie', keywords: 'analisis metricas estadisticas' },
         { type: 'view', target: 'nav-clientes', title: 'Clientes', meta: 'Compras, saldos y seguimiento', icon: 'fa-address-book', keywords: 'crm deuda cobrar contactos' },
         { type: 'view', target: 'nav-inventario', title: 'Inventario', meta: 'Productos, precios y stock', icon: 'fa-boxes-stacked', keywords: 'catalogo mercaderia existencias' },
-        { type: 'view', target: 'nav-config', title: 'Configuracion', meta: 'Negocio, meta y respaldo', icon: 'fa-gear', keywords: 'ajustes backup datos tienda' },
+        { type: 'view', target: 'nav-config', title: 'Configuración', meta: 'Negocio, meta y respaldo', icon: 'fa-gear', keywords: 'ajustes backup datos tienda' },
         { type: 'resource', target: 'blog.html', title: 'Centro de aprendizaje', meta: 'Guias practicas de ventas y gestion', icon: 'fa-graduation-cap', keywords: 'ayuda blog guias aprender soporte consejos recursos' }
     ];
 
@@ -3238,7 +3247,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (action === 'close' && btnCloseRegister) btnCloseRegister.click();
             if (action === 'clients') switchView('nav-clientes');
             if (action === 'inventory') switchView('nav-inventario');
-            if (action === 'config') switchView('nav-config', 'Configuracion de Empresa');
+            if (action === 'config') switchView('nav-config', 'Configuración de Empresa');
         });
     }
 
@@ -3479,7 +3488,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (action === 'clients') switchView('nav-clientes');
             if (action === 'inventory') switchView('nav-inventario');
             if (action === 'reports') switchView('nav-reportes');
-            if (action === 'config') switchView('nav-config', 'Configuracion de Empresa');
+            if (action === 'config') switchView('nav-config', 'Configuración de Empresa');
             if (action === 'close' && btnCloseRegister) btnCloseRegister.click();
             if (action === 'sale') focusTransactionForm('income');
             if (action === 'followups') {
@@ -3501,7 +3510,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (action === 'clients') switchView('nav-clientes');
         if (action === 'inventory') switchView('nav-inventario');
         if (action === 'reports') switchView('nav-reportes');
-        if (action === 'config') switchView('nav-config', 'Configuracion de Empresa');
+        if (action === 'config') switchView('nav-config', 'Configuración de Empresa');
         if (action === 'close' && btnCloseRegister) btnCloseRegister.click();
         if (action === 'sale') focusTransactionForm('income');
         if (action === 'expense') focusTransactionForm('expense');
@@ -3780,7 +3789,7 @@ document.addEventListener('DOMContentLoaded', () => {
         closeNotificationCenter();
         if (action === 'clients') switchView('nav-clientes');
         if (action === 'inventory') switchView('nav-inventario');
-        if (action === 'config') switchView('nav-config', 'Configuracion de Empresa');
+        if (action === 'config') switchView('nav-config', 'Configuración de Empresa');
         if (action === 'agenda') {
             switchView('nav-dashboard');
             document.getElementById('due-radar-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
