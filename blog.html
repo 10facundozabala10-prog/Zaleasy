@@ -1242,6 +1242,41 @@
       text-align: left;
     }
 
+    .blog-library-jump {
+      width: fit-content;
+      min-height: 40px;
+      margin-top: .75rem;
+      padding: .55rem .8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 999px;
+      background: rgba(255,255,255,.07);
+      color: rgba(255,255,255,.88);
+      font-size: .78rem;
+      font-weight: 750;
+      text-decoration: none;
+      transition: transform .2s ease, border-color .2s ease, background-color .2s ease;
+    }
+
+    .blog-library-jump small {
+      padding-left: .55rem;
+      border-left: 1px solid rgba(255,255,255,.16);
+      color: rgba(255,255,255,.58);
+      font-size: .7rem;
+      font-weight: 700;
+    }
+
+    .blog-library-jump:hover,
+    .blog-library-jump:focus-visible {
+      transform: translateY(-1px);
+      border-color: rgba(0,210,211,.55);
+      background: rgba(0,210,211,.1);
+      color: #fff;
+      outline: none;
+    }
+
     .blog-filters-container {
       justify-content: flex-start !important;
       margin-left: 0;
@@ -3082,6 +3117,11 @@
         <i class="fa-solid fa-magnifying-glass search-icon"></i>
       </div>
       <div class="blog-search-meta" id="blogSearchMeta" aria-live="polite"></div>
+      <a class="blog-library-jump" href="#blogArticles">
+        <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>
+        <span>Explorar la biblioteca</span>
+        <small><span data-blog-result-count>575</span> art&iacute;culos</small>
+      </a>
 
       <!-- Category Filters -->
       <div class="blog-filters-container" role="group" aria-label="Filtrar art&iacute;culos por categor&iacute;a" style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
@@ -3127,6 +3167,7 @@
     let blogReadFilter = 'all';
     const BLOG_PAGE_SIZE = 21;
     let blogVisibleLimit = BLOG_PAGE_SIZE;
+    let blogImageFailureRefreshTimer = 0;
     const normalizeBlogText = value => (value || '')
       .toString()
       .normalize('NFD')
@@ -3159,6 +3200,15 @@
       preloader.onerror = () => {
         img.dataset.imageState = 'error';
         img.setAttribute('aria-label', `${img.getAttribute('aria-label') || 'Articulo'}: imagen no disponible`);
+        if (!card.isConnected) return;
+
+        card.remove();
+        window.clearTimeout(blogImageFailureRefreshTimer);
+        blogImageFailureRefreshTimer = window.setTimeout(() => {
+          updateBlogStats();
+          updateFilterCounts();
+          applyBlogFilters();
+        }, 0);
       };
       preloader.src = source;
     }
@@ -3539,6 +3589,9 @@
     function updateCount(n) {
       const el = document.getElementById('articleCountNum');
       if (el) el.textContent = n;
+      document.querySelectorAll('[data-blog-result-count]').forEach(count => {
+        count.textContent = n;
+      });
     }
 
     function updateSearchMeta(visible, matched, total, input) {

@@ -250,6 +250,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const historyTypeFilter = document.getElementById('history-type-filter');
     const historyQuickFilters = document.getElementById('history-quick-filters');
     const historyEmptyState = document.getElementById('history-empty-state');
+    const historyResultsSummary = document.getElementById('history-results-summary');
+    const historyEmptyTitle = document.getElementById('history-empty-title');
+    const historyEmptyCopy = document.getElementById('history-empty-copy');
+    const historyEmptyDefaultActions = document.getElementById('history-empty-default-actions');
+    const historyEmptyClearFilters = document.getElementById('history-empty-clear-filters');
     const historyExportCsv = document.getElementById('history-export-csv');
     const historyClearAll = document.getElementById('history-clear-all');
     const copyExecutiveSummaryBtn = document.getElementById('copy-executive-summary');
@@ -2393,6 +2398,10 @@ document.addEventListener('DOMContentLoaded', () => {
             btnLocalDemo?.focus();
         });
 
+        // Restore local access immediately instead of waiting for Firebase to resolve.
+        // This prevents the sign-in screen from flashing on every reload.
+        if (isLocalDemoActive()) showApp({ localDemo: true });
+
         const setAuthFeedback = (message = '', state = 'info') => {
             if (!authFormFeedback) return;
             authFormFeedback.textContent = message;
@@ -4337,10 +4346,20 @@ document.addEventListener('DOMContentLoaded', () => {
     searchSalesInput.addEventListener('input', renderSales);
 
     // --- History Logic & Rendering ---
+    const getCompleteHistory = () => {
+        const uniqueMovements = new Map();
+        [...historyData, ...sales].forEach(movement => {
+            if (!movement || movement.id === undefined || movement.id === null) return;
+            uniqueMovements.set(String(movement.id), movement);
+        });
+        return Array.from(uniqueMovements.values());
+    };
+
     const renderHistory = () => {
         historyBody.innerHTML = '';
 
-        let filteredHistory = [...historyData];
+        const completeHistory = getCompleteHistory();
+        let filteredHistory = [...completeHistory];
 
         const dateQuery = historyDateFilter.value; // YYYY-MM-DD
         if (dateQuery) {
@@ -4373,10 +4392,34 @@ document.addEventListener('DOMContentLoaded', () => {
             );
         }
 
+        const totalHistory = completeHistory.length;
+        const hasActiveFilters = Boolean(dateQuery || rangeFrom || typeQuery || textQuery);
+        if (historyResultsSummary) {
+            historyResultsSummary.textContent = hasActiveFilters
+                ? `${filteredHistory.length} de ${totalHistory}`
+                : `${totalHistory} ${totalHistory === 1 ? 'movimiento' : 'movimientos'}`;
+            historyResultsSummary.dataset.filtered = hasActiveFilters ? 'true' : 'false';
+        }
+
         if (filteredHistory.length === 0) {
+            const filteredEmptyState = totalHistory > 0 && hasActiveFilters;
+            if (historyEmptyTitle) {
+                historyEmptyTitle.textContent = filteredEmptyState
+                    ? 'No hay movimientos con estos filtros.'
+                    : 'No hay registros históricos.';
+            }
+            if (historyEmptyCopy) {
+                historyEmptyCopy.textContent = filteredEmptyState
+                    ? 'Prueba otra fecha, tipo o búsqueda, o limpia los filtros para volver a ver todo.'
+                    : 'Tus ventas y gastos pasados aparecerán aquí después de los cierres de caja.';
+            }
+            if (historyEmptyDefaultActions) historyEmptyDefaultActions.hidden = filteredEmptyState;
+            if (historyEmptyClearFilters) historyEmptyClearFilters.hidden = !filteredEmptyState;
             historyEmptyState.classList.add('active');
             document.querySelector('#view-historial .table-container').style.display = 'none';
         } else {
+            if (historyEmptyDefaultActions) historyEmptyDefaultActions.hidden = false;
+            if (historyEmptyClearFilters) historyEmptyClearFilters.hidden = true;
             historyEmptyState.classList.remove('active');
             document.querySelector('#view-historial .table-container').style.display = 'block';
 
@@ -4418,7 +4461,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     const idToRemove = parseInt(e.currentTarget.getAttribute('data-id'));
                     if (confirm('\u00bfEst\u00e1s SEGURO de eliminar este registro del historial general?')) {
                         historyData = historyData.filter(h => h.id !== idToRemove);
+                        sales = sales.filter(s => s.id !== idToRemove);
                         localStorage.setItem('allHistoryData', JSON.stringify(historyData));
+                        localStorage.setItem('dailySales', JSON.stringify(sales));
+                        renderSales();
+                        updateKPIs();
                         renderHistory();
                         showToast('Registro eliminado del historial.');
                     }
@@ -4429,11 +4476,22 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.btn-receipt-history').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const saleId = parseInt(e.currentTarget.getAttribute('data-id'));
-                    const sale = historyData.find(s => s.id === saleId);
+                    const sale = getCompleteHistory().find(s => s.id === saleId);
                     if (sale) openReceiptModal(sale);
                 });
             });
         }
+    };
+
+    const clearHistoryFilters = () => {
+        historyDateFilter.value = '';
+        if (historyTypeFilter) historyTypeFilter.value = '';
+        historySearch.value = '';
+        delete historySearch.dataset.rangeFrom;
+        if (historyQuickFilters) {
+            historyQuickFilters.querySelectorAll('.history-filter-chip').forEach(chip => chip.classList.remove('active'));
+        }
+        renderHistory();
     };
 
     historySearch.addEventListener('input', renderHistory);
@@ -4452,12 +4510,7 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.classList.add('active');
 
             if (range === 'clear') {
-                historyDateFilter.value = '';
-                if (historyTypeFilter) historyTypeFilter.value = '';
-                historySearch.value = '';
-                delete historySearch.dataset.rangeFrom;
-                btn.classList.remove('active');
-                renderHistory();
+                clearHistoryFilters();
                 return;
             }
 
@@ -4477,25 +4530,31 @@ document.addEventListener('DOMContentLoaded', () => {
             renderHistory();
         });
     }
+    historyEmptyClearFilters?.addEventListener('click', clearHistoryFilters);
 
     historyClearAll.addEventListener('click', () => {
-        if (historyData.length === 0) return;
-        if (confirm('ALERTA: Vas a limpiar absolutamente TODO EL HISTORIAL MUNDIAL. Esta acci\u00f3n no se puede recuperar nunca. \u00bfContinuar?')) {
+        if (getCompleteHistory().length === 0) return;
+        if (confirm('ALERTA: Vas a eliminar todo el historial, incluidas las operaciones del d\u00eda actual. Esta acci\u00f3n no se puede recuperar. \u00bfContinuar?')) {
             historyData = [];
+            sales = [];
             localStorage.setItem('allHistoryData', JSON.stringify(historyData));
+            localStorage.setItem('dailySales', JSON.stringify(sales));
+            renderSales();
+            updateKPIs();
             renderHistory();
-            showToast('Historial general purgado.');
+            showToast('Historial y movimientos del d\u00eda eliminados.');
         }
     });
 
     historyExportCsv.addEventListener('click', () => {
-        if (historyData.length === 0) {
+        const completeHistory = getCompleteHistory();
+        if (completeHistory.length === 0) {
             showToast('No hay historial para exportar');
             return;
         }
 
         let csvContent = "Fecha,Hora,Descripci\u00f3n,Tipo,M\u00e9todo,Monto\n";
-        historyData.forEach(sale => {
+        completeHistory.forEach(sale => {
             const d = new Date(sale.timestamp);
             const dateStr = d.toLocaleDateString('es-ES');
             const timeStr = d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });

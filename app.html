@@ -1168,7 +1168,10 @@
             <div id="view-historial" class="dashboard-wrapper" style="display: none;">
                 <div class="card list-section" style="min-height: 70vh;">
                     <div class="card-header">
-                        <h2>Historial Completo</h2>
+                        <div class="history-list-title">
+                            <h2>Historial Completo</h2>
+                            <span class="history-results-summary" id="history-results-summary" aria-live="polite">0 movimientos</span>
+                        </div>
                         <div class="header-actions">
                             <select id="history-type-filter" class="form-control" aria-label="Filtrar historial por tipo"
                                 style="background: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius-sm); padding: 0.5rem; display: inline-block; width: auto; margin-right: 0.5rem;">
@@ -1219,10 +1222,10 @@
                         <div class="empty-icon">
                             <i class="fa-solid fa-box-open"></i>
                         </div>
-                        <p>No hay registros hist&oacute;ricos.</p>
-                        <span>Tus ventas y gastos pasados aparecer&aacute;n aqu&iacute; despu&eacute;s de los cierres de
+                        <p id="history-empty-title">No hay registros hist&oacute;ricos.</p>
+                        <span id="history-empty-copy">Tus ventas y gastos pasados aparecer&aacute;n aqu&iacute; despu&eacute;s de los cierres de
                             caja.</span>
-                        <div class="empty-state-actions" aria-label="Acciones para comenzar">
+                        <div class="empty-state-actions" id="history-empty-default-actions" aria-label="Acciones para comenzar">
                             <button type="button" class="btn btn-primary empty-state-action" data-quick-action="sale">
                                 <i class="fa-solid fa-cart-plus" aria-hidden="true"></i> Registrar primera venta
                             </button>
@@ -1233,6 +1236,9 @@
                                 Ver gu&iacute;a de cierre de caja <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
                             </a>
                         </div>
+                        <button type="button" class="btn btn-primary" id="history-empty-clear-filters" hidden>
+                            <i class="fa-solid fa-filter-circle-xmark" aria-hidden="true"></i> Limpiar filtros
+                        </button>
                     </div>
                 </div>
             </div>
