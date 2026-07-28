@@ -2,8 +2,11 @@
   'use strict';
 
   const onReady = callback => {
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', callback, { once: true });
-    else callback();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', callback, { once: true });
+    } else {
+      callback();
+    }
   };
 
   onReady(() => {
@@ -12,7 +15,6 @@
 
     document.body.classList.add('article-reader-enhanced');
     if (document.querySelector('.listen')) document.body.classList.add('article-reader-has-sticky-audio');
-
     if (!article.id) article.id = 'articleContent';
 
     const skipLink = document.createElement('a');
@@ -20,6 +22,20 @@
     skipLink.href = `#${article.id}`;
     skipLink.textContent = 'Saltar al artículo';
     document.body.prepend(skipLink);
+
+    const articleTitle = document.querySelector('.article-title, .hero h1, header h1, h1');
+    const articleHeader = articleTitle?.closest('.article-header, .hero, header');
+    if (articleTitle && articleHeader && !articleHeader.querySelector('.article-reader-breadcrumb')) {
+      const breadcrumb = document.createElement('nav');
+      breadcrumb.className = 'article-reader-breadcrumb';
+      breadcrumb.setAttribute('aria-label', 'Migas de pan');
+      breadcrumb.innerHTML = `
+        <a href="../blog.html"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Blog</a>
+        <span aria-hidden="true">/</span>
+        <span>Guía práctica</span>
+      `;
+      articleTitle.insertAdjacentElement('beforebegin', breadcrumb);
+    }
 
     let progress = document.getElementById('reading-progress');
     if (!progress) {
@@ -55,6 +71,81 @@
     `;
     article.insertAdjacentElement('beforebegin', tools);
 
+    const slugify = value => value
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '')
+      .slice(0, 72);
+
+    const headings = [...article.querySelectorAll('h2')];
+    const usedIds = new Set([...document.querySelectorAll('[id]')].map(element => element.id));
+    headings.forEach((heading, index) => {
+      if (heading.id) return;
+      const base = slugify(heading.textContent) || `seccion-${index + 1}`;
+      let id = base;
+      let suffix = 2;
+      while (usedIds.has(id)) id = `${base}-${suffix++}`;
+      heading.id = id;
+      usedIds.add(id);
+    });
+
+    let tableOfContents = document.querySelector('.toc, .table-of-contents, [data-article-toc]');
+    if (tableOfContents) {
+      tableOfContents.classList.add('article-reader-toc');
+      tableOfContents.setAttribute('aria-label', 'Contenido del artículo');
+    } else if (headings.length >= 3) {
+      tableOfContents = document.createElement('nav');
+      tableOfContents.className = 'article-reader-toc';
+      tableOfContents.setAttribute('aria-label', 'Contenido del artículo');
+      tableOfContents.innerHTML = `
+        <div class="article-reader-toc-heading">
+          <span><i class="fa-solid fa-list-check" aria-hidden="true"></i></span>
+          <span><strong>En esta guía</strong><small>${headings.length} temas para ir directo a lo importante</small></span>
+        </div>
+        <ol>${headings.map((heading, index) => `
+          <li><a href="#${heading.id}"><span>${String(index + 1).padStart(2, '0')}</span>${heading.textContent.trim()}</a></li>
+        `).join('')}</ol>
+      `;
+      tools.insertAdjacentElement('afterend', tableOfContents);
+    }
+
+    if (tableOfContents && 'IntersectionObserver' in window) {
+      const tocLinks = [...tableOfContents.querySelectorAll('a[href^="#"]')];
+      const linkById = new Map(tocLinks.map(link => [decodeURIComponent(link.getAttribute('href').slice(1)), link]));
+      const sectionObserver = new IntersectionObserver(entries => {
+        const visible = entries
+          .filter(entry => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+        if (!visible) return;
+        tocLinks.forEach(link => link.removeAttribute('aria-current'));
+        linkById.get(visible.target.id)?.setAttribute('aria-current', 'location');
+      }, { rootMargin: '-18% 0px -68% 0px', threshold: 0 });
+      headings.forEach(heading => sectionObserver.observe(heading));
+    }
+
+    tableOfContents?.addEventListener('click', event => {
+      const link = event.target.closest('a[href^="#"]');
+      if (!link) return;
+      const id = decodeURIComponent(link.getAttribute('href').slice(1));
+      const target = document.getElementById(id);
+      if (!target) return;
+      event.preventDefault();
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      target.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+      window.history.replaceState(null, '', `#${encodeURIComponent(id)}`);
+    });
+
+    const cover = document.querySelector('.article-cover, .cover, .article-image');
+    if (cover && !document.querySelector('.article-reader-cover-caption')) {
+      cover.classList.add('article-reader-cover');
+      const coverCaption = document.createElement('p');
+      coverCaption.className = 'article-reader-cover-caption';
+      coverCaption.innerHTML = '<i class="fa-regular fa-image" aria-hidden="true"></i> Imagen de apoyo de la guía';
+      cover.insertAdjacentElement('afterend', coverCaption);
+    }
+
     const rootSize = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
     const initialArticleSize = parseFloat(getComputedStyle(article).fontSize) || 17;
     const baseRem = initialArticleSize / rootSize;
@@ -79,7 +170,9 @@
       const size = Math.max(0.94, baseRem * (1 + fontStep * 0.1));
       article.style.setProperty('--article-reader-font-size', `${size.toFixed(3)}rem`);
       localStorage.setItem('zaleasyReaderFontStep', String(fontStep));
-      if (shouldAnnounce) announce(fontStep > 0 ? 'Texto ampliado.' : fontStep < 0 ? 'Texto reducido.' : 'Tamaño de texto restablecido.');
+      if (shouldAnnounce) {
+        announce(fontStep > 0 ? 'Texto ampliado.' : fontStep < 0 ? 'Texto reducido.' : 'Tamaño de texto restablecido.');
+      }
     };
     applyFontSize(false);
 
@@ -131,7 +224,11 @@
       }
 
       if (action === 'share') {
-        const shareData = { title: document.title, text: document.querySelector('meta[name="description"]')?.content || document.title, url: window.location.href };
+        const shareData = {
+          title: document.title,
+          text: document.querySelector('meta[name="description"]')?.content || document.title,
+          url: window.location.href
+        };
         try {
           if (navigator.share) {
             await navigator.share(shareData);
@@ -176,6 +273,10 @@
         <a href="../app.html"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> Abrir Zaleasy</a>
       </div>
     `;
-    article.insertAdjacentElement('afterend', nextStep);
+    if (article.parentElement?.classList.contains('article-layout') && tableOfContents) {
+      tableOfContents.insertAdjacentElement('afterend', nextStep);
+    } else {
+      article.insertAdjacentElement('afterend', nextStep);
+    }
   });
 })();
