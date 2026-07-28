@@ -578,25 +578,60 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderClientes = () => {
         const clientesBody = document.getElementById('clientes-body');
         const emptyState = document.getElementById('clientes-empty-state');
+        const filterEmptyState = document.getElementById('clientes-filter-empty-state');
+        const filterEmptyCopy = document.getElementById('clientes-filter-empty-copy');
         const tableContainer = document.getElementById('clientes-table-container');
+        const resultCount = document.getElementById('clientes-result-count');
+        const clearSearch = document.getElementById('clientes-clear-search');
         if(!clientesBody) return;
         clientesBody.innerHTML = '';
-        const { clientMap } = buildClientSummary();
+        const { clientMap, clients, debtClients, totalDebt, topDebtor } = buildClientSummary();
+        const searchQuery = (document.getElementById('search-clientes')?.value || '').toLowerCase().trim();
+        const keyClients = clients.filter(name => {
+            const client = clientMap[name];
+            return client.totalDeuda <= 0 && (client.totalGastado >= dailyGoal * 3 || client.totalCompras >= 5);
+        });
+
+        const setClientMetric = (id, value) => {
+            const element = document.getElementById(id);
+            if (element) element.textContent = value;
+        };
+
+        setClientMetric('clientes-total-count', clients.length);
+        setClientMetric('clientes-total-meta', clients.length ? `${clients.length === 1 ? 'Perfil' : 'Perfiles'} con historial` : 'Aún sin actividad');
+        setClientMetric('clientes-debt-count', debtClients.length);
+        setClientMetric('clientes-debt-meta', debtClients.length ? `${debtClients.length === 1 ? 'Requiere' : 'Requieren'} seguimiento` : 'Todo al día');
+        setClientMetric('clientes-debt-total', formatCurrency(totalDebt));
+        setClientMetric('clientes-debt-total-meta', topDebtor ? `Mayor saldo: ${topDebtor}` : 'Sin cobros pendientes');
+        setClientMetric('clientes-key-count', keyClients.length);
+        setClientMetric('clientes-key-meta', keyClients.length ? `${keyClients.length === 1 ? 'Relación consolidada' : 'Relaciones consolidadas'}` : 'Por desarrollar');
+        if (clearSearch) clearSearch.hidden = !searchQuery;
 
         const sortedClients = Object.keys(clientMap).sort((a,b) => clientMap[b].totalGastado - clientMap[a].totalGastado);
+        const filteredClients = sortedClients.filter(clientName => !searchQuery || clientName.toLowerCase().includes(searchQuery));
 
         if (sortedClients.length === 0) {
             emptyState.classList.add('active');
+            filterEmptyState?.classList.remove('active');
             tableContainer.style.display = 'none';
+            if (resultCount) resultCount.textContent = '0 clientes';
+        } else if (filteredClients.length === 0) {
+            emptyState.classList.remove('active');
+            filterEmptyState?.classList.add('active');
+            tableContainer.style.display = 'none';
+            if (resultCount) resultCount.textContent = `0 de ${sortedClients.length} clientes`;
+            if (filterEmptyCopy) filterEmptyCopy.textContent = `No hay coincidencias para “${document.getElementById('search-clientes')?.value.trim()}”. Prueba con otro nombre.`;
         } else {
             emptyState.classList.remove('active');
+            filterEmptyState?.classList.remove('active');
             tableContainer.style.display = 'block';
+            if (resultCount) {
+                resultCount.textContent = searchQuery
+                    ? `${filteredClients.length} de ${sortedClients.length} clientes`
+                    : `${sortedClients.length} ${sortedClients.length === 1 ? 'cliente' : 'clientes'}`;
+            }
 
-            const searchQuery = (document.getElementById('search-clientes')?.value || '').toLowerCase().trim();
-
-            sortedClients.forEach(clientName => {
-                if (searchQuery && !clientName.toLowerCase().includes(searchQuery)) return;
-
+            filteredClients.forEach(clientName => {
                 const c = clientMap[clientName];
                 const tr = document.createElement('tr');
                 const lastDate = new Date(c.ultimaCompra).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' });
@@ -612,7 +647,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 tr.innerHTML = `
                     <td><i class="fa-solid fa-user-circle" style="color:var(--text-muted); margin-right:6px;"></i><strong>${clientName}</strong><br><span class="client-segment-badge" data-tone="${segment.tone}">${segment.label}</span></td>
-                    <td><span class="badge">${c.totalCompras} transacciones</span></td>
+                    <td><span class="badge">${c.totalCompras} ${c.totalCompras === 1 ? 'transacción' : 'transacciones'}</span></td>
                     <td style="color:var(--success); font-weight:bold;">${formatCurrency(c.totalGastado)}</td>
                     <td>${debtHtml}</td>
                     <td style="color:var(--text-muted); font-size: 0.9em;">${lastDate}</td>
@@ -637,6 +672,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (searchClientesInput) {
         searchClientesInput.addEventListener('input', renderClientes);
     }
+
+    const clearClientSearch = () => {
+        if (!searchClientesInput) return;
+        searchClientesInput.value = '';
+        renderClientes();
+        searchClientesInput.focus();
+    };
+    document.getElementById('clientes-clear-search')?.addEventListener('click', clearClientSearch);
+    document.getElementById('clientes-empty-clear-search')?.addEventListener('click', clearClientSearch);
 
     if (receivablesOpenClients) {
         receivablesOpenClients.addEventListener('click', () => switchView('nav-clientes'));
@@ -5614,6 +5658,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (!prod || !newProductForm) return;
                     editingProductId = idToEdit;
                     newProductForm.style.display = 'block';
+                    btnNewProduct?.setAttribute('aria-expanded', 'true');
+                    const inventoryFormTitle = document.getElementById('inventory-form-title');
+                    const inventoryFormKicker = document.getElementById('inventory-form-kicker');
+                    if (inventoryFormTitle) inventoryFormTitle.textContent = 'Editar producto';
+                    if (inventoryFormKicker) inventoryFormKicker.textContent = 'Actualizar catálogo';
                     document.getElementById('inv-name').value = prod.name || '';
                     document.getElementById('inv-price').value = prod.price || '';
                     document.getElementById('inv-stock').value = prod.stock !== undefined && prod.stock !== null ? prod.stock : '';
@@ -5683,6 +5732,11 @@ document.addEventListener('DOMContentLoaded', () => {
         btnNewProduct.addEventListener('click', () => {
             editingProductId = null;
             newProductForm.style.display = 'block';
+            btnNewProduct.setAttribute('aria-expanded', 'true');
+            const inventoryFormTitle = document.getElementById('inventory-form-title');
+            const inventoryFormKicker = document.getElementById('inventory-form-kicker');
+            if (inventoryFormTitle) inventoryFormTitle.textContent = 'Añadir al catálogo';
+            if (inventoryFormKicker) inventoryFormKicker.textContent = 'Nuevo producto';
             document.getElementById('inv-name').value = '';
             document.getElementById('inv-price').value = '';
             document.getElementById('inv-stock').value = '';
@@ -5693,6 +5747,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btnCancelInvProd.addEventListener('click', () => {
             editingProductId = null;
             newProductForm.style.display = 'none';
+            btnNewProduct.setAttribute('aria-expanded', 'false');
             if (btnSaveInvProd) btnSaveInvProd.innerHTML = '<i class="fa-solid fa-check"></i> Guardar Producto';
         });
         
@@ -5740,6 +5795,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (stockEl) stockEl.value = '';
             editingProductId = null;
             newProductForm.style.display = 'none';
+            btnNewProduct.setAttribute('aria-expanded', 'false');
             if (btnSaveInvProd) btnSaveInvProd.innerHTML = '<i class="fa-solid fa-check"></i> Guardar Producto';
             
             renderInventario();

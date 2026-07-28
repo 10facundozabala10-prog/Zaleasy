@@ -1245,6 +1245,16 @@
 
             <!-- Reports View -->
             <div id="view-reportes" class="dashboard-wrapper" style="display: none;">
+                <aside class="view-learning-strip" aria-label="Gu&iacute;a recomendada para reportes">
+                    <span class="view-learning-icon"><i class="fa-solid fa-chart-line" aria-hidden="true"></i></span>
+                    <span class="view-learning-copy">
+                        <small>Aprende mientras analizas</small>
+                        <strong>Interpreta ventas, margen y tendencias con una gu&iacute;a pr&aacute;ctica.</strong>
+                    </span>
+                    <a href="Blog htmls/reporte-semanal-de-ventas.html" target="_blank" rel="noopener">
+                        Ver gu&iacute;a de reportes <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                    </a>
+                </aside>
 
                 <!-- Summary KPIs -->
                 <div class="kpi-cards" style="margin-bottom: 1.5rem;">
@@ -1379,9 +1389,6 @@
                             <button type="button" class="btn btn-primary empty-state-action" data-quick-action="sale">
                                 <i class="fa-solid fa-cart-plus" aria-hidden="true"></i> Registrar una venta
                             </button>
-                            <a class="empty-state-guide" href="Blog htmls/reporte-semanal-de-ventas.html" target="_blank" rel="noopener">
-                                Aprender a leer un reporte semanal <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -1429,9 +1436,59 @@
                             </button>
                         </div>
                     </div>
-                    <div class="search-container">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" id="search-clientes" aria-label="Buscar clientes por nombre" placeholder="Buscar por nombre del cliente...">
+                    <aside class="view-learning-strip view-learning-strip-embedded" aria-label="Gu&iacute;a recomendada para clientes">
+                        <span class="view-learning-icon"><i class="fa-solid fa-user-check" aria-hidden="true"></i></span>
+                        <span class="view-learning-copy">
+                            <small>Mejora tu seguimiento</small>
+                            <strong>Descubre qu&eacute; datos conviene guardar de cada cliente.</strong>
+                        </span>
+                        <a href="Blog htmls/ficha-cliente-completa.html" target="_blank" rel="noopener">
+                            Ver gu&iacute;a de clientes <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                        </a>
+                    </aside>
+                    <section class="clients-overview-grid" aria-label="Resumen de clientes">
+                        <article class="clients-metric-card">
+                            <span class="clients-metric-icon"><i class="fa-solid fa-users" aria-hidden="true"></i></span>
+                            <span>
+                                <small>Total de clientes</small>
+                                <strong id="clientes-total-count">0</strong>
+                                <em id="clientes-total-meta">A&uacute;n sin actividad</em>
+                            </span>
+                        </article>
+                        <article class="clients-metric-card" data-tone="danger">
+                            <span class="clients-metric-icon"><i class="fa-solid fa-clock" aria-hidden="true"></i></span>
+                            <span>
+                                <small>Con saldo pendiente</small>
+                                <strong id="clientes-debt-count">0</strong>
+                                <em id="clientes-debt-meta">Todo al d&iacute;a</em>
+                            </span>
+                        </article>
+                        <article class="clients-metric-card" data-tone="warning">
+                            <span class="clients-metric-icon"><i class="fa-solid fa-hand-holding-dollar" aria-hidden="true"></i></span>
+                            <span>
+                                <small>Saldo por cobrar</small>
+                                <strong id="clientes-debt-total">$0</strong>
+                                <em id="clientes-debt-total-meta">Sin cobros pendientes</em>
+                            </span>
+                        </article>
+                        <article class="clients-metric-card" data-tone="success">
+                            <span class="clients-metric-icon"><i class="fa-solid fa-star" aria-hidden="true"></i></span>
+                            <span>
+                                <small>Clientes clave</small>
+                                <strong id="clientes-key-count">0</strong>
+                                <em id="clientes-key-meta">Por desarrollar</em>
+                            </span>
+                        </article>
+                    </section>
+                    <div class="clients-search-row">
+                        <div class="search-container">
+                            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                            <input type="search" id="search-clientes" aria-label="Buscar clientes por nombre" placeholder="Buscar por nombre del cliente..." autocomplete="off">
+                            <button type="button" class="clients-search-clear" id="clientes-clear-search" aria-label="Limpiar b&uacute;squeda de clientes" title="Limpiar b&uacute;squeda" hidden>
+                                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <span class="clients-result-count" id="clientes-result-count" aria-live="polite">0 clientes</span>
                     </div>
                     <div class="table-container" id="clientes-table-container">
                         <table class="sales-table">
@@ -1458,9 +1515,16 @@
                             <button type="button" class="btn btn-primary empty-state-action" data-quick-action="sale">
                                 <i class="fa-solid fa-user-plus" aria-hidden="true"></i> Registrar venta con cliente
                             </button>
-                            <a class="empty-state-guide" href="Blog htmls/ficha-cliente-completa.html" target="_blank" rel="noopener">
-                                Ver qu&eacute; datos conviene guardar <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
-                            </a>
+                        </div>
+                    </div>
+                    <div class="empty-state" id="clientes-filter-empty-state">
+                        <div class="empty-icon"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></div>
+                        <p>No encontramos clientes con esa b&uacute;squeda.</p>
+                        <span id="clientes-filter-empty-copy">Prueba con otro nombre o limpia el filtro para ver el directorio completo.</span>
+                        <div class="empty-state-actions">
+                            <button type="button" class="btn btn-outline empty-state-action" id="clientes-empty-clear-search">
+                                <i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Limpiar b&uacute;squeda
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1468,50 +1532,69 @@
 
             <!-- Inventario View -->
             <div id="view-inventario" class="dashboard-wrapper" style="display: none;">
-                <div class="card list-section" style="max-width: 1000px; margin: 0 auto; min-height: 70vh;">
+                <div class="card list-section inventory-list-section" style="max-width: 1000px; margin: 0 auto; min-height: 70vh;">
                     <div class="card-header">
                         <h2><i class="fa-solid fa-boxes-stacked" style="color: var(--primary); margin-right: .5rem;"></i>Cat&aacute;logo de Productos</h2>
                         <div class="header-actions">
                             <button class="btn btn-outline" id="export-inventario-csv">
                                 <i class="fa-solid fa-download"></i> Exportar
                             </button>
-                            <button class="btn btn-primary" id="btn-new-product">
+                            <button class="btn btn-primary" id="btn-new-product" aria-controls="new-product-form" aria-expanded="false">
                                 <i class="fa-solid fa-plus"></i> Nuevo Producto
                             </button>
                         </div>
                     </div>
+                    <aside class="view-learning-strip view-learning-strip-embedded" aria-label="Gu&iacute;a recomendada para inventario">
+                        <span class="view-learning-icon"><i class="fa-solid fa-boxes-stacked" aria-hidden="true"></i></span>
+                        <span class="view-learning-copy">
+                            <small>Controla antes de reponer</small>
+                            <strong>Conecta ventas y stock para comprar con mejores datos.</strong>
+                        </span>
+                        <a href="Blog htmls/inventario-y-ventas.html" target="_blank" rel="noopener">
+                            Ver gu&iacute;a de inventario <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                        </a>
+                    </aside>
 
                     <!-- New Product Form (hidden by default) -->
-                    <div id="new-product-form" style="display: none; background: var(--bg-hover); padding: 1.5rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; border: 1px solid var(--border-color);">
-                        <h3 style="margin-bottom: 1rem;"><i class="fa-solid fa-box-open" style="margin-right: .5rem; color: var(--text-main);"></i>A&ntilde;adir al Cat&aacute;logo</h3>
-                        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 1rem;">
-                            <div class="form-group" style="margin-bottom: 0;">
+                    <section id="new-product-form" class="inventory-product-form" style="display: none;" aria-labelledby="inventory-form-title">
+                        <div class="inventory-form-heading">
+                            <span class="inventory-form-icon" aria-hidden="true"><i class="fa-solid fa-box-open"></i></span>
+                            <div>
+                                <span class="inventory-form-kicker" id="inventory-form-kicker">Nuevo producto</span>
+                                <h3 id="inventory-form-title">A&ntilde;adir al cat&aacute;logo</h3>
+                                <p>El nombre es obligatorio. Precio y stock pueden completarse m&aacute;s adelante.</p>
+                            </div>
+                        </div>
+                        <div class="inventory-form-grid">
+                            <div class="form-group inventory-form-name">
                                 <label for="inv-name">Nombre del Producto</label>
                                 <div class="input-wrapper">
                                     <i class="fa-solid fa-tag"></i>
-                                    <input type="text" id="inv-name" placeholder="Ej: Camiseta">
+                                    <input type="text" id="inv-name" placeholder="Ej: Camiseta" autocomplete="off">
                                 </div>
                             </div>
-                            <div class="form-group" style="margin-bottom: 0;">
+                            <div class="form-group">
                                 <label for="inv-price">Precio (Opcional)</label>
                                 <div class="input-wrapper">
                                     <i class="fa-solid fa-dollar-sign"></i>
-                                    <input type="number" id="inv-price" step="0.01" min="0" placeholder="0.00">
+                                    <input type="number" id="inv-price" step="0.01" min="0" inputmode="decimal" placeholder="0.00" aria-describedby="inv-price-help">
                                 </div>
+                                <small id="inv-price-help">Se usar&aacute; como valor sugerido al vender.</small>
                             </div>
-                            <div class="form-group" style="margin-bottom: 0;">
+                            <div class="form-group">
                                 <label for="inv-stock">Stock (Opcional)</label>
                                 <div class="input-wrapper">
                                     <i class="fa-solid fa-boxes-stacked"></i>
-                                    <input type="number" id="inv-stock" min="0" placeholder="Ej: 50">
+                                    <input type="number" id="inv-stock" min="0" inputmode="numeric" placeholder="Ej: 50" aria-describedby="inv-stock-help">
                                 </div>
+                                <small id="inv-stock-help">Activa alertas cuando queden 5 unidades o menos.</small>
                             </div>
                         </div>
-                        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                        <div class="inventory-form-actions">
                             <button class="btn btn-primary" id="btn-save-inv-product"><i class="fa-solid fa-check"></i> Guardar Producto</button>
                             <button class="btn btn-outline" id="btn-cancel-inv-product">Cancelar</button>
                         </div>
-                    </div>
+                    </section>
 
                     <div class="search-container">
                         <i class="fa-solid fa-magnifying-glass"></i>
@@ -1541,9 +1624,6 @@
                             <button type="button" class="btn btn-primary empty-state-action" data-quick-action="product">
                                 <i class="fa-solid fa-box" aria-hidden="true"></i> Agregar primer producto
                             </button>
-                            <a class="empty-state-guide" href="Blog htmls/inventario-y-ventas.html" target="_blank" rel="noopener">
-                                Ver gu&iacute;a de inventario y ventas <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
-                            </a>
                         </div>
                     </div>
                 </div>
