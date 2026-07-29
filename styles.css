@@ -2752,6 +2752,156 @@ select:focus {
     font-variant-numeric: tabular-nums;
 }
 
+/* Transaction review */
+.transaction-review {
+    margin: 0.25rem 0 1.1rem;
+    padding: 1rem;
+    border: 1px solid rgba(108, 92, 231, 0.22);
+    border-radius: var(--radius-md);
+    background:
+        radial-gradient(circle at top right, rgba(108, 92, 231, 0.12), transparent 42%),
+        var(--bg-hover);
+}
+
+.transaction-review-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.85rem;
+}
+
+.transaction-review-eyebrow {
+    display: block;
+    margin-bottom: 0.2rem;
+    color: var(--primary);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.transaction-review-header h3 {
+    margin: 0;
+    color: var(--text-main);
+    font-size: 1rem;
+}
+
+.transaction-clear-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.55rem;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    background: var(--bg-card);
+    color: var(--text-muted);
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.transaction-clear-btn:hover {
+    border-color: var(--danger);
+    background: rgba(232, 67, 147, 0.08);
+    color: var(--danger);
+}
+
+.transaction-review-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem;
+}
+
+.transaction-review-item {
+    min-width: 0;
+    padding: 0.65rem 0.7rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: color-mix(in srgb, var(--bg-card) 84%, transparent);
+}
+
+.transaction-review-item span {
+    display: block;
+    margin-bottom: 0.2rem;
+    color: var(--text-muted);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.transaction-review-item strong {
+    display: block;
+    overflow: hidden;
+    color: var(--text-main);
+    font-size: 0.88rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.transaction-review-total strong {
+    color: var(--success);
+    font-size: 1.05rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.transaction-review-total strong[data-tone="expense"] {
+    color: var(--danger);
+}
+
+.transaction-review-status {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.45rem;
+    margin: 0.75rem 0 0;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    line-height: 1.4;
+}
+
+.transaction-review-status i {
+    margin-top: 0.12rem;
+    color: var(--primary);
+}
+
+.transaction-review-status[data-state="ready"] {
+    color: var(--success);
+}
+
+.transaction-review-status[data-state="ready"] i {
+    color: var(--success);
+}
+
+@media (max-width: 420px) {
+    .transaction-review {
+        padding: 0.85rem;
+    }
+
+    .transaction-review-grid {
+        gap: 0.45rem;
+    }
+
+    .transaction-review-item {
+        padding: 0.6rem;
+    }
+
+    .transaction-clear-btn {
+        width: 34px;
+        height: 34px;
+        justify-content: center;
+        padding: 0;
+    }
+
+    .transaction-clear-btn span {
+        display: none;
+    }
+}
+
 /* Slide animations */
 @keyframes itemSlideIn {
     from {
@@ -7341,5 +7491,108 @@ select:focus {
     #view-clientes .sales-table td:last-child {
         color: var(--text-main);
         text-align: left !important;
+    }
+}
+
+/* Filter-aware history overview */
+.history-overview-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.7rem;
+    margin: 0 0 1rem;
+}
+
+.history-overview-card {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: 0.65rem;
+    min-width: 0;
+    padding: 0.82rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--primary) 3%, var(--bg-hover));
+}
+
+.history-overview-card > span:last-child {
+    display: grid;
+    min-width: 0;
+    gap: 0.14rem;
+}
+
+.history-overview-icon {
+    width: 2rem;
+    height: 2rem;
+    display: grid;
+    place-items: center;
+    color: var(--primary);
+    border-radius: 9px;
+    background: color-mix(in srgb, var(--primary) 13%, transparent);
+}
+
+.history-overview-card small {
+    color: var(--text-muted);
+    font-size: 0.66rem;
+    font-weight: 750;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.history-overview-card strong {
+    color: var(--text-main);
+    font-size: 1rem;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+}
+
+.history-overview-card em {
+    color: var(--text-muted);
+    font-size: 0.64rem;
+    font-style: normal;
+    line-height: 1.35;
+}
+
+.history-overview-card[data-tone="income"] .history-overview-icon {
+    color: var(--success);
+    background: color-mix(in srgb, var(--success) 13%, transparent);
+}
+
+.history-overview-card[data-tone="income"] strong { color: var(--success); }
+
+.history-overview-card[data-tone="expense"] .history-overview-icon {
+    color: var(--danger);
+    background: color-mix(in srgb, var(--danger) 13%, transparent);
+}
+
+.history-overview-card[data-tone="expense"] strong { color: var(--danger); }
+
+.history-overview-card[data-tone="pending"] .history-overview-icon {
+    color: var(--warning);
+    background: color-mix(in srgb, var(--warning) 13%, transparent);
+}
+
+.history-overview-card[data-tone="pending"] strong { color: var(--warning); }
+
+#history-net-total[data-negative="true"] { color: var(--danger); }
+
+@media (max-width: 820px) {
+    .history-overview-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .history-overview-grid { gap: 0.55rem; }
+
+    .history-overview-card {
+        grid-template-columns: 1fr;
+        gap: 0.45rem;
+        padding: 0.7rem;
+    }
+
+    .history-overview-icon {
+        width: 1.75rem;
+        height: 1.75rem;
+        font-size: 0.78rem;
     }
 }

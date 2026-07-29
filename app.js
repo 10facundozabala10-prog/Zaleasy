@@ -340,6 +340,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btnSubmitTransaction.className = 'btn btn-primary btn-block';
         btnSubmitTransaction.removeAttribute('style');
         btnSubmitTransaction.style.flex = "2";
+        updateTransactionReview();
     });
 
     btnTypeExpense.addEventListener('click', () => {
@@ -359,6 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btnSubmitTransaction.style.background = 'var(--danger)';
         btnSubmitTransaction.style.color = 'white';
         btnSubmitTransaction.style.flex = "2";
+        updateTransactionReview();
     });
 
     const appViewMeta = {
@@ -1452,6 +1454,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setupPeakHours();
         setupShareSummary();
         setupMultiItems();
+        setupTransactionDraft();
         setupWeeklySummary();
         setupQuickProducts();
         setupFollowUps();
@@ -1809,6 +1812,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const buildCategoryOptions = () => CATEGORY_OPTIONS
         .map(o => `<option value="${o.value}">${o.label}</option>`).join('');
 
+    const updateTransactionReview = () => {
+        const rows = [...document.querySelectorAll('.item-row')];
+        const values = rows.map(row => ({
+            product: row.querySelector('.item-product-input')?.value.trim() || '',
+            amount: parseFloat(row.querySelector('.item-amount-input')?.value) || 0
+        }));
+        const completedItems = values.filter(item => item.product && item.amount > 0);
+        const total = values.reduce((sum, item) => sum + item.amount, 0);
+        const typeEl = document.getElementById('transaction-review-type');
+        const itemsEl = document.getElementById('transaction-review-items');
+        const methodEl = document.getElementById('transaction-review-method');
+        const totalEl = document.getElementById('transaction-review-total');
+        const statusEl = document.getElementById('transaction-review-status');
+        const isReady = rows.length > 0 && completedItems.length === rows.length;
+
+        if (typeEl) typeEl.textContent = currentTransactionType === 'expense' ? 'Gasto' : 'Ingreso';
+        if (itemsEl) itemsEl.textContent = `${completedItems.length} de ${rows.length || 1}`;
+        if (methodEl) methodEl.textContent = methodSelect?.value || 'Efectivo';
+        if (totalEl) {
+            totalEl.textContent = formatCurrency(total);
+            totalEl.dataset.tone = currentTransactionType === 'expense' ? 'expense' : 'income';
+        }
+        if (statusEl) {
+            statusEl.dataset.state = isReady ? 'ready' : 'incomplete';
+            statusEl.innerHTML = isReady
+                ? `<i class="fa-solid fa-circle-check"></i><span>Lista para registrar ${completedItems.length === 1 ? 'esta operaci\u00f3n' : `los ${completedItems.length} \u00edtems`}.</span>`
+                : '<i class="fa-solid fa-circle-info"></i><span>Completa la descripci\u00f3n y el monto de cada \u00edtem.</span>';
+        }
+    };
+
     const createItemRow = (isFirst = false, item = {}) => {
         const row = document.createElement('div');
         row.className = 'item-row';
@@ -1839,11 +1872,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 </button>
             </div>
         `;
+        row.querySelector('.item-product-input').value = item.product || '';
+        row.querySelector('.item-amount-input').value = item.amount || '';
+        row.querySelector('.item-category-select').value = item.category || '';
 
         // Track last focused amount input (for quick-amount buttons)
         const amtInput = row.querySelector('.item-amount-input');
         amtInput.addEventListener('focus', () => { lastFocusedAmountInput = amtInput; });
         amtInput.addEventListener('input', updateMultiTotal);
+        row.querySelector('.item-product-input').addEventListener('input', updateTransactionReview);
+        row.querySelector('.item-category-select').addEventListener('change', updateTransactionReview);
 
         // Remove button
         const removeBtn = row.querySelector('.item-remove-btn');
@@ -1871,20 +1909,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const updateMultiTotal = () => {
         const container = document.getElementById('items-container');
-        const totalEl = document.getElementById('multi-item-total');
-        const totalValEl = document.getElementById('multi-item-total-value');
         const rows = container.querySelectorAll('.item-row');
-        let total = 0;
-        rows.forEach(r => {
-            const v = parseFloat(r.querySelector('.item-amount-input').value) || 0;
-            total += v;
-        });
-        if (rows.length > 1) {
-            totalEl.style.display = 'flex';
-            totalValEl.textContent = formatCurrency(total);
-        } else {
-            totalEl.style.display = 'none';
-        }
+        if (!rows.length) return;
+        updateTransactionReview();
     };
 
     const resetMultiItems = (focusFirst = true) => {
@@ -1967,6 +1994,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         saleForm.addEventListener('input', saveTransactionDraft);
         saleForm.addEventListener('change', saveTransactionDraft);
+        saleForm.addEventListener('input', updateTransactionReview);
+        saleForm.addEventListener('change', updateTransactionReview);
+        btnTypeIncome.addEventListener('click', saveTransactionDraft);
+        btnTypeExpense.addEventListener('click', saveTransactionDraft);
+
+        const clearButton = document.getElementById('btn-clear-transaction');
+        clearButton?.addEventListener('click', () => {
+            customerNameInput.value = '';
+            notesInput.value = '';
+            methodSelect.value = 'Efectivo';
+            if (currentTransactionType !== 'income') btnTypeIncome.click();
+            resetMultiItems(false);
+            clearTransactionDraft();
+            updateTransactionReview();
+            showToast('Formulario listo para una nueva operaci\u00f3n');
+        });
+        updateTransactionReview();
     };
 
     // --- Recurring Expenses ---
@@ -4444,6 +4488,39 @@ document.addEventListener('DOMContentLoaded', () => {
                 (s.type === 'expense' ? 'gasto' : 'ingreso').includes(textQuery)
             );
         }
+
+        const incomeMovements = filteredHistory.filter(movement => movement.type !== 'expense');
+        const expenseMovements = filteredHistory.filter(movement => movement.type === 'expense');
+        const pendingMovements = filteredHistory.filter(movement => movement.type !== 'expense' && movement.method === 'A Cobrar');
+        const filteredIncome = incomeMovements.reduce((sum, movement) => sum + Number(movement.amount || 0), 0);
+        const filteredExpenses = expenseMovements.reduce((sum, movement) => sum + Number(movement.amount || 0), 0);
+        const filteredPending = pendingMovements.reduce((sum, movement) => sum + Number(movement.amount || 0), 0);
+        const filteredNet = filteredIncome - filteredExpenses;
+        const setHistoryMetric = (id, value) => {
+            const element = document.getElementById(id);
+            if (element) element.textContent = value;
+        };
+        const movementLabel = (count, singular, plural) => `${count} ${count === 1 ? singular : plural}`;
+
+        setHistoryMetric('history-income-total', formatCurrency(filteredIncome));
+        setHistoryMetric('history-income-meta', incomeMovements.length
+            ? movementLabel(incomeMovements.length, 'entrada registrada', 'entradas registradas')
+            : 'Sin ingresos en la selección');
+        setHistoryMetric('history-expense-total', formatCurrency(filteredExpenses));
+        setHistoryMetric('history-expense-meta', expenseMovements.length
+            ? movementLabel(expenseMovements.length, 'salida registrada', 'salidas registradas')
+            : 'Sin gastos en la selección');
+        setHistoryMetric('history-net-total', formatCurrency(filteredNet));
+        setHistoryMetric('history-net-meta', filteredHistory.length
+            ? filteredNet >= 0 ? 'Resultado positivo de la selección' : 'Los gastos superan los ingresos'
+            : 'Sin movimientos para comparar');
+        setHistoryMetric('history-pending-total', formatCurrency(filteredPending));
+        setHistoryMetric('history-pending-meta', pendingMovements.length
+            ? movementLabel(pendingMovements.length, 'cobro pendiente', 'cobros pendientes')
+            : 'Sin cobros pendientes');
+
+        const netMetric = document.getElementById('history-net-total');
+        if (netMetric) netMetric.dataset.negative = filteredNet < 0 ? 'true' : 'false';
 
         const totalHistory = completeHistory.length;
         const hasActiveFilters = Boolean(dateQuery || rangeFrom || typeQuery || textQuery);

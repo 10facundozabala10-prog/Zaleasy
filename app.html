@@ -1046,14 +1046,10 @@
                                         <i class="fa-solid fa-circle-plus"></i> Agregar &iacute;tem
                                     </button>
                                 </label>
-                                <div id="items-container" class="items-container">
-                                    <!-- Item rows injected by JS -->
-                                </div>
-                                <div id="multi-item-total" class="multi-item-total" style="display:none;">
-                                    <span>📋 Total de la transacci&oacute;n</span>
-                                    <strong id="multi-item-total-value">$0.00</strong>
-                                </div>
-                            </div>
+                                 <div id="items-container" class="items-container">
+                                     <!-- Item rows injected by JS -->
+                                 </div>
+                             </div>
                             <div class="form-group">
                                 <label for="method">M&eacute;todo de Pago</label>
                                 <div class="input-wrapper">
@@ -1071,13 +1067,50 @@
                             <div class="form-group">
                                 <label for="notes">Notas / Observaciones <span
                                         style="color:var(--text-muted);font-weight:400;">(opcional)</span></label>
-                                <div class="input-wrapper">
-                                    <i class="fa-solid fa-note-sticky"></i>
-                                    <input type="text" id="notes" placeholder="Ej: Cliente VIP, descuento aplicado..."
-                                        style="padding-left:2.5rem;">
-                                </div>
-                            </div>
-                            <div class="quick-actions">
+                                 <div class="input-wrapper">
+                                     <i class="fa-solid fa-note-sticky"></i>
+                                     <input type="text" id="notes" placeholder="Ej: Cliente VIP, descuento aplicado..."
+                                         style="padding-left:2.5rem;">
+                                 </div>
+                             </div>
+                             <section class="transaction-review" aria-label="Resumen de la transacci&oacute;n"
+                                 aria-live="polite">
+                                 <div class="transaction-review-header">
+                                     <div>
+                                         <span class="transaction-review-eyebrow"><i
+                                                 class="fa-solid fa-shield-check"></i> Revisi&oacute;n final</span>
+                                         <h3>Resumen de la operaci&oacute;n</h3>
+                                     </div>
+                                     <button type="button" class="transaction-clear-btn" id="btn-clear-transaction"
+                                         title="Limpiar el formulario" aria-label="Limpiar el formulario">
+                                         <i class="fa-solid fa-rotate-left"></i> <span>Limpiar</span>
+                                     </button>
+                                 </div>
+                                 <div class="transaction-review-grid">
+                                     <div class="transaction-review-item">
+                                         <span>Tipo</span>
+                                         <strong id="transaction-review-type">Ingreso</strong>
+                                     </div>
+                                     <div class="transaction-review-item">
+                                         <span>&Iacute;tems listos</span>
+                                         <strong id="transaction-review-items">0 de 1</strong>
+                                     </div>
+                                     <div class="transaction-review-item">
+                                         <span>M&eacute;todo</span>
+                                         <strong id="transaction-review-method">Efectivo</strong>
+                                     </div>
+                                     <div class="transaction-review-item transaction-review-total">
+                                         <span>Total</span>
+                                         <strong id="transaction-review-total">$0.00</strong>
+                                     </div>
+                                 </div>
+                                 <p class="transaction-review-status" id="transaction-review-status"
+                                     data-state="incomplete">
+                                     <i class="fa-solid fa-circle-info"></i>
+                                     <span>Completa la descripci&oacute;n y el monto del primer &iacute;tem.</span>
+                                 </p>
+                             </section>
+                             <div class="quick-actions">
                                 <button type="button" class="btn btn-outline quick-amount" data-amount="1000">+
                                     $1.000</button>
                                 <button type="button" class="btn btn-outline quick-amount" data-amount="5000">+
@@ -1201,6 +1234,40 @@
                         <button type="button" class="history-filter-chip" data-range="30">30 d&iacute;as</button>
                         <button type="button" class="history-filter-chip" data-range="clear">Limpiar filtros</button>
                     </div>
+                    <section class="history-overview-grid" aria-label="Resumen de los movimientos filtrados">
+                        <article class="history-overview-card" data-tone="income">
+                            <span class="history-overview-icon"><i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i></span>
+                            <span>
+                                <small>Ingresos</small>
+                                <strong id="history-income-total">$0</strong>
+                                <em id="history-income-meta">Sin ingresos en la selecci&oacute;n</em>
+                            </span>
+                        </article>
+                        <article class="history-overview-card" data-tone="expense">
+                            <span class="history-overview-icon"><i class="fa-solid fa-arrow-trend-down" aria-hidden="true"></i></span>
+                            <span>
+                                <small>Gastos</small>
+                                <strong id="history-expense-total">$0</strong>
+                                <em id="history-expense-meta">Sin gastos en la selecci&oacute;n</em>
+                            </span>
+                        </article>
+                        <article class="history-overview-card" data-tone="balance">
+                            <span class="history-overview-icon"><i class="fa-solid fa-scale-balanced" aria-hidden="true"></i></span>
+                            <span>
+                                <small>Balance filtrado</small>
+                                <strong id="history-net-total">$0</strong>
+                                <em id="history-net-meta">Sin movimientos para comparar</em>
+                            </span>
+                        </article>
+                        <article class="history-overview-card" data-tone="pending">
+                            <span class="history-overview-icon"><i class="fa-solid fa-clock" aria-hidden="true"></i></span>
+                            <span>
+                                <small>Por cobrar</small>
+                                <strong id="history-pending-total">$0</strong>
+                                <em id="history-pending-meta">Sin cobros pendientes</em>
+                            </span>
+                        </article>
+                    </section>
                     <div class="table-container">
                         <table class="sales-table">
                             <thead>
