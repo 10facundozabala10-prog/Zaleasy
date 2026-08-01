@@ -7400,8 +7400,96 @@ select:focus {
     white-space: nowrap;
 }
 
+.clients-directory-tools {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    margin: -0.25rem 0 1rem;
+    padding: 0.65rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--primary) 3%, var(--bg-hover));
+}
+
+.clients-segment-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    min-width: 0;
+}
+
+.clients-segment-filters button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    min-height: 36px;
+    padding: 0.42rem 0.68rem;
+    color: var(--text-muted);
+    border: 1px solid transparent;
+    border-radius: 999px;
+    background: transparent;
+    font: inherit;
+    font-size: 0.7rem;
+    font-weight: 750;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.clients-segment-filters button:hover {
+    color: var(--text-main);
+    background: var(--bg-card);
+}
+
+.clients-segment-filters button.active,
+.clients-segment-filters button[aria-pressed="true"] {
+    color: var(--text-main);
+    border-color: color-mix(in srgb, var(--primary) 40%, var(--border-color));
+    background: color-mix(in srgb, var(--primary) 16%, transparent);
+}
+
+.clients-segment-filters button:focus-visible,
+.clients-sort-control select:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--primary) 35%, transparent);
+    outline-offset: 2px;
+}
+
+.clients-sort-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 0 0 auto;
+    color: var(--text-muted);
+    font-size: 0.68rem;
+    font-weight: 750;
+    white-space: nowrap;
+}
+
+.clients-sort-control select {
+    min-height: 36px;
+    padding: 0.4rem 2rem 0.4rem 0.65rem;
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: var(--bg-card);
+    font: inherit;
+    font-size: 0.72rem;
+    cursor: pointer;
+}
+
 @media (max-width: 820px) {
     .clients-overview-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+    .clients-directory-tools {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .clients-sort-control {
+        justify-content: space-between;
+    }
 }
 
 @media (max-width: 600px) {
@@ -7436,6 +7524,29 @@ select:focus {
     }
 
     .clients-result-count { padding-left: 0.2rem; }
+
+    .clients-directory-tools {
+        padding: 0.55rem;
+    }
+
+    .clients-segment-filters {
+        flex-wrap: nowrap;
+        padding-bottom: 0.2rem;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+
+    .clients-segment-filters::-webkit-scrollbar { display: none; }
+
+    .clients-segment-filters button {
+        flex: 0 0 auto;
+        min-height: 44px;
+    }
+
+    .clients-sort-control select {
+        min-height: 44px;
+        width: min(62%, 220px);
+    }
 
     #view-clientes .table-container {
         max-height: none;
@@ -7594,5 +7705,453 @@ select:focus {
         width: 1.75rem;
         height: 1.75rem;
         font-size: 0.78rem;
+    }
+}
+
+/* Inventory control panel */
+.inventory-overview-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.7rem;
+    margin: 0.95rem 0 1rem;
+}
+
+.inventory-metric-card {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: 0.7rem;
+    min-width: 0;
+    padding: 0.85rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--primary) 4%, var(--bg-hover));
+}
+
+.inventory-metric-icon {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    color: var(--primary);
+    border-radius: 9px;
+    background: color-mix(in srgb, var(--primary) 13%, transparent);
+}
+
+.inventory-metric-card > span:last-child {
+    display: grid;
+    min-width: 0;
+    gap: 0.16rem;
+}
+
+.inventory-metric-card small {
+    color: var(--text-muted);
+    font-size: 0.66rem;
+    font-weight: 750;
+    line-height: 1.25;
+}
+
+.inventory-metric-card strong {
+    color: var(--text-main);
+    font-size: 1.08rem;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.inventory-metric-card em {
+    color: var(--text-muted);
+    font-size: 0.64rem;
+    font-style: normal;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+}
+
+.inventory-metric-card[data-tone="success"] .inventory-metric-icon {
+    color: var(--success);
+    background: color-mix(in srgb, var(--success) 13%, transparent);
+}
+
+.inventory-metric-card[data-tone="danger"] .inventory-metric-icon {
+    color: var(--danger);
+    background: color-mix(in srgb, var(--danger) 13%, transparent);
+}
+
+.inventory-metric-card[data-tone="warning"] .inventory-metric-icon {
+    color: var(--warning);
+    background: color-mix(in srgb, var(--warning) 13%, transparent);
+}
+
+.inventory-toolbar {
+    display: grid;
+    gap: 0.7rem;
+    margin: 0.95rem 0 1rem;
+}
+
+.inventory-search-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 0.7rem;
+}
+
+.inventory-search-row .search-container {
+    min-width: 0;
+    margin-bottom: 0;
+}
+
+.inventory-search-row .search-container input {
+    padding-right: 2.7rem !important;
+}
+
+.inventory-search-clear {
+    position: absolute;
+    right: 0.55rem;
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    color: var(--text-muted);
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+}
+
+.inventory-search-clear[hidden] { display: none; }
+.inventory-search-clear:hover { color: var(--text-main); background: var(--bg-hover); }
+
+.inventory-search-clear:focus-visible,
+.inventory-filter-chips button:focus-visible,
+.inventory-sort-control select:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--primary) 35%, transparent);
+    outline-offset: 2px;
+}
+
+.inventory-sort-control {
+    display: grid;
+    gap: 0.3rem;
+    min-width: 148px;
+}
+
+.inventory-sort-control span {
+    color: var(--text-muted);
+    font-size: 0.64rem;
+    font-weight: 750;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.inventory-sort-control select {
+    min-height: 42px;
+    padding: 0 2rem 0 0.75rem;
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--bg-main);
+    font: inherit;
+    font-size: 0.78rem;
+}
+
+.inventory-filter-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+}
+
+.inventory-filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+}
+
+.inventory-filter-chips button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 34px;
+    padding: 0.4rem 0.65rem;
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    background: var(--bg-hover);
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.inventory-filter-chips button span {
+    display: grid;
+    place-items: center;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    padding: 0 0.25rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--text-muted) 12%, transparent);
+    font-size: 0.62rem;
+}
+
+.inventory-filter-chips button[aria-pressed="true"] {
+    color: var(--primary);
+    border-color: color-mix(in srgb, var(--primary) 46%, var(--border-color));
+    background: color-mix(in srgb, var(--primary) 11%, var(--bg-hover));
+}
+
+.inventory-filter-chips button[aria-pressed="true"] span {
+    color: white;
+    background: var(--primary);
+}
+
+.inventory-result-count {
+    flex: 0 0 auto;
+    color: var(--text-muted);
+    font-size: 0.74rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.inventory-stock-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 26px;
+    padding: 0.25rem 0.55rem;
+    border-radius: 999px;
+    color: var(--primary);
+    background: color-mix(in srgb, var(--primary) 12%, transparent);
+    font-size: 0.72rem;
+    font-weight: 750;
+}
+
+.inventory-stock-badge[data-state="low"] {
+    color: var(--warning);
+    background: color-mix(in srgb, var(--warning) 13%, transparent);
+}
+
+.inventory-stock-badge[data-state="out"] {
+    color: var(--danger);
+    background: color-mix(in srgb, var(--danger) 13%, transparent);
+}
+
+.inventory-stock-badge[data-state="untracked"] {
+    color: var(--text-muted);
+    background: color-mix(in srgb, var(--text-muted) 10%, transparent);
+}
+
+@media (max-width: 820px) {
+    .inventory-overview-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 600px) {
+    .inventory-overview-grid {
+        gap: 0.55rem;
+        margin-top: 0.8rem;
+    }
+
+    .inventory-metric-card {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        padding: 0.72rem;
+    }
+
+    .inventory-metric-icon {
+        width: 1.8rem;
+        height: 1.8rem;
+        font-size: 0.82rem;
+    }
+
+    .inventory-search-row { grid-template-columns: 1fr; }
+    .inventory-sort-control { min-width: 0; }
+
+    .inventory-filter-row {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .inventory-filter-chips {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        width: 100%;
+    }
+
+    .inventory-filter-chips button { justify-content: space-between; }
+    .inventory-result-count { padding-left: 0.2rem; }
+
+    #view-inventario .table-container {
+        max-height: none;
+        overflow: visible;
+    }
+
+    #view-inventario .sales-table {
+        display: block;
+        min-width: 0;
+    }
+
+    #view-inventario .sales-table thead { display: none; }
+    #view-inventario .sales-table tbody { display: grid; gap: 0.75rem; }
+
+    #view-inventario .sales-table tbody tr {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+        padding: 0.85rem;
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        background: var(--bg-hover);
+    }
+
+    #view-inventario .sales-table td {
+        display: grid;
+        align-content: start;
+        gap: 0.2rem;
+        min-width: 0;
+        padding: 0;
+        border: 0;
+        font-size: 0.84rem;
+        overflow-wrap: anywhere;
+    }
+
+    #view-inventario .sales-table td:first-child { grid-column: 1 / -1; }
+
+    #view-inventario .sales-table td::before {
+        color: var(--text-muted);
+        font-size: 0.62rem;
+        font-weight: 750;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+    }
+
+    #view-inventario .sales-table td:nth-child(1)::before { content: 'Producto'; }
+    #view-inventario .sales-table td:nth-child(2)::before { content: 'Precio base'; }
+    #view-inventario .sales-table td:nth-child(3)::before { content: 'Stock'; }
+    #view-inventario .sales-table td:nth-child(4)::before { content: 'Acciones'; }
+
+    #view-inventario .sales-table td:last-child {
+        color: var(--text-main);
+        text-align: left !important;
+    }
+}
+
+/* Reports period selector */
+.reports-period-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 0 0 1.25rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background:
+        radial-gradient(circle at top left, color-mix(in srgb, var(--primary) 12%, transparent), transparent 38%),
+        var(--bg-card);
+}
+
+.reports-period-copy {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+}
+
+.reports-period-icon {
+    display: grid;
+    place-items: center;
+    width: 2.35rem;
+    height: 2.35rem;
+    color: var(--primary);
+    border-radius: 11px;
+    background: color-mix(in srgb, var(--primary) 13%, transparent);
+}
+
+.reports-period-copy > span:last-child {
+    display: grid;
+    min-width: 0;
+    gap: 0.12rem;
+}
+
+.reports-period-copy small {
+    color: var(--text-muted);
+    font-size: 0.64rem;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+
+.reports-period-copy strong {
+    color: var(--text-main);
+    font-size: 0.92rem;
+}
+
+.reports-period-copy em {
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    font-style: normal;
+}
+
+.reports-period-controls {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.4rem;
+}
+
+.reports-period-controls button {
+    min-height: 36px;
+    padding: 0.45rem 0.72rem;
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    background: var(--bg-hover);
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 750;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.reports-period-controls button:hover {
+    color: var(--text-main);
+    border-color: color-mix(in srgb, var(--primary) 38%, var(--border-color));
+    transform: translateY(-1px);
+}
+
+.reports-period-controls button[aria-pressed="true"] {
+    color: white;
+    border-color: var(--primary);
+    background: var(--primary);
+    box-shadow: 0 6px 16px color-mix(in srgb, var(--primary) 22%, transparent);
+}
+
+.reports-period-controls button:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--primary) 35%, transparent);
+    outline-offset: 2px;
+}
+
+@media (max-width: 700px) {
+    .reports-period-bar {
+        align-items: stretch;
+        flex-direction: column;
+        padding: 0.85rem;
+    }
+
+    .reports-period-controls {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .reports-period-controls button {
+        min-height: 44px;
+        padding-inline: 0.45rem;
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 420px) {
+    .reports-period-controls {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }

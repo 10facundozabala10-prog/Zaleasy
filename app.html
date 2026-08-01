@@ -1312,7 +1312,7 @@
 
             <!-- Reports View -->
             <div id="view-reportes" class="dashboard-wrapper" style="display: none;">
-                <aside class="view-learning-strip" aria-label="Gu&iacute;a recomendada para reportes">
+                 <aside class="view-learning-strip" aria-label="Gu&iacute;a recomendada para reportes">
                     <span class="view-learning-icon"><i class="fa-solid fa-chart-line" aria-hidden="true"></i></span>
                     <span class="view-learning-copy">
                         <small>Aprende mientras analizas</small>
@@ -1320,10 +1320,28 @@
                     </span>
                     <a href="Blog htmls/reporte-semanal-de-ventas.html" target="_blank" rel="noopener">
                         Ver gu&iacute;a de reportes <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
-                    </a>
-                </aside>
+                     </a>
+                 </aside>
 
-                <!-- Summary KPIs -->
+                 <section class="reports-period-bar" aria-label="Per&iacute;odo del reporte">
+                     <div class="reports-period-copy">
+                         <span class="reports-period-icon"><i class="fa-solid fa-calendar-days" aria-hidden="true"></i></span>
+                         <span>
+                             <small>Per&iacute;odo del an&aacute;lisis</small>
+                             <strong id="reports-period-label">Todo el historial</strong>
+                             <em id="reports-period-summary" aria-live="polite">0 movimientos analizados</em>
+                         </span>
+                     </div>
+                     <div class="reports-period-controls" id="reports-period-controls" role="group"
+                         aria-label="Seleccionar per&iacute;odo del reporte">
+                         <button type="button" data-report-period="7" aria-pressed="false">7 d&iacute;as</button>
+                         <button type="button" data-report-period="30" aria-pressed="false">30 d&iacute;as</button>
+                         <button type="button" data-report-period="90" aria-pressed="false">90 d&iacute;as</button>
+                         <button type="button" data-report-period="all" aria-pressed="true">Todo</button>
+                     </div>
+                 </section>
+
+                 <!-- Summary KPIs -->
                 <div class="kpi-cards" style="margin-bottom: 1.5rem;">
                     <div class="card kpi-card">
                         <div class="kpi-icon revenue"><i class="fa-solid fa-coins"></i></div>
@@ -1392,7 +1410,7 @@
                 <div class="charts-row" style="margin-bottom: 1.5rem;">
                     <div class="card chart-card" style="flex: 2;">
                         <div class="card-header">
-                            <h2>Ingresos de los &Uacute;ltimos 7 D&iacute;as</h2>
+                             <h2 id="reports-trend-title">Tendencia reciente de ingresos</h2>
                         </div>
                         <div class="chart-container" style="height: 260px;">
                             <canvas id="rep-weekly-chart"></canvas>
@@ -1420,12 +1438,10 @@
                     </div>
                     <div class="card" style="flex: 1; display:flex; flex-direction:column;">
                         <div class="card-header">
-                            <h2>📅 Actividad por D&iacute;a</h2>
+                             <h2 id="reports-activity-title"><i class="fa-solid fa-calendar-days" aria-hidden="true"></i> Actividad por d&iacute;a</h2>
                         </div>
                         <div id="rep-heatmap" class="rep-heatmap"></div>
-                        <p style="font-size:.8rem;color:var(--text-muted);margin-top:.5rem;">&Uacute;ltimos 30
-                            d&iacute;as de
-                            transacciones</p>
+                         <p id="reports-activity-caption" style="font-size:.8rem;color:var(--text-muted);margin-top:.5rem;">&Uacute;ltimos 30 d&iacute;as de transacciones</p>
                     </div>
                 </div>
 
@@ -1557,6 +1573,24 @@
                         </div>
                         <span class="clients-result-count" id="clientes-result-count" aria-live="polite">0 clientes</span>
                     </div>
+                    <div class="clients-directory-tools">
+                        <div class="clients-segment-filters" id="clientes-segment-filters" role="group" aria-label="Filtrar clientes por segmento">
+                            <button type="button" class="active" aria-pressed="true" data-client-filter="all">Todos</button>
+                            <button type="button" aria-pressed="false" data-client-filter="debt"><i class="fa-solid fa-clock" aria-hidden="true"></i> Pendientes</button>
+                            <button type="button" aria-pressed="false" data-client-filter="key"><i class="fa-solid fa-star" aria-hidden="true"></i> Clave</button>
+                            <button type="button" aria-pressed="false" data-client-filter="reactivate"><i class="fa-solid fa-user-clock" aria-hidden="true"></i> Reactivar</button>
+                            <button type="button" aria-pressed="false" data-client-filter="active"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Activos</button>
+                        </div>
+                        <label class="clients-sort-control" for="clientes-sort">
+                            <span>Ordenar por</span>
+                            <select id="clientes-sort" aria-label="Ordenar directorio de clientes">
+                                <option value="spent-desc">Mayor valor</option>
+                                <option value="debt-desc">Mayor deuda</option>
+                                <option value="recent-desc">Actividad reciente</option>
+                                <option value="name-asc">Nombre A-Z</option>
+                            </select>
+                        </label>
+                    </div>
                     <div class="table-container" id="clientes-table-container">
                         <table class="sales-table">
                             <thead>
@@ -1586,11 +1620,11 @@
                     </div>
                     <div class="empty-state" id="clientes-filter-empty-state">
                         <div class="empty-icon"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></div>
-                        <p>No encontramos clientes con esa b&uacute;squeda.</p>
-                        <span id="clientes-filter-empty-copy">Prueba con otro nombre o limpia el filtro para ver el directorio completo.</span>
+                        <p>No encontramos clientes con estos filtros.</p>
+                        <span id="clientes-filter-empty-copy">Prueba otra b&uacute;squeda o vuelve a mostrar el directorio completo.</span>
                         <div class="empty-state-actions">
                             <button type="button" class="btn btn-outline empty-state-action" id="clientes-empty-clear-search">
-                                <i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Limpiar b&uacute;squeda
+                                <i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Mostrar todos
                             </button>
                         </div>
                     </div>
@@ -1611,7 +1645,7 @@
                             </button>
                         </div>
                     </div>
-                    <aside class="view-learning-strip view-learning-strip-embedded" aria-label="Gu&iacute;a recomendada para inventario">
+                     <aside class="view-learning-strip view-learning-strip-embedded" aria-label="Gu&iacute;a recomendada para inventario">
                         <span class="view-learning-icon"><i class="fa-solid fa-boxes-stacked" aria-hidden="true"></i></span>
                         <span class="view-learning-copy">
                             <small>Controla antes de reponer</small>
@@ -1619,10 +1653,45 @@
                         </span>
                         <a href="Blog htmls/inventario-y-ventas.html" target="_blank" rel="noopener">
                             Ver gu&iacute;a de inventario <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
-                        </a>
-                    </aside>
+                         </a>
+                     </aside>
 
-                    <!-- New Product Form (hidden by default) -->
+                     <section class="inventory-overview-grid" aria-label="Resumen del inventario">
+                         <article class="inventory-metric-card">
+                             <span class="inventory-metric-icon"><i class="fa-solid fa-boxes-stacked" aria-hidden="true"></i></span>
+                             <span>
+                                 <small>Productos</small>
+                                 <strong id="inventory-total-products">0</strong>
+                                 <em id="inventory-total-products-meta">Cat&aacute;logo vac&iacute;o</em>
+                             </span>
+                         </article>
+                         <article class="inventory-metric-card" data-tone="success">
+                             <span class="inventory-metric-icon"><i class="fa-solid fa-cubes" aria-hidden="true"></i></span>
+                             <span>
+                                 <small>Unidades registradas</small>
+                                 <strong id="inventory-total-units">0</strong>
+                                 <em id="inventory-total-units-meta">Sin stock cargado</em>
+                             </span>
+                         </article>
+                         <article class="inventory-metric-card" data-tone="danger">
+                             <span class="inventory-metric-icon"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i></span>
+                             <span>
+                                 <small>Stock cr&iacute;tico</small>
+                                 <strong id="inventory-critical-count">0</strong>
+                                 <em id="inventory-critical-meta">Sin alertas</em>
+                             </span>
+                         </article>
+                         <article class="inventory-metric-card" data-tone="warning">
+                             <span class="inventory-metric-icon"><i class="fa-solid fa-coins" aria-hidden="true"></i></span>
+                             <span>
+                                 <small>Valor estimado</small>
+                                 <strong id="inventory-estimated-value">$0</strong>
+                                 <em id="inventory-estimated-value-meta">Precio por stock</em>
+                             </span>
+                         </article>
+                     </section>
+
+                     <!-- New Product Form (hidden by default) -->
                     <section id="new-product-form" class="inventory-product-form" style="display: none;" aria-labelledby="inventory-form-title">
                         <div class="inventory-form-heading">
                             <span class="inventory-form-icon" aria-hidden="true"><i class="fa-solid fa-box-open"></i></span>
@@ -1663,10 +1732,37 @@
                         </div>
                     </section>
 
-                    <div class="search-container">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" id="search-inventario" aria-label="Buscar productos en el inventario" placeholder="Buscar productos en el cat&aacute;logo...">
-                    </div>
+                     <div class="inventory-toolbar">
+                         <div class="inventory-search-row">
+                             <div class="search-container">
+                                 <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                                 <input type="search" id="search-inventario" aria-label="Buscar productos en el inventario" placeholder="Buscar productos en el cat&aacute;logo..." autocomplete="off">
+                                 <button type="button" class="inventory-search-clear" id="inventory-clear-search"
+                                     aria-label="Limpiar b&uacute;squeda del inventario" title="Limpiar b&uacute;squeda" hidden>
+                                     <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                                 </button>
+                             </div>
+                             <label class="inventory-sort-control">
+                                 <span>Ordenar</span>
+                                 <select id="inventory-sort" aria-label="Ordenar inventario">
+                                     <option value="name">Nombre A-Z</option>
+                                     <option value="stock-asc">Menor stock</option>
+                                     <option value="stock-desc">Mayor stock</option>
+                                     <option value="value-desc">Mayor valor</option>
+                                 </select>
+                             </label>
+                         </div>
+                         <div class="inventory-filter-row">
+                             <div class="inventory-filter-chips" id="inventory-filter-chips" role="group"
+                                 aria-label="Filtrar inventario por estado">
+                                 <button type="button" data-inventory-filter="all" aria-pressed="true">Todos <span id="inventory-filter-all-count">0</span></button>
+                                 <button type="button" data-inventory-filter="low" aria-pressed="false">Stock bajo <span id="inventory-filter-low-count">0</span></button>
+                                 <button type="button" data-inventory-filter="out" aria-pressed="false">Agotados <span id="inventory-filter-out-count">0</span></button>
+                                 <button type="button" data-inventory-filter="untracked" aria-pressed="false">Sin controlar <span id="inventory-filter-untracked-count">0</span></button>
+                             </div>
+                             <span class="inventory-result-count" id="inventory-result-count" aria-live="polite">0 productos</span>
+                         </div>
+                     </div>
                     
                     <div class="table-container" id="inventario-table-container">
                         <table class="sales-table">
@@ -1683,18 +1779,28 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="empty-state" id="inventario-empty-state">
+                     <div class="empty-state" id="inventario-empty-state">
                         <div class="empty-icon"><i class="fa-solid fa-box-open" aria-hidden="true"></i></div>
                         <p>Tu cat&aacute;logo est&aacute; vac&iacute;o.</p>
                         <span>A&ntilde;ade productos para que se completen autom&aacute;ticamente al registrar tus ventas de forma m&aacute;s r&aacute;pida.</span>
                         <div class="empty-state-actions" aria-label="Acciones para comenzar el inventario">
                             <button type="button" class="btn btn-primary empty-state-action" data-quick-action="product">
                                 <i class="fa-solid fa-box" aria-hidden="true"></i> Agregar primer producto
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                             </button>
+                         </div>
+                     </div>
+                     <div class="empty-state" id="inventario-filter-empty-state">
+                         <div class="empty-icon"><i class="fa-solid fa-filter-circle-xmark" aria-hidden="true"></i></div>
+                         <p>No hay productos con estos filtros.</p>
+                         <span>Prueba otra b&uacute;squeda o vuelve a mostrar todo el cat&aacute;logo.</span>
+                         <div class="empty-state-actions">
+                             <button type="button" class="btn btn-outline empty-state-action" id="inventory-reset-filters">
+                                 <i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Limpiar filtros
+                             </button>
+                         </div>
+                     </div>
+                 </div>
+             </div>
 
             <datalist id="products-datalist">
                 <!-- Injected via JS -->

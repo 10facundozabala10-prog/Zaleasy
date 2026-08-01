@@ -3158,9 +3158,126 @@
       outline-offset: 4px;
     }
 
+    /* Clear section map for a long editorial homepage. */
+    .blog-section-nav {
+      position: relative;
+      z-index: 20;
+      border-block: 1px solid rgba(255,255,255,.08);
+      background: rgba(12, 13, 22, .96);
+      box-shadow: 0 14px 32px rgba(0,0,0,.2);
+    }
+
+    .blog-section-nav-inner {
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+      min-height: 68px;
+    }
+
+    .blog-section-nav-label {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      margin-right: .3rem;
+      color: var(--text-muted);
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .blog-section-nav-label i {
+      color: #55efc4;
+    }
+
+    .blog-section-nav-links {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      flex: 1;
+      gap: .45rem;
+    }
+
+    .blog-section-nav a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      min-height: 42px;
+      padding: .55rem .75rem;
+      color: var(--text-muted);
+      border: 1px solid transparent;
+      border-radius: 12px;
+      background: rgba(255,255,255,.025);
+      font-size: .78rem;
+      font-weight: 750;
+      text-align: center;
+      transition: color .2s ease, border-color .2s ease, background .2s ease, transform .2s ease;
+    }
+
+    .blog-section-nav a i {
+      color: #a29bfe;
+    }
+
+    .blog-section-nav a:hover,
+    .blog-section-nav a:focus-visible {
+      color: var(--text-main);
+      border-color: rgba(108,92,231,.38);
+      background: rgba(108,92,231,.12);
+      transform: translateY(-1px);
+    }
+
+    .blog-section-nav a:focus-visible {
+      outline: 3px solid rgba(85,239,196,.35);
+      outline-offset: 2px;
+    }
+
+    #blogFeatured,
+    #blogRoutes,
+    #blogArticles,
+    #calculadora,
+    #recursos,
+    #blogAuthor {
+      scroll-margin-top: 104px;
+    }
+
+    @media (max-width: 820px) {
+      .blog-section-nav-inner {
+        align-items: stretch;
+        flex-direction: column;
+        gap: .45rem;
+        padding-block: .7rem;
+      }
+
+      .blog-section-nav-label {
+        padding-inline: .15rem;
+      }
+
+      .blog-section-nav-links {
+        display: flex;
+        width: 100%;
+        padding: 0 .1rem .2rem;
+        overflow-x: auto;
+        scroll-snap-type: x proximity;
+        scrollbar-width: none;
+      }
+
+      .blog-section-nav-links::-webkit-scrollbar {
+        display: none;
+      }
+
+      .blog-section-nav a {
+        flex: 0 0 auto;
+        min-height: 44px;
+        min-width: 132px;
+        scroll-snap-align: start;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .skip-link,
-      #back-to-top {
+      #back-to-top,
+      .blog-section-nav a {
         transition: none;
       }
     }
@@ -3271,6 +3388,21 @@
     </div>
   </header>
 
+  <nav class="blog-section-nav" aria-label="Secciones del blog">
+    <div class="container blog-section-nav-inner">
+      <span class="blog-section-nav-label"><i class="fa-solid fa-compass" aria-hidden="true"></i> Explora el blog</span>
+      <div class="blog-section-nav-links">
+        <a href="#blogFeatured"><i class="fa-solid fa-star" aria-hidden="true"></i> Destacado</a>
+        <a href="#blogRoutes"><i class="fa-solid fa-route" aria-hidden="true"></i> Rutas</a>
+        <a href="#blogArticles"><i class="fa-solid fa-layer-group" aria-hidden="true"></i> Biblioteca</a>
+        <a href="#calculadora"><i class="fa-solid fa-calculator" aria-hidden="true"></i> Calculadora</a>
+        <a href="#recursos"><i class="fa-solid fa-download" aria-hidden="true"></i> Recursos</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="mainContent">
+
   <script>
     let activeBlogCategory = 'all';
     let blogSortMode = 'newest';
@@ -3353,18 +3485,29 @@
       });
     }
 
-    function placeBlogDiscoveryFirst() {
+    function placeBlogCoreSections() {
       const library = document.getElementById('blogArticles');
       const stats = document.querySelector('.blog-stats-strip');
+      const featured = document.getElementById('blogFeatured');
       const routes = document.querySelector('.blog-problem-routes');
       const actionBridge = document.querySelector('.blog-action-bridge');
       if (!library || !stats) return;
-      if (routes && stats.nextElementSibling !== routes) stats.insertAdjacentElement('afterend', routes);
-      const actionBridgeAnchor = routes || stats;
+
+      if (featured && stats.nextElementSibling !== featured) {
+        stats.insertAdjacentElement('afterend', featured);
+      }
+
+      const routesAnchor = featured || stats;
+      if (routes && routesAnchor.nextElementSibling !== routes) {
+        routesAnchor.insertAdjacentElement('afterend', routes);
+      }
+
+      const actionBridgeAnchor = routes || featured || stats;
       if (actionBridge && actionBridgeAnchor.nextElementSibling !== actionBridge) {
         actionBridgeAnchor.insertAdjacentElement('afterend', actionBridge);
       }
-      const discoveryAnchor = actionBridge || routes || stats;
+
+      const discoveryAnchor = actionBridge || routes || featured || stats;
       if (discoveryAnchor.nextElementSibling !== library) discoveryAnchor.insertAdjacentElement('afterend', library);
     }
 
@@ -4480,7 +4623,7 @@
 
     // Init count on load
     window.addEventListener('DOMContentLoaded', () => {
-      placeBlogDiscoveryFirst();
+      placeBlogCoreSections();
       const total = document.querySelectorAll('.blog-card:not(.coming-soon)').length;
       updateCount(total);
       document.querySelectorAll('.blog-card').forEach((card, i) => {
@@ -4579,7 +4722,7 @@
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
   <!-- Featured Article Banner -->
-  <section class="container" style="padding-top: 3rem;">
+  <section class="container" id="blogFeatured" style="padding-top: 3rem;">
     <div class="featured-article" id="dailyFeaturedArticle" style="
       background: url('assets/Blog imagenes/oferta-irresistible.png') center/cover;
       border-radius: 24px;
@@ -4626,7 +4769,7 @@
     </div>
   </section>
 
-  <section class="container blog-problem-routes" aria-labelledby="problemRoutesTitle">
+  <section class="container blog-problem-routes" id="blogRoutes" aria-labelledby="problemRoutesTitle">
     <div class="problem-routes-shell">
       <div class="problem-routes-intro">
         <div>
@@ -4698,7 +4841,7 @@
     </div>
   </section>
 
-  <section class="container blog-action-bridge" aria-labelledby="actionBridgeTitle">
+  <section class="container blog-action-bridge" id="blogApply" aria-labelledby="actionBridgeTitle">
     <div class="action-bridge-shell">
       <div class="action-bridge-intro">
         <small><i class="fa-solid fa-bolt" aria-hidden="true"></i> De la gu&iacute;a a la acci&oacute;n</small>
@@ -4783,7 +4926,7 @@
   </script>
 
   <!-- ── Glosario Rápido de Ventas ── -->
-  <section class="container" style="padding: 2.5rem 0 2rem;">
+  <section class="container" style="padding: 2.5rem 0 2rem;" hidden aria-hidden="true">
     <div style="display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
       <div>
         <span style="background: rgba(108, 92, 231, 0.15); color: #a29bfe; padding: 0.35rem 1rem; border-radius: 20px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; display: inline-block; margin-bottom: 0.8rem; border: 1px solid rgba(108, 92, 231, 0.3);">
@@ -10727,7 +10870,7 @@
   <!-- Author Section -->
 
 
-  <section class="container">
+  <section class="container" id="blogAuthor">
     <div class="author-box" data-aos="fade-up">
       <div class="author-image">
         <img src="assets/facundo.jpg" alt="Facundo Luis Zabala">
@@ -10738,11 +10881,6 @@
         <p>
           Emprendedor, desarrollador corporativo y creador de Zaleasy. Mi misión con este blog es entregarte en tus manos las estrategias y tácticas más efectivas del mundo de las ventas para que puedas escalar la rentabilidad de tu negocio más rápido y sin cometer los errores típicos que me costaron tiempo y dinero.
         </p>
-        <div class="author-socials">
-          <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-          <a href="#" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
-        </div>
       </div>
     </div>
   </section>
@@ -10775,6 +10913,8 @@
       data-ad-format="auto" data-full-width-responsive="true"></ins>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
+
+  </main>
 
   <footer class="footer">
     <div class="container footer-content">

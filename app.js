@@ -501,8 +501,8 @@ document.addEventListener('DOMContentLoaded', () => {
     navConfig.addEventListener('click', (e) => { e.preventDefault(); switchView('nav-config', 'Configuraci\u00f3n de Empresa'); });
 
     // --- Clientes CRM ---
-    const buildClientSummary = () => {
-        const allTx = [...historyData, ...sales];
+    const buildClientSummary = (sourceData = null) => {
+        const allTx = Array.isArray(sourceData) ? sourceData : [...historyData, ...sales];
         const clientMap = {};
 
         allTx.forEach(tx => {
@@ -537,7 +537,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const clients = Object.keys(clientMap);
         const debtClients = clients.filter(name => clientMap[name].totalDeuda > 0);
         const totalDebt = debtClients.reduce((sum, name) => sum + clientMap[name].totalDeuda, 0);
-        const topDebtor = debtClients.sort((a, b) => clientMap[b].totalDeuda - clientMap[a].totalDeuda)[0] || null;
+        const topDebtor = [...debtClients].sort((a, b) => clientMap[b].totalDeuda - clientMap[a].totalDeuda)[0] || null;
 
         return { clientMap, clients, debtClients, totalDebt, topDebtor };
     };
@@ -577,6 +577,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setBadge('nav-inventario-badge', 'mobile-inventory-badge', lowStock.length, 'Inventario', lowStock.length === 1 ? 'producto con stock bajo' : 'productos con stock bajo');
     };
 
+    let clientSegmentFilter = 'all';
+    let clientSortMode = 'spent-desc';
+
     const renderClientes = () => {
         const clientesBody = document.getElementById('clientes-body');
         const emptyState = document.getElementById('clientes-empty-state');
@@ -589,6 +592,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clientesBody.innerHTML = '';
         const { clientMap, clients, debtClients, totalDebt, topDebtor } = buildClientSummary();
         const searchQuery = (document.getElementById('search-clientes')?.value || '').toLowerCase().trim();
+        const segmentFilters = document.querySelectorAll('#clientes-segment-filters [data-client-filter]');
         const keyClients = clients.filter(name => {
             const client = clientMap[name];
             return client.totalDeuda <= 0 && (client.totalGastado >= dailyGoal * 3 || client.totalCompras >= 5);
@@ -609,8 +613,24 @@ document.addEventListener('DOMContentLoaded', () => {
         setClientMetric('clientes-key-meta', keyClients.length ? `${keyClients.length === 1 ? 'Relación consolidada' : 'Relaciones consolidadas'}` : 'Por desarrollar');
         if (clearSearch) clearSearch.hidden = !searchQuery;
 
-        const sortedClients = Object.keys(clientMap).sort((a,b) => clientMap[b].totalGastado - clientMap[a].totalGastado);
-        const filteredClients = sortedClients.filter(clientName => !searchQuery || clientName.toLowerCase().includes(searchQuery));
+        segmentFilters.forEach(button => {
+            const selected = button.dataset.clientFilter === clientSegmentFilter;
+            button.classList.toggle('active', selected);
+            button.setAttribute('aria-pressed', selected ? 'true' : 'false');
+        });
+
+        const sortedClients = Object.keys(clientMap).sort((a, b) => {
+            if (clientSortMode === 'debt-desc') return clientMap[b].totalDeuda - clientMap[a].totalDeuda;
+            if (clientSortMode === 'recent-desc') return clientMap[b].ultimaCompra - clientMap[a].ultimaCompra;
+            if (clientSortMode === 'name-asc') return a.localeCompare(b, 'es', { sensitivity: 'base' });
+            return clientMap[b].totalGastado - clientMap[a].totalGastado;
+        });
+        const filteredClients = sortedClients.filter(clientName => {
+            const searchMatches = !searchQuery || clientName.toLowerCase().includes(searchQuery);
+            const segmentMatches = clientSegmentFilter === 'all' || getClientSegment(clientMap[clientName]).key === clientSegmentFilter;
+            return searchMatches && segmentMatches;
+        });
+        const directoryTotalLabel = sortedClients.length === 1 ? 'cliente' : 'clientes';
 
         if (sortedClients.length === 0) {
             emptyState.classList.add('active');
@@ -621,16 +641,27 @@ document.addEventListener('DOMContentLoaded', () => {
             emptyState.classList.remove('active');
             filterEmptyState?.classList.add('active');
             tableContainer.style.display = 'none';
-            if (resultCount) resultCount.textContent = `0 de ${sortedClients.length} clientes`;
-            if (filterEmptyCopy) filterEmptyCopy.textContent = `No hay coincidencias para “${document.getElementById('search-clientes')?.value.trim()}”. Prueba con otro nombre.`;
+            if (resultCount) resultCount.textContent = `0 de ${sortedClients.length} ${directoryTotalLabel}`;
+            if (filterEmptyCopy) {
+                const filterLabels = {
+                    debt: 'con saldo pendiente',
+                    key: 'clave',
+                    reactivate: 'para reactivar',
+                    active: 'activos'
+                };
+                const searchText = document.getElementById('search-clientes')?.value.trim();
+                filterEmptyCopy.textContent = searchText
+                    ? `No hay coincidencias para “${searchText}”${clientSegmentFilter !== 'all' ? ` entre los clientes ${filterLabels[clientSegmentFilter]}` : ''}.`
+                    : `Todavía no hay clientes ${filterLabels[clientSegmentFilter] || 'en este segmento'}.`;
+            }
         } else {
             emptyState.classList.remove('active');
             filterEmptyState?.classList.remove('active');
             tableContainer.style.display = 'block';
             if (resultCount) {
-                resultCount.textContent = searchQuery
-                    ? `${filteredClients.length} de ${sortedClients.length} clientes`
-                    : `${sortedClients.length} ${sortedClients.length === 1 ? 'cliente' : 'clientes'}`;
+                resultCount.textContent = searchQuery || clientSegmentFilter !== 'all'
+                    ? `${filteredClients.length} de ${sortedClients.length} ${directoryTotalLabel}`
+                    : `${sortedClients.length} ${directoryTotalLabel}`;
             }
 
             filteredClients.forEach(clientName => {
@@ -664,10 +695,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const daysSinceLast = client.ultimaCompra
             ? Math.floor((Date.now() - Number(client.ultimaCompra)) / 86400000)
             : Infinity;
-        if (client.totalDeuda > 0) return { label: 'Con saldo pendiente', tone: 'danger' };
-        if (client.totalGastado >= dailyGoal * 3 || client.totalCompras >= 5) return { label: 'Cliente clave', tone: 'success' };
-        if (daysSinceLast > 45) return { label: 'Reactivar', tone: 'warning' };
-        return { label: 'Activo', tone: 'neutral' };
+        if (client.totalDeuda > 0) return { key: 'debt', label: 'Con saldo pendiente', tone: 'danger' };
+        if (client.totalGastado >= dailyGoal * 3 || client.totalCompras >= 5) return { key: 'key', label: 'Cliente clave', tone: 'success' };
+        if (daysSinceLast > 45) return { key: 'reactivate', label: 'Reactivar', tone: 'warning' };
+        return { key: 'active', label: 'Activo', tone: 'neutral' };
     };
     
     const searchClientesInput = document.getElementById('search-clientes');
@@ -682,7 +713,27 @@ document.addEventListener('DOMContentLoaded', () => {
         searchClientesInput.focus();
     };
     document.getElementById('clientes-clear-search')?.addEventListener('click', clearClientSearch);
-    document.getElementById('clientes-empty-clear-search')?.addEventListener('click', clearClientSearch);
+    document.getElementById('clientes-empty-clear-search')?.addEventListener('click', () => {
+        if (searchClientesInput) searchClientesInput.value = '';
+        clientSegmentFilter = 'all';
+        clientSortMode = 'spent-desc';
+        const sortControl = document.getElementById('clientes-sort');
+        if (sortControl) sortControl.value = clientSortMode;
+        renderClientes();
+        searchClientesInput?.focus();
+    });
+
+    document.getElementById('clientes-segment-filters')?.addEventListener('click', event => {
+        const button = event.target.closest('[data-client-filter]');
+        if (!button) return;
+        clientSegmentFilter = button.dataset.clientFilter || 'all';
+        renderClientes();
+    });
+
+    document.getElementById('clientes-sort')?.addEventListener('change', event => {
+        clientSortMode = event.target.value || 'spent-desc';
+        renderClientes();
+    });
 
     if (receivablesOpenClients) {
         receivablesOpenClients.addEventListener('click', () => switchView('nav-clientes'));
@@ -882,8 +933,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Reports Chart Instances ---
     let repWeeklyChartInstance = null;
     let repMethodsChartInstance = null;
+    let reportsPeriod = 'all';
 
-    const updateExecutiveSummary = ({ allData, incomes, expenses, totalRevenue, totalExpenses, methodMap }) => {
+    const reportPeriodLabels = {
+        '7': 'Últimos 7 días',
+        '30': 'Últimos 30 días',
+        '90': 'Últimos 90 días',
+        all: 'Todo el historial'
+    };
+
+    const filterReportDataByPeriod = (data) => {
+        if (reportsPeriod === 'all') return data.slice();
+        const days = Number(reportsPeriod);
+        const start = new Date();
+        start.setHours(0, 0, 0, 0);
+        start.setDate(start.getDate() - (days - 1));
+        return data.filter(item => Number(item.timestamp) >= start.getTime());
+    };
+
+    const updateExecutiveSummary = ({ allData, incomes, expenses, totalRevenue, totalExpenses, methodMap, periodLabel }) => {
         const net = totalRevenue - totalExpenses;
         const productMap = {};
         incomes.forEach(s => {
@@ -894,7 +962,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const topProduct = Object.entries(productMap).sort((a, b) => b[1].total - a[1].total)[0];
         const topMethod = Object.entries(methodMap).sort((a, b) => b[1] - a[1])[0];
-        const { clientMap, clients, totalDebt } = buildClientSummary();
+        const { clientMap, clients, totalDebt } = buildClientSummary(allData);
         const topClient = clients
             .sort((a, b) => clientMap[b].totalGastado - clientMap[a].totalGastado)[0];
         const lowStock = productCatalog.filter(p => p.stock !== undefined && p.stock !== null && Number(p.stock) <= 5);
@@ -918,7 +986,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setText('exec-risk-level', riskLabel);
 
         const period = document.getElementById('executive-summary-period');
-        if (period) period.textContent = `${allData.length} movimientos analizados entre ventas de hoy e historial.`;
+        if (period) period.textContent = `${periodLabel}: ${allData.length} ${allData.length === 1 ? 'movimiento analizado' : 'movimientos analizados'}.`;
 
         const insights = [];
         if (topProduct) insights.push(`Producto fuerte: ${topProduct[0]} genero ${formatCurrency(topProduct[1].total)}.`);
@@ -932,9 +1000,20 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const renderReports = () => {
-        const allData = [...historyData, ...sales]; // Include today's sales too
+        const fullData = [...historyData, ...sales];
+        const allData = filterReportDataByPeriod(fullData);
         const incomes = allData.filter(s => s.type !== 'expense');
         const expenses = allData.filter(s => s.type === 'expense');
+        const periodLabel = reportPeriodLabels[reportsPeriod] || reportPeriodLabels.all;
+        const reportPeriodLabel = document.getElementById('reports-period-label');
+        const reportPeriodSummary = document.getElementById('reports-period-summary');
+        if (reportPeriodLabel) reportPeriodLabel.textContent = periodLabel;
+        if (reportPeriodSummary) {
+            reportPeriodSummary.textContent = `${allData.length} ${allData.length === 1 ? 'movimiento analizado' : 'movimientos analizados'}`;
+        }
+        document.querySelectorAll('[data-report-period]').forEach(button => {
+            button.setAttribute('aria-pressed', String(button.dataset.reportPeriod === reportsPeriod));
+        });
 
         // --- Summary KPIs ---
         const totalRevenue = incomes.reduce((sum, s) => sum + s.amount, 0);
@@ -947,16 +1026,25 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('rep-avg-sale').textContent = formatCurrency(avgSale);
         document.getElementById('rep-total-expenses').textContent = formatCurrency(totalExpenses);
 
-        // --- Weekly Bar Chart (last 7 days) ---
+        // --- Revenue trend (7 or 30 visible days according to the selected period) ---
         const labels = [];
         const weeklyTotals = [];
         const isDark = localStorage.getItem('theme') !== 'light';
         const textColor = isDark ? '#8d93aa' : '#636e72';
+        const trendDays = reportsPeriod === '7' ? 7 : 30;
+        const trendTitle = document.getElementById('reports-trend-title');
+        if (trendTitle) {
+            trendTitle.textContent = reportsPeriod === '7'
+                ? 'Ingresos de los últimos 7 días'
+                : `Tendencia de ingresos · últimos ${trendDays} días`;
+        }
 
-        for (let i = 6; i >= 0; i--) {
+        for (let i = trendDays - 1; i >= 0; i--) {
             const d = new Date();
             d.setDate(d.getDate() - i);
-            const dayStr = d.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' });
+            const dayStr = trendDays === 7
+                ? d.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' })
+                : d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
             labels.push(dayStr);
             const dayKey = d.toISOString().split('T')[0];
             const dayTotal = incomes
@@ -995,7 +1083,7 @@ document.addEventListener('DOMContentLoaded', () => {
         incomes.forEach(s => { methodMap[s.method] = (methodMap[s.method] || 0) + s.amount; });
         const methodLabels = Object.keys(methodMap);
         const methodValues = Object.values(methodMap);
-        updateExecutiveSummary({ allData, incomes, expenses, totalRevenue, totalExpenses, methodMap });
+        updateExecutiveSummary({ allData, incomes, expenses, totalRevenue, totalExpenses, methodMap, periodLabel });
 
         if (repMethodsChartInstance) repMethodsChartInstance.destroy();
         const ctxMethods = document.getElementById('rep-methods-chart').getContext('2d');
@@ -1057,26 +1145,30 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // --- 30-Day Activity Heatmap ---
+        // --- Period-aware activity heatmap ---
         const heatmapEl = document.getElementById('rep-heatmap');
         if (heatmapEl) {
             heatmapEl.innerHTML = '';
-            const allTx = [...historyData, ...sales];
-            for (let i = 29; i >= 0; i--) {
+            const heatmapDays = reportsPeriod === '7' ? 7 : 30;
+            const activityTitle = document.getElementById('reports-activity-title');
+            const activityCaption = document.getElementById('reports-activity-caption');
+            if (activityTitle) activityTitle.innerHTML = '<i class="fa-solid fa-calendar-days" aria-hidden="true"></i> Actividad por día';
+            if (activityCaption) activityCaption.textContent = `Últimos ${heatmapDays} días dentro del período seleccionado`;
+            for (let i = heatmapDays - 1; i >= 0; i--) {
                 const d = new Date();
                 d.setDate(d.getDate() - i);
                 const dayKey = d.toISOString().split('T')[0];
-                const dayTotal = allTx
+                const dayTotal = allData
                     .filter(s => s.type !== 'expense' && new Date(s.timestamp).toISOString().split('T')[0] === dayKey)
                     .reduce((sum, s) => sum + s.amount, 0);
 
                 const dot = document.createElement('div');
                 dot.className = 'heatmap-dot';
                 if (dayTotal > 0) {
-                    const maxPossible = Math.max(...Array.from({ length: 30 }, (_, idx) => {
+                    const maxPossible = Math.max(...Array.from({ length: heatmapDays }, (_, idx) => {
                         const dd = new Date(); dd.setDate(dd.getDate() - idx);
                         const k = dd.toISOString().split('T')[0];
-                        return allTx.filter(s => s.type !== 'expense' && new Date(s.timestamp).toISOString().split('T')[0] === k).reduce((a, s) => a + s.amount, 0);
+                        return allData.filter(s => s.type !== 'expense' && new Date(s.timestamp).toISOString().split('T')[0] === k).reduce((a, s) => a + s.amount, 0);
                     }), 1);
                     const intensity = Math.min(dayTotal / maxPossible, 1);
                     if (intensity > 0.7) dot.classList.add('hm-high');
@@ -1123,7 +1215,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const repClientsEmptyState = document.getElementById('rep-clients-empty-state');
         if (repClientsBody && repClientsContainer && repClientsEmptyState) {
             repClientsBody.replaceChildren();
-            const { clientMap } = buildClientSummary();
+            const { clientMap } = buildClientSummary(allData);
             const topClients = Object.entries(clientMap)
                 .sort((a, b) => b[1].totalGastado - a[1].totalGastado)
                 .slice(0, 10);
@@ -1154,6 +1246,13 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     };
+
+    document.getElementById('reports-period-controls')?.addEventListener('click', event => {
+        const button = event.target.closest('[data-report-period]');
+        if (!button) return;
+        reportsPeriod = button.dataset.reportPeriod || 'all';
+        renderReports();
+    });
 
     // --- Config Logic ---
     const configStoreNameInput = document.getElementById('config-store-name');
@@ -5686,34 +5785,163 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // --- Inventario / Catálogo Logic ---
+    let inventoryStockFilter = 'all';
+    let inventorySortMode = 'name';
+
     const renderInventario = () => {
         const tbody = document.getElementById('inventario-body');
         const emptyState = document.getElementById('inventario-empty-state');
+        const filterEmptyState = document.getElementById('inventario-filter-empty-state');
         const searchInput = document.getElementById('search-inventario');
         const tableContainer = document.getElementById('inventario-table-container');
+        const toolbar = document.querySelector('.inventory-toolbar');
+        const resultCount = document.getElementById('inventory-result-count');
+        const searchClear = document.getElementById('inventory-clear-search');
         if (!tbody) return;
-        
+
         tbody.innerHTML = '';
-        
+
+        const hasTrackedStock = product => product.stock !== undefined
+            && product.stock !== null
+            && Number.isFinite(Number(product.stock));
+        const stockValue = product => hasTrackedStock(product) ? Number(product.stock) : null;
+        const lowStockProducts = productCatalog.filter(product => {
+            const stock = stockValue(product);
+            return stock !== null && stock > 0 && stock <= 5;
+        });
+        const outOfStockProducts = productCatalog.filter(product => {
+            const stock = stockValue(product);
+            return stock !== null && stock <= 0;
+        });
+        const untrackedProducts = productCatalog.filter(product => !hasTrackedStock(product));
+        const criticalProducts = [...lowStockProducts, ...outOfStockProducts];
+        const totalUnits = productCatalog.reduce((sum, product) => {
+            const stock = stockValue(product);
+            return sum + (stock !== null ? Math.max(0, stock) : 0);
+        }, 0);
+        const estimatedValue = productCatalog.reduce((sum, product) => {
+            const stock = stockValue(product);
+            const price = Number(product.price || 0);
+            return sum + (stock !== null && stock > 0 && price > 0 ? stock * price : 0);
+        }, 0);
+        const pricedWithStock = productCatalog.filter(product => {
+            const stock = stockValue(product);
+            return stock !== null && stock > 0 && Number(product.price || 0) > 0;
+        }).length;
+        const setInventoryText = (id, value) => {
+            const element = document.getElementById(id);
+            if (element) element.textContent = value;
+        };
+
+        setInventoryText('inventory-total-products', productCatalog.length);
+        setInventoryText('inventory-total-products-meta', productCatalog.length
+            ? `${productCatalog.length === 1 ? '1 referencia activa' : `${productCatalog.length} referencias activas`}`
+            : 'Catálogo vacío');
+        setInventoryText('inventory-total-units', totalUnits);
+        setInventoryText('inventory-total-units-meta', untrackedProducts.length
+            ? `${untrackedProducts.length} sin stock cargado`
+            : productCatalog.length ? 'Todo el stock controlado' : 'Sin stock cargado');
+        setInventoryText('inventory-critical-count', criticalProducts.length);
+        setInventoryText('inventory-critical-meta', criticalProducts.length
+            ? `${outOfStockProducts.length} agotado${outOfStockProducts.length === 1 ? '' : 's'} · ${lowStockProducts.length} bajo${lowStockProducts.length === 1 ? '' : 's'}`
+            : 'Sin alertas');
+        setInventoryText('inventory-estimated-value', formatCurrency(estimatedValue));
+        setInventoryText('inventory-estimated-value-meta', pricedWithStock
+            ? `${pricedWithStock} ${pricedWithStock === 1 ? 'producto valorizado' : 'productos valorizados'}`
+            : 'Precio por stock');
+        setInventoryText('inventory-filter-all-count', productCatalog.length);
+        setInventoryText('inventory-filter-low-count', lowStockProducts.length);
+        setInventoryText('inventory-filter-out-count', outOfStockProducts.length);
+        setInventoryText('inventory-filter-untracked-count', untrackedProducts.length);
+
+        document.querySelectorAll('[data-inventory-filter]').forEach(button => {
+            const active = button.dataset.inventoryFilter === inventoryStockFilter;
+            button.setAttribute('aria-pressed', String(active));
+        });
+
         if (productCatalog.length === 0) {
             emptyState.classList.add('active');
+            filterEmptyState?.classList.remove('active');
             tableContainer.style.display = 'none';
+            if (toolbar) toolbar.style.display = 'none';
+            if (resultCount) resultCount.textContent = '0 productos';
         } else {
             emptyState.classList.remove('active');
-            tableContainer.style.display = 'block';
-            
+            if (toolbar) toolbar.style.display = 'grid';
+
             const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
-            const filtered = productCatalog.filter(p => (p.name || '').toLowerCase().includes(query));
-            
-            // Sort alphabetically by default
-            filtered.sort((a,b) => (a.name || '').localeCompare(b.name || '')).forEach(prod => {
+            if (searchClear) searchClear.hidden = !query;
+            let filtered = productCatalog.filter(product => (product.name || '').toLowerCase().includes(query));
+
+            if (inventoryStockFilter === 'low') {
+                filtered = filtered.filter(product => {
+                    const stock = stockValue(product);
+                    return stock !== null && stock > 0 && stock <= 5;
+                });
+            } else if (inventoryStockFilter === 'out') {
+                filtered = filtered.filter(product => {
+                    const stock = stockValue(product);
+                    return stock !== null && stock <= 0;
+                });
+            } else if (inventoryStockFilter === 'untracked') {
+                filtered = filtered.filter(product => !hasTrackedStock(product));
+            }
+
+            const byName = (a, b) => (a.name || '').localeCompare(b.name || '');
+            filtered.sort((a, b) => {
+                if (inventorySortMode === 'stock-asc') {
+                    const aStock = stockValue(a);
+                    const bStock = stockValue(b);
+                    if (aStock === null && bStock === null) return byName(a, b);
+                    if (aStock === null) return 1;
+                    if (bStock === null) return -1;
+                    return aStock - bStock || byName(a, b);
+                }
+                if (inventorySortMode === 'stock-desc') {
+                    const aStock = stockValue(a);
+                    const bStock = stockValue(b);
+                    if (aStock === null && bStock === null) return byName(a, b);
+                    if (aStock === null) return 1;
+                    if (bStock === null) return -1;
+                    return bStock - aStock || byName(a, b);
+                }
+                if (inventorySortMode === 'value-desc') {
+                    const value = product => Math.max(0, stockValue(product) || 0) * Number(product.price || 0);
+                    return value(b) - value(a) || byName(a, b);
+                }
+                return byName(a, b);
+            });
+
+            if (resultCount) {
+                resultCount.textContent = filtered.length === productCatalog.length && !query && inventoryStockFilter === 'all'
+                    ? `${filtered.length} ${filtered.length === 1 ? 'producto' : 'productos'}`
+                    : `${filtered.length} de ${productCatalog.length}`;
+            }
+
+            if (filtered.length === 0) {
+                tableContainer.style.display = 'none';
+                filterEmptyState?.classList.add('active');
+                return;
+            }
+
+            tableContainer.style.display = 'block';
+            filterEmptyState?.classList.remove('active');
+
+            filtered.forEach(prod => {
                 const tr = document.createElement('tr');
-                const stockHtml = prod.stock !== undefined && prod.stock !== null 
-                    ? `<span class="badge" style="background:${prod.stock > 5 ? 'var(--primary-light)' : 'rgba(232, 67, 147, 0.15)'}; color:${prod.stock > 5 ? 'var(--primary)' : 'var(--danger)'};">${prod.stock} u.</span>` 
-                    : `<span style="color:var(--text-muted); font-size:0.85rem;">—</span>`;
+                const stock = stockValue(prod);
+                const stockState = stock === null ? 'untracked' : stock <= 0 ? 'out' : stock <= 5 ? 'low' : 'healthy';
+                const stockLabel = stock === null
+                    ? 'Sin controlar'
+                    : stock <= 0 ? 'Agotado'
+                        : `${stock} u.`;
+                const stockHtml = `<span class="inventory-stock-badge" data-state="${stockState}">${stockLabel}</span>`;
+                const safeName = String(prod.name || '').replace(/[&<>"']/g, character => ({
+                    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
+                }[character]));
 
                 tr.innerHTML = `
-                    <td><strong>${prod.name}</strong></td>
+                    <td><strong>${safeName}</strong></td>
                     <td style="color:var(--success); font-weight:bold;">${prod.price > 0 ? formatCurrency(prod.price) : '<span style="color:var(--text-muted); font-size:0.85rem; font-weight:normal;">Sin precio fijo</span>'}</td>
                     <td>${stockHtml}</td>
                     <td style="text-align:right;">
@@ -5883,11 +6111,42 @@ document.addEventListener('DOMContentLoaded', () => {
             setupAutocomplete(); // refresh autofill globally
             showToast(wasEditing ? 'Producto actualizado.' : 'Producto agregado al catálogo!');
         });
-        
-        if (searchInventario) {
-            searchInventario.addEventListener('input', renderInventario);
-        }
     }
+
+    const inventoryFilterChips = document.getElementById('inventory-filter-chips');
+    const inventorySortSelect = document.getElementById('inventory-sort');
+    const inventoryClearSearch = document.getElementById('inventory-clear-search');
+    const inventoryResetFilters = document.getElementById('inventory-reset-filters');
+
+    if (searchInventario) {
+        searchInventario.addEventListener('input', renderInventario);
+    }
+
+    inventoryFilterChips?.addEventListener('click', event => {
+        const button = event.target.closest('[data-inventory-filter]');
+        if (!button) return;
+        inventoryStockFilter = button.dataset.inventoryFilter || 'all';
+        renderInventario();
+    });
+
+    inventorySortSelect?.addEventListener('change', () => {
+        inventorySortMode = inventorySortSelect.value || 'name';
+        renderInventario();
+    });
+
+    inventoryClearSearch?.addEventListener('click', () => {
+        searchInventario.value = '';
+        searchInventario.focus();
+        renderInventario();
+    });
+
+    inventoryResetFilters?.addEventListener('click', () => {
+        inventoryStockFilter = 'all';
+        inventorySortMode = 'name';
+        if (searchInventario) searchInventario.value = '';
+        if (inventorySortSelect) inventorySortSelect.value = 'name';
+        renderInventario();
+    });
 
     // --- Import Backup Logic ---
     const setupImportBackupLegacy = () => {
