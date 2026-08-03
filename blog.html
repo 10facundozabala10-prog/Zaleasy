@@ -461,6 +461,10 @@
       margin: 2.5rem 0 0;
     }
 
+    .blog-catalog-progress + .blog-load-more-wrap {
+      margin-top: .9rem;
+    }
+
     .blog-load-more-wrap[hidden] {
       display: none;
     }
@@ -472,6 +476,104 @@
       border-radius: 12px;
       border: 1px solid rgba(162, 155, 254, 0.35);
       box-shadow: 0 12px 28px rgba(108, 92, 231, 0.18);
+    }
+
+    .blog-catalog-progress {
+      margin: 2.4rem auto 0;
+      padding: 1rem 1.1rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: .75rem 1rem;
+      max-width: 760px;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 12px;
+      background: rgba(28,29,41,.72);
+    }
+
+    .blog-catalog-progress[hidden] {
+      display: none;
+    }
+
+    .blog-catalog-progress-copy {
+      min-width: 0;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      color: var(--text-muted);
+      font-size: .78rem;
+    }
+
+    .blog-catalog-progress-copy strong {
+      color: var(--text-main);
+      font-size: .86rem;
+    }
+
+    .blog-catalog-progress-track {
+      grid-column: 1 / -1;
+      height: 7px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+    }
+
+    .blog-catalog-progress-fill {
+      width: 0;
+      height: 100%;
+      display: block;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #6c5ce7, #00d2d3);
+      transition: width .25s ease;
+    }
+
+    .blog-catalog-progress a {
+      min-height: 44px;
+      padding: 0 .2rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: .4rem;
+      color: #55efc4;
+      font-size: .76rem;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .blog-catalog-progress a:hover,
+    .blog-catalog-progress a:focus-visible {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .blog-card {
+      content-visibility: auto;
+      contain-intrinsic-size: auto 430px;
+    }
+
+    body.blog-layout-list .blog-card {
+      contain-intrinsic-size: auto 190px;
+    }
+
+    @media (max-width: 560px) {
+      .blog-catalog-progress {
+        grid-template-columns: 1fr;
+        align-items: stretch;
+      }
+
+      .blog-catalog-progress-copy,
+      .blog-catalog-progress a {
+        white-space: normal;
+      }
+
+      .blog-catalog-progress a {
+        justify-content: flex-start;
+      }
+
+      .blog-catalog-progress-track {
+        grid-column: auto;
+      }
     }
 
     /* Blog Stats Strip */
@@ -3159,8 +3261,14 @@
     }
 
     /* Clear section map for a long editorial homepage. */
+    html,
+    body {
+      overflow-x: clip;
+    }
+
     .blog-section-nav {
-      position: relative;
+      position: sticky;
+      top: 77px;
       z-index: 20;
       border-block: 1px solid rgba(255,255,255,.08);
       background: rgba(12, 13, 22, .96);
@@ -3220,10 +3328,113 @@
     }
 
     .blog-section-nav a:hover,
-    .blog-section-nav a:focus-visible {
+    .blog-section-nav a:focus-visible,
+    .blog-section-nav a.active {
       color: var(--text-main);
       border-color: rgba(108,92,231,.38);
       background: rgba(108,92,231,.12);
+      transform: translateY(-1px);
+    }
+
+    .blog-section-nav a.active {
+      box-shadow: inset 0 -2px 0 #55efc4, 0 8px 22px rgba(0,0,0,.16);
+    }
+
+    .blog-section-nav a.active i {
+      color: #55efc4;
+    }
+
+    .blog-app-context[hidden] {
+      display: none;
+    }
+
+    .blog-app-context {
+      position: relative;
+      z-index: 8;
+      padding-top: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .blog-app-context-shell {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.1rem;
+      border: 1px solid rgba(85,239,196,.2);
+      border-radius: 16px;
+      background:
+        linear-gradient(135deg, rgba(85,239,196,.07), rgba(108,92,231,.08)),
+        rgba(18,19,29,.94);
+      box-shadow: 0 14px 36px rgba(0,0,0,.18);
+    }
+
+    .blog-app-context-icon {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      color: #07110f;
+      border-radius: 13px;
+      background: linear-gradient(135deg, #55efc4, #00d2d3);
+      box-shadow: 0 8px 22px rgba(0,210,211,.2);
+    }
+
+    .blog-app-context-copy small {
+      display: block;
+      margin-bottom: .15rem;
+      color: #55efc4;
+      font-size: .65rem;
+      font-weight: 850;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+
+    .blog-app-context-copy strong {
+      display: block;
+      margin-bottom: .15rem;
+      color: var(--text-main);
+      font-size: .9rem;
+    }
+
+    .blog-app-context-copy span {
+      display: block;
+      color: var(--text-muted);
+      font-size: .76rem;
+      line-height: 1.45;
+    }
+
+    .blog-app-context-actions {
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+    }
+
+    .blog-app-context-actions a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .45rem;
+      min-height: 42px;
+      padding: .65rem .8rem;
+      color: var(--text-main);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 11px;
+      background: rgba(255,255,255,.04);
+      font-size: .74rem;
+      font-weight: 750;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .blog-app-context-actions a:first-child {
+      color: #07110f;
+      border-color: transparent;
+      background: linear-gradient(135deg, #55efc4, #00d2d3);
+    }
+
+    .blog-app-context-actions a:hover,
+    .blog-app-context-actions a:focus-visible {
       transform: translateY(-1px);
     }
 
@@ -3241,16 +3452,201 @@
       scroll-margin-top: 104px;
     }
 
+    #blogArticles.has-app-context,
+    #blogAppContext {
+      scroll-margin-top: 160px;
+    }
+
+    /* A richer editorial close for trust and easier onward navigation. */
+    .blog-footer {
+      position: relative;
+      padding: 4rem 0 1.5rem;
+      overflow: hidden;
+      border-top-color: rgba(108,92,231,.2);
+      background: linear-gradient(180deg, rgba(108,92,231,.055), rgba(8,9,15,.72));
+    }
+
+    .blog-footer::before {
+      content: "";
+      position: absolute;
+      top: -180px;
+      left: 50%;
+      width: 620px;
+      height: 320px;
+      border-radius: 50%;
+      background: rgba(108,92,231,.1);
+      filter: blur(90px);
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .blog-footer-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(260px, 1.65fr) repeat(2, minmax(145px, .8fr)) minmax(230px, 1.1fr);
+      gap: 2.5rem;
+      padding-bottom: 2.75rem;
+    }
+
+    .blog-footer-brandline {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      margin-bottom: 1rem;
+    }
+
+    .blog-footer-brandline img {
+      width: 44px;
+      height: 44px;
+      border-radius: 13px;
+      box-shadow: 0 8px 24px rgba(108,92,231,.28);
+    }
+
+    .blog-footer-brandline h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .blog-footer-brand p {
+      max-width: 340px;
+      color: var(--text-muted);
+      font-size: .88rem;
+      line-height: 1.65;
+    }
+
+    .blog-footer-trust {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-top: 1.15rem;
+    }
+
+    .blog-footer-trust span {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .45rem .62rem;
+      color: rgba(255,255,255,.72);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 999px;
+      background: rgba(255,255,255,.035);
+      font-size: .68rem;
+      font-weight: 700;
+    }
+
+    .blog-footer-trust i {
+      color: #55efc4;
+    }
+
+    .blog-footer-column h4 {
+      margin-bottom: 1rem;
+      color: var(--text-main);
+      font-size: .78rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .blog-footer-column a {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      width: fit-content;
+      margin-bottom: .78rem;
+      color: var(--text-muted);
+      font-size: .82rem;
+      text-decoration: none;
+      transition: color .2s ease, transform .2s ease;
+    }
+
+    .blog-footer-column a:hover,
+    .blog-footer-column a:focus-visible {
+      color: white;
+      transform: translateX(3px);
+    }
+
+    .blog-footer-column a i {
+      width: 14px;
+      color: #a29bfe;
+      text-align: center;
+    }
+
+    .blog-footer-action {
+      padding: 1.2rem;
+      border: 1px solid rgba(108,92,231,.24);
+      border-radius: 16px;
+      background: rgba(108,92,231,.07);
+    }
+
+    .blog-footer-action small {
+      color: #55efc4;
+      font-size: .68rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .blog-footer-action h4 {
+      margin: .55rem 0 .45rem;
+      font-size: 1rem;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    .blog-footer-action p {
+      margin-bottom: 1rem;
+      color: var(--text-muted);
+      font-size: .78rem;
+      line-height: 1.55;
+    }
+
+    .blog-footer-action .btn {
+      justify-content: center;
+      width: 100%;
+      min-height: 44px;
+      padding: .7rem .8rem;
+      color: white;
+      font-size: .78rem;
+    }
+
+    .blog-footer-action .btn:hover,
+    .blog-footer-action .btn:focus-visible {
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    .blog-footer-bottom {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-top: 1.35rem;
+      color: rgba(255,255,255,.38);
+      border-top: 1px solid rgba(255,255,255,.07);
+      font-size: .75rem;
+    }
+
+    .blog-footer-bottom a {
+      color: rgba(255,255,255,.58);
+      text-decoration: none;
+    }
+
+    .blog-footer-bottom a:hover {
+      color: white;
+    }
+
     @media (max-width: 820px) {
+      .blog-section-nav {
+        top: 76px;
+      }
+
       .blog-section-nav-inner {
-        align-items: stretch;
-        flex-direction: column;
-        gap: .45rem;
-        padding-block: .7rem;
+        min-height: 58px;
+        padding-block: .45rem;
       }
 
       .blog-section-nav-label {
-        padding-inline: .15rem;
+        display: none;
       }
 
       .blog-section-nav-links {
@@ -3272,6 +3668,72 @@
         min-width: 132px;
         scroll-snap-align: start;
       }
+
+      .blog-footer-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .blog-footer-brand,
+      .blog-footer-action {
+        grid-column: 1 / -1;
+      }
+
+      .blog-app-context-shell {
+        grid-template-columns: auto minmax(0, 1fr);
+      }
+
+      .blog-app-context-actions {
+        grid-column: 1 / -1;
+      }
+
+      .blog-app-context-actions a {
+        flex: 1;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .blog-section-nav {
+        top: 73px;
+      }
+
+      .blog-footer {
+        padding-top: 3rem;
+      }
+
+      .blog-footer-grid {
+        grid-template-columns: 1fr;
+        gap: 1.8rem;
+      }
+
+      .blog-footer-brand,
+      .blog-footer-action {
+        grid-column: auto;
+      }
+
+      .blog-footer-bottom {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .blog-app-context {
+        padding-top: .75rem;
+      }
+
+      .blog-app-context-shell {
+        gap: .75rem;
+        padding: .85rem;
+      }
+
+      .blog-app-context-actions {
+        align-items: stretch;
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .blog-app-context-actions a {
+        width: 100%;
+        min-height: 44px;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -3279,6 +3741,182 @@
       #back-to-top,
       .blog-section-nav a {
         transition: none;
+      }
+    }
+
+    /* Two reading densities for a library with hundreds of articles. */
+    .blog-layout-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: .25rem;
+      padding: .25rem;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 10px;
+      background: rgba(10,11,16,.46);
+    }
+
+    .blog-layout-switch > span {
+      padding: 0 .35rem 0 .45rem;
+      color: var(--text-muted);
+      font-size: .68rem;
+      font-weight: 800;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    .blog-layout-switch button {
+      min-height: 38px;
+      padding: .45rem .65rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .38rem;
+      border: 0;
+      border-radius: 7px;
+      background: transparent;
+      color: var(--text-muted);
+      font: inherit;
+      font-size: .76rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .blog-layout-switch button:hover,
+    .blog-layout-switch button:focus-visible,
+    .blog-layout-switch button.active {
+      background: rgba(0,210,211,.14);
+      color: #55efc4;
+    }
+
+    .blog-layout-switch button:focus-visible {
+      outline: 2px solid #00d2d3;
+      outline-offset: 2px;
+    }
+
+    body.blog-layout-list .blog-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1rem;
+    }
+
+    body.blog-layout-list .blog-card {
+      min-height: 190px;
+      flex-direction: row;
+      transform: none;
+    }
+
+    body.blog-layout-list .blog-card:hover {
+      transform: translateY(-3px);
+    }
+
+    body.blog-layout-list .blog-card .blog-img {
+      width: clamp(220px, 25vw, 300px);
+      height: auto !important;
+      min-height: 190px;
+      flex: 0 0 auto;
+    }
+
+    body.blog-layout-list .blog-card:hover .blog-img {
+      transform: none;
+    }
+
+    body.blog-layout-list .blog-card-content,
+    body.blog-layout-list .blog-card .blog-content {
+      min-width: 0;
+      padding: 1.2rem 1.35rem;
+    }
+
+    body.blog-layout-list .blog-card h3,
+    body.blog-layout-list .blog-card .blog-content h2 {
+      margin-bottom: .55rem;
+      font-size: 1.08rem;
+    }
+
+    body.blog-layout-list .blog-card p {
+      margin-bottom: .8rem;
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+
+    @media (max-width: 700px) {
+      .blog-layout-switch {
+        width: 100%;
+        display: grid;
+        grid-template-columns: auto repeat(2, minmax(0, 1fr));
+      }
+
+      .blog-layout-switch button {
+        min-height: 44px;
+      }
+
+      body.blog-layout-list .blog-grid {
+        gap: .75rem;
+      }
+
+      body.blog-layout-list .blog-card {
+        min-height: 150px;
+      }
+
+      body.blog-layout-list .blog-card .blog-img {
+        width: 128px;
+        min-height: 150px;
+      }
+
+      body.blog-layout-list .blog-card-content,
+      body.blog-layout-list .blog-card .blog-content {
+        padding: .85rem;
+      }
+
+      body.blog-layout-list .blog-card h3,
+      body.blog-layout-list .blog-card .blog-content h2 {
+        font-size: .94rem;
+        line-height: 1.3;
+      }
+
+      body.blog-layout-list .blog-card p {
+        display: none;
+      }
+
+      body.blog-layout-list .blog-category {
+        margin-bottom: .55rem;
+        padding: .22rem .5rem;
+        font-size: .62rem;
+      }
+
+      body.blog-layout-list .blog-footer-meta,
+      body.blog-layout-list .blog-card .blog-content .blog-footer {
+        gap: .5rem;
+        margin-top: auto !important;
+        padding-top: .55rem;
+        font-size: .7rem !important;
+      }
+    }
+
+    @media (max-width: 420px) {
+      body.blog-layout-list .blog-card .blog-img {
+        width: 104px;
+      }
+
+      body.blog-layout-list .blog-card-content,
+      body.blog-layout-list .blog-card .blog-content {
+        padding: .72rem;
+      }
+
+      body.blog-layout-list .blog-card h3,
+      body.blog-layout-list .blog-card .blog-content h2 {
+        font-size: .88rem;
+      }
+
+      body.blog-layout-list .blog-card .btn-read-more,
+      body.blog-layout-list .blog-card .read-more {
+        font-size: 0;
+      }
+
+      body.blog-layout-list .blog-card .btn-read-more::before,
+      body.blog-layout-list .blog-card .read-more::before {
+        content: 'Leer';
+        font-size: .72rem;
       }
     }
   </style>
@@ -3407,6 +4045,7 @@
     let activeBlogCategory = 'all';
     let blogSortMode = 'newest';
     let blogReadFilter = 'all';
+    let blogLayoutMode = 'grid';
     const BLOG_PAGE_SIZE = 21;
     let blogVisibleLimit = BLOG_PAGE_SIZE;
     let blogImageFailureRefreshTimer = 0;
@@ -3485,6 +4124,120 @@
       });
     }
 
+    function setupBlogSectionNavigation() {
+      const links = Array.from(document.querySelectorAll('.blog-section-nav a[href^="#"]'));
+      const items = links
+        .map(link => ({ link, section: document.getElementById(link.getAttribute('href').slice(1)) }))
+        .filter(item => item.section);
+      if (!items.length) return;
+
+      let ticking = false;
+      let lastActiveLink = null;
+      const update = () => {
+        const marker = window.scrollY + Math.min(240, window.innerHeight * .34);
+        let current = items[0];
+        items.forEach(item => {
+          if (item.section.offsetTop <= marker) current = item;
+        });
+        items.forEach(item => {
+          const active = item === current;
+          item.link.classList.toggle('active', active);
+          if (active) item.link.setAttribute('aria-current', 'location');
+          else item.link.removeAttribute('aria-current');
+        });
+        if (current.link !== lastActiveLink && window.innerWidth <= 820) {
+          const rail = current.link.parentElement;
+          const desiredLeft = current.link.offsetLeft - ((rail.clientWidth - current.link.offsetWidth) / 2);
+          const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          rail.scrollTo({ left: Math.max(0, desiredLeft), behavior: reducedMotion ? 'auto' : 'smooth' });
+        }
+        lastActiveLink = current.link;
+        ticking = false;
+      };
+
+      const requestUpdate = () => {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(update);
+      };
+
+      links.forEach(link => link.addEventListener('click', () => {
+        links.forEach(item => {
+          item.classList.toggle('active', item === link);
+          if (item === link) item.setAttribute('aria-current', 'location');
+          else item.removeAttribute('aria-current');
+        });
+      }));
+      window.addEventListener('scroll', requestUpdate, { passive: true });
+      window.addEventListener('resize', requestUpdate);
+      window.addEventListener('hashchange', () => window.setTimeout(update, 80));
+      window.addEventListener('load', requestUpdate, { once: true });
+      update();
+      window.setTimeout(update, 120);
+    }
+
+    function setupBlogAppContext() {
+      const params = new URLSearchParams(window.location.search);
+      const panel = document.getElementById('blogAppContext');
+      if (!panel || params.get('origen') !== 'app') return;
+
+      const contexts = {
+        inicio: {
+          title: 'Gu\u00edas para tu operaci\u00f3n diaria',
+          description: 'Ventas, caja y prioridades para trabajar con m\u00e1s orden.',
+          returnLabel: 'Volver al inicio'
+        },
+        historial: {
+          title: 'Gu\u00edas para ordenar movimientos',
+          description: 'Cierres, conciliaci\u00f3n y registros confiables para tu negocio.',
+          returnLabel: 'Volver al historial'
+        },
+        reportes: {
+          title: 'Gu\u00edas para interpretar resultados',
+          description: 'Indicadores, margen y criterios para convertir datos en decisiones.',
+          returnLabel: 'Volver a reportes'
+        },
+        clientes: {
+          title: 'Gu\u00edas para cuidar la relaci\u00f3n con clientes',
+          description: 'Seguimiento, cobros y posventa para no perder oportunidades.',
+          returnLabel: 'Volver a clientes'
+        },
+        inventario: {
+          title: 'Gu\u00edas para proteger stock y margen',
+          description: 'Inventario, precios, rotaci\u00f3n y mermas explicados de forma pr\u00e1ctica.',
+          returnLabel: 'Volver al inventario'
+        },
+        configuracion: {
+          title: 'Gu\u00edas para organizar el negocio',
+          description: 'Procesos, objetivos y rutinas para construir una operaci\u00f3n m\u00e1s s\u00f3lida.',
+          returnLabel: 'Volver a configuraci\u00f3n'
+        }
+      };
+
+      const area = params.get('area') || 'inicio';
+      const context = contexts[area] || contexts.inicio;
+      const title = document.getElementById('blogAppContextTitle');
+      const description = document.getElementById('blogAppContextDescription');
+      const returnLink = document.getElementById('blogAppContextReturn');
+      if (title) title.textContent = context.title;
+      if (description) description.textContent = context.description;
+      if (returnLink) {
+        returnLink.href = `app.html#${contexts[area] ? area : 'inicio'}`;
+        returnLink.innerHTML = `<i class="fa-solid fa-arrow-left" aria-hidden="true"></i> ${context.returnLabel}`;
+      }
+      panel.hidden = false;
+      const library = document.getElementById('blogArticles');
+      library?.classList.add('has-app-context');
+      if (window.location.hash === '#blogArticles' || window.location.hash === '#blogAppContext') {
+        const alignContextPanel = () => {
+          const panelTop = panel.getBoundingClientRect().top + window.scrollY;
+          window.scrollTo({ top: Math.max(0, panelTop - 160), behavior: 'auto' });
+        };
+        window.addEventListener('load', () => window.setTimeout(alignContextPanel, 60), { once: true });
+        window.setTimeout(alignContextPanel, 220);
+      }
+    }
+
     function placeBlogCoreSections() {
       const library = document.getElementById('blogArticles');
       const stats = document.querySelector('.blog-stats-strip');
@@ -3514,11 +4267,12 @@
     function getBlogViewUrl() {
       const url = new URL(window.location.href);
       const query = (document.getElementById('blogSearch')?.value || '').trim();
-      ['buscar', 'categoria', 'lectura', 'orden'].forEach(key => url.searchParams.delete(key));
+      ['buscar', 'categoria', 'lectura', 'orden', 'vista'].forEach(key => url.searchParams.delete(key));
       if (query) url.searchParams.set('buscar', query);
       if (activeBlogCategory !== 'all') url.searchParams.set('categoria', activeBlogCategory);
       if (blogReadFilter !== 'all') url.searchParams.set('lectura', blogReadFilter);
       if (blogSortMode !== 'newest') url.searchParams.set('orden', blogSortMode);
+      if (blogLayoutMode === 'list') url.searchParams.set('vista', 'lista');
       return url;
     }
 
@@ -3543,10 +4297,12 @@
       const requestedCategory = normalizeBlogText(params.get('categoria') || 'all');
       const requestedSort = params.get('orden') || 'newest';
       const requestedReadMode = params.get('lectura') || 'all';
+      const requestedLayout = params.get('vista') || (localStorage.getItem('zaleasyBlogLayout') === 'list' ? 'lista' : 'grid');
 
       activeBlogCategory = categories.has(requestedCategory) ? requestedCategory : 'all';
       blogSortMode = sorts.has(requestedSort) ? requestedSort : 'newest';
       blogReadFilter = readModes.has(requestedReadMode) ? requestedReadMode : 'all';
+      blogLayoutMode = requestedLayout === 'lista' ? 'list' : 'grid';
 
       const sort = document.getElementById('blogSort');
       setBlogSearchValue(params.get('buscar') || '');
@@ -3561,6 +4317,7 @@
         button.classList.toggle('active', selected);
         button.setAttribute('aria-pressed', selected ? 'true' : 'false');
       });
+      applyBlogLayoutMode();
       resetBlogPagination();
     }
 
@@ -3868,12 +4625,21 @@
       const wrap = document.getElementById('blogLoadMoreWrap');
       const btn = document.getElementById('blogLoadMoreBtn');
       const count = document.getElementById('blogLoadMoreCount');
+      const progress = document.getElementById('blogCatalogProgress');
+      const progressText = document.getElementById('blogCatalogProgressText');
+      const progressPercent = document.getElementById('blogCatalogProgressPercent');
+      const progressFill = document.getElementById('blogCatalogProgressFill');
       if (!wrap || !btn) return;
 
       const remaining = Math.max(matched - visible, 0);
       wrap.hidden = remaining === 0;
       btn.disabled = remaining === 0;
       if (count) count.textContent = remaining > BLOG_PAGE_SIZE ? BLOG_PAGE_SIZE : remaining;
+      const percentage = matched > 0 ? Math.round((visible / matched) * 100) : 0;
+      if (progress) progress.hidden = matched === 0;
+      if (progressText) progressText.textContent = `${visible} de ${matched} artículo${matched === 1 ? '' : 's'} visibles`;
+      if (progressPercent) progressPercent.textContent = percentage >= 100 ? 'Biblioteca recorrida' : `${percentage}% recorrido`;
+      if (progressFill) progressFill.style.width = `${percentage}%`;
     }
 
     function loadMoreBlogArticles() {
@@ -3950,6 +4716,28 @@
         document.body.classList.add('blog-focus-mode');
       }
       applyBlogFocusButton();
+    }
+
+    function applyBlogLayoutMode() {
+      const isList = blogLayoutMode === 'list';
+      document.body.classList.toggle('blog-layout-list', isList);
+      document.querySelectorAll('[data-blog-layout]').forEach(button => {
+        const selected = button.dataset.blogLayout === blogLayoutMode;
+        button.classList.toggle('active', selected);
+        button.setAttribute('aria-pressed', selected ? 'true' : 'false');
+      });
+    }
+
+    function setBlogLayout(mode) {
+      blogLayoutMode = mode === 'list' ? 'list' : 'grid';
+      localStorage.setItem('zaleasyBlogLayout', blogLayoutMode);
+      applyBlogLayoutMode();
+      syncBlogViewUrl('push');
+      showBlogToast(blogLayoutMode === 'list' ? 'Vista en lista activada.' : 'Vista en tarjetas activada.');
+    }
+
+    function setupBlogLayoutMode() {
+      applyBlogLayoutMode();
     }
 
     function updateFilterCounts() {
@@ -4635,11 +5423,13 @@
       updateFilterCounts();
       setupBlogTopicExplorer();
       setupBlogMobileNavigation();
+      setupBlogSectionNavigation();
+      setupBlogAppContext();
       setupArticleCardNavigation();
       setupContinueReading();
-      setupSavedArticles();
       setupReadProgress();
       setupBlogFocusMode();
+      setupBlogLayoutMode();
       setupBlogSearchShortcut();
       setupDailyFeaturedArticle();
       applyBlogFilters();
@@ -4986,6 +5776,20 @@
       </div>
       <p>Contenido accionable para consultar por problema: vender mejor, cuidar margen, ordenar caja y seguir clientes.</p>
     </div>
+    <aside class="blog-app-context" id="blogAppContext" aria-labelledby="blogAppContextTitle" hidden>
+      <div class="blog-app-context-shell">
+        <span class="blog-app-context-icon" aria-hidden="true"><i class="fa-solid fa-graduation-cap"></i></span>
+        <span class="blog-app-context-copy">
+          <small>Ayuda contextual desde Zaleasy</small>
+          <strong id="blogAppContextTitle">Gu&iacute;as para esta tarea</strong>
+          <span id="blogAppContextDescription">Seleccionamos lecturas relacionadas con la secci&oacute;n que estabas usando.</span>
+        </span>
+        <span class="blog-app-context-actions">
+          <a href="#blogArticles"><i class="fa-solid fa-book-open" aria-hidden="true"></i> Ver <span data-blog-result-count>0</span> gu&iacute;as</a>
+          <a href="app.html" id="blogAppContextReturn"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Volver a la app</a>
+        </span>
+      </div>
+    </aside>
     <div class="blog-discovery-bar">
       <div class="blog-active-state" aria-live="polite">
         <span><i class="fa-solid fa-sliders"></i><span id="blogActiveStateText">Preparando biblioteca...</span></span>
@@ -5014,6 +5818,15 @@
           <button type="button" class="active" aria-pressed="true" data-read-filter="all" onclick="setBlogReadFilter('all', this)">Todos</button>
           <button type="button" aria-pressed="false" data-read-filter="pending" onclick="setBlogReadFilter('pending', this)">Pendientes</button>
           <button type="button" aria-pressed="false" data-read-filter="read" onclick="setBlogReadFilter('read', this)">Leidos</button>
+        </div>
+        <div class="blog-layout-switch" role="group" aria-label="Presentaci&oacute;n de los art&iacute;culos">
+          <span>Vista</span>
+          <button type="button" class="active" data-blog-layout="grid" aria-pressed="true" onclick="setBlogLayout('grid')" title="Ver como tarjetas">
+            <i class="fa-solid fa-grip" aria-hidden="true"></i><span>Tarjetas</span>
+          </button>
+          <button type="button" data-blog-layout="list" aria-pressed="false" onclick="setBlogLayout('list')" title="Ver como lista compacta">
+            <i class="fa-solid fa-list" aria-hidden="true"></i><span>Lista</span>
+          </button>
         </div>
         <button class="blog-tool-btn" type="button" onclick="openRandomArticle()">
           <i class="fa-solid fa-shuffle"></i> Sorprendeme
@@ -9729,6 +10542,16 @@
       </article>
 
     </div>
+    <div class="blog-catalog-progress" id="blogCatalogProgress" role="status" aria-live="polite" hidden>
+      <div class="blog-catalog-progress-copy">
+        <strong id="blogCatalogProgressText">21 de 575 art&iacute;culos visibles</strong>
+        <span id="blogCatalogProgressPercent">4% recorrido</span>
+      </div>
+      <a href="#blogArticles"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i> Volver a filtros</a>
+      <div class="blog-catalog-progress-track" aria-hidden="true">
+        <span class="blog-catalog-progress-fill" id="blogCatalogProgressFill"></span>
+      </div>
+    </div>
     <div class="blog-load-more-wrap" id="blogLoadMoreWrap" hidden>
       <button class="btn btn-primary blog-load-more-btn" id="blogLoadMoreBtn" type="button" onclick="loadMoreBlogArticles()">
         Ver m&aacute;s <span id="blogLoadMoreCount">21</span>
@@ -10916,31 +11739,49 @@
 
   </main>
 
-  <footer class="footer">
-    <div class="container footer-content">
-      <div class="footer-brand">
-        <img src="assets/logo-navbar.png" alt="Zaleasy Logo" style="
-              height: 35px;
-              border-radius: 50%;
-              margin-bottom: 0.5rem;
-              display: block;
-            " />
-        <h3>Zaleasy</h3>
-        <p>
-          Haciendo la gesti&oacute;n financiera f&aacute;cil y accesible para todos los
-          emprendedores.
-        </p>
+  <footer class="footer blog-footer" id="blogFooter">
+    <div class="container">
+      <div class="blog-footer-grid">
+        <div class="blog-footer-brand">
+          <div class="blog-footer-brandline">
+            <img src="assets/logo-navbar.png" alt="" aria-hidden="true" />
+            <h3>Zaleasy</h3>
+          </div>
+          <p>Gu&iacute;as claras para vender mejor, ordenar la operaci&oacute;n y tomar decisiones con m&aacute;s confianza.</p>
+          <div class="blog-footer-trust" aria-label="Compromisos del blog">
+            <span><i class="fa-solid fa-check" aria-hidden="true"></i> Contenido gratuito</span>
+            <span><i class="fa-solid fa-check" aria-hidden="true"></i> Sin registro</span>
+            <span><i class="fa-solid fa-check" aria-hidden="true"></i> Enfoque pr&aacute;ctico</span>
+          </div>
+        </div>
+
+        <nav class="blog-footer-column" aria-label="Explorar el blog">
+          <h4>Explorar</h4>
+          <a href="#blogFeatured"><i class="fa-solid fa-star" aria-hidden="true"></i> Destacado</a>
+          <a href="#blogRoutes"><i class="fa-solid fa-route" aria-hidden="true"></i> Rutas por problema</a>
+          <a href="#blogArticles"><i class="fa-solid fa-layer-group" aria-hidden="true"></i> Biblioteca</a>
+          <a href="#recursos"><i class="fa-solid fa-download" aria-hidden="true"></i> Recursos gratis</a>
+        </nav>
+
+        <nav class="blog-footer-column" aria-label="Conocer Zaleasy">
+          <h4>Zaleasy</h4>
+          <a href="app.html"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> Abrir la app</a>
+          <a href="index.html#features"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i> Caracter&iacute;sticas</a>
+          <a href="index.html#how-it-works"><i class="fa-solid fa-circle-play" aria-hidden="true"></i> C&oacute;mo funciona</a>
+          <a href="index.html#creator"><i class="fa-solid fa-heart" aria-hidden="true"></i> Nuestra misi&oacute;n</a>
+        </nav>
+
+        <div class="blog-footer-column blog-footer-action">
+          <small><i class="fa-solid fa-bolt" aria-hidden="true"></i> Siguiente paso</small>
+          <h4>Lleva las ideas a tu negocio</h4>
+          <p>Registra ventas, controla caja y revisa resultados desde un solo lugar.</p>
+          <a href="app.html" class="btn btn-primary">Probar Zaleasy gratis <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
       </div>
-      <div class="footer-links">
-        <h4>Enlaces &Uacute;tiles</h4>
-        <a href="app.html">Abrir Zaleasy</a>
-        <a href="blog.html">Blog</a>
-        <a href="index.html#features">Caracter&iacute;sticas</a>
-        <a href="index.html#creator">Nuestra Misi&oacute;n</a>
+      <div class="blog-footer-bottom">
+        <p>&copy; 2026 Zaleasy. Contenido para emprendedores y negocios en crecimiento.</p>
+        <a href="#mainContent"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i> Volver al contenido</a>
       </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2026 Zaleasy. Todos los derechos reservados.</p>
     </div>
   </footer>
 

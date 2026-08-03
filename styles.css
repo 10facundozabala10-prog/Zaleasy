@@ -4490,6 +4490,172 @@ select:focus {
     color: var(--primary);
 }
 
+.config-nav button.active {
+    color: var(--text-main);
+    border-color: color-mix(in srgb, var(--primary) 58%, var(--border-color));
+    background: color-mix(in srgb, var(--primary) 13%, var(--bg-hover));
+    box-shadow: 0 6px 18px color-mix(in srgb, var(--primary) 12%, transparent);
+}
+
+.config-readiness-panel {
+    margin-top: 1rem;
+    padding: 1.25rem;
+    border: 1px solid color-mix(in srgb, var(--primary) 30%, var(--border-color));
+    border-radius: var(--radius-md);
+    background:
+        radial-gradient(circle at top right, color-mix(in srgb, var(--primary) 14%, transparent), transparent 38%),
+        color-mix(in srgb, var(--bg-card) 94%, var(--bg-hover));
+}
+
+.config-readiness-head,
+.config-readiness-heading {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+}
+
+.config-readiness-head {
+    justify-content: space-between;
+}
+
+.config-readiness-icon {
+    display: grid;
+    place-items: center;
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+    color: white;
+    border-radius: 13px;
+    background: linear-gradient(135deg, var(--primary), var(--success));
+    box-shadow: 0 8px 20px color-mix(in srgb, var(--primary) 24%, transparent);
+}
+
+.config-eyebrow {
+    display: block;
+    margin-bottom: 0.2rem;
+    color: var(--primary);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.config-readiness-heading h3 {
+    margin-bottom: 0.25rem;
+    color: var(--text-main);
+    font-size: 1rem;
+}
+
+.config-readiness-heading p {
+    max-width: 520px;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+
+.config-readiness-score {
+    flex: 0 0 auto;
+    padding: 0.48rem 0.7rem;
+    color: var(--primary);
+    font-size: 0.72rem;
+    font-weight: 800;
+    border: 1px solid color-mix(in srgb, var(--primary) 28%, var(--border-color));
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--primary) 9%, var(--bg-card));
+}
+
+.config-readiness-progress {
+    height: 7px;
+    margin: 1rem 0;
+    overflow: hidden;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--text-muted) 15%, transparent);
+}
+
+.config-readiness-progress span {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--primary), var(--success));
+    transition: width 0.35s ease;
+}
+
+.config-readiness-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+}
+
+.config-readiness-item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.7rem;
+    min-height: 64px;
+    padding: 0.7rem;
+    color: var(--text-main);
+    text-align: left;
+    font: inherit;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: color-mix(in srgb, var(--bg-card) 88%, var(--bg-hover));
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.config-readiness-item:hover {
+    transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--primary) 45%, var(--border-color));
+    background: color-mix(in srgb, var(--primary) 6%, var(--bg-card));
+}
+
+.config-readiness-item:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--primary) 30%, transparent);
+    outline-offset: 2px;
+}
+
+.config-readiness-item-icon {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    color: var(--primary);
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--primary) 10%, var(--bg-hover));
+}
+
+.config-readiness-item strong,
+.config-readiness-item small {
+    display: block;
+}
+
+.config-readiness-item strong {
+    margin-bottom: 0.14rem;
+    font-size: 0.78rem;
+}
+
+.config-readiness-item small {
+    overflow: hidden;
+    color: var(--text-muted);
+    font-size: 0.69rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.config-readiness-state {
+    color: var(--text-muted);
+}
+
+.config-readiness-item.is-complete .config-readiness-state,
+.config-readiness-item.is-complete .config-readiness-item-icon {
+    color: var(--success);
+}
+
+.config-readiness-item.is-complete {
+    border-color: color-mix(in srgb, var(--success) 27%, var(--border-color));
+}
+
 .config-content {
     display: grid;
     gap: 1rem;
@@ -4556,13 +4722,33 @@ select:focus {
         padding-inline: 0.35rem;
     }
 
+    .config-nav button {
+        min-height: 44px;
+    }
+
     .config-section,
     .config-danger {
         padding: 1rem;
     }
 
+    .config-readiness-panel {
+        padding: 1rem;
+    }
+
+    .config-readiness-head {
+        align-items: flex-start;
+    }
+
+    .config-readiness-grid {
+        grid-template-columns: 1fr;
+    }
+
     .config-backup-actions {
         grid-template-columns: 1fr;
+    }
+
+    .config-backup-actions .btn {
+        min-height: 44px;
     }
 
     .config-danger {
@@ -4572,6 +4758,23 @@ select:focus {
 
     .config-danger .btn {
         width: 100%;
+    }
+}
+
+@media (max-width: 430px) {
+    .config-readiness-heading {
+        gap: 0.7rem;
+    }
+
+    .config-readiness-icon {
+        flex-basis: 38px;
+        width: 38px;
+        height: 38px;
+    }
+
+    .config-readiness-score {
+        padding-inline: 0.55rem;
+        font-size: 0.66rem;
     }
 }
 
@@ -6508,11 +6711,156 @@ select:focus {
     min-height: 42px;
 }
 
+.history-view-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    margin: 0.85rem 0 1rem;
+}
+
 .history-quick-filters {
     display: flex;
     flex-wrap: wrap;
     gap: 0.55rem;
-    margin: 0.85rem 0 1rem;
+    margin: 0;
+}
+
+.history-density-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: var(--bg-hover);
+}
+
+.history-density-control > span {
+    padding: 0 0.35rem 0 0.45rem;
+    color: var(--text-muted);
+    font-size: 0.68rem;
+    font-weight: 750;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.history-density-control button {
+    min-height: 36px;
+    padding: 0.45rem 0.65rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--text-muted);
+    font: inherit;
+    font-size: 0.76rem;
+    font-weight: 750;
+    cursor: pointer;
+}
+
+.history-density-control button:hover,
+.history-density-control button:focus-visible,
+.history-density-control button.active {
+    background: var(--primary-light);
+    color: var(--primary);
+}
+
+.history-density-control button:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+.history-density-compact .history-overview-card {
+    padding: 0.62rem;
+}
+
+.history-density-compact .history-overview-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 0.8rem;
+}
+
+.history-density-compact .history-overview-card em {
+    display: none;
+}
+
+.history-density-compact .sales-table th,
+.history-density-compact .sales-table td {
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+}
+
+.history-density-compact .sales-table tbody tr {
+    font-size: 0.86rem;
+}
+
+.history-pagination {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--bg-hover);
+}
+
+.history-pagination[hidden] {
+    display: none;
+}
+
+.history-pagination p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.history-pagination label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.74rem;
+    font-weight: 700;
+}
+
+.history-pagination select.form-control {
+    width: auto;
+    min-width: 68px;
+    min-height: 40px;
+    margin: 0;
+    padding: 0.45rem 1.8rem 0.45rem 0.6rem;
+    background: var(--bg-card);
+}
+
+.history-page-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+}
+
+.history-page-actions .btn-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.history-page-actions .btn-icon:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+#history-page-indicator {
+    min-width: 92px;
+    color: var(--text-main);
+    font-size: 0.76rem;
+    font-weight: 750;
+    text-align: center;
 }
 
 .history-list-title {
@@ -6968,6 +7316,29 @@ select:focus {
         justify-content: space-between;
     }
 
+    .history-view-toolbar {
+        align-items: stretch;
+    }
+
+    .history-quick-filters {
+        width: 100%;
+    }
+
+    .history-filter-chip {
+        min-height: 42px;
+    }
+
+    .history-density-control {
+        width: 100%;
+        display: grid;
+        grid-template-columns: auto repeat(2, minmax(0, 1fr));
+    }
+
+    .history-density-control button {
+        min-height: 44px;
+        justify-content: center;
+    }
+
     #view-historial .header-actions {
         display: grid;
         grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.3fr) 40px 40px;
@@ -7049,6 +7420,38 @@ select:focus {
     #view-historial .sales-table td:last-child {
         color: var(--text-main);
         text-align: left !important;
+    }
+
+    #view-historial.history-density-compact .sales-table tbody {
+        gap: 0.55rem;
+    }
+
+    #view-historial.history-density-compact .sales-table tbody tr {
+        padding: 0.65rem;
+        gap: 0.55rem;
+    }
+
+    #view-historial.history-density-compact .sales-table td {
+        font-size: 0.78rem;
+    }
+
+    .history-pagination {
+        grid-template-columns: 1fr auto;
+        gap: 0.7rem;
+    }
+
+    .history-pagination p {
+        grid-column: 1 / -1;
+    }
+
+    .history-page-actions .btn-icon {
+        width: 44px;
+        height: 44px;
+    }
+
+    #history-page-indicator {
+        min-width: 78px;
+        font-size: 0.7rem;
     }
 }
 

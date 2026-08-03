@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar sesi&oacute;n | Zaleasy</title>
     <meta name="description" content="Sistema premium para la gesti&oacute;n y seguimiento de ventas diarias.">
-  <link rel="stylesheet" href="styles.css?v=20260720-control-a11y-v1">
+    <link rel="stylesheet" href="styles.css?v=20260803-library-scale-v1">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
@@ -224,9 +224,9 @@
             </nav>
 
             <div class="sidebar-footer">
-                <a class="sidebar-resource-link" href="blog.html">
+                <a class="sidebar-resource-link" id="sidebar-learning-link" href="blog.html">
                     <span class="sidebar-resource-icon"><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i></span>
-                    <span><strong>Centro de aprendizaje</strong><small>Gu&iacute;as para gestionar mejor</small></span>
+                    <span><strong id="sidebar-learning-title">Gu&iacute;as para tu operaci&oacute;n</strong><small id="sidebar-learning-description">Consejos para vender y organizar mejor</small></span>
                     <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
                 </a>
                 <div class="license-info">
@@ -1228,11 +1228,22 @@
                         <input type="text" id="history-search" aria-label="Buscar en el historial"
                             placeholder="Buscar por producto, m&eacute;todo o tipo...">
                     </div>
-                    <div class="history-quick-filters" id="history-quick-filters">
-                        <button type="button" class="history-filter-chip" data-range="today">Hoy</button>
-                        <button type="button" class="history-filter-chip" data-range="7">7 d&iacute;as</button>
-                        <button type="button" class="history-filter-chip" data-range="30">30 d&iacute;as</button>
-                        <button type="button" class="history-filter-chip" data-range="clear">Limpiar filtros</button>
+                    <div class="history-view-toolbar">
+                        <div class="history-quick-filters" id="history-quick-filters" aria-label="Per&iacute;odos r&aacute;pidos">
+                            <button type="button" class="history-filter-chip" data-range="today">Hoy</button>
+                            <button type="button" class="history-filter-chip" data-range="7">7 d&iacute;as</button>
+                            <button type="button" class="history-filter-chip" data-range="30">30 d&iacute;as</button>
+                            <button type="button" class="history-filter-chip" data-range="clear">Limpiar filtros</button>
+                        </div>
+                        <div class="history-density-control" role="group" aria-label="Densidad del historial">
+                            <span>Vista</span>
+                            <button type="button" data-history-density="comfortable" aria-pressed="true" title="Vista c&oacute;moda">
+                                <i class="fa-solid fa-table-list" aria-hidden="true"></i><span>C&oacute;moda</span>
+                            </button>
+                            <button type="button" data-history-density="compact" aria-pressed="false" title="Vista compacta">
+                                <i class="fa-solid fa-bars-staggered" aria-hidden="true"></i><span>Compacta</span>
+                            </button>
+                        </div>
                     </div>
                     <section class="history-overview-grid" aria-label="Resumen de los movimientos filtrados">
                         <article class="history-overview-card" data-tone="income">
@@ -1285,6 +1296,26 @@
                             </tbody>
                         </table>
                     </div>
+                    <nav class="history-pagination" id="history-pagination" aria-label="Paginaci&oacute;n del historial" hidden>
+                        <p id="history-page-summary" aria-live="polite">Mostrando 0 movimientos</p>
+                        <label for="history-page-size">
+                            Por p&aacute;gina
+                            <select id="history-page-size" class="form-control">
+                                <option value="10">10</option>
+                                <option value="25" selected>25</option>
+                                <option value="50">50</option>
+                            </select>
+                        </label>
+                        <div class="history-page-actions">
+                            <button type="button" class="btn-icon" id="history-page-prev" aria-label="P&aacute;gina anterior" disabled>
+                                <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+                            </button>
+                            <span id="history-page-indicator">P&aacute;gina 1 de 1</span>
+                            <button type="button" class="btn-icon" id="history-page-next" aria-label="P&aacute;gina siguiente" disabled>
+                                <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </nav>
                     <div class="empty-state" id="history-empty-state">
                         <div class="empty-icon">
                             <i class="fa-solid fa-box-open"></i>
@@ -1822,6 +1853,45 @@
                         <button type="button" data-config-target="config-data"><i class="fa-solid fa-database" aria-hidden="true"></i> Datos y respaldo</button>
                     </nav>
 
+                    <section class="config-readiness-panel" aria-labelledby="config-readiness-title">
+                        <div class="config-readiness-head">
+                            <div class="config-readiness-heading">
+                                <span class="config-readiness-icon" aria-hidden="true"><i class="fa-solid fa-shield-heart"></i></span>
+                                <div>
+                                    <span class="config-eyebrow">Puesta a punto</span>
+                                    <h3 id="config-readiness-title">Tu espacio de trabajo</h3>
+                                    <p id="config-readiness-summary">Revisando la configuraci&oacute;n del negocio...</p>
+                                </div>
+                            </div>
+                            <span class="config-readiness-score" id="config-readiness-score">0% listo</span>
+                        </div>
+                        <div class="config-readiness-progress" role="progressbar" aria-label="Progreso de configuraci&oacute;n" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                            <span id="config-readiness-progress"></span>
+                        </div>
+                        <div class="config-readiness-grid" aria-label="Pasos recomendados">
+                            <button type="button" class="config-readiness-item" data-config-target="config-profile" data-readiness-key="profile">
+                                <span class="config-readiness-item-icon"><i class="fa-solid fa-store" aria-hidden="true"></i></span>
+                                <span><strong>Identidad</strong><small id="config-readiness-profile">Pendiente</small></span>
+                                <i class="fa-regular fa-circle config-readiness-state" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="config-readiness-item" data-config-target="config-goals" data-readiness-key="goal">
+                                <span class="config-readiness-item-icon"><i class="fa-solid fa-bullseye" aria-hidden="true"></i></span>
+                                <span><strong>Meta diaria</strong><small id="config-readiness-goal">Pendiente</small></span>
+                                <i class="fa-regular fa-circle config-readiness-state" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="config-readiness-item" data-config-target="config-alerts" data-readiness-key="alert">
+                                <span class="config-readiness-item-icon"><i class="fa-solid fa-bell" aria-hidden="true"></i></span>
+                                <span><strong>Alertas</strong><small id="config-readiness-alert">Pendiente</small></span>
+                                <i class="fa-regular fa-circle config-readiness-state" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="config-readiness-item" data-config-target="config-data" data-readiness-key="backup">
+                                <span class="config-readiness-item-icon"><i class="fa-solid fa-cloud-arrow-down" aria-hidden="true"></i></span>
+                                <span><strong>Respaldo</strong><small id="config-readiness-backup">Pendiente</small></span>
+                                <i class="fa-regular fa-circle config-readiness-state" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </section>
+
                     <div class="config-content">
                         <!-- Store / User Settings -->
                         <section class="config-section" id="config-profile">
@@ -1913,11 +1983,11 @@
                             </div>
                             <div class="config-backup-actions" aria-label="Acciones de respaldo">
                                 <button class="btn btn-outline" id="btn-backup-data">
-                                    <i class="fa-solid fa-cloud-arrow-down"></i> Descargar Copia de Seguridad (JSON)
+                                    <i class="fa-solid fa-cloud-arrow-down"></i> Descargar respaldo
                                 </button>
                                 <label class="btn btn-outline" style="cursor:pointer;"
                                     title="Importar copia de seguridad JSON">
-                                    <i class="fa-solid fa-cloud-arrow-up"></i> Importar Copia de Seguridad (JSON)
+                                    <i class="fa-solid fa-cloud-arrow-up"></i> Importar respaldo
                                     <input type="file" id="btn-import-data" accept=".json,application/json" style="display:none;"
                                         aria-describedby="import-data-feedback">
                                 </label>
@@ -2337,7 +2407,7 @@
         style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;"></canvas>
 
     <!-- Script for Logic -->
-    <script src="app.js?v=20260720-safe-import-v1"></script>
+    <script src="app.js?v=20260803-library-scale-v1"></script>
 </body>
 
 </html>

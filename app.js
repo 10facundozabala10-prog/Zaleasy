@@ -249,6 +249,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const historyDateFilter = document.getElementById('history-date-filter');
     const historyTypeFilter = document.getElementById('history-type-filter');
     const historyQuickFilters = document.getElementById('history-quick-filters');
+    const historyDensityButtons = document.querySelectorAll('[data-history-density]');
+    const historyPagination = document.getElementById('history-pagination');
+    const historyPageSummary = document.getElementById('history-page-summary');
+    const historyPageSizeSelect = document.getElementById('history-page-size');
+    const historyPageIndicator = document.getElementById('history-page-indicator');
+    const historyPagePrev = document.getElementById('history-page-prev');
+    const historyPageNext = document.getElementById('history-page-next');
     const historyEmptyState = document.getElementById('history-empty-state');
     const historyResultsSummary = document.getElementById('history-results-summary');
     const historyEmptyTitle = document.getElementById('history-empty-title');
@@ -400,6 +407,58 @@ document.addEventListener('DOMContentLoaded', () => {
         'nav-config': 'configuracion'
     };
 
+    const contextualLearningByView = {
+        'nav-dashboard': {
+            area: 'inicio',
+            title: 'Gu\u00edas para tu operaci\u00f3n',
+            description: 'Ventas, caja y prioridades del d\u00eda',
+            search: 'ventas'
+        },
+        'nav-historial': {
+            area: 'historial',
+            title: 'Gu\u00edas para ordenar registros',
+            description: 'Movimientos, cierres y conciliaci\u00f3n',
+            search: 'caja'
+        },
+        'nav-reportes': {
+            area: 'reportes',
+            title: 'Gu\u00edas para entender reportes',
+            description: 'Indicadores, margen y decisiones',
+            search: 'rentabilidad'
+        },
+        'nav-clientes': {
+            area: 'clientes',
+            title: 'Gu\u00edas para cuidar clientes',
+            description: 'Seguimiento, cobros y posventa',
+            search: 'clientes'
+        },
+        'nav-inventario': {
+            area: 'inventario',
+            title: 'Gu\u00edas para controlar stock',
+            description: 'Inventario, precios y mermas',
+            search: 'stock'
+        },
+        'nav-config': {
+            area: 'configuracion',
+            title: 'Gu\u00edas para organizar el negocio',
+            description: 'Procesos, objetivos y respaldo',
+            search: 'organizacion'
+        }
+    };
+
+    const updateContextualLearningLink = (targetId) => {
+        const link = document.getElementById('sidebar-learning-link');
+        const title = document.getElementById('sidebar-learning-title');
+        const description = document.getElementById('sidebar-learning-description');
+        const guide = contextualLearningByView[targetId] || contextualLearningByView['nav-dashboard'];
+        if (!link || !guide) return;
+        const params = new URLSearchParams({ origen: 'app', area: guide.area, buscar: guide.search });
+        link.href = `blog.html?${params.toString()}#blogAppContext`;
+        link.setAttribute('aria-label', `${guide.title}. ${guide.description}`);
+        if (title) title.textContent = guide.title;
+        if (description) description.textContent = guide.description;
+    };
+
     const routeToAppView = Object.fromEntries(
         Object.entries(appViewRoutes).map(([view, route]) => [route, view])
     );
@@ -489,6 +548,7 @@ document.addEventListener('DOMContentLoaded', () => {
             comingSoonTitle.innerText = title;
         }
         updateHeaderContext(targetId, title);
+        updateContextualLearningLink(targetId);
         localStorage.setItem('activeAppView', targetId);
         syncAppViewUrl(targetId, historyMode);
     };
@@ -911,14 +971,39 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const setActiveConfigSection = (targetId) => {
+        document.querySelectorAll('.config-nav [data-config-target]').forEach((button) => {
+            const active = button.dataset.configTarget === targetId;
+            button.classList.toggle('active', active);
+            if (active) button.setAttribute('aria-current', 'true');
+            else button.removeAttribute('aria-current');
+        });
+    };
+
     document.querySelectorAll('[data-config-target]').forEach((button) => {
         button.addEventListener('click', () => {
             const target = document.getElementById(button.dataset.configTarget);
             if (!target) return;
+            setActiveConfigSection(button.dataset.configTarget);
             const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             target.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
         });
     });
+
+    setActiveConfigSection('config-profile');
+
+    if ('IntersectionObserver' in window) {
+        const configSectionObserver = new IntersectionObserver((entries) => {
+            const visible = entries
+                .filter(entry => entry.isIntersecting)
+                .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+            if (visible) setActiveConfigSection(visible.target.id);
+        }, { rootMargin: '-22% 0px -60% 0px', threshold: [0, 0.15, 0.4] });
+        ['config-profile', 'config-goals', 'config-alerts', 'config-data'].forEach((id) => {
+            const section = document.getElementById(id);
+            if (section) configSectionObserver.observe(section);
+        });
+    }
 
     const restoreAppViewFromUrl = () => {
         const targetId = getAppViewFromLocation();
@@ -1258,6 +1343,71 @@ document.addEventListener('DOMContentLoaded', () => {
     const configStoreNameInput = document.getElementById('config-store-name');
     const configDailyGoalInput = document.getElementById('config-daily-goal');
 
+    const updateConfigReadiness = () => {
+        const score = document.getElementById('config-readiness-score');
+        const summary = document.getElementById('config-readiness-summary');
+        const progress = document.getElementById('config-readiness-progress');
+        const progressTrack = progress?.parentElement;
+        if (!score || !summary || !progress || !progressTrack) return;
+
+        const storedName = (localStorage.getItem('storeName') || '').trim();
+        const storedGoal = Number(localStorage.getItem('dailyGoal'));
+        const alertWasReviewed = localStorage.getItem('alertThreshold') !== null;
+        const lastBackupValue = localStorage.getItem('lastBackupDate');
+        const lastBackupDate = lastBackupValue ? new Date(lastBackupValue) : null;
+        const backupAge = lastBackupDate && !Number.isNaN(lastBackupDate.getTime())
+            ? Math.floor((Date.now() - lastBackupDate.getTime()) / 86400000)
+            : Infinity;
+
+        const items = [
+            {
+                key: 'profile',
+                complete: Boolean(storedName),
+                detail: storedName || 'Define el nombre del negocio',
+                action: 'Define la identidad de tu negocio.'
+            },
+            {
+                key: 'goal',
+                complete: Number.isFinite(storedGoal) && storedGoal > 0,
+                detail: Number.isFinite(storedGoal) && storedGoal > 0 ? `${formatCurrency(storedGoal)} por d\u00eda` : 'Define un objetivo diario',
+                action: 'Configura una meta diaria para medir tu avance.'
+            },
+            {
+                key: 'alert',
+                complete: alertWasReviewed,
+                detail: alertWasReviewed ? (alertThreshold > 0 ? `Desde ${formatCurrency(alertThreshold)}` : 'Decidiste mantenerlas apagadas') : 'Elige un monto o desact\u00edvalas',
+                action: 'Revisa cu\u00e1ndo quieres recibir alertas.'
+            },
+            {
+                key: 'backup',
+                complete: backupAge <= 7,
+                detail: backupAge === Infinity ? 'A\u00fan no hay una copia' : backupAge <= 0 ? 'Copia realizada hoy' : backupAge <= 7 ? `Copia de hace ${backupAge} d\u00eda${backupAge === 1 ? '' : 's'}` : `Actualizar: hace ${backupAge} d\u00edas`,
+                action: 'Descarga una copia reciente para proteger tus datos.'
+            }
+        ];
+
+        items.forEach((item) => {
+            const button = document.querySelector(`[data-readiness-key="${item.key}"]`);
+            const detail = document.getElementById(`config-readiness-${item.key}`);
+            if (detail) detail.textContent = item.detail;
+            if (!button) return;
+            button.classList.toggle('is-complete', item.complete);
+            button.setAttribute('aria-label', `${button.querySelector('strong')?.textContent || item.key}: ${item.detail}`);
+            const state = button.querySelector('.config-readiness-state');
+            if (state) state.className = `${item.complete ? 'fa-solid fa-circle-check' : 'fa-regular fa-circle'} config-readiness-state`;
+        });
+
+        const completed = items.filter(item => item.complete).length;
+        const percentage = completed * 25;
+        score.textContent = `${percentage}% listo`;
+        progress.style.width = `${percentage}%`;
+        progressTrack.setAttribute('aria-valuenow', String(percentage));
+        const nextItem = items.find(item => !item.complete);
+        summary.textContent = nextItem
+            ? `${completed} de 4 pasos listos. ${nextItem.action}`
+            : 'Todo listo: tu negocio est\u00e1 configurado y tus datos tienen una copia reciente.';
+    };
+
     const loadConfigData = () => {
         configStoreNameInput.value = storeName;
         const brandInput = document.getElementById('config-brand-color');
@@ -1265,6 +1415,7 @@ document.addEventListener('DOMContentLoaded', () => {
         configDailyGoalInput.value = dailyGoal;
         const alertInput = document.getElementById('config-alert-threshold');
         if (alertInput) alertInput.value = alertThreshold || '';
+        updateConfigReadiness();
     };
 
     document.getElementById('btn-save-store-name').addEventListener('click', () => {
@@ -1274,6 +1425,7 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('storeName', storeName);
             document.getElementById('sidebar-brand-name').innerText = storeName;
             updateSetupChecklist();
+            updateConfigReadiness();
             showToast('Nombre del negocio actualizado');
         }
     });
@@ -1313,6 +1465,7 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('dailyGoal', dailyGoal);
             updateKPIs();
             updateSetupChecklist();
+            updateConfigReadiness();
             showToast('Meta por defecto actualizada');
         }
     });
@@ -1376,6 +1529,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const val = parseFloat(document.getElementById('config-alert-threshold').value);
             alertThreshold = isNaN(val) ? 0 : val;
             localStorage.setItem('alertThreshold', alertThreshold);
+            updateConfigReadiness();
             showToast(alertThreshold > 0 ? `Alerta activada para ventas > ${formatCurrency(alertThreshold)}` : 'Alerta de ventas desactivada');
         }
     });
@@ -1441,6 +1595,7 @@ document.addEventListener('DOMContentLoaded', () => {
         statusEl.textContent = lastBackupDate ? 'Respaldado' : 'Backup recomendado';
         statusEl.style.background = lastBackupDate ? 'var(--success-light)' : 'var(--warning-light)';
         statusEl.style.color = lastBackupDate ? 'var(--success)' : 'var(--warning)';
+        updateConfigReadiness();
     };
 
     const dashboardViewConfig = {
@@ -1567,6 +1722,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateSetupChecklist();
         updateStockAlertSnapshot();
         setupDashboardViews();
+        setupHistoryDensity();
         setupGlobalSearch();
         const validViews = new Set(['nav-dashboard', 'nav-historial', 'nav-reportes', 'nav-clientes', 'nav-inventario', 'nav-config']);
         const savedView = localStorage.getItem('activeAppView');
@@ -4551,6 +4707,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return Array.from(uniqueMovements.values());
     };
 
+    const savedHistoryPageSize = parseInt(localStorage.getItem('historyPageSize') || '25', 10);
+    let historyPageSize = [10, 25, 50].includes(savedHistoryPageSize) ? savedHistoryPageSize : 25;
+    let historyPage = 1;
+
     const renderHistory = () => {
         historyBody.innerHTML = '';
 
@@ -4630,6 +4790,24 @@ document.addEventListener('DOMContentLoaded', () => {
             historyResultsSummary.dataset.filtered = hasActiveFilters ? 'true' : 'false';
         }
 
+        const sortedHistory = filteredHistory.sort((a, b) => b.timestamp - a.timestamp);
+        const totalPages = Math.max(1, Math.ceil(sortedHistory.length / historyPageSize));
+        historyPage = Math.min(Math.max(historyPage, 1), totalPages);
+        const pageStart = (historyPage - 1) * historyPageSize;
+        const pageEnd = Math.min(pageStart + historyPageSize, sortedHistory.length);
+        const pageHistory = sortedHistory.slice(pageStart, pageEnd);
+
+        if (historyPageSizeSelect) historyPageSizeSelect.value = String(historyPageSize);
+        if (historyPagination) historyPagination.hidden = sortedHistory.length === 0;
+        if (historyPageSummary) {
+            historyPageSummary.textContent = sortedHistory.length
+                ? `Mostrando ${pageStart + 1}-${pageEnd} de ${sortedHistory.length} movimientos`
+                : 'Mostrando 0 movimientos';
+        }
+        if (historyPageIndicator) historyPageIndicator.textContent = `Página ${historyPage} de ${totalPages}`;
+        if (historyPagePrev) historyPagePrev.disabled = historyPage <= 1;
+        if (historyPageNext) historyPageNext.disabled = historyPage >= totalPages;
+
         if (filteredHistory.length === 0) {
             const filteredEmptyState = totalHistory > 0 && hasActiveFilters;
             if (historyEmptyTitle) {
@@ -4652,10 +4830,7 @@ document.addEventListener('DOMContentLoaded', () => {
             historyEmptyState.classList.remove('active');
             document.querySelector('#view-historial .table-container').style.display = 'block';
 
-            // Order newest first
-            const sortedHistory = filteredHistory.sort((a, b) => b.timestamp - a.timestamp);
-
-            sortedHistory.forEach(sale => {
+            pageHistory.forEach(sale => {
                 const tr = document.createElement('tr');
                 const d = new Date(sale.timestamp);
                 const dateStr = d.toLocaleDateString('es-ES') + ' ' + d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
@@ -4712,7 +4887,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    const applyHistoryDensity = (mode, persist = true) => {
+        const normalizedMode = mode === 'compact' ? 'compact' : 'comfortable';
+        viewHistorial.classList.toggle('history-density-compact', normalizedMode === 'compact');
+        historyDensityButtons.forEach(button => {
+            const selected = button.dataset.historyDensity === normalizedMode;
+            button.classList.toggle('active', selected);
+            button.setAttribute('aria-pressed', selected ? 'true' : 'false');
+        });
+        if (persist) localStorage.setItem('historyDensityMode', normalizedMode);
+    };
+
+    const setupHistoryDensity = () => {
+        if (!historyDensityButtons.length) return;
+        historyDensityButtons.forEach(button => {
+            button.addEventListener('click', () => applyHistoryDensity(button.dataset.historyDensity));
+        });
+        applyHistoryDensity(localStorage.getItem('historyDensityMode'), false);
+    };
+
     const clearHistoryFilters = () => {
+        historyPage = 1;
         historyDateFilter.value = '';
         if (historyTypeFilter) historyTypeFilter.value = '';
         historySearch.value = '';
@@ -4723,18 +4918,26 @@ document.addEventListener('DOMContentLoaded', () => {
         renderHistory();
     };
 
-    historySearch.addEventListener('input', renderHistory);
+    historySearch.addEventListener('input', () => {
+        historyPage = 1;
+        renderHistory();
+    });
     historyDateFilter.addEventListener('change', () => {
+        historyPage = 1;
         delete historySearch.dataset.rangeFrom;
         if (historyQuickFilters) historyQuickFilters.querySelectorAll('.history-filter-chip').forEach(chip => chip.classList.remove('active'));
         renderHistory();
     });
-    if (historyTypeFilter) historyTypeFilter.addEventListener('change', renderHistory);
+    if (historyTypeFilter) historyTypeFilter.addEventListener('change', () => {
+        historyPage = 1;
+        renderHistory();
+    });
     if (historyQuickFilters) {
         historyQuickFilters.addEventListener('click', (e) => {
             const btn = e.target.closest('.history-filter-chip');
             if (!btn) return;
             const range = btn.dataset.range;
+            historyPage = 1;
             historyQuickFilters.querySelectorAll('.history-filter-chip').forEach(chip => chip.classList.remove('active'));
             btn.classList.add('active');
 
@@ -4759,6 +4962,24 @@ document.addEventListener('DOMContentLoaded', () => {
             renderHistory();
         });
     }
+    historyPageSizeSelect?.addEventListener('change', () => {
+        const requestedSize = parseInt(historyPageSizeSelect.value, 10);
+        historyPageSize = [10, 25, 50].includes(requestedSize) ? requestedSize : 25;
+        historyPage = 1;
+        localStorage.setItem('historyPageSize', String(historyPageSize));
+        renderHistory();
+    });
+    historyPagePrev?.addEventListener('click', () => {
+        if (historyPage <= 1) return;
+        historyPage -= 1;
+        renderHistory();
+        historyPagination?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+    historyPageNext?.addEventListener('click', () => {
+        historyPage += 1;
+        renderHistory();
+        document.querySelector('#view-historial .table-container')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
     historyEmptyClearFilters?.addEventListener('click', clearHistoryFilters);
 
     historyClearAll.addEventListener('click', () => {
