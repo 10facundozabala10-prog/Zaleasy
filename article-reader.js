@@ -64,6 +64,7 @@
           <button type="button" data-reader-action="larger" aria-label="Aumentar tamaño del texto">A+</button>
         </div>
         <button type="button" data-reader-action="focus" aria-pressed="false"><i class="fa-regular fa-eye" aria-hidden="true"></i><span>Enfoque</span></button>
+        <button type="button" data-reader-action="read" aria-pressed="false"><i class="fa-regular fa-circle-check" aria-hidden="true"></i><span>Marcar leído</span></button>
         <button type="button" data-reader-action="share"><i class="fa-solid fa-arrow-up-from-bracket" aria-hidden="true"></i><span>Compartir</span></button>
         <button type="button" data-reader-action="top" aria-label="Volver al inicio del artículo"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></button>
       </div>
@@ -155,7 +156,49 @@
 
     const status = tools.querySelector('#articleReaderStatus');
     const progressText = tools.querySelector('#articleReaderProgressText');
+    const summaryTitle = tools.querySelector('.article-reader-summary strong');
     const focusButton = tools.querySelector('[data-reader-action="focus"]');
+    const readButton = tools.querySelector('[data-reader-action="read"]');
+    const articleFileName = decodeURIComponent(window.location.pathname.split('/').pop() || '');
+    const articleLibraryHref = articleFileName ? `Blog htmls/${articleFileName}` : window.location.pathname;
+    const getArticleCategory = () => {
+      const raw = document.querySelector('.tag, .article-category, .category-badge, [class*="category"]')?.textContent?.trim() || '';
+      return raw.replace(/\s+/g, ' ').replace(/[^\p{L}\p{N}\s-]/gu, '').trim();
+    };
+    const getReadArticles = () => {
+      try {
+        const items = JSON.parse(localStorage.getItem('zaleasyReadArticles') || '[]');
+        return Array.isArray(items) ? items : [];
+      } catch (error) {
+        return [];
+      }
+    };
+    let articleIsRead = getReadArticles().includes(articleLibraryHref);
+    let completionAnnounced = articleIsRead;
+    let lastSavedProgressBucket = -1;
+
+    const refreshReadButton = () => {
+      if (!readButton) return;
+      readButton.setAttribute('aria-pressed', articleIsRead ? 'true' : 'false');
+      readButton.innerHTML = articleIsRead
+        ? '<i class="fa-solid fa-circle-check" aria-hidden="true"></i><span>Leído</span>'
+        : '<i class="fa-regular fa-circle-check" aria-hidden="true"></i><span>Marcar leído</span>';
+      tools.classList.toggle('article-reader-complete', articleIsRead);
+      if (summaryTitle) summaryTitle.textContent = articleIsRead ? 'Lectura completada' : 'Lectura cómoda';
+    };
+
+    const setArticleRead = (read, shouldAnnounce = true) => {
+      articleIsRead = Boolean(read);
+      const existing = getReadArticles();
+      const next = articleIsRead
+        ? [...new Set([...existing, articleLibraryHref])]
+        : existing.filter(href => href !== articleLibraryHref);
+      localStorage.setItem('zaleasyReadArticles', JSON.stringify(next));
+      refreshReadButton();
+      if (shouldAnnounce) announce(articleIsRead ? 'Artículo marcado como leído.' : 'Artículo marcado como pendiente.');
+    };
+
+    refreshReadButton();
 
     const announce = message => {
       if (!status) return;
@@ -189,7 +232,29 @@
       const value = getArticleProgress();
       progress.style.width = `${value}%`;
       progress.setAttribute('aria-valuenow', String(value));
+      if (progressText) progressText.textContent = articleIsRead ? 'Lectura completada' : `${value}% leído`;
+
+      const progressBucket = Math.floor(value / 5);
+      if (progressBucket !== lastSavedProgressBucket) {
+        lastSavedProgressBucket = progressBucket;
+        localStorage.setItem('zaleasyLastBlogRead', JSON.stringify({
+          href: articleLibraryHref,
+          title: articleTitle?.textContent?.trim() || document.title,
+          category: getArticleCategory(),
+          savedAt: Date.now(),
+          progress: value
+        }));
+      }
+
+      if (value >= 90 && !articleIsRead) {
+        setArticleRead(true, false);
+        if (!completionAnnounced) {
+          completionAnnounced = true;
+          announce('Lectura completada. El artículo quedó marcado como leído.');
+        }
+      }
       if (progressText) progressText.textContent = `${value}% leído`;
+      if (progressText) progressText.textContent = articleIsRead ? 'Lectura completada' : `${value}% le\u00eddo`;
     };
     const requestProgressUpdate = () => {
       if (!progressFrame) progressFrame = window.requestAnimationFrame(updateProgress);
@@ -221,6 +286,10 @@
           : '<i class="fa-regular fa-eye" aria-hidden="true"></i><span>Enfoque</span>';
         article.scrollIntoView({ behavior: 'smooth', block: 'start' });
         announce(enabled ? 'Modo enfoque activado.' : 'Modo enfoque desactivado.');
+      }
+
+      if (action === 'read') {
+        setArticleRead(!articleIsRead);
       }
 
       if (action === 'share') {

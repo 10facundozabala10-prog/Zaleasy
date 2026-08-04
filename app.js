@@ -1084,6 +1084,82 @@ document.addEventListener('DOMContentLoaded', () => {
         if (text) text.textContent = insights.join(' ');
     };
 
+    const updateReportDecision = ({ allData, incomes, totalRevenue, totalExpenses }) => {
+        const card = document.getElementById('reports-decision-card');
+        const icon = document.getElementById('reports-decision-icon');
+        const title = document.getElementById('reports-decision-title');
+        const text = document.getElementById('reports-decision-text');
+        const primary = document.getElementById('reports-decision-primary');
+        const secondary = document.getElementById('reports-decision-secondary');
+        if (!card || !icon || !title || !text || !primary || !secondary) return;
+
+        const pendingTotal = incomes
+            .filter(movement => movement.method === 'A Cobrar')
+            .reduce((sum, movement) => sum + Number(movement.amount || 0), 0);
+        const expenseRatio = totalRevenue > 0 ? (totalExpenses / totalRevenue) * 100 : 0;
+        const net = totalRevenue - totalExpenses;
+        const lowStockCount = productCatalog
+            .filter(product => product.stock !== undefined && product.stock !== null && Number(product.stock) <= 5)
+            .length;
+
+        let decision = {
+            tone: 'neutral',
+            icon: 'fa-compass',
+            title: 'Empieza registrando actividad real',
+            text: 'Con algunos movimientos podremos detectar cobros, gastos y oportunidades que requieren atención.',
+            primary: { action: 'sale', icon: 'fa-cart-plus', label: 'Registrar una venta' },
+            secondary: { action: 'dashboard', icon: 'fa-house', label: 'Volver al inicio' }
+        };
+
+        if (allData.length && pendingTotal > 0) {
+            decision = {
+                tone: 'warning',
+                icon: 'fa-hand-holding-dollar',
+                title: `Prioriza ${formatCurrency(pendingTotal)} pendiente de cobro`,
+                text: 'Revisa los clientes con saldo antes de que los cobros atrasados afecten la caja disponible.',
+                primary: { action: 'clients', icon: 'fa-users', label: 'Revisar clientes' },
+                secondary: { action: 'history-pending', icon: 'fa-clock-rotate-left', label: 'Ver movimientos pendientes' }
+            };
+        } else if (allData.length && (net < 0 || expenseRatio >= 45)) {
+            decision = {
+                tone: 'danger',
+                icon: 'fa-arrow-trend-down',
+                title: net < 0 ? 'Los gastos superan a los ingresos' : `Los gastos consumen el ${expenseRatio.toFixed(0)}% de los ingresos`,
+                text: 'Revisa las salidas del período y confirma si corresponden a compras necesarias, costos repetidos o precios insuficientes.',
+                primary: { action: 'history-expenses', icon: 'fa-receipt', label: 'Revisar gastos' },
+                secondary: { action: 'sale', icon: 'fa-cart-plus', label: 'Registrar ingreso' }
+            };
+        } else if (allData.length && lowStockCount > 0) {
+            decision = {
+                tone: 'warning',
+                icon: 'fa-boxes-stacked',
+                title: `${lowStockCount} producto${lowStockCount === 1 ? '' : 's'} necesitan revisión de stock`,
+                text: 'Comprueba disponibilidad y reposición para no perder ventas de los productos con mayor movimiento.',
+                primary: { action: 'inventory', icon: 'fa-box-open', label: 'Revisar inventario' },
+                secondary: { action: 'dashboard', icon: 'fa-house', label: 'Ver resumen' }
+            };
+        } else if (allData.length) {
+            decision = {
+                tone: 'success',
+                icon: 'fa-circle-check',
+                title: 'La operación no muestra alertas prioritarias',
+                text: 'Mantén el ritmo, registra la actividad diaria y compara nuevamente al finalizar el próximo período.',
+                primary: { action: 'sale', icon: 'fa-cart-plus', label: 'Registrar movimiento' },
+                secondary: { action: 'dashboard', icon: 'fa-house', label: 'Volver al inicio' }
+            };
+        }
+
+        card.dataset.tone = decision.tone;
+        icon.innerHTML = `<i class="fa-solid ${decision.icon}" aria-hidden="true"></i>`;
+        title.textContent = decision.title;
+        text.textContent = decision.text;
+        [primary, secondary].forEach((button, index) => {
+            const config = index === 0 ? decision.primary : decision.secondary;
+            button.dataset.reportAction = config.action;
+            button.innerHTML = `<i class="fa-solid ${config.icon}" aria-hidden="true"></i><span>${config.label}</span>`;
+        });
+    };
+
     const renderReports = () => {
         const fullData = [...historyData, ...sales];
         const allData = filterReportDataByPeriod(fullData);
@@ -1169,6 +1245,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const methodLabels = Object.keys(methodMap);
         const methodValues = Object.values(methodMap);
         updateExecutiveSummary({ allData, incomes, expenses, totalRevenue, totalExpenses, methodMap, periodLabel });
+        updateReportDecision({ allData, incomes, totalRevenue, totalExpenses });
 
         if (repMethodsChartInstance) repMethodsChartInstance.destroy();
         const ctxMethods = document.getElementById('rep-methods-chart').getContext('2d');
@@ -1337,6 +1414,38 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!button) return;
         reportsPeriod = button.dataset.reportPeriod || 'all';
         renderReports();
+    });
+
+    document.getElementById('reports-decision-card')?.addEventListener('click', event => {
+        const button = event.target.closest('[data-report-action]');
+        if (!button) return;
+        const action = button.dataset.reportAction;
+
+        if (action === 'sale') {
+            runQuickAction('sale');
+            return;
+        }
+        if (action === 'clients') {
+            switchView('nav-clientes');
+            return;
+        }
+        if (action === 'inventory') {
+            switchView('nav-inventario');
+            return;
+        }
+        if (action === 'dashboard') {
+            switchView('nav-dashboard');
+            return;
+        }
+        if (action === 'history-expenses' || action === 'history-pending') {
+            historyPage = 1;
+            if (historyTypeFilter) historyTypeFilter.value = action === 'history-expenses' ? 'expense' : 'pending';
+            historyDateFilter.value = '';
+            historySearch.value = '';
+            delete historySearch.dataset.rangeFrom;
+            switchView('nav-historial');
+            renderHistory();
+        }
     });
 
     // --- Config Logic ---

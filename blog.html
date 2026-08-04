@@ -4881,7 +4881,12 @@
       if (saved && card && title && text && link) {
         card.dataset.empty = 'false';
         title.textContent = saved.title || 'Seguir leyendo';
-        text.textContent = saved.category ? `Ultima lectura guardada en ${saved.category}.` : 'Vuelve al ultimo articulo que abriste.';
+        const progressCopy = Number(saved.progress) > 0 && Number(saved.progress) < 90
+          ? ` Vas por el ${Math.round(Number(saved.progress))}%.`
+          : '';
+        text.textContent = saved.category
+          ? `Ultima lectura guardada en ${saved.category}.${progressCopy}`
+          : `Vuelve al ultimo articulo que abriste.${progressCopy}`;
         link.href = saved.href || '#blogArticles';
         link.innerHTML = '<i class="fa-solid fa-book-open"></i> Continuar';
       } else if (card && title && text && link) {
@@ -4901,7 +4906,6 @@
           const parent = a.closest('.blog-card');
           const titleText = parent?.querySelector('h3')?.textContent?.trim() || a.textContent.trim();
           const category = parent?.querySelector('.blog-category')?.textContent?.trim() || '';
-          markArticleRead(parent, false);
           localStorage.setItem('zaleasyLastBlogRead', JSON.stringify({
             href: a.getAttribute('href'),
             title: titleText,

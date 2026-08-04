@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar sesi&oacute;n | Zaleasy</title>
     <meta name="description" content="Sistema premium para la gesti&oacute;n y seguimiento de ventas diarias.">
-    <link rel="stylesheet" href="styles.css?v=20260803-library-scale-v1">
+    <link rel="stylesheet" href="styles.css?v=20260804-guided-actions-v1">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
@@ -1437,6 +1437,25 @@
                     <p class="executive-summary-text" id="executive-summary-text">Registra ventas, clientes e inventario para generar recomendaciones ejecutivas.</p>
                 </div>
 
+                <section class="reports-decision-card" id="reports-decision-card" data-tone="neutral" aria-labelledby="reports-decision-title">
+                    <span class="reports-decision-icon" id="reports-decision-icon" aria-hidden="true">
+                        <i class="fa-solid fa-compass"></i>
+                    </span>
+                    <div class="reports-decision-copy">
+                        <small>Pr&oacute;xima decisi&oacute;n recomendada</small>
+                        <h2 id="reports-decision-title">Empieza registrando actividad real</h2>
+                        <p id="reports-decision-text">Con algunos movimientos podremos detectar cobros, gastos y oportunidades que requieren atenci&oacute;n.</p>
+                    </div>
+                    <div class="reports-decision-actions">
+                        <button type="button" class="btn btn-primary" id="reports-decision-primary" data-report-action="sale">
+                            <i class="fa-solid fa-cart-plus" aria-hidden="true"></i><span>Registrar una venta</span>
+                        </button>
+                        <button type="button" class="btn btn-outline" id="reports-decision-secondary" data-report-action="dashboard">
+                            <i class="fa-solid fa-house" aria-hidden="true"></i><span>Volver al inicio</span>
+                        </button>
+                    </div>
+                </section>
+
                 <!-- Charts Row -->
                 <div class="charts-row" style="margin-bottom: 1.5rem;">
                     <div class="card chart-card" style="flex: 2;">
@@ -2407,7 +2426,7 @@
         style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;"></canvas>
 
     <!-- Script for Logic -->
-    <script src="app.js?v=20260803-library-scale-v1"></script>
+    <script src="app.js?v=20260804-guided-actions-v1"></script>
 </body>
 
 </html>

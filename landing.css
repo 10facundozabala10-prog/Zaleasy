@@ -1746,6 +1746,22 @@ body.article-reader-enhanced .hero.container .meta {
   font-size: 0.7rem;
 }
 
+.article-reader-tools.article-reader-complete {
+  border-color: rgba(0, 184, 148, 0.34);
+  background:
+    linear-gradient(120deg, rgba(0, 184, 148, 0.1), transparent 52%),
+    rgba(20, 22, 34, 0.95);
+}
+
+.article-reader-tools.article-reader-complete .article-reader-summary-icon {
+  background: rgba(0, 184, 148, 0.16);
+  color: #55efc4;
+}
+
+.article-reader-tools.article-reader-complete .article-reader-summary strong {
+  color: #55efc4;
+}
+
 .article-reader-actions,
 .article-reader-font-controls {
   display: flex;
@@ -1925,6 +1941,7 @@ body.article-reader-focus main article {
 
   .article-reader-actions button {
     min-width: 0;
+    min-height: 44px;
   }
 
   .article-reader-actions button span {
