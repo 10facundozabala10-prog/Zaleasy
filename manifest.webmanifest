@@ -1,0 +1,42 @@
+{
+  "name": "Zaleasy - Gestion simple para tu negocio",
+  "short_name": "Zaleasy",
+  "description": "Registra ventas, gastos, caja, clientes e inventario y accede a guias practicas para mejorar tu negocio.",
+  "lang": "es-AR",
+  "dir": "ltr",
+  "start_url": "./app.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0a0b10",
+  "theme_color": "#0a0b10",
+  "categories": ["business", "finance", "productivity", "education"],
+  "icons": [
+    {
+      "src": "assets/pwa-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/logo-navbar.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Abrir la app",
+      "short_name": "App",
+      "url": "app.html",
+      "icons": [{ "src": "assets/pwa-icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Explorar el blog",
+      "short_name": "Blog",
+      "url": "blog.html#blogArticles",
+      "icons": [{ "src": "assets/pwa-icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    }
+  ]
+}
