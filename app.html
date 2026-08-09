@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="apple-touch-icon" href="assets/logo-navbar.png">
-    <link rel="stylesheet" href="styles.css?v=20260804-guided-actions-v1">
+    <link rel="stylesheet" href="styles.css?v=20260809-accessible-navigation-v1">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
@@ -56,9 +56,10 @@
 
 <body>
     <div class="bg-animated"></div>
+    <a class="app-skip-link auth-skip-link" href="#auth-email">Saltar al acceso</a>
 
     <!-- Auth Screen Layout -->
-    <div id="auth-screen" class="auth-container">
+    <div id="auth-screen" class="auth-container" role="main" aria-labelledby="auth-intro-title">
         <div class="auth-shell">
             <section class="auth-intro" aria-labelledby="auth-intro-title">
                 <span class="auth-eyebrow"><i class="fa-solid fa-sparkles" aria-hidden="true"></i> Gesti&oacute;n simple para negocios reales</span>
@@ -163,7 +164,7 @@
     </div>
 
     <!-- Free Access Notice -->
-    <div id="trial-screen" class="auth-container" style="display: none;">
+    <div id="trial-screen" class="auth-container" style="display: none;" role="main" aria-labelledby="trial-title" aria-hidden="true" inert>
         <div class="auth-card card" style="max-width: 480px;">
             <div class="brand auth-brand">
                 <div class="logo-icon">
@@ -180,7 +181,9 @@
                         class="fa-solid fa-right-from-bracket"></i> Cambiar de cuenta</a></p>
         </div>
     </div>
-    <div class="app-container" id="main-app" style="display: none;">
+    <div class="app-container" id="main-app" style="display: none;" aria-hidden="true" inert>
+        <a class="app-skip-link" href="#app-main-content">Saltar al contenido de la app</a>
+        <p class="app-sr-only" id="app-route-status" role="status" aria-live="polite" aria-atomic="true"></p>
         <!-- Sidebar Overlay -->
         <div class="sidebar-overlay" id="sidebar-overlay"></div>
         <!-- Sidebar -->
@@ -245,7 +248,7 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="main-content">
+        <main class="main-content" id="app-main-content" tabindex="-1" aria-labelledby="dynamic-greeting">
             <header class="top-header">
                 <div class="header-left" style="min-width: 0;">
                     <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.4rem; flex-wrap: wrap;">
@@ -2431,7 +2434,7 @@
         style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;"></canvas>
 
     <!-- Script for Logic -->
-    <script src="app.js?v=20260804-guided-actions-v1"></script>
+    <script src="app.js?v=20260809-accessible-navigation-v1"></script>
     <script src="pwa.js?v=20260806-resilient-v1"></script>
 </body>
 

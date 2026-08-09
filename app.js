@@ -229,6 +229,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const authScreen = document.getElementById('auth-screen');
     const trialScreen = document.getElementById('trial-screen');
     const mainApp = document.getElementById('main-app');
+    const appMainContent = document.getElementById('app-main-content');
+    const appRouteStatus = document.getElementById('app-route-status');
     const btnGoogleLogin = document.getElementById('btn-google-login');
     const userProfileBtn = document.getElementById('user-profile-btn');
     const userAvatar = document.getElementById('user-avatar');
@@ -549,6 +551,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         updateHeaderContext(targetId, title);
         updateContextualLearningLink(targetId);
+        if (appRouteStatus) {
+            appRouteStatus.textContent = '';
+            window.setTimeout(() => {
+                appRouteStatus.textContent = `${greetingEl.textContent.trim()} abierta.`;
+            }, 30);
+        }
         localStorage.setItem('activeAppView', targetId);
         syncAppViewUrl(targetId, historyMode);
     };
@@ -2822,10 +2830,19 @@ document.addEventListener('DOMContentLoaded', () => {
             if (localDemoIndicator) localDemoIndicator.hidden = !active;
         };
 
-        const showApp = ({ localDemo = false, user = null } = {}) => {
-            authScreen.style.display = 'none';
-            if (trialScreen) trialScreen.style.display = 'none';
-            mainApp.style.display = 'flex';
+        const setShellVisibility = (element, visible, displayValue = 'flex') => {
+            if (!element) return;
+            element.style.display = visible ? displayValue : 'none';
+            element.toggleAttribute('inert', !visible);
+            if (visible) element.removeAttribute('aria-hidden');
+            else element.setAttribute('aria-hidden', 'true');
+        };
+
+        const showApp = ({ localDemo = false, user = null, focus = false } = {}) => {
+            setShellVisibility(authScreen, false);
+            setShellVisibility(trialScreen, false);
+            setShellVisibility(mainApp, true);
+            document.body.classList.add('app-shell-active');
             setLocalDemoState(localDemo);
             updateVisibleAppDocumentTitle();
 
@@ -2838,18 +2855,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 userAvatar.alt = user.displayName ? `Perfil de ${user.displayName}` : 'Perfil de usuario';
                 userProfileBtn.title = 'Cerrar sesi\u00f3n';
             }
+            if (focus) window.requestAnimationFrame(() => appMainContent?.focus({ preventScroll: true }));
         };
 
-        const showSignIn = () => {
+        const showSignIn = ({ focus = true } = {}) => {
             setLocalDemoState(false);
-            mainApp.style.display = 'none';
-            if (trialScreen) trialScreen.style.display = 'none';
-            authScreen.style.display = 'flex';
+            setShellVisibility(mainApp, false);
+            setShellVisibility(trialScreen, false);
+            setShellVisibility(authScreen, true);
+            document.body.classList.remove('app-shell-active');
             showAuthDocumentTitle();
+            if (focus) window.requestAnimationFrame(() => authEmailInput?.focus({ preventScroll: true }));
         };
 
         const enterLocalDemo = () => {
-            showApp({ localDemo: true });
+            showApp({ localDemo: true, focus: true });
             showToast('Modo local activo: tus datos quedan en este dispositivo.');
         };
 
@@ -2955,7 +2975,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.firebaseOnAuth(window.firebaseAuth, (user) => {
             if (user) {
                 // Logged in — direct access, no paywall
-                showApp({ user });
+                showApp({ user, focus: true });
                 showToast(`\u00a1Bienvenid@, ${user.displayName ? user.displayName.split(' ')[0] : (user.email ? user.email.split('@')[0] : 'Usuario')}! 🚀`);
             } else if (isLocalDemoActive()) {
                 showApp({ localDemo: true });

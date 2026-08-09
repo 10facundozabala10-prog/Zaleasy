@@ -110,6 +110,41 @@
       color: var(--primary);
     }
 
+    .blog-search-shortcut {
+      position: absolute;
+      right: 1.55rem;
+      top: 50%;
+      transform: translateY(-50%);
+      min-width: 30px;
+      padding: 0.28rem 0.5rem;
+      border: 1px solid rgba(255,255,255,0.16);
+      border-bottom-color: rgba(255,255,255,0.28);
+      border-radius: 7px;
+      background: rgba(10,11,16,0.72);
+      color: var(--text-muted);
+      box-shadow: 0 3px 0 rgba(0,0,0,0.22);
+      font: 700 0.78rem/1 Inter, sans-serif;
+      text-align: center;
+      pointer-events: none;
+      transition: border-color .2s ease, color .2s ease, transform .2s ease;
+    }
+
+    .blog-search-shell:focus-within .blog-search-shortcut {
+      border-color: rgba(0,210,211,0.48);
+      color: #00d2d3;
+      transform: translateY(calc(-50% + 2px));
+      box-shadow: 0 1px 0 rgba(0,0,0,0.22);
+    }
+
+    @media (max-width: 520px) {
+      .blog-search-shortcut { display: none; }
+      .blog-search-shell .glass-search-input { padding-right: 1.5rem !important; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .blog-search-shortcut { transition: none; }
+    }
+
     .glass-filter-btn {
       background: rgba(255, 255, 255, 0.05);
       color: var(--text-muted);
@@ -1036,6 +1071,7 @@
       border-radius: 18px;
       box-shadow: none;
       background: rgba(255,255,255,0.06);
+      padding-right: 4.1rem;
     }
 
     .blog-filters-container {
@@ -3982,8 +4018,9 @@
       
       <!-- Search Bar -->
       <div class="blog-search-shell" style="margin-top: 2rem; max-width: 760px; margin-left: auto; margin-right: auto; position: relative;">
-        <input type="search" id="blogSearch" placeholder="Ej.: ordenar caja, recuperar clientes o controlar stock" class="glass-search-input" oninput="searchBlog('blogSearch')" autocomplete="off" aria-label="Buscar art&iacute;culos del blog">
-        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="search" id="blogSearch" placeholder="Ej.: ordenar caja, recuperar clientes o controlar stock" class="glass-search-input" oninput="searchBlog('blogSearch')" autocomplete="off" aria-label="Buscar art&iacute;culos del blog" aria-keyshortcuts="/">
+        <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
+        <kbd class="blog-search-shortcut" aria-hidden="true">/</kbd>
       </div>
       <div class="blog-search-meta" id="blogSearchMeta" aria-live="polite"></div>
       <a class="blog-library-jump" href="#blogArticles">
@@ -5808,7 +5845,7 @@
       <div class="blog-library-search">
         <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
         <input type="search" id="blogLibrarySearch" placeholder="Buscar en la biblioteca..."
-          oninput="searchBlog('blogLibrarySearch')" autocomplete="off" aria-label="Buscar dentro de la biblioteca">
+          oninput="searchBlog('blogLibrarySearch')" autocomplete="off" aria-label="Buscar dentro de la biblioteca" aria-keyshortcuts="/">
         <button type="button" id="blogLibrarySearchClear" onclick="clearBlogSearch()" title="Limpiar b&uacute;squeda" aria-label="Limpiar b&uacute;squeda" hidden>
           <i class="fa-solid fa-xmark" aria-hidden="true"></i>
         </button>

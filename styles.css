@@ -8656,3 +8656,48 @@ select:focus {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
+
+/* Accessible navigation helpers */
+.app-skip-link {
+    position: fixed;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 10050;
+    max-width: calc(100vw - 1.5rem);
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--primary);
+    border-radius: 10px;
+    background: var(--bg-card);
+    color: var(--text-main);
+    box-shadow: var(--shadow-lg);
+    font-weight: 800;
+    text-decoration: none;
+    transform: translateY(calc(-100% - 1.25rem));
+    transition: transform 0.18s ease;
+}
+
+.app-skip-link:focus-visible {
+    transform: translateY(0);
+    outline: 3px solid color-mix(in srgb, var(--primary) 35%, transparent);
+    outline-offset: 2px;
+}
+
+.app-sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+body.app-shell-active > .auth-skip-link {
+    display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .app-skip-link { transition: none; }
+}
