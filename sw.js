@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'zaleasy-shell-20260809-v4';
+const CACHE_VERSION = 'zaleasy-shell-20260810-v7';
 const OFFLINE_URL = './offline.html';
 const CORE_ASSETS = [
   './',

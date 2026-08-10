@@ -3319,7 +3319,7 @@
       display: flex;
       align-items: center;
       gap: .55rem;
-      min-height: 68px;
+      min-height: 58px;
     }
 
     .blog-section-nav-label {
@@ -3351,8 +3351,8 @@
       align-items: center;
       justify-content: center;
       gap: .5rem;
-      min-height: 42px;
-      padding: .55rem .75rem;
+      min-height: 38px;
+      padding: .45rem .72rem;
       color: var(--text-muted);
       border: 1px solid transparent;
       border-radius: 12px;
@@ -4127,7 +4127,6 @@
         card.remove();
         window.clearTimeout(blogImageFailureRefreshTimer);
         blogImageFailureRefreshTimer = window.setTimeout(() => {
-          updateBlogStats();
           updateFilterCounts();
           applyBlogFilters();
         }, 0);
@@ -4281,28 +4280,30 @@
 
     function placeBlogCoreSections() {
       const library = document.getElementById('blogArticles');
-      const stats = document.querySelector('.blog-stats-strip');
+      const sectionNav = document.querySelector('.blog-section-nav');
       const featured = document.getElementById('blogFeatured');
       const routes = document.querySelector('.blog-problem-routes');
       const actionBridge = document.querySelector('.blog-action-bridge');
-      if (!library || !stats) return;
+      if (!library) return;
 
-      if (featured && stats.nextElementSibling !== featured) {
-        stats.insertAdjacentElement('afterend', featured);
+      if (featured && sectionNav && sectionNav.nextElementSibling !== featured) {
+        sectionNav.insertAdjacentElement('afterend', featured);
       }
 
-      const routesAnchor = featured || stats;
-      if (routes && routesAnchor.nextElementSibling !== routes) {
+      const routesAnchor = featured;
+      if (routes && routesAnchor && routesAnchor.nextElementSibling !== routes) {
         routesAnchor.insertAdjacentElement('afterend', routes);
       }
 
-      const actionBridgeAnchor = routes || featured || stats;
-      if (actionBridge && actionBridgeAnchor.nextElementSibling !== actionBridge) {
+      const actionBridgeAnchor = routes || featured;
+      if (actionBridge && actionBridgeAnchor && actionBridgeAnchor.nextElementSibling !== actionBridge) {
         actionBridgeAnchor.insertAdjacentElement('afterend', actionBridge);
       }
 
-      const discoveryAnchor = actionBridge || routes || featured || stats;
-      if (discoveryAnchor.nextElementSibling !== library) discoveryAnchor.insertAdjacentElement('afterend', library);
+      const discoveryAnchor = actionBridge || routes || featured;
+      if (discoveryAnchor && discoveryAnchor.nextElementSibling !== library) {
+        discoveryAnchor.insertAdjacentElement('afterend', library);
+      }
     }
 
     function getBlogViewUrl() {
@@ -4449,19 +4450,6 @@
       const text = card.textContent || '';
       const match = text.match(/(\d+)\s*min/i);
       return match ? parseInt(match[1], 10) : 99;
-    }
-
-    function updateBlogStats() {
-      const cards = Array.from(document.querySelectorAll('.blog-card:not(.coming-soon)'));
-      const totalMinutes = cards.reduce((sum, card) => sum + getBlogReadingMinutes(card), 0);
-      const topics = new Set(cards.map(card => normalizeBlogText(card.querySelector('.blog-category')?.textContent || '')).filter(Boolean));
-      const formatter = new Intl.NumberFormat('es-AR');
-      const totalStat = document.getElementById('articleTotalStat');
-      const minutesStat = document.getElementById('readingMinutesStat');
-      const topicsStat = document.getElementById('categoryTotalStat');
-      if (totalStat) totalStat.textContent = formatter.format(cards.length);
-      if (minutesStat) minutesStat.textContent = formatter.format(totalMinutes);
-      if (topicsStat) topicsStat.textContent = formatter.format(topics.size);
     }
 
     function sortBlogCards(cards) {
@@ -5464,7 +5452,6 @@
       });
       restoreBlogViewFromUrl();
       prepareLazyBlogImages();
-      updateBlogStats();
       updateFilterCounts();
       setupBlogTopicExplorer();
       setupBlogMobileNavigation();
@@ -5509,46 +5496,6 @@
     });
   </script>
 
-  <!-- Blog Stats Strip -->
-  <div class="blog-stats-strip">
-    <div class="blog-stat-item">
-      <div class="blog-stat-icon" style="background: rgba(108,92,231,0.15); color: #a29bfe;">
-        <i class="fa-solid fa-newspaper"></i>
-      </div>
-      <div class="blog-stat-text">
-        <strong id="articleTotalStat">575</strong>
-        <span>Art&iacute;culos en total</span>
-      </div>
-    </div>
-    <div class="blog-stat-item">
-      <div class="blog-stat-icon" style="background: rgba(46,213,115,0.12); color: #2ed573;">
-        <i class="fa-regular fa-clock"></i>
-      </div>
-      <div class="blog-stat-text">
-        <strong id="readingMinutesStat">5.074</strong>
-        <span>Minutos de lectura</span>
-      </div>
-    </div>
-    <div class="blog-stat-item">
-      <div class="blog-stat-icon" style="background: rgba(0,184,212,0.12); color: #00d2d3;">
-        <i class="fa-solid fa-tags"></i>
-      </div>
-      <div class="blog-stat-text">
-        <strong id="categoryTotalStat">100</strong>
-        <span>Temas cubiertos</span>
-      </div>
-    </div>
-    <div class="blog-stat-item">
-      <div class="blog-stat-icon" style="background: rgba(255,165,2,0.12); color: #ffa502;">
-        <i class="fa-solid fa-fire"></i>
-      </div>
-      <div class="blog-stat-text">
-        <strong>100%</strong>
-        <span>Contenido gratuito</span>
-      </div>
-    </div>
-  </div>
-
   <!-- Ad Banner -->
   <div class="ad-banner" aria-label="Publicidad">
     <p class="ad-label">Publicidad</p>
@@ -5557,7 +5504,7 @@
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
   <!-- Featured Article Banner -->
-  <section class="container" id="blogFeatured" style="padding-top: 3rem;">
+  <section class="container" id="blogFeatured" style="padding-top: 2rem;">
     <div class="featured-article" id="dailyFeaturedArticle" style="
       background: url('assets/Blog imagenes/oferta-irresistible.png') center/cover;
       border-radius: 24px;

@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="apple-touch-icon" href="assets/logo-navbar.png">
-    <link rel="stylesheet" href="styles.css?v=20260809-dashboard-order-v2">
+    <link rel="stylesheet" href="styles.css?v=20260810-operation-layout-v3">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
@@ -287,38 +287,41 @@
                         <small>Sin sincronizaci&oacute;n</small>
                         <button type="button" id="btn-exit-local-demo" aria-label="Salir del modo local">Salir</button>
                     </div>
-                    <div class="notification-center" id="notification-center">
-                        <button type="button" class="notification-trigger" id="notification-trigger"
-                            aria-label="Abrir centro de alertas" aria-expanded="false" aria-controls="notification-panel"
-                            title="Alertas operativas">
-                            <i class="fa-regular fa-bell"></i>
-                            <span class="notification-count" id="notification-count" hidden>0</span>
-                        </button>
-                        <div class="notification-panel" id="notification-panel" hidden>
-                            <div class="notification-panel-head">
-                                <div>
-                                    <span class="notification-kicker">Centro operativo</span>
-                                    <h2>Alertas y prioridades</h2>
-                                </div>
-                                <span class="badge" id="notification-status">Todo al d&iacute;a</span>
-                            </div>
-                            <p class="notification-summary" id="notification-summary">No hay acciones urgentes en este momento.</p>
-                            <div class="notification-list" id="notification-list"></div>
-                            <button type="button" class="notification-review" id="notification-review">
-                                <span>Ver plan completo del d&iacute;a</span><i class="fa-solid fa-arrow-right"></i>
+                    <div class="header-quick-actions" aria-label="Acciones operativas">
+                        <div class="notification-center" id="notification-center">
+                            <button type="button" class="notification-trigger" id="notification-trigger"
+                                aria-label="Abrir centro de alertas" aria-expanded="false" aria-controls="notification-panel"
+                                title="Alertas operativas">
+                                <i class="fa-regular fa-bell"></i>
+                                <span class="notification-count" id="notification-count" hidden>0</span>
                             </button>
+                            <div class="notification-panel" id="notification-panel" hidden>
+                                <div class="notification-panel-head">
+                                    <div>
+                                        <span class="notification-kicker">Centro operativo</span>
+                                        <h2>Alertas y prioridades</h2>
+                                    </div>
+                                    <span class="badge" id="notification-status">Todo al d&iacute;a</span>
+                                </div>
+                                <p class="notification-summary" id="notification-summary">No hay acciones urgentes en este momento.</p>
+                                <div class="notification-list" id="notification-list"></div>
+                                <button type="button" class="notification-review" id="notification-review">
+                                    <span>Ver plan completo del d&iacute;a</span><i class="fa-solid fa-arrow-right"></i>
+                                </button>
+                            </div>
                         </div>
+                        <button class="btn btn-outline" id="btn-share-summary" aria-label="Compartir resumen del d&iacute;a"
+                            title="Compartir resumen del d&iacute;a" style="gap:.4rem;">
+                            <i class="fa-solid fa-share-nodes"></i> <span class="hide-mobile">Compartir</span>
+                        </button>
+                        <button class="btn btn-outline btn-close-register" id="btn-close-register"
+                            aria-label="Abrir cierre de caja" title="Abrir cierre de caja">
+                            <i class="fa-solid fa-cash-register"></i> <span class="hide-mobile">Cierre de Caja</span>
+                        </button>
+                        <button class="theme-toggle" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema">
+                            <i class="fa-solid fa-moon"></i>
+                        </button>
                     </div>
-                    <button class="btn btn-outline" id="btn-share-summary" title="Compartir Resumen del D&iacute;a"
-                        style="gap:.4rem;">
-                        <i class="fa-solid fa-share-nodes"></i> <span class="hide-mobile">Compartir</span>
-                    </button>
-                    <button class="btn btn-outline btn-close-register" id="btn-close-register">
-                        <i class="fa-solid fa-cash-register"></i> <span class="hide-mobile">Cierre de Caja</span>
-                    </button>
-                    <button class="theme-toggle" id="theme-toggle" aria-label="Cambiar tema">
-                        <i class="fa-solid fa-moon"></i>
-                    </button>
                     <div class="user-profile" id="user-profile-btn" style="cursor:pointer;"
                         title="Cerrar Sesi&oacute;n">
                         <img id="user-avatar" src="https://ui-avatars.com/api/?name=Admin&background=0D8ABC&color=fff"

@@ -719,6 +719,33 @@ h1 {
     flex-shrink: 0;
 }
 
+.header-quick-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.28rem;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--bg-card) 78%, transparent);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+}
+
+.header-quick-actions .notification-trigger,
+.header-quick-actions .btn-outline,
+.header-quick-actions .theme-toggle {
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.header-quick-actions .notification-trigger:hover,
+.header-quick-actions .notification-trigger:focus-visible,
+.header-quick-actions .btn-outline:hover,
+.header-quick-actions .btn-outline:focus-visible,
+.header-quick-actions .theme-toggle:hover,
+.header-quick-actions .theme-toggle:focus-visible {
+    border-color: var(--border-color);
+}
+
 .sidebar-resource-link {
     margin-bottom: 0.75rem;
     padding: 0.75rem;
@@ -2085,6 +2112,11 @@ select:focus {
         width: 100%;
         justify-content: flex-end;
         flex-wrap: wrap;
+    }
+
+    .header-quick-actions {
+        max-width: 100%;
+        margin-left: auto;
     }
 
     .notification-center { order: -1; }
@@ -5196,20 +5228,88 @@ select:focus {
 
 #view-dashboard .form-section {
     order: 6;
-    grid-column: 1 / span 5;
-    position: sticky;
-    top: calc(var(--header-height) + 1rem);
+    grid-column: 1 / -1;
+    position: static;
     align-self: start;
+    padding: 1.35rem 1.5rem 1.5rem;
+    border-color: rgba(124, 111, 240, 0.18);
+    background:
+        linear-gradient(135deg, rgba(124, 111, 240, 0.055), rgba(0, 203, 164, 0.025)),
+        var(--bg-card);
 }
 
 #view-dashboard .list-section {
     order: 7;
-    grid-column: 6 / -1;
-    min-height: 620px;
+    grid-column: 1 / -1;
+    min-height: 520px;
 }
 
 #view-dashboard .list-section .table-container {
-    max-height: 520px;
+    max-height: 480px;
+}
+
+#view-dashboard .sale-form {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(330px, 0.85fr);
+    grid-auto-flow: row;
+    align-items: start;
+    gap: 0.9rem 1.25rem;
+}
+
+#view-dashboard .sale-form > .transaction-type-toggle,
+#view-dashboard .sale-form > .form-group {
+    grid-column: 1;
+    margin-bottom: 0 !important;
+}
+
+#view-dashboard .sale-form > .transaction-type-toggle {
+    grid-row: 1;
+}
+
+#view-dashboard .sale-form > .form-group:nth-child(2) { grid-row: 2; }
+#view-dashboard .sale-form > .form-group:nth-child(3) { grid-row: 3; }
+#view-dashboard .sale-form > .form-group:nth-child(4) { grid-row: 4; }
+#view-dashboard .sale-form > .form-group:nth-child(5) { grid-row: 5; }
+
+#view-dashboard .sale-form > .transaction-review {
+    grid-column: 2;
+    grid-row: 1 / span 5;
+    margin: 0;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#view-dashboard .sale-form > .transaction-review .transaction-review-status {
+    margin-top: auto;
+}
+
+#view-dashboard .sale-form > .quick-actions {
+    grid-column: 1;
+    grid-row: 6;
+    margin: 0;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+#view-dashboard .sale-form > .form-actions-row {
+    grid-column: 2;
+    grid-row: 6;
+    margin-left: 0;
+    display: grid !important;
+    grid-template-columns: minmax(105px, 1fr) minmax(135px, 1.35fr) 48px;
+    gap: 0.55rem !important;
+    align-items: stretch;
+}
+
+#view-dashboard .sale-form > .form-actions-row > .btn {
+    min-width: 0 !important;
+    min-height: 44px;
+    padding: 0.65rem 0.7rem !important;
+}
+
+#view-dashboard .sale-form > .form-actions-row #btn-calculator {
+    width: 48px;
 }
 
 #view-dashboard .secondary-metrics-strip {
@@ -5439,6 +5539,30 @@ select:focus {
 
     #view-dashboard .setup-checklist-grid {
         grid-template-columns: 1fr;
+    }
+
+    #view-dashboard .sale-form {
+        display: block;
+    }
+
+    #view-dashboard .sale-form > .transaction-type-toggle,
+    #view-dashboard .sale-form > .form-group {
+        margin-bottom: 1.1rem !important;
+    }
+
+    #view-dashboard .sale-form > .transaction-review {
+        min-height: 0;
+        margin-bottom: 1rem;
+        display: block;
+    }
+
+    #view-dashboard .sale-form > .quick-actions {
+        margin-bottom: 1rem;
+    }
+
+    #view-dashboard .sale-form > .form-actions-row {
+        margin-left: 0;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) 48px;
     }
 }
 
