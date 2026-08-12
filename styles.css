@@ -5327,6 +5327,14 @@ select:focus {
     order: 8;
 }
 
+#view-dashboard[data-activity-state="empty"] .setup-checklist-card:not([data-complete="true"]) {
+    order: 3;
+}
+
+#view-dashboard[data-activity-state="empty"] .smart-shortcuts-card {
+    order: 4;
+}
+
 #view-dashboard .receivables-card {
     order: 10;
     grid-column: 1 / span 6;
@@ -5504,9 +5512,10 @@ select:focus {
 @media (max-width: 760px) {
     .dashboard-viewbar {
         margin-top: 1rem;
-        padding: 0.9rem;
+        padding: 0.75rem;
         grid-template-columns: minmax(0, 1fr);
         align-items: stretch;
+        gap: 0.65rem;
     }
 
     .dashboard-view-controls {
@@ -5523,8 +5532,42 @@ select:focus {
     }
 
     .dashboard-view-count {
-        grid-column: auto;
-        justify-self: start;
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+
+    #view-dashboard[data-activity-state="empty"] .kpi-cards {
+        gap: 0.7rem;
+    }
+
+    #view-dashboard[data-activity-state="empty"] .kpi-card {
+        min-height: 102px;
+        padding: 0.8rem;
+        grid-template-columns: 36px minmax(0, 1fr);
+        column-gap: 0.7rem;
+    }
+
+    #view-dashboard[data-activity-state="empty"] .kpi-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
+    }
+
+    #view-dashboard[data-activity-state="empty"] .kpi-details h3 {
+        margin-bottom: 0.2rem;
+        font-size: 0.66rem;
+        line-height: 1.15;
+    }
+
+    #view-dashboard[data-activity-state="empty"] .kpi-value {
+        margin: 0;
+        font-size: 1.3rem;
     }
 
     #view-dashboard .dashboard-grid {

@@ -3553,6 +3553,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         const netBalance = totalRevenue - totalExpenses;
+        const dashboardView = document.getElementById('view-dashboard');
+        if (dashboardView) {
+            dashboardView.dataset.activityState = sales.length === 0 ? 'empty' : 'active';
+        }
 
         kpiRevenue.textContent = formatCurrency(totalRevenue);
         kpiSalesCount.textContent = totalSalesCount;

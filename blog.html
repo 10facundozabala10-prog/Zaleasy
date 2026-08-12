@@ -3223,6 +3223,28 @@
         font-size: .96rem !important;
       }
 
+      .blog-value-chips {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        gap: .55rem;
+        padding: 0 .15rem .25rem;
+        overflow-x: auto;
+        scroll-snap-type: x proximity;
+        scrollbar-width: none;
+        -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
+        mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
+      }
+
+      .blog-value-chips::-webkit-scrollbar {
+        display: none;
+      }
+
+      .blog-value-chips > span {
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+      }
+
       .article-count-badge {
         margin-bottom: .7rem !important;
       }
@@ -3692,10 +3714,12 @@
       .blog-section-nav-links {
         display: flex;
         width: 100%;
-        padding: 0 .1rem .2rem;
+        padding: 0 1.5rem .2rem .1rem;
         overflow-x: auto;
         scroll-snap-type: x proximity;
         scrollbar-width: none;
+        -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
+        mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
       }
 
       .blog-section-nav-links::-webkit-scrollbar {
@@ -4031,13 +4055,13 @@
 
       <!-- Category Filters -->
       <div class="blog-filters-container" role="group" aria-label="Filtrar art&iacute;culos por categor&iacute;a" style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-        <button class="glass-filter-btn active" aria-pressed="true" data-filter="all" onclick="filterBlog('all', this)">Todos <span class="filter-count">0</span></button>
-        <button class="glass-filter-btn" aria-pressed="false" data-filter="ventas" onclick="filterBlog('ventas', this)">Ventas <span class="filter-count">0</span></button>
-        <button class="glass-filter-btn" aria-pressed="false" data-filter="marketing" onclick="filterBlog('marketing', this)">Marketing <span class="filter-count">0</span></button>
-        <button class="glass-filter-btn" aria-pressed="false" data-filter="finanzas" onclick="filterBlog('finanzas', this)">Finanzas <span class="filter-count">0</span></button>
-        <button class="glass-filter-btn" aria-pressed="false" data-filter="productividad" onclick="filterBlog('productividad', this)">Productividad <span class="filter-count">0</span></button>
-        <button class="glass-filter-btn" aria-pressed="false" data-filter="tecnologia" onclick="filterBlog('tecnologia', this)">Tecnolog&iacute;a <span class="filter-count">0</span></button>
-        <button class="glass-filter-btn" aria-pressed="false" data-filter="motivacion" onclick="filterBlog('motivacion', this)">Motivaci&oacute;n <span class="filter-count">0</span></button>
+        <button class="glass-filter-btn active" aria-pressed="true" data-filter="all" onclick="filterBlog('all', this)">Todos <span class="filter-count">575</span></button>
+        <button class="glass-filter-btn" aria-pressed="false" data-filter="ventas" onclick="filterBlog('ventas', this)">Ventas <span class="filter-count">455</span></button>
+        <button class="glass-filter-btn" aria-pressed="false" data-filter="marketing" onclick="filterBlog('marketing', this)">Marketing <span class="filter-count">121</span></button>
+        <button class="glass-filter-btn" aria-pressed="false" data-filter="finanzas" onclick="filterBlog('finanzas', this)">Finanzas <span class="filter-count">312</span></button>
+        <button class="glass-filter-btn" aria-pressed="false" data-filter="productividad" onclick="filterBlog('productividad', this)">Productividad <span class="filter-count">342</span></button>
+        <button class="glass-filter-btn" aria-pressed="false" data-filter="tecnologia" onclick="filterBlog('tecnologia', this)">Tecnolog&iacute;a <span class="filter-count">10</span></button>
+        <button class="glass-filter-btn" aria-pressed="false" data-filter="motivacion" onclick="filterBlog('motivacion', this)">Motivaci&oacute;n <span class="filter-count">8</span></button>
       </div>
         </div>
 
