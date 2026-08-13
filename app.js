@@ -949,6 +949,21 @@ document.addEventListener('DOMContentLoaded', () => {
         setSidebarOpen(false);
     };
 
+    document.getElementById('mobile-share-summary')?.addEventListener('click', () => {
+        closeSidebar();
+        btnShareSummary?.click();
+    });
+
+    document.getElementById('mobile-close-register')?.addEventListener('click', () => {
+        closeSidebar();
+        btnCloseRegister?.click();
+    });
+
+    document.getElementById('mobile-account-actions')?.addEventListener('click', () => {
+        closeSidebar();
+        document.getElementById('user-profile-btn')?.click();
+    });
+
     if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', toggleSidebar);
     if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
     document.addEventListener('keydown', (event) => {
@@ -1853,7 +1868,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Date & Greeting ---
     const setupDate = () => {
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const options = window.matchMedia('(max-width: 768px)').matches
+            ? { weekday: 'short', day: 'numeric', month: 'short' }
+            : { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         dateEl.textContent = new Date().toLocaleDateString('es-ES', options);
 
         const currentHour = new Date().getHours();

@@ -4655,8 +4655,6 @@
     }
 
     function updateCount(n) {
-      const el = document.getElementById('articleCountNum');
-      if (el) el.textContent = n;
       document.querySelectorAll('[data-blog-result-count]').forEach(count => {
         count.textContent = n;
       });
