@@ -3983,6 +3983,90 @@
         font-size: .72rem;
       }
     }
+
+    /* Las categorías pertenecen a la biblioteca: el encabezado queda más breve
+       y el filtro aparece justo antes de las herramientas que modifica. */
+    #blogArticles .blog-library-categories {
+      display: grid;
+      grid-template-columns: minmax(155px, .32fr) minmax(0, 1.68fr);
+      align-items: center;
+      gap: 1rem;
+      margin: 1.15rem 0 1rem;
+      padding: 1rem 1.1rem;
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(108, 92, 231, .09), rgba(0, 210, 211, .045));
+      box-shadow: 0 12px 34px rgba(0, 0, 0, .16);
+    }
+
+    #blogArticles .blog-library-categories-heading {
+      display: grid;
+      gap: .3rem;
+    }
+
+    #blogArticles .blog-library-categories-heading .section-kicker {
+      margin: 0;
+    }
+
+    #blogArticles .blog-library-categories-heading small {
+      color: var(--text-muted);
+      font-size: .76rem;
+      line-height: 1.35;
+    }
+
+    #blogArticles .blog-filters-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      gap: .55rem;
+      max-width: none;
+      margin: 0;
+    }
+
+    #blogArticles .glass-filter-btn {
+      min-height: 40px;
+      padding: .58rem .85rem;
+      border-radius: 11px;
+      font-size: .79rem;
+    }
+
+    @media (max-width: 720px) {
+      #blogArticles .blog-library-categories {
+        grid-template-columns: minmax(0, 1fr);
+        gap: .75rem;
+        margin: .9rem 0 .8rem;
+        padding: .9rem;
+      }
+
+      #blogArticles .blog-library-categories-heading {
+        grid-template-columns: auto 1fr;
+        align-items: center;
+        gap: .65rem;
+      }
+
+      #blogArticles .blog-library-categories-heading small {
+        text-align: right;
+      }
+
+      #blogArticles .blog-filters-container {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        justify-content: flex-start;
+        width: 100%;
+        padding: 0 0 .25rem;
+        scroll-padding-inline: .15rem;
+        scrollbar-width: none;
+      }
+
+      #blogArticles .blog-filters-container::-webkit-scrollbar {
+        display: none;
+      }
+
+      #blogArticles .glass-filter-btn {
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+      }
+    }
   </style>
 
   <link rel="icon" type="image/png" href="assets/logo-navbar.png" />
@@ -4053,16 +4137,6 @@
         <small><span data-blog-result-count>575</span> art&iacute;culos</small>
       </a>
 
-      <!-- Category Filters -->
-      <div class="blog-filters-container" role="group" aria-label="Filtrar art&iacute;culos por categor&iacute;a" style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-        <button class="glass-filter-btn active" aria-pressed="true" data-filter="all" onclick="filterBlog('all', this)">Todos <span class="filter-count">575</span></button>
-        <button class="glass-filter-btn" aria-pressed="false" data-filter="ventas" onclick="filterBlog('ventas', this)">Ventas <span class="filter-count">455</span></button>
-        <button class="glass-filter-btn" aria-pressed="false" data-filter="marketing" onclick="filterBlog('marketing', this)">Marketing <span class="filter-count">121</span></button>
-        <button class="glass-filter-btn" aria-pressed="false" data-filter="finanzas" onclick="filterBlog('finanzas', this)">Finanzas <span class="filter-count">312</span></button>
-        <button class="glass-filter-btn" aria-pressed="false" data-filter="productividad" onclick="filterBlog('productividad', this)">Productividad <span class="filter-count">342</span></button>
-        <button class="glass-filter-btn" aria-pressed="false" data-filter="tecnologia" onclick="filterBlog('tecnologia', this)">Tecnolog&iacute;a <span class="filter-count">10</span></button>
-        <button class="glass-filter-btn" aria-pressed="false" data-filter="motivacion" onclick="filterBlog('motivacion', this)">Motivaci&oacute;n <span class="filter-count">8</span></button>
-      </div>
         </div>
 
         <aside class="blog-hero-visual" aria-label="Art&iacute;culos recomendados">
@@ -4391,7 +4465,7 @@
       activeBlogCategory = category;
       setBlogSearchValue('');
 
-      const buttons = document.querySelectorAll('header.blog-header button');
+      const buttons = document.querySelectorAll('.blog-filters-container .glass-filter-btn[data-filter]');
       buttons.forEach(btn => {
         const selected = btn === btnElement;
         btn.classList.toggle('active', selected);
@@ -4420,7 +4494,7 @@
       const source = document.getElementById(sourceId);
       setBlogSearchValue(source?.value || '');
       activeBlogCategory = 'all';
-      const buttons = document.querySelectorAll('header.blog-header button');
+      const buttons = document.querySelectorAll('.blog-filters-container .glass-filter-btn[data-filter]');
       buttons.forEach(btn => {
         const selected = btn.dataset.filter === 'all';
         btn.classList.toggle('active', selected);
@@ -4623,7 +4697,7 @@
     function setBlogRoute(category, query) {
       activeBlogCategory = category || 'all';
       setBlogSearchValue(query || '');
-      const buttons = document.querySelectorAll('header.blog-header button');
+      const buttons = document.querySelectorAll('.blog-filters-container .glass-filter-btn[data-filter]');
       buttons.forEach(btn => {
         const selected = btn.dataset.filter === activeBlogCategory;
         btn.classList.toggle('active', selected);
@@ -4643,7 +4717,7 @@
     function setBlogTopic(topic) {
       activeBlogCategory = topic || 'all';
       setBlogSearchValue('');
-      document.querySelectorAll('header.blog-header .glass-filter-btn[data-filter]').forEach(btn => {
+      document.querySelectorAll('.blog-filters-container .glass-filter-btn[data-filter]').forEach(btn => {
         const selected = btn.dataset.filter === activeBlogCategory;
         btn.classList.toggle('active', selected);
         btn.setAttribute('aria-pressed', selected ? 'true' : 'false');
@@ -5789,6 +5863,21 @@
         <h2>Todos los art&iacute;culos</h2>
       </div>
       <p>Contenido accionable para consultar por problema: vender mejor, cuidar margen, ordenar caja y seguir clientes.</p>
+    </div>
+    <div class="blog-library-categories" aria-labelledby="blogCategoryTitle">
+      <div class="blog-library-categories-heading">
+        <span class="section-kicker" id="blogCategoryTitle"><i class="fa-solid fa-tags" aria-hidden="true"></i> Categor&iacute;as</span>
+        <small>Eleg&iacute; un tema para acotar la biblioteca.</small>
+      </div>
+      <div class="blog-filters-container" role="group" aria-label="Filtrar art&iacute;culos por categor&iacute;a">
+        <button class="glass-filter-btn active" aria-pressed="true" data-filter="all" onclick="filterBlog('all', this)">Todos <span class="filter-count">575</span></button>
+        <button class="glass-filter-btn" aria-pressed="false" data-filter="ventas" onclick="filterBlog('ventas', this)">Ventas <span class="filter-count">455</span></button>
+        <button class="glass-filter-btn" aria-pressed="false" data-filter="marketing" onclick="filterBlog('marketing', this)">Marketing <span class="filter-count">121</span></button>
+        <button class="glass-filter-btn" aria-pressed="false" data-filter="finanzas" onclick="filterBlog('finanzas', this)">Finanzas <span class="filter-count">312</span></button>
+        <button class="glass-filter-btn" aria-pressed="false" data-filter="productividad" onclick="filterBlog('productividad', this)">Productividad <span class="filter-count">342</span></button>
+        <button class="glass-filter-btn" aria-pressed="false" data-filter="tecnologia" onclick="filterBlog('tecnologia', this)">Tecnolog&iacute;a <span class="filter-count">10</span></button>
+        <button class="glass-filter-btn" aria-pressed="false" data-filter="motivacion" onclick="filterBlog('motivacion', this)">Motivaci&oacute;n <span class="filter-count">8</span></button>
+      </div>
     </div>
     <aside class="blog-app-context" id="blogAppContext" aria-labelledby="blogAppContextTitle" hidden>
       <div class="blog-app-context-shell">

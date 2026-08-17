@@ -5226,6 +5226,14 @@ select:focus {
     grid-column: 1 / -1;
 }
 
+#view-dashboard[data-activity-state="empty"] .daily-pulse-card {
+    order: 1;
+}
+
+#view-dashboard[data-activity-state="empty"] .kpi-cards {
+    order: 2;
+}
+
 #view-dashboard .form-section {
     order: 6;
     grid-column: 1 / -1;
