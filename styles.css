@@ -5343,6 +5343,47 @@ select:focus {
     order: 4;
 }
 
+/* Primer día: configuración y accesos comparten una misma franja operativa. */
+@media (min-width: 1181px) {
+    #view-dashboard[data-activity-state="empty"] .dashboard-grid {
+        grid-auto-flow: dense;
+    }
+
+    #view-dashboard[data-activity-state="empty"] .kpi-card {
+        min-height: 108px;
+        padding-block: 0.85rem;
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.025), rgba(124, 111, 240, 0.025));
+    }
+
+    #view-dashboard[data-activity-state="empty"] .setup-checklist-card:not([data-complete="true"]) {
+        order: 3;
+        grid-row: 3;
+        grid-column: 1 / span 5;
+        height: 100%;
+    }
+
+    #view-dashboard[data-activity-state="empty"] .smart-shortcuts-card {
+        order: 3;
+        grid-row: 3;
+        grid-column: 6 / -1;
+        grid-template-columns: minmax(0, 1fr);
+        align-self: stretch;
+        height: 100%;
+    }
+
+    #view-dashboard[data-activity-state="empty"] .setup-checklist-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #view-dashboard[data-activity-state="empty"] .smart-shortcuts-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    #view-dashboard[data-activity-state="empty"] .smart-shortcut {
+        min-height: 74px;
+    }
+}
+
 #view-dashboard .receivables-card {
     order: 10;
     grid-column: 1 / span 6;
@@ -9048,4 +9089,83 @@ body.app-shell-active > .auth-skip-link {
 
 @media (prefers-reduced-motion: reduce) {
     .app-skip-link { transition: none; }
+}
+
+/* Cabecera operativa compacta: todas las acciones tienen el mismo peso visual. */
+@media (min-width: 769px) and (max-width: 1450px) {
+    .top-header .header-quick-actions {
+        min-height: 44px;
+        padding: 3px;
+        gap: 2px;
+    }
+
+    .top-header .header-quick-actions .notification-trigger,
+    .top-header .header-quick-actions .btn-outline,
+    .top-header .header-quick-actions .theme-toggle {
+        width: 36px;
+        min-width: 36px;
+        height: 36px;
+        min-height: 36px;
+        padding: 0 !important;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+    }
+
+    .top-header .header-quick-actions .btn-outline span {
+        display: none;
+    }
+
+    .top-header .local-demo-indicator small {
+        display: none;
+    }
+}
+
+/* El selector funciona como barra de contexto, no como otra tarjeta del tablero. */
+@media (min-width: 761px) {
+    .dashboard-viewbar {
+        margin-top: 1rem;
+        padding: 0.62rem 0.75rem;
+        grid-template-columns: minmax(180px, 1fr) auto auto;
+        gap: 0.75rem;
+        border-radius: 10px;
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+    }
+
+    .dashboard-viewbar-kicker {
+        display: none;
+    }
+
+    .dashboard-viewbar h2 {
+        font-size: 0.9rem;
+    }
+
+    .dashboard-viewbar p {
+        margin-top: 0.18rem;
+        overflow: hidden;
+        font-size: 0.74rem;
+        line-height: 1.25;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .dashboard-view-controls {
+        grid-template-columns: repeat(4, minmax(78px, 1fr));
+        padding: 0.2rem;
+    }
+
+    .dashboard-view-option {
+        min-height: 36px;
+        padding: 0.45rem 0.58rem;
+        font-size: 0.74rem;
+    }
+
+    .dashboard-view-count {
+        padding: 0.32rem 0.5rem;
+        border: 1px solid var(--border-color);
+        border-radius: 999px;
+        background: var(--bg-hover);
+        font-size: 0.7rem;
+    }
 }

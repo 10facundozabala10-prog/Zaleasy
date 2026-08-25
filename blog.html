@@ -4067,6 +4067,313 @@
         scroll-snap-align: start;
       }
     }
+
+    /* Ritmo editorial: las rutas siguen siendo protagonistas, mientras que la
+       invitación a usar la app y la frase semanal funcionan como pausas breves. */
+    @media (min-width: 981px) {
+      .blog-action-bridge {
+        padding-top: .65rem;
+      }
+
+      .action-bridge-shell {
+        grid-template-columns: minmax(210px, .55fr) minmax(0, 1.45fr);
+        padding: .8rem;
+      }
+
+      .action-bridge-intro {
+        gap: .25rem;
+      }
+
+      .action-bridge-intro h2 {
+        font-size: 1.18rem;
+      }
+
+      .action-bridge-intro p {
+        font-size: .76rem;
+        line-height: 1.4;
+      }
+
+      .action-bridge-card {
+        min-height: 76px;
+        grid-template-columns: 28px minmax(0, 1fr);
+        align-items: center;
+        align-content: center;
+        gap: .55rem;
+        padding: .65rem;
+      }
+
+      .action-bridge-card i {
+        width: 28px;
+        height: 28px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        background: rgba(0, 210, 211, .1);
+      }
+
+      .blog-weekly-quote {
+        padding: .65rem 0 .4rem !important;
+      }
+
+      .blog-weekly-quote #qotdCard {
+        min-height: 86px;
+        padding: .85rem 1.1rem !important;
+        gap: .85rem !important;
+      }
+
+      .blog-weekly-quote #qotdCard > div:nth-child(2) {
+        display: none;
+      }
+
+      .blog-weekly-quote #qotdText {
+        margin-bottom: .25rem !important;
+        font-size: 1rem !important;
+        line-height: 1.45 !important;
+      }
+
+      .blog-weekly-quote #qotdCard > div:last-child {
+        flex-direction: row !important;
+      }
+
+      .blog-weekly-quote #qotdCard > div:last-child button {
+        width: 34px !important;
+        height: 34px !important;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .featured-article {
+        min-height: 430px !important;
+      }
+
+      .problem-route-grid {
+        display: flex;
+        grid-template-columns: none;
+        gap: .75rem;
+        overflow-x: auto;
+        padding: .1rem .1rem .55rem;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+      }
+
+      .problem-route-grid::-webkit-scrollbar {
+        display: none;
+      }
+
+      .problem-route-card {
+        flex: 0 0 min(82vw, 290px);
+        min-height: 148px;
+        scroll-snap-align: start;
+      }
+
+      .blog-weekly-quote {
+        padding: .75rem 0 .35rem !important;
+      }
+
+      .blog-weekly-quote #qotdCard {
+        padding: 1rem !important;
+        gap: .7rem !important;
+        align-items: flex-start !important;
+      }
+
+      .blog-weekly-quote #qotdCard > div:nth-child(2) {
+        display: none;
+      }
+
+      .blog-weekly-quote #qotdText {
+        font-size: .95rem !important;
+      }
+
+      .blog-weekly-quote #qotdCard > div:last-child {
+        flex-direction: column !important;
+      }
+    }
+
+    /* Herramientas de biblioteca en dos filas claras, sin una pared de botones. */
+    @media (min-width: 981px) {
+      #blogArticles .blog-library-categories {
+        grid-template-columns: 145px minmax(0, 1fr);
+        margin-block: .9rem .75rem;
+        padding: .72rem .85rem;
+        gap: .8rem;
+      }
+
+      #blogArticles .blog-library-categories-heading small {
+        font-size: .7rem;
+      }
+
+      #blogArticles .blog-filters-container {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: .42rem !important;
+        margin-top: 0 !important;
+        scrollbar-width: none;
+      }
+
+      #blogArticles .blog-filters-container::-webkit-scrollbar {
+        display: none;
+      }
+
+      #blogArticles .glass-filter-btn {
+        min-height: 36px;
+        flex: 0 0 auto;
+        padding: .48rem .72rem;
+      }
+
+      #blogArticles .blog-discovery-bar {
+        gap: .65rem;
+        margin-top: .75rem;
+        padding: .72rem;
+      }
+
+      #blogArticles .blog-active-state {
+        order: 1;
+        flex: 0 1 220px;
+        min-height: 42px;
+        padding: 0 .25rem;
+        border-bottom: 0;
+      }
+
+      #blogArticles .blog-library-search {
+        order: 1;
+        flex: 1 1 330px;
+      }
+
+      #blogArticles .blog-sort-control {
+        order: 1;
+        flex: 0 0 auto;
+      }
+
+      #blogArticles .blog-suggestion-chips {
+        order: 2;
+        flex: 1 1 520px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+
+      #blogArticles .blog-suggestion-chips::-webkit-scrollbar {
+        display: none;
+      }
+
+      #blogArticles .blog-suggestion-chips button {
+        flex: 0 0 auto;
+      }
+
+      #blogArticles .blog-reading-tools {
+        order: 2;
+        flex: 0 0 auto;
+        flex-wrap: nowrap;
+        gap: .35rem;
+      }
+
+      #blogArticles .blog-reading-tools .blog-tool-btn {
+        width: 38px;
+        min-width: 38px;
+        height: 38px;
+        padding: 0;
+        justify-content: center;
+      }
+
+      #blogArticles .blog-tool-label,
+      #blogArticles .blog-layout-switch > span,
+      #blogArticles .blog-layout-switch button span {
+        display: none;
+      }
+
+      #blogArticles .blog-layout-switch button {
+        width: 34px;
+        min-width: 34px;
+        padding-inline: 0;
+      }
+    }
+
+    /* Una sola entrada editorial fuerte y rutas breves hacia la biblioteca. */
+    @media (min-width: 1181px) {
+      #blogFeatured {
+        padding-top: 1.35rem !important;
+      }
+
+      #blogFeatured .featured-article {
+        min-height: 380px !important;
+      }
+
+      #blogFeatured .featured-article-content {
+        padding: 2rem !important;
+      }
+
+      .blog-problem-routes {
+        padding-top: 1.5rem;
+      }
+
+      .problem-routes-shell {
+        grid-template-columns: minmax(0, 1fr);
+        gap: .85rem;
+      }
+
+      .problem-routes-intro {
+        min-height: 0;
+        grid-template-columns: minmax(0, 1fr) minmax(260px, .42fr);
+        align-items: center;
+        align-content: center;
+        gap: 1rem;
+        padding: 1rem 1.1rem;
+      }
+
+      .problem-routes-intro h2 {
+        margin: .3rem 0 .38rem;
+        font-size: 1.42rem;
+      }
+
+      .problem-routes-intro p {
+        max-width: 720px;
+        font-size: .84rem;
+        line-height: 1.45;
+      }
+
+      .problem-routes-note {
+        min-height: 64px;
+        padding: 0 0 0 1rem;
+        border-top: 0;
+        border-left: 1px solid rgba(255, 255, 255, .09);
+        font-size: .78rem;
+      }
+
+      .problem-route-grid {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: .65rem;
+      }
+
+      .problem-route-card {
+        min-height: 172px;
+        padding: .82rem;
+        gap: .55rem;
+      }
+
+      .problem-route-icon {
+        width: 34px;
+        height: 34px;
+      }
+
+      .problem-route-card strong {
+        margin-top: .48rem;
+        font-size: .9rem;
+      }
+
+      .problem-route-card > span:first-child > span:last-child {
+        display: -webkit-box;
+        overflow: hidden;
+        font-size: .76rem;
+        line-height: 1.38;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+      }
+
+      .problem-route-action {
+        font-size: .75rem;
+      }
+    }
   </style>
 
   <link rel="icon" type="image/png" href="assets/logo-navbar.png" />
@@ -5749,7 +6056,7 @@
 
   <!-- Quote of the Day -->
 
-  <section class="container" style="padding: 2rem 0 1rem;">
+  <section class="container blog-weekly-quote" style="padding: 2rem 0 1rem;">
     <div id="qotdCard" style="background:linear-gradient(135deg,rgba(108,92,231,0.12),rgba(0,210,211,0.06));border:1px solid rgba(108,92,231,0.22);border-radius:20px;padding:2.2rem 2.5rem;display:flex;align-items:center;gap:2rem;position:relative;overflow:hidden;">
       <!-- Left accent -->
       <div style="width:5px;height:80%;background:linear-gradient(to bottom,var(--primary),#00d2d3);border-radius:4px;flex-shrink:0;position:absolute;left:0;top:10%;"></div>
@@ -5931,14 +6238,14 @@
             <i class="fa-solid fa-list" aria-hidden="true"></i><span>Lista</span>
           </button>
         </div>
-        <button class="blog-tool-btn" type="button" onclick="openRandomArticle()">
-          <i class="fa-solid fa-shuffle"></i> Sorprendeme
+        <button class="blog-tool-btn" type="button" onclick="openRandomArticle()" aria-label="Abrir un art&iacute;culo al azar" title="Abrir un art&iacute;culo al azar">
+          <i class="fa-solid fa-shuffle"></i><span class="blog-tool-label"> Sorprendeme</span>
         </button>
-        <button class="blog-tool-btn" type="button" onclick="copyBlogViewLink()" title="Copiar un enlace con los filtros actuales">
-          <i class="fa-solid fa-link"></i> Copiar busqueda
+        <button class="blog-tool-btn" type="button" onclick="copyBlogViewLink()" title="Copiar un enlace con los filtros actuales" aria-label="Copiar un enlace con los filtros actuales">
+          <i class="fa-solid fa-link"></i><span class="blog-tool-label"> Copiar busqueda</span>
         </button>
-        <button class="blog-tool-btn" type="button" id="blogFocusBtn" onclick="toggleBlogFocusMode()">
-          <i class="fa-solid fa-eye"></i> Modo enfoque
+        <button class="blog-tool-btn" type="button" id="blogFocusBtn" onclick="toggleBlogFocusMode()" aria-label="Activar modo enfoque" title="Activar modo enfoque">
+          <i class="fa-solid fa-eye"></i><span class="blog-tool-label"> Modo enfoque</span>
         </button>
       </div>
       <label class="blog-sort-control" for="blogSort">
