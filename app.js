@@ -1769,6 +1769,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const dashboardGrid = viewDashboard.querySelector('.dashboard-grid');
         if (!dashboardGrid) return;
 
+        viewDashboard.dataset.dashboardView = normalizedMode;
+
         const children = Array.from(dashboardGrid.children);
         const config = dashboardViewConfig[normalizedMode];
         const visibleItems = normalizedMode === 'all'

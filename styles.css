@@ -9169,3 +9169,26 @@ body.app-shell-active > .auth-skip-link {
         font-size: 0.7rem;
     }
 }
+
+/* Cada vista ordena el tablero según la intención elegida. */
+#view-dashboard[data-dashboard-view="operation"] .form-section { order: 1; }
+#view-dashboard[data-dashboard-view="operation"] .kpi-cards { order: 2; }
+#view-dashboard[data-dashboard-view="operation"] .smart-shortcuts-card { order: 3; }
+#view-dashboard[data-dashboard-view="operation"] .list-section { order: 4; }
+#view-dashboard[data-dashboard-view="operation"] .action-center-card { order: 5; }
+#view-dashboard[data-dashboard-view="operation"] .receivables-card,
+#view-dashboard[data-dashboard-view="operation"] .stock-alert-card { order: 6; }
+#view-dashboard[data-dashboard-view="operation"] .daily-plan-card { order: 7; }
+#view-dashboard[data-dashboard-view="operation"] .due-radar-card { order: 8; }
+#view-dashboard[data-dashboard-view="operation"] .notepad-card { order: 9; }
+#view-dashboard[data-dashboard-view="operation"] .followups-card { order: 10; }
+#view-dashboard[data-dashboard-view="operation"] .recurring-card { order: 11; }
+
+#view-dashboard[data-dashboard-view="analysis"] .kpi-cards { order: 1; }
+#view-dashboard[data-dashboard-view="analysis"] .secondary-metrics-strip { order: 2; }
+#view-dashboard[data-dashboard-view="analysis"] .charts-row { order: 3; }
+#view-dashboard[data-dashboard-view="analysis"] .operational-health-card { order: 4; }
+#view-dashboard[data-dashboard-view="analysis"] .closing-forecast-card { order: 5; }
+#view-dashboard[data-dashboard-view="analysis"] .data-quality-card { order: 6; }
+#view-dashboard[data-dashboard-view="analysis"] #week-vs-lastweek-card { order: 7; }
+#view-dashboard[data-dashboard-view="analysis"] .margin-simulator-card { order: 8; }
